@@ -71,9 +71,13 @@ fabric.properties
 *.jar
 *.war
 *.ear
+<<<<<<< HEAD
 *.zip
 *.tar.gz
 *.rar
 
+=======
+*/.idea/*
+>>>>>>> c4c42aca3bdcfe458bdefdcdd62f8165adedab6b
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
