@@ -1,3 +1,4 @@
+package main.java;
 /**
  * Created by griffincecil on 4/1/17.
  */
@@ -6,23 +7,23 @@ public class UIManager {
 
 
 
-    public int displayMainMenu() {
+    private int displayMainMenu() {
         return 0;
     }
 
-    public int displayPathfinder() {
+    private int displayPathfinder() {
         return 0;
     }
 
-    public int displayDirectory() {
+    private int displayDirectory() {
         return 0;
     }
 
-    public int displayMapManagement() {
+    private int displayMapManagement() {
         return 0;
     }
 
-    public int checkAdminPowers() {
+    private int checkAdminPowers() {
         return 0;
     }
 }
