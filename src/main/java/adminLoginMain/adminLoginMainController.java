@@ -1,24 +1,19 @@
 package controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 
 /**
  * Created by AugustoR on 4/1/17.
  */
-public class adminLoginMainController extends AbsController{
+public class adminLoginMainController {
     @FXML
     private TextField username_TextField;
 
     @FXML
     private PasswordField password_PasswordField;
-
-    @FXML
-    private AnchorPane backgroundAnchorPane;
 
     @FXML
     private Button logIn_Button;
@@ -43,8 +38,6 @@ public class adminLoginMainController extends AbsController{
     public void mainMenuButton_Clicked(){
 
         System.out.println("The user has clicked the main menu Button");
-        switch_screen(backgroundAnchorPane, "../main/resources/views/patientMenuStartView.fxml");
-
     }
 
 
