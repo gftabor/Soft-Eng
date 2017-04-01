@@ -1,6 +1,7 @@
 package controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -33,6 +34,10 @@ public class adminLoginMainController extends AbsController{
         if(password_PasswordField.getText().equals("1234") &&
                 username_TextField.getText().equals("Griffin")) {
             System.out.println("correct Password");
+
+            FXMLLoader loader = switch_screen(backgroundAnchorPane, "../main/resources/views/adminMenuStartView.fxml");
+            controllers.adminMenuStartController controller = loader.getController();
+            controller.setUsername(username_TextField.getText());
         }
 
 

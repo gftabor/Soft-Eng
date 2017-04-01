@@ -60,4 +60,8 @@ public class adminMenuStartController extends AbsController{
 
     }
 
+    public void setUsername(String user){
+        username_Label.setText("Admin: " + user);
+    }
+
 }
