@@ -13,7 +13,7 @@ public class MenuInterface {
         return isShowing;
     }
 
-    public boolean setIsShowing(boolean state) {
+    public void setIsShowing(boolean state) {
         this.isShowing = state;
     }
 }

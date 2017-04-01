@@ -10,7 +10,7 @@ public class MapManagementTool {
         return isShowing;
     }
 
-    public boolean setIsShowing(boolean state) {
+    public void setIsShowing(boolean state) {
         this.isShowing = state;
     }
 }
