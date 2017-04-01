@@ -35,7 +35,7 @@ public class patientMenuStartController extends AbsController{
     //Handling when the logIn Button is clicked
     public void logInButton_Clicked(){
         System.out.println("The log in button was clicked by the user");
-
+        FXMLLoader loader = switch_screen(backgroundAnchorPane,"../main/resources/views/adminLoginMainView.fxml");
 
 
         //Display the Hospital Directory button
