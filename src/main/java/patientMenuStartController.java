@@ -52,7 +52,7 @@ public class patientMenuStartController extends AbsController{
     //Handling when the pathFinding Button is clicked
     //IMPORTANT
     public void pathFindingButton_Clicked(){
-        FXMLLoader loader = switch_screen(backgroundAnchorPane,"/views/pathFindingMenuView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane,"../main/resources/views/pathFindingMenuView.fxml");
         //pathFindingMenuController controller = loader.getController();
         //controller.setMode(username_TextField.getText());
 
@@ -67,7 +67,7 @@ public class patientMenuStartController extends AbsController{
 
     //Handling when the mapManagement Button is clicked
     public void mapManagementButton_Clicked(){
-        switch_screen(backgroundAnchorPane,"/views/mmFloorAndModeView.fxml");
+        switch_screen(backgroundAnchorPane,"../main/resources/views/mmFloorAndModeView.fxml");
 
     }
 

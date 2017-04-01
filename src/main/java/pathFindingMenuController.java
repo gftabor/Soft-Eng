@@ -51,7 +51,7 @@ public class pathFindingMenuController extends AbsController{
     }
 
     public void mainMenuButton_Clicked(){
-        switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
+        switch_screen(backgroundAnchorPane, "../main/resources/views/patientMenuStartView.fxml");
 
     }
 
