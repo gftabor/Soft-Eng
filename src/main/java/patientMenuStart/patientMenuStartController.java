@@ -3,8 +3,10 @@ package controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;  //NOT JAVA SWING
 import javafx.scene.layout.AnchorPane;
+
 
 /**
  * Created by AugustoR on 3/30/17.
@@ -28,6 +30,9 @@ public class patientMenuStartController extends AbsController{
 
     @FXML
     private Button mapManagement_Button;
+
+    @FXML
+    private Label patient_Label;
 
 
     Boolean logInSuccess = true;
