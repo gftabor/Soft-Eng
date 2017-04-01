@@ -22,7 +22,17 @@ public class adminLoginMainController {
     private Button mainMenu_Button;
 
     public void logInButton_Clicked(){
+
         System.out.println("The user has clicked the log in Button");
+        System.out.println(username_TextField.getText());
+        System.out.println(password_PasswordField.getText());
+        if(password_PasswordField.getText().equals("1234") &&
+                username_TextField.getText().equals("Griffin")) {
+            System.out.println("correct Password");
+        }
+
+
+
     }
 
     public void mainMenuButton_Clicked(){
