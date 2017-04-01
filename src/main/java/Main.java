@@ -12,8 +12,10 @@ import java.sql.SQLException;
 public class Main extends Application {
 
     @Override
+
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../main/resources/views/patientMenuStartView.fxml"));
+
         primaryStage.setTitle("Iteration 1 Minimal Application Correct");
 
         //primaryStage.setFullScreen(true);
