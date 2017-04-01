@@ -26,6 +26,7 @@ public class adminLoginMainController {
     }
 
     public void mainMenuButton_Clicked(){
+
         System.out.println("The user has clicked the main menu Button");
     }
 
