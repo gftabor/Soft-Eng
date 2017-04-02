@@ -8,9 +8,9 @@ import java.util.ArrayList;
  */
 public class CollectionOfNodes {
 
-    private ArrayList nodes;
+    private ArrayList<Node> nodes;
 
-    CollectionOfNodes () {
+    public CollectionOfNodes () {
         nodes = new ArrayList<Node>();
     }
 
@@ -18,6 +18,15 @@ public class CollectionOfNodes {
         nodes.add(node);
     }
 
+    public String toString() {
+        System.out.println("---------- Printing all nodes in CollectionOfNodes ----------");
+        for (Node node : nodes) {
+            node.toString();
+            System.out.println();
+        }
+        System.out.println("-------------------------------------------------------------");
 
+        return null;
+    }
 
 }

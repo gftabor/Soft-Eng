@@ -8,6 +8,9 @@ import javafx.stage.Stage;
 
 import java.sql.SQLException;
 
+import controllers.Node;
+import controllers.CollectionOfNodes;
+
 public class Main extends Application {
 
     @Override
@@ -89,6 +92,32 @@ public class Main extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        try {
+            Statement stmt = conn.createStatement();
+            String nodeSql = "SELECT XPOS, YPOS FROM NODE";
+
+            ResultSet nodeRset = stmt.executeQuery(nodeSql);
+            int x, y;
+            Node node;
+            CollectionOfNodes collectionOfNodes = new CollectionOfNodes();
+            while (nodeRset.next()) {
+                x = nodeRset.getInt("XPOS");
+                y = nodeRset.getInt("YPOS");
+                node = new Node(x, y, true, "NAME");
+                collectionOfNodes.addNode(node);
+            }
+
+            nodeRset.close();
+            stmt.close();
+
+            collectionOfNodes.toString();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 

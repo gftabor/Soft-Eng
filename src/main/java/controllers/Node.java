@@ -11,13 +11,23 @@ public class Node {
     private boolean hidden;
     private String name;
 
-    private ArrayList edges = new ArrayList<Edge>();
+    private ArrayList<Edge> edges = new ArrayList<Edge>();
 
     public Node(int posX, int posY, boolean hidden, String name) {
         this.posX = posX;
         this.posY = posY;
         this.hidden = hidden;
         this.name = name;
+    }
+
+    public String toString() {
+        System.out.println("Node:");
+        System.out.println("    Pos X: " + posX);
+        System.out.println("    Pos y: " + posY);
+        System.out.println("    Hidden: " + hidden);
+        System.out.println("    Name: " + name);
+
+        return null;
     }
 
 
