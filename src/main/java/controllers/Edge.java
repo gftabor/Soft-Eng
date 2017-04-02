@@ -16,7 +16,7 @@ public class Edge {
     public Edge(Node startNode, Node endNode, int floor){
         this.startNode = startNode;
         this.endNode = endNode;
-        float weight = calculateWeight(startNode.getPosX(), startNode.getPosY(), endNode.getPosX(), endNode.getPosY());
+        double weight = calculateWeight(startNode.getPosX(), startNode.getPosY(), endNode.getPosX(), endNode.getPosY());
         this.floor = floor;
     }
 
