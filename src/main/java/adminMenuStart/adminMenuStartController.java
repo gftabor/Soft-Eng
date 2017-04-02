@@ -4,6 +4,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import mapManagementFloorAndMode.mmFloorAndModeController;
+
 /**
  * Created by AugustoR on 4/1/17.
  */
@@ -40,7 +42,7 @@ public class adminMenuStartController extends controllers.AbsController{
 
     public void emergencyButton_Clicked(){
         System.out.println("The user has clicked the emergency button");
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "../main/resources/views/emergencyView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
 
     }
 
@@ -65,9 +67,9 @@ public class adminMenuStartController extends controllers.AbsController{
         switch_screen(backgroundAnchorPane, "/views/mmFloorAndModeView.fxml");
 
         //Get the scene loader
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "../main/resources/views/mmFloorAndModeView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/mmFloorAndModeView.fxml");
         //Get the controller of the the scene
-        controllers.mmFloorAndModeController controller = loader.getController();
+        mapManagementFloorAndMode.mmFloorAndModeController controller = loader.getController();
         //Set the username label
         controller.setUserString(username_Label.getText());
 

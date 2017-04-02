@@ -44,7 +44,7 @@ public class pathFindingMenuController extends controllers.AbsController{
 
     public void emergencyButton_Clicked(){
         System.out.println("The user has clicked the emergency Button");
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "../main/resources/views/emergencyView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
     }
 
     public void cancelButton_Clicked(){
@@ -62,9 +62,9 @@ public class pathFindingMenuController extends controllers.AbsController{
             switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
         }else{
             //Get the scene loader
-            FXMLLoader loader = switch_screen(backgroundAnchorPane,"../main/resources/views/adminMenuStartView.fxml");
+            FXMLLoader loader = switch_screen(backgroundAnchorPane,"/views/adminMenuStartView.fxml");
             //Get the controller of the scene
-            controllers.adminMenuStartController controller = loader.getController();
+            adminMenuStart.adminMenuStartController controller = loader.getController();
             controller.setUsername(username_Label.getText());
 
         }
