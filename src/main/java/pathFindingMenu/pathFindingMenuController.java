@@ -43,8 +43,8 @@ public class pathFindingMenuController extends AbsController{
 
 
     public void emergencyButton_Clicked(){
-
         System.out.println("The user has clicked the emergency Button");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "../main/resources/views/emergencyView.fxml");
     }
 
     public void cancelButton_Clicked(){
