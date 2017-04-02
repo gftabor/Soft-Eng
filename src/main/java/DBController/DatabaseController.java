@@ -62,7 +62,7 @@ public class DatabaseController {
     public void getNodesInFloor(int floor){
         String sqlString = "Select XPOS, YPOS FROM NODE WHERE FLOOR = " + floor;
         ArrayList nodesInfo = new ArrayList();
-        int nodeYpos = 
+        int nodeYpos = 5;
         try {
             Statement stmt = conn.createStatement();
             ResultSet rset = stmt.executeQuery(sqlString);
