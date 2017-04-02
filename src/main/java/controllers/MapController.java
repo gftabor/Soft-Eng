@@ -1,4 +1,8 @@
+<<<<<<< HEAD:src/main/java/MapController.java
 package main.java;
+=======
+package controllers;
+>>>>>>> origin/master:src/main/java/controllers/MapController.java
 
 /**
  * Created by griffincecil on 4/1/2017.

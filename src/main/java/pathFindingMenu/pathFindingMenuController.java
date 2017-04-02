@@ -1,4 +1,4 @@
-package controllers;
+package pathFindingMenu;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,7 +9,7 @@ import javafx.scene.shape.Circle;
 /**
  * Created by AugustoR on 3/30/17.
  */
-public class pathFindingMenuController extends AbsController{
+public class pathFindingMenuController extends controllers.AbsController{
     @FXML
     private AnchorPane backgroundAnchorPane;
 
