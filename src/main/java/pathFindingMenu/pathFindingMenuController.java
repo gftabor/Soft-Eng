@@ -58,9 +58,9 @@ public class pathFindingMenuController extends AbsController{
 
     public void mainMenuButton_Clicked(){
         if(username_Label.getText().equals("")) {
-            switch_screen(backgroundAnchorPane, "../main/resources/views/patientMenuStartView.fxml");
+            switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
         }else{
-            switch_screen(backgroundAnchorPane,"../main/resources/views/adminMenuStartView.fxml");
+            switch_screen(backgroundAnchorPane,"/views/adminMenuStartView.fxml");
             
         }
 

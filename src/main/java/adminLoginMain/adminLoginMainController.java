@@ -35,7 +35,7 @@ public class adminLoginMainController extends AbsController{
                 username_TextField.getText().equals("Griffin")) {
             System.out.println("correct Password");
 
-            FXMLLoader loader = switch_screen(backgroundAnchorPane, "../main/resources/views/adminMenuStartView.fxml");
+            FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
             controllers.adminMenuStartController controller = loader.getController();
             controller.setUsername(username_TextField.getText());
         }
@@ -47,7 +47,7 @@ public class adminLoginMainController extends AbsController{
     public void mainMenuButton_Clicked(){
 
         System.out.println("The user has clicked the main menu Button");
-        switch_screen(backgroundAnchorPane, "../main/resources/views/patientMenuStartView.fxml");
+        switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
 
     }
 
