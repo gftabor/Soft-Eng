@@ -5,10 +5,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
+
 /**
  * Created by AugustoR on 4/2/17.
  */
-public class mmAddingNodeController {
+public class mmRemovingNodeController {
 
     @FXML
     private AnchorPane backgroundAnchorPane;
@@ -47,8 +48,5 @@ public class mmAddingNodeController {
         System.out.println("The user clicked the submit Button");
     }
 
-
-
-
-
 }
+
