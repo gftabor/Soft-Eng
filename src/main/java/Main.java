@@ -83,6 +83,8 @@ public class Main extends Application {
             rset.close();
             rset2.close();
             stmt.close();
+
+            System.out.println("-------------------------");
         } catch (SQLException se) {
             se.printStackTrace();
         } catch (Exception e) {
