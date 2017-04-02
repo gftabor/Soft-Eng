@@ -37,27 +37,42 @@ public class pathFindingMenuController extends AbsController{
     @FXML
     private Label mode_Label;
 
+    @FXML
+    private Label username_Label;
+
 
     public void emergencyButton_Clicked(){
+
         System.out.println("The user has clicked the emergency Button");
     }
 
     public void cancelButton_Clicked(){
+
         System.out.println("The user has clicked the cancel Button");
     }
 
     public void submitButton_Clicked(){
+
         System.out.println("The user has clicked the submit Button");
     }
 
     public void mainMenuButton_Clicked(){
-        switch_screen(backgroundAnchorPane, "../main/resources/views/patientMenuStartView.fxml");
+        if(username_Label.getText().equals("")) {
+            switch_screen(backgroundAnchorPane, "../main/resources/views/patientMenuStartView.fxml");
+        }else{
+            switch_screen(backgroundAnchorPane,"../main/resources/views/adminMenuStartView.fxml");
+            
+        }
 
     }
 
     public void setMode(String mode){
         mode_Label.setText(mode);
 
+    }
+
+    public void setUserString(String user){
+        username_Label.setText(user);
 
     }
 
