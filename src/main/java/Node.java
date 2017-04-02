@@ -8,15 +8,17 @@ import java.util.ArrayList;
 public class Node {
     private int posX;
     private int posY;
-    private boolean hidden;
+    private boolean isHidden;
+    private boolean isEnabled;
     private String name;
 
-    private ArrayList<Edge> edges = new ArrayList<Edge>();
+    private ArrayList edges = new ArrayList<Edge>();
 
-    public Node(int posX, int posY, boolean hidden, String name) {
+    public Node(int posX, int posY, boolean hidden, boolean enabled, String name) {
         this.posX = posX;
         this.posY = posY;
-        this.hidden = hidden;
+        this.isHidden = hidden;
+        this.isEnabled = enabled;
         this.name = name;
     }
 
