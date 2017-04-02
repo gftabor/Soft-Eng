@@ -17,6 +17,9 @@
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 
+# WE DID THIS OURSELVES MAYBE IT'LL BREAK IT
+.idea/**
+
 # Gradle:
 .idea/**/gradle.xml
 .idea/**/libraries
