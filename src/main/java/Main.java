@@ -13,6 +13,8 @@ import controllers.CollectionOfNodes;
 
 public class Main extends Application {
 
+    CollectionOfNodes collectionOfNodes;
+
     @Override
 
     public void start(Stage primaryStage) throws Exception {
@@ -93,6 +95,7 @@ public class Main extends Application {
             e.printStackTrace();
         }
 
+        // populate the collection of nodes from the database
         try {
             Statement stmt = conn.createStatement();
             String nodeSql = "SELECT XPOS, YPOS FROM NODE";
@@ -100,7 +103,7 @@ public class Main extends Application {
             ResultSet nodeRset = stmt.executeQuery(nodeSql);
             int x, y;
             Node node;
-            CollectionOfNodes collectionOfNodes = new CollectionOfNodes();
+            collectionOfNodes = new CollectionOfNodes();
             while (nodeRset.next()) {
                 x = nodeRset.getInt("XPOS");
                 y = nodeRset.getInt("YPOS");
@@ -111,7 +114,9 @@ public class Main extends Application {
             nodeRset.close();
             stmt.close();
 
+            // Print out all the nodes populated from the database
             collectionOfNodes.toString();
+
         } catch (SQLException se) {
             se.printStackTrace();
         } catch (Exception e) {
@@ -122,5 +127,11 @@ public class Main extends Application {
 
 
     public static void main(String[] args) throws SQLException{
-        launch(args); }
+        launch(args);
+    }
+
+
+    public CollectionOfNodes getCollectionOfNodes() {
+        return collectionOfNodes;
+    }
 }
