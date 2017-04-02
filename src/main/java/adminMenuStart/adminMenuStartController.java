@@ -51,6 +51,7 @@ public class adminMenuStartController extends AbsController{
         controllers.pathFindingMenuController controller = loader.getController();
 
         controller.setUserString(username_Label.getText());
+        //controller.titleChoiceBox_Clicked();
 
     }
 
@@ -68,6 +69,7 @@ public class adminMenuStartController extends AbsController{
         controllers.mmFloorAndModeController controller = loader.getController();
         //Set the username label
         controller.setUserString(username_Label.getText());
+
 
 
     }

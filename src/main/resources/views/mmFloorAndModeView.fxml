@@ -172,7 +172,7 @@
                               <Font name="System Bold Italic" size="26.0" />
                            </font>
                         </Label>
-                        <ChoiceBox prefHeight="39.0" prefWidth="250.0">
+                        <ChoiceBox fx:id="title_ChoiceBox" onMouseClicked="#titleChoiceBox_Clicked" prefHeight="39.0" prefWidth="250.0">
                            <HBox.margin>
                               <Insets left="105.0" />
                            </HBox.margin>
@@ -229,7 +229,7 @@
                               <Font name="System Bold Italic" size="26.0" />
                            </font>
                         </Label>
-                        <CheckBox mnemonicParsing="false">
+                        <CheckBox fx:id="hidden_CheckBox" mnemonicParsing="false">
                            <HBox.margin>
                               <Insets bottom="10.0" left="70.0" right="10.0" top="19.0" />
                            </HBox.margin>
