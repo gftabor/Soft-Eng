@@ -1,5 +1,6 @@
 package controllers;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -44,7 +45,11 @@ public class adminMenuStartController extends AbsController{
 
     public void pathFindingButton_Clicked(){
         System.out.println("The user has clicked the pathfinding button");
-        switch_screen(backgroundAnchorPane, "../main/resources/views/pathFindingMenuView.fxml");
+
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "../main/resources/views/pathFindingMenuView.fxml");
+        controllers.pathFindingMenuController controller = loader.getController();
+
+        controller.setUserString(username_Label.getText());
 
     }
 

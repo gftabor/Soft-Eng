@@ -31,7 +31,7 @@
                   <HBox>
                      <children>
                         <Label />
-                        <Label fx:id="patient_Label" text="Patient">
+                        <Label fx:id="patient_Label">
                            <font>
                               <Font size="30.0" />
                            </font>
@@ -91,7 +91,7 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="hospitalDirectory_Button" disable="true" mnemonicParsing="false" onMouseClicked="#hospitalDirectoryButton_Clicked" prefHeight="80.0" prefWidth="300.0" text="Hospital Directory">
+                        <Button fx:id="hospitalDirectory_Button" disable="true" mnemonicParsing="false" onMouseClicked="#hospitalDirectoryButton_Clicked" prefHeight="80.0" prefWidth="300.0" text="Hospital Directory" visible="false">
                            <font>
                               <Font size="26.0" />
                            </font></Button>
@@ -101,7 +101,7 @@
                   <HBox disable="true">
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="mapManagement_Button" disable="true" mnemonicParsing="false" onMouseClicked="#mapManagementButton_Clicked" prefHeight="80.0" prefWidth="300.0" text="Map Management">
+                        <Button fx:id="mapManagement_Button" disable="true" mnemonicParsing="false" onMouseClicked="#mapManagementButton_Clicked" prefHeight="80.0" prefWidth="300.0" text="Map Management" visible="false">
                            <font>
                               <Font size="26.0" />
                            </font></Button>
