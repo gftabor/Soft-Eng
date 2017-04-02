@@ -7,6 +7,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.CheckBox;
 
 /**
  * Created by AugustoR on 3/31/17.
@@ -25,6 +26,12 @@ public class mmFloorAndModeController extends AbsController{
     private ChoiceBox<String> mode_ChoiceBox;
 
     @FXML
+    private ChoiceBox<String> title_ChoiceBox;
+
+    @FXML
+    private CheckBox hidden_CheckBox;
+
+    @FXML
     private Button submit_Button;
 
     @FXML
@@ -35,20 +42,34 @@ public class mmFloorAndModeController extends AbsController{
 
 
 
-    //Flag to only set choices once
-    int setChoices = 0;
+    //Flag to set choices once
+    boolean setModeChoices = false;
+    boolean setTitleChoices = false;
 
+
+    //Sets the choices for the mode to the user to see
     public void modeChoiceBox_Clicked(){
         //System.out.println("Hello World");
-        if(setChoices == 0) {
+        if(!setModeChoices) {
             System.out.println("Setting Choices");
             mode_ChoiceBox.getItems().addAll("Add", "Remove", "Edit");
             //mode_ChoiceBox.setValue("Add");
-            setChoices = 1;
+            setModeChoices = true;
         }
     }
-    //Make a function to set the value of the mode_ChoiceBox to "Add" with the same idea of the button
 
+
+    //set the choices for the title to the user to see
+    public void titleChoiceBox_Clicked(){
+        //
+        if(!setTitleChoices){
+            System.out.println("Setting Choices");
+            title_ChoiceBox.getItems().addAll("Doctor's Office", "Food Service", "Restroom");
+            setTitleChoices = true;
+        }
+    }
+
+    //Make a function to set the value of the mode_ChoiceBox to "Add" with the same idea of the button
     public void emergencyButton_Clicked(){
 
         System.out.println("The user has clicked the emergency Button");
@@ -74,6 +95,7 @@ public class mmFloorAndModeController extends AbsController{
 
     }
 
+    //Set the username label to the current admin/patient
     public void setUserString(String user){
         username_Label.setText(user);
     }
