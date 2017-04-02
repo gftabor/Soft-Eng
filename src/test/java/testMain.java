@@ -1,11 +1,11 @@
-package test.java;
+/*package test.java;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
  * Created by jasonashton on 4/1/17.
  */
-public class testMain
+/*public class testMain
 {
     @Test
 
@@ -14,3 +14,4 @@ public class testMain
         assertEquals("Junit is working", str);
     }
 }
+*/
