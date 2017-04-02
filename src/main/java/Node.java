@@ -1,4 +1,4 @@
-package main.java;
+
 
 import java.util.ArrayList;
 
@@ -11,7 +11,7 @@ public class Node {
     private boolean hidden;
     private String name;
 
-    private ArrayList<Edge> edges = new ArrayList<Edge>();
+    private ArrayList edges = new ArrayList<Edge>();
 
     public Node(int posX, int posY, boolean hidden, String name) {
         this.posX = posX;
