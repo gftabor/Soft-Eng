@@ -1,4 +1,3 @@
-package controllers;
 import java.sql.*;
 
 import javafx.application.Application;
@@ -14,7 +13,7 @@ public class Main extends Application {
     @Override
 
     public void start(Stage primaryStage) throws Exception {
-        //Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("/resources/views/patientMenuStartView.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("/views/patientMenuStartView.fxml"));
         Parent root = FXMLLoader.load(getClass().getResource("/views/patientMenuStartView.fxml"));
 
         primaryStage.setTitle("Iteration 1 Minimal Application Correct");

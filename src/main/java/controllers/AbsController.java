@@ -26,7 +26,7 @@ public abstract class AbsController {
 
         }catch(IOException e) { //Did not load screen
             System.out.println("Error loading the screen");
-            //There could be ifnormaiton too
+            //There could be information too
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error loading Screen");
             alert.setContentText("Cannot load screen");

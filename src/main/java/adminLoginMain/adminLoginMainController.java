@@ -1,4 +1,4 @@
-package controllers;
+package adminLoginMain;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +10,7 @@ import javafx.scene.layout.AnchorPane;
 /**
  * Created by AugustoR on 4/1/17.
  */
-public class adminLoginMainController extends AbsController{
+public class adminLoginMainController extends controllers.AbsController{
     @FXML
     private TextField username_TextField;
 
@@ -36,8 +36,8 @@ public class adminLoginMainController extends AbsController{
             System.out.println("correct Password");
 
             FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
-            controllers.adminMenuStartController controller = loader.getController();
-            controller.setUsername(username_TextField.getText());
+            //adminMenuStartController controller = loader.getController();
+            //setUsername(username_TextField.getText());
         }
 
 

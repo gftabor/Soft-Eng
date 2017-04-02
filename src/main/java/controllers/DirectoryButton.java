@@ -1,13 +1,16 @@
-package main.java;
+package controllers;
 
 /**
  * Created by griffincecil on 4/1/2017.
  */
-public class DirectoryManagementTool {
+public class DirectoryButton {
     private boolean isShowing;
-
 
     public boolean getIsShowing() {
         return isShowing;
+    }
+
+    public void setIsShowing(boolean state) {
+        this.isShowing = state;
     }
 }

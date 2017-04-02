@@ -1,4 +1,4 @@
-package controllers;
+package emergency;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
