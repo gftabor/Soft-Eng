@@ -34,7 +34,7 @@ public class adminMenuStartController extends AbsController{
         System.out.println("The user has clicked the sign out button");
 
         //Change to patient menu
-        switch_screen(backgroundAnchorPane, "../main/resources/views/patientMenuStartView.fxml");
+        switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
 
     }
 
@@ -46,7 +46,7 @@ public class adminMenuStartController extends AbsController{
     public void pathFindingButton_Clicked(){
         System.out.println("The user has clicked the pathfinding button");
 
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "../main/resources/views/pathFindingMenuView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/pathFindingMenuView.fxml");
         controllers.pathFindingMenuController controller = loader.getController();
 
         controller.setUserString(username_Label.getText());
@@ -60,7 +60,7 @@ public class adminMenuStartController extends AbsController{
 
     public void mapManagementButton_Clicked(){
         System.out.println("The user has clicked the map management button");
-        switch_screen(backgroundAnchorPane, "../main/resources/views/mmFloorAndModeView.fxml");
+        switch_screen(backgroundAnchorPane, "/views/mmFloorAndModeView.fxml");
 
 
     }
