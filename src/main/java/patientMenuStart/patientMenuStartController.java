@@ -40,7 +40,7 @@ public class patientMenuStartController extends AbsController{
     //Handling when the logIn Button is clicked
     public void logInButton_Clicked(){
         System.out.println("The log in button was clicked by the user");
-        FXMLLoader loader = switch_screen(backgroundAnchorPane,"../main/resources/views/adminLoginMainView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane,"/views/adminLoginMainView.fxml");
 
 
         //Display the Hospital Directory button
@@ -61,7 +61,7 @@ public class patientMenuStartController extends AbsController{
         //pathFindingMenuController controller = loader.getController();
         //controller.setMode(username_TextField.getText());
 
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "../main/resources/views/pathFindingMenuView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/pathFindingMenuView.fxml");
         controllers.pathFindingMenuController controller = loader.getController();
         controller.setUserString("");
 
@@ -76,7 +76,7 @@ public class patientMenuStartController extends AbsController{
 
     //Handling when the mapManagement Button is clicked
     public void mapManagementButton_Clicked(){
-        switch_screen(backgroundAnchorPane,"../main/resources/views/mmFloorAndModeView.fxml");
+        switch_screen(backgroundAnchorPane,"/views/mmFloorAndModeView.fxml");
 
     }
 
