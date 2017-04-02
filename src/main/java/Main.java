@@ -39,7 +39,7 @@ public class Main extends Application {
     public static void main(String[] args) throws SQLException{
         launch(args);
     }
-    
+
     public CollectionOfNodes getCollectionOfNodes() {
         return collectionOfNodes;
     }
