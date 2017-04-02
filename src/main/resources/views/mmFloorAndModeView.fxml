@@ -31,7 +31,12 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Region prefHeight="52.0" prefWidth="829.0" HBox.hgrow="ALWAYS" />
+                        <Label fx:id="username_Label" text="Username">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
                         <Button fx:id="mainMenu_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="40.0" prefWidth="180.0" text="Main Menu">
                            <font>
                               <Font size="23.0" />

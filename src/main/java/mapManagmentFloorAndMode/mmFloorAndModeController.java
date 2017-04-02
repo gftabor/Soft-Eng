@@ -3,6 +3,7 @@ package controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.AnchorPane;
 
@@ -27,6 +28,9 @@ public class mmFloorAndModeController extends AbsController{
 
     @FXML
     private Button mainMenu_Button;
+
+    @FXML
+    private Label username_Label;
 
 
 
@@ -53,7 +57,7 @@ public class mmFloorAndModeController extends AbsController{
     }
 
     public void mainMenuButton_Clicked(){
-        switch_screen(backgroundAnchorPane, "../main/resources/views/patientMenuStartView.fxml");
+        switch_screen(backgroundAnchorPane, "../main/resources/views/adminMenuStartView.fxml");
     }
 
 
