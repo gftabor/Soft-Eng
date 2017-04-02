@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="Soft-Eng_main" target="1.8" />
       <module name="Soft-Eng_test" target="1.8" />
+      <module name="Software Engineering-Soft-Eng_main" target="1.8" />
+      <module name="Software Engineering-Soft-Eng_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
