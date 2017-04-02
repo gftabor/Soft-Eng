@@ -1,6 +1,7 @@
 package controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -60,8 +61,12 @@ public class pathFindingMenuController extends AbsController{
         if(username_Label.getText().equals("")) {
             switch_screen(backgroundAnchorPane, "../main/resources/views/patientMenuStartView.fxml");
         }else{
-            switch_screen(backgroundAnchorPane,"../main/resources/views/adminMenuStartView.fxml");
-            
+            //Get the scene loader
+            FXMLLoader loader = switch_screen(backgroundAnchorPane,"../main/resources/views/adminMenuStartView.fxml");
+            //Get the controller of the scene
+            controllers.adminMenuStartController controller = loader.getController();
+            controller.setUsername(username_Label.getText());
+
         }
 
     }

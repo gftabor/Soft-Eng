@@ -1,6 +1,7 @@
 package controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -54,10 +55,25 @@ public class mmFloorAndModeController extends AbsController{
 
     public void submitButton_Clicked(){
         System.out.println("The user has clicked the submit Button");
+
+        System.out.println(mode_ChoiceBox.getValue());
+
+
     }
 
     public void mainMenuButton_Clicked(){
-        switch_screen(backgroundAnchorPane, "../main/resources/views/adminMenuStartView.fxml");
+        //Get the scene loader
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "../main/resources/views/adminMenuStartView.fxml");
+        //Get the controller adminMenuStartController scene
+        controllers.adminMenuStartController controller = loader.getController();
+        //Set the username Label
+        controller.setUsername(username_Label.getText());
+
+
+    }
+
+    public void setUserString(String user){
+        username_Label.setText(user);
     }
 
 

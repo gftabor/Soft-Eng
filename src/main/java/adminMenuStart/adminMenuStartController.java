@@ -60,13 +60,20 @@ public class adminMenuStartController extends AbsController{
 
     public void mapManagementButton_Clicked(){
         System.out.println("The user has clicked the map management button");
-        switch_screen(backgroundAnchorPane, "../main/resources/views/mmFloorAndModeView.fxml");
+
+        //Get the scene loader
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "../main/resources/views/mmFloorAndModeView.fxml");
+        //Get the controller of the the scene
+        controllers.mmFloorAndModeController controller = loader.getController();
+        //Set the username label
+        controller.setUserString(username_Label.getText());
 
 
     }
 
     public void setUsername(String user){
-        username_Label.setText("Admin: " + user);
+
+        username_Label.setText(user);
     }
 
 }

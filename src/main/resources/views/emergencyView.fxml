@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.emergencyController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.emergencyController">
    <children>
       <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -23,68 +23,30 @@
                         <Region HBox.hgrow="ALWAYS" />
                         <Label text="EMERGENCY, EMERGENCIA, 緊急情況,">
                            <HBox.margin>
-                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                            </HBox.margin>
                            <font>
-                              <Font name="System Bold Italic" size="28.0" />
+                              <Font name="System Bold Italic" size="50.0" />
                            </font>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Label fx:id="username_Label">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </HBox.margin>
+                        </Label>
                      </children>
                   </HBox>
                </children>
             </VBox>
          </top>
-         <left>
-            <VBox prefHeight="347.0" prefWidth="231.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Region prefHeight="45.0" prefWidth="231.0" />
-                  <HBox>
-                     <children>
-                        <Label text="You are here:">
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="40.0" right="10.0" top="5.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font name="System Bold" size="18.0" />
-                           </font>
-                        </Label>
-                        <Circle radius="15.0" stroke="BLACK" strokeType="INSIDE">
-                           <HBox.margin>
-                              <Insets left="5.0" right="10.0" />
-                           </HBox.margin>
-                        </Circle>
-                     </children>
-                  </HBox>
-                  <Region prefHeight="36.0" prefWidth="231.0" />
-                  <HBox>
-                     <children>
-                        <Label text="EXITS:">
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="40.0" right="10.0" top="5.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font name="System Bold" size="18.0" />
-                           </font>
-                        </Label>
-                        <Circle fill="#f20000" radius="15.0" stroke="BLACK" strokeType="INSIDE">
-                           <HBox.margin>
-                              <Insets left="64.0" right="10.0" />
-                           </HBox.margin>
-                        </Circle>
-                     </children>
-                  </HBox>
-                  <Region prefHeight="89.0" prefWidth="231.0" />
-                  <HBox>
-                     <children>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="mainMenu_Button" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" text="Main Menu" />
-                        <Region HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </left>
          <bottom>
             <HBox BorderPane.alignment="CENTER">
                <children>
@@ -93,6 +55,9 @@
                      <HBox.margin>
                         <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                      </HBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
                   </Label>
                   <Region HBox.hgrow="ALWAYS" />
                </children>
@@ -101,16 +66,15 @@
          <center>
             <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <Region prefHeight="27.0" prefWidth="369.0" />
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
                         <Label text="Floor Map">
                            <font>
-                              <Font name="System Bold Italic" size="18.0" />
+                              <Font name="System Bold Italic" size="36.0" />
                            </font>
                            <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              <Insets />
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
@@ -119,7 +83,7 @@
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="250.0" stroke="BLACK" strokeType="INSIDE" width="250.0">
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="510.0" stroke="BLACK" strokeType="INSIDE" width="690.0">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
@@ -130,6 +94,66 @@
                </children>
             </VBox>
          </center>
+         <left>
+            <VBox prefHeight="856.0" prefWidth="503.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Region prefHeight="90.0" prefWidth="503.0" />
+                  <Region prefHeight="6.0" prefWidth="503.0" />
+                  <HBox>
+                     <children>
+                        <Label prefHeight="44.0" prefWidth="270.0" text="You are Here:">
+                           <font>
+                              <Font name="System Bold Italic" size="36.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="40.0" right="10.0" top="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Circle radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                           <HBox.margin>
+                              <Insets left="5.0" right="10.0" />
+                           </HBox.margin>
+                        </Circle>
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Label prefHeight="40.0" prefWidth="260.0" text="EXITS:">
+                           <font>
+                              <Font name="System Bold Italic" size="36.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="40.0" right="10.0" top="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Circle fill="#ff1f1f" radius="30.0" stroke="BLACK" strokeType="INSIDE">
+                           <HBox.margin>
+                              <Insets left="12.5" right="10.0" top="5.0" />
+                           </HBox.margin>
+                        </Circle>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="50.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Region prefHeight="110.0" prefWidth="210.0" />
+                  <HBox>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="mainMenu_Button" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="45.0" prefWidth="150.0" text="Main Menu">
+                           <HBox.margin>
+                              <Insets bottom="4.0" right="10.0" top="4.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="23.0" />
+                           </font>
+                        </Button>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </left>
       </BorderPane>
    </children>
 </AnchorPane>
