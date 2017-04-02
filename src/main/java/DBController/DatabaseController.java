@@ -94,12 +94,12 @@ public class DatabaseController {
     }
 
     // creates a new node in the database
-    public void newNode(Node node){
+    public void newNode(int x, int y, int floor, String name){
 
     }
 
     // creates a new edge in the database
-    public void newEdge(Edge edge){
+    public void newEdge(int xPos1, int yPos1, int floor1, int xPos2, int yPos2, int floor2){
 
     }
 
@@ -108,4 +108,12 @@ public class DatabaseController {
 
     }
 
+    //delete edge between the two given node positions
+    public void deleteEdge(int xPos1, int yPos1, int floor1, int xPos2, int yPos2, int floor2){
+
+    }
+    //delete node given its position
+    public void deleteNode(int xPos, int yPos, int floor){
+
+    }
 }
