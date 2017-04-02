@@ -10,7 +10,7 @@ import javafx.scene.shape.Circle;
 /**
  * Created by AugustoR on 3/31/17.
  */
-public class emergencyController extends AbsController{
+public class emergencyController extends controllers.AbsController{
     @FXML
     private AnchorPane backgroundAnchorPane;
 
@@ -24,7 +24,7 @@ public class emergencyController extends AbsController{
     public void mainMenuButton_Clicked() {
       System.out.println("The user clicked the main menu Button");
       //Switch screen
-      FXMLLoader loader = switch_screen(backgroundAnchorPane, "../main/resources/views/patientMenuStartView.fxml");
+      FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
 
     }
 
