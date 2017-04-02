@@ -1,4 +1,4 @@
-package controllers;
+package patientMenuStart;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +11,7 @@ import javafx.scene.layout.AnchorPane;
 /**
  * Created by AugustoR on 3/30/17.
  */
-public class patientMenuStartController extends AbsController{
+public class patientMenuStartController extends controllers.AbsController{
     //To wrap the scenes IMPORTANT
     @FXML
     private AnchorPane backgroundAnchorPane;
@@ -62,7 +62,9 @@ public class patientMenuStartController extends AbsController{
         //controller.setMode(username_TextField.getText());
 
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/pathFindingMenuView.fxml");
-        controllers.pathFindingMenuController controller = loader.getController();
+        pathFindingMenu.pathFindingMenuController controller = loader.getController();
+
+
         controller.setUserString("");
 
     }

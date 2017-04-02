@@ -1,4 +1,4 @@
-package controllers;
+package mapManagementFloorAndMode;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,7 +9,7 @@ import javafx.scene.layout.AnchorPane;
 /**
  * Created by AugustoR on 3/31/17.
  */
-public class mmFloorAndModeController extends AbsController{
+public class mmFloorAndModeController extends controllers.AbsController{
     @FXML
     private AnchorPane backgroundAnchorPane;
 
