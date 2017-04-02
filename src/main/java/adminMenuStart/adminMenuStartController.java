@@ -40,6 +40,7 @@ public class adminMenuStartController extends AbsController{
 
     public void emergencyButton_Clicked(){
         System.out.println("The user has clicked the emergency button");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "../main/resources/views/emergencyView.fxml");
 
     }
 

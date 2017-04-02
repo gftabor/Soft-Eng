@@ -50,7 +50,9 @@ public class mmFloorAndModeController extends AbsController{
     //Make a function to set the value of the mode_ChoiceBox to "Add" with the same idea of the button
 
     public void emergencyButton_Clicked(){
+
         System.out.println("The user has clicked the emergency Button");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "../main/resources/views/emergencyView.fxml");
     }
 
     public void submitButton_Clicked(){

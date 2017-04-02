@@ -80,9 +80,10 @@ public class patientMenuStartController extends AbsController{
 
     }
 
-    public void emergencyButton_Clicked(){
+    //Switch screen to emergency scene
+    public void emergencyButton_Clicked() {
         System.out.println("The user has clicked the emergency Button");
-
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "../main/resources/views/emergencyView.fxml");
     }
 
 
