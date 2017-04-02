@@ -27,19 +27,21 @@ public class adminLoginMainController extends controllers.AbsController{
     private Button mainMenu_Button;
 
     public void logInButton_Clicked(){
+        AdminLoginManager loginManage = new AdminLoginManager();
+        String username = username_TextField.getText();
+        String password = password_PasswordField.getText();
 
         System.out.println("The user has clicked the log in Button");
-        System.out.println(username_TextField.getText());
-        System.out.println(password_PasswordField.getText());
-        if(password_PasswordField.getText().equals("1234") &&
-                username_TextField.getText().equals("Griffin")) {
+        System.out.println(username);
+        System.out.println(password);
+
+        if(loginManage.verifyCredentials(username, password) == 1){
             System.out.println("correct Password");
 
             FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
             //adminMenuStartController controller = loader.getController();
             //setUsername(username_TextField.getText());
         }
-
 
 
     }

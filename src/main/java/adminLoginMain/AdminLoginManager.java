@@ -6,7 +6,10 @@ package adminLoginMain;
 public class AdminLoginManager {
     private int loginAttempts;
 
-    private int verifyCredentials(String username, String password) {
+    public int verifyCredentials(String username, String password) {
+        if((username.equals("Griffin")) && (password.equals("1234"))){
+            return 1;
+        }
         return 0;
     }
 
