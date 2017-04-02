@@ -1,8 +1,14 @@
-package main.java;
+
 /**
  * Created by griffincecil on 4/1/2017.
  */
 public class MapController {
+
+    private CollectionOfNodes mapCopy;
+
+    MapController () {
+        mapCopy = new CollectionOfNodes();
+    }
 
 
     private void requestMapCopy() {
