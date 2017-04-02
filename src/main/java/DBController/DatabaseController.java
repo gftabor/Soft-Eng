@@ -1,4 +1,6 @@
 package DBController;
+import controllers.Node;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -59,21 +61,36 @@ public class DatabaseController {
         }
     }
 
-    public void getNodesInFloor(int floor){
-        String sqlString = "Select XPOS, YPOS FROM NODE WHERE FLOOR = " + floor;
-        ArrayList nodesInfo = new ArrayList();
-        int nodeYpos = 5;
+    public ArrayList<Node> getNodesInFloor(int floor){
+        String sqlString = "Select XPOS, YPOS, `hidden?`, NAME FROM NODE WHERE FLOOR = " + floor;
+        ArrayList nodes = new ArrayList();
+        int xPos;
+        int yPos;
+        int nodeFloor;
+        String hiddenString;
+        boolean hidden = false;
+        String name;
         try {
             Statement stmt = conn.createStatement();
             ResultSet rset = stmt.executeQuery(sqlString);
             while (rset.next()){
-
+                xPos = rset.getInt("XPOS");
+                yPos = rset.getInt("YPOS");
+                nodeFloor = floor;
+                hiddenString = rset.getString("hidden?");
+                if (hiddenString.equals('Y')){
+                    hidden = true;
+                } else {
+                    hidden = false;
+                }
+                name = rset.getString("name");
+                nodes.add(new Node(xPos, yPos, hidden, name, floor));
             }
         } catch (SQLException se) {
             se.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        return nodes;
     }
 }
