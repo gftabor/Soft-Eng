@@ -18,7 +18,7 @@
 .idea/**/uiDesigner.xml
 
 # WE DID THIS OURSELVES MAYBE IT'LL BREAK IT
-.idea/**
+# .idea/**
 
 # Gradle:
 .idea/**/gradle.xml
