@@ -76,7 +76,6 @@ public class DatabaseController {
             while (rset.next()){
                 xPos = rset.getInt("XPOS");
                 yPos = rset.getInt("YPOS");
-                nodeFloor = floor;
                 hiddenString = rset.getString("hidden?");
                 if (hiddenString.equals('Y')){
                     hidden = true;
@@ -93,4 +92,6 @@ public class DatabaseController {
         }
         return nodes;
     }
+
+
 }
