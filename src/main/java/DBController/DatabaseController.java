@@ -1,6 +1,6 @@
 package DBController;
 import controllers.Node;
-
+import controllers.Edge;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -93,5 +93,19 @@ public class DatabaseController {
         return nodes;
     }
 
+    // creates a new node in the database
+    public void newNode(Node node){
+
+    }
+
+    // creates a new edge in the database
+    public void newEdge(Edge edge){
+
+    }
+
+    // finds the node with the given info and edits it
+    public void EditNode(int yPos, int xPos, int floor, boolean hidden, String name){
+
+    }
 
 }
