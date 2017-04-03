@@ -62,7 +62,7 @@ public class DatabaseController {
     }
 
     public ArrayList<Node> getNodesInFloor(int floor){
-        String sqlString = "Select XPOS, YPOS, `hidden?`, NAME FROM NODE WHERE FLOOR = " + floor;
+        String sqlString = "Select XPOS, YPOS, `HIDDEN?`, NAME FROM NODE WHERE FLOOR = " + floor;
         ArrayList nodes = new ArrayList();
         int xPos;
         int yPos;
@@ -76,7 +76,7 @@ public class DatabaseController {
             while (rset.next()){
                 xPos = rset.getInt("XPOS");
                 yPos = rset.getInt("YPOS");
-                hiddenString = rset.getString("hidden?");
+                hiddenString = rset.getString("HIDDEN?");
                 if (hiddenString.equals('Y')){
                     hidden = true;
                 } else {
@@ -85,6 +85,7 @@ public class DatabaseController {
                 name = rset.getString("name");
                 nodes.add(new Node(xPos, yPos, hidden, name, floor));
             }
+            stmt.close();
         } catch (SQLException se) {
             se.printStackTrace();
         } catch (Exception e) {
@@ -94,13 +95,34 @@ public class DatabaseController {
     }
 
     // creates a new node in the database
-    public void newNode(int x, int y, int floor, String name){
-
+    public void newNode(int x, int y, boolean hidden, String name,int floor){
+        String hiddenString;
+        if (hidden == true) {
+            hiddenString = "Y";
+        } else {
+            hiddenString = "N";
+        }
+        try {
+            String sqlString = "INSERT INTO NODE VALUES (y, x, name, floor, hiddenString)";
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sqlString);
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     // creates a new edge in the database
     public void newEdge(int xPos1, int yPos1, int floor1, int xPos2, int yPos2, int floor2){
 
+        try {
+            String sqlString = "INSERT INTO EDGE VALUES (xPos1, yPos1, xPos2, yPos2, floor1, floor2)";
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sqlString);
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     // finds the node with the given info and edits it
