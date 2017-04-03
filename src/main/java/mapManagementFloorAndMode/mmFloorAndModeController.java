@@ -1,5 +1,6 @@
 package mapManagementFloorAndMode;
 
+import javafx.beans.InvalidationListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -7,6 +8,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Label;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 /**
  * Created by AugustoR on 3/31/17.
@@ -39,44 +42,70 @@ public class mmFloorAndModeController extends controllers.AbsController{
     @FXML
     private Button mainMenu_Button;
 
-
-
-    //Flag to only set choices once
-    int setChoices = 0;
-    int setTitleChoices = 0;
-
-    public void modeChoiceBox_Clicked(){
-        //System.out.println("Hello World");
-        if(setChoices == 0) {
-            System.out.println("Setting Choices");
-            mode_ChoiceBox.getItems().addAll("Add", "Remove", "Edit");
-            //mode_ChoiceBox.setValue("Add");
-            setChoices = 1;
-        }
-    }
-    //Make a function to set the value of the mode_ChoiceBox to "Add" with the same idea of the button
-    public void titleChoiceBox_Clicked(){
-        if(setTitleChoices == 0){
-            System.out.println("Setting choices");
-            title_ChoiceBox.getItems().addAll("Doctor's Office", "Food Service", "Restroom");
-            setTitleChoices = 1;
-        }
-    }
-
+    private Button btK;
     public void emergencyButton_Clicked(){
-        System.out.println("The user has clicked the emergency Button");
+        switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
     }
 
+    //submit button is clicked
+    //To Do - use this to send the information of your changes to the DB to get updated
     public void submitButton_Clicked(){
         System.out.println("The user has clicked the submit Button");
+        System.out.println(mode_ChoiceBox.getValue());
+        switch(mode_ChoiceBox.getValue()) {
+            case "Add":
+                System.out.println("Mode = add");
+                //newNode(btK.getLayoutX(), btK.getLayoutY(),hidden_CheckBox.isSelected(), name,int floor)
+                break;
+            case "Edit":
+                System.out.println("Mode = edit");
+                break;
+            case "Remove":
+                System.out.println("Mode = remove");
+                break;
+            default:
+                System.out.println("Nothing selected for mode");
+                break;
+        }
     }
 
     public void mainMenuButton_Clicked(){
         switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
     }
 
-    public void setUserString(String user){
-        username_Label.setText(user);
+    public void setUserString(String user){username_Label.setText(user); }
+
+    public void setModeChoices() {
+        mode_ChoiceBox.getItems().addAll("Add", "Remove", "Edit");
+        mode_ChoiceBox.getSelectionModel().selectedIndexProperty()
+                .addListener(new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                        // Do validation
+                        System.out.println(newValue);
+                        if(newValue.intValue()==0){
+                            create_Button();
+                        } else
+                        {
+                            backgroundAnchorPane.getChildren().remove(btK);
+                        }
+                    }
+                });
+    }
+        public void setTitleChoices(){
+        title_ChoiceBox.getItems().addAll("Doctor's Office", "Food Service", "Restroom");
+    }
+    public void create_Button(){
+        System.out.println("checking button");
+            System.out.println("make button");
+            btK = new Button("ok");
+            // this code drags the button
+            btK.setOnMouseDragged(e -> {
+                btK.setLayoutX(e.getSceneX());
+                btK.setLayoutY(e.getSceneY());
+            });
+            backgroundAnchorPane.getChildren().add(btK);
+
     }
 
 }
