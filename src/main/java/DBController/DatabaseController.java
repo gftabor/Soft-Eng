@@ -102,8 +102,25 @@ public class DatabaseController {
     }
     */
 
-    public ResultSet getNodesSet(){
+    public ResultSet getNodeSet(){
         String sqlString = "Select * FROM NODE";
+
+        ResultSet rset = null;
+        try {
+            Statement stmt = conn.createStatement();
+            rset = stmt.executeQuery(sqlString);
+            stmt.close();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rset;
+    }
+
+
+    public ResultSet getEdgeSet(){
+        String sqlString = "Select * FROM EDGE";
 
         ResultSet rset = null;
         try {
