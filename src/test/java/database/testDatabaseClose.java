@@ -10,12 +10,14 @@ import static org.junit.Assert.assertTrue;
  * Created by jasonashton on 4/2/17.
  */
 public class testDatabaseClose {
-    DatabaseController dbControl = new DatabaseController();
+    //DatabaseController dbControl = new DatabaseController();
+    DatabaseController databaseController = DatabaseController.getInstance();
+
     @Before
     public void checkSetup(){
-        assertTrue(dbControl.startDB());
+        assertTrue(databaseController.startDB());
     }
 
     @Test
-    public void checkClose() { assertTrue(dbControl.closeDB());}
+    public void checkClose() { assertTrue(databaseController.closeDB());}
 }

@@ -15,17 +15,13 @@ public class DatabaseController {
 
     Connection conn;
 
-<<<<<<< .merge_file_a09684
+
     private DatabaseController() {}
 
     public static DatabaseController getInstance() {
         return databaseController;
     }
 
-    public void startDB() {
-        System.out.println("-------- Embedded Java DB Connection Testing ------");
-        System.out.println("-------- Step 1: Registering Driver ------");
-=======
     public boolean startDB() {
 
         //check for database driver
@@ -42,7 +38,6 @@ public class DatabaseController {
 
     private boolean checkDatabaseDriver(){
         System.out.println("Registering DB Driver");
->>>>>>> .merge_file_a07212
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             return true;
@@ -77,7 +72,6 @@ public class DatabaseController {
 
     }
 
-<<<<<<< .merge_file_a09684
     /*
 =======
 >>>>>>> .merge_file_a07212

@@ -60,4 +60,8 @@ public class CollectionOfNodes {
         System.out.println("-------------------------------------------------------------");
         return null;
     }
+
+    public Node getNode(int x, int y, int floor) {
+        return null;
+    }
 }
