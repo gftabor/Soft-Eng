@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;  //NOT JAVA SWING
 import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
@@ -13,7 +14,9 @@ import java.io.IOException;
 /**
  * Created by AugustoR on 3/31/17.
  */
-public class mmNodeInformationController {
+public class mmNodeInformationController extends controllers.AbsController{
+    @FXML
+    private AnchorPane backgroundAnchorPane;
 
     @FXML
     private Label currentMode_Label;
@@ -51,6 +54,9 @@ public class mmNodeInformationController {
     @FXML
     private Button submit_Button;
 
+    @FXML
+    private ScrollPane directory_ScrollPane;
+
     public void cancelButton_Clicked(){
         System.out.println("The user has clicked the cancel Button");
 
@@ -62,8 +68,7 @@ public class mmNodeInformationController {
     }
 
     public void emergencyButton_Clicked(){
-        System.out.println("The user has clicked the emergency Button");
-
+        switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
     }
 
     public void signOutButton_Clicked(){

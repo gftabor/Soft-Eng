@@ -2,10 +2,13 @@ package pathFindingMenu;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
 /**
  * Created by AugustoR on 3/30/17.
@@ -41,6 +44,11 @@ public class pathFindingMenuController extends controllers.AbsController{
     @FXML
     private Label username_Label;
 
+    @FXML
+    private StackPane node_Plane;
+
+    private Button btK;
+
 
     public void emergencyButton_Clicked(){
         System.out.println("The user has clicked the emergency Button");
@@ -53,8 +61,8 @@ public class pathFindingMenuController extends controllers.AbsController{
     }
 
     public void submitButton_Clicked(){
-
-        System.out.println("The user has clicked the submit Button");
+        //creating button with sample x and y
+        create_Button(200, 200);
     }
 
     public void mainMenuButton_Clicked(){
@@ -81,7 +89,23 @@ public class pathFindingMenuController extends controllers.AbsController{
 
     }
 
+    public void create_Button(double nodeX, double nodeY){
+        System.out.println("checking button");
+        System.out.println("make button");
+        btK = new Button("node");
 
+        // this code sets node's x and y pos to be on the plane below the graph
+        // later, will iterate through a list of coordinates and place nodes at each point
+        //btK.setLayoutX(nodeX);
+        //btK.setLayoutY(nodeY);
+
+        /*btK.setOnMouseDragged(e -> {
+            btK.setLayoutX(e.getSceneX());
+            btK.setLayoutY(e.getSceneY());
+        });*/
+        node_Plane.setMargin(btK, new Insets(nodeY, 0,0,nodeX));
+        node_Plane.getChildren().add(btK);
+    }
 
 
 }
