@@ -45,7 +45,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
     private Button btK;
 
     public void emergencyButton_Clicked(){
-        System.out.println("The user has clicked the emergency Button");
+        switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
     }
 
     public void submitButton_Clicked(){
