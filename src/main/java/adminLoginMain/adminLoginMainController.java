@@ -43,15 +43,18 @@ public class adminLoginMainController extends controllers.AbsController{
             System.out.println("correct Password");
 
             FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
-            //adminMenuStartController controller = loader.getController();
-            //setUsername(username_TextField.getText());
+            adminMenuStart.adminMenuStartController controller = loader.getController();
+            //Set the correct username for the next scene
+            controller.setUsername_Admin(username_TextField.getText());
+
+            //Check is the username/passwords inputs are empty
         }else if(username.equals("")){
             invalidLogInputs.setText("Enter your username.");
 
         }else if(password.equals("")){
             invalidLogInputs.setText("Enter your password.");
 
-        }else{
+        }else{//Incorrect inputs
             invalidLogInputs.setText("Incorrect username or password, try again.");
 
         }
