@@ -1,5 +1,8 @@
 package controllers;
 
+import DBController.DatabaseController;
+import org.apache.derby.iapi.types.Resetable;
+
 import java.sql.*;
 import java.sql.SQLException;
 
@@ -12,12 +15,16 @@ public class MapController {
 
     private CollectionOfNodes collectionOfNodes;
 
-    MapController () {
+    DatabaseController databaseController = DatabaseController.getInstance();
+
+    public MapController () {
         collectionOfNodes = new CollectionOfNodes();
     }
 
+    // Testing as public, change to private in final
+    public void requestFloorMapCopy() {
+        ResultSet nodeRset = databaseController.getNodesSet();
 
-    private void requestMapCopy(ResultSet nodeRset) {
         collectionOfNodes = new CollectionOfNodes();
 
         try {
