@@ -62,6 +62,33 @@ public class CollectionOfNodes {
     }
 
     public Node getNode(int x, int y, int floor) {
-        return null;
+        Node node;
+        int key = generateNodeKey(x, y, floor);
+
+        node = nodes.get(key);
+
+        if(node == null) {
+            System.out.println("Failed to find node with key: " + key);
+            return null;
+        } else {
+            return node;
+        }
+    }
+
+    private int generateNodeKey(int x, int y, int floor) {
+        // Key in format [FXXXXYYYY]
+        // where F is floor, x's is the x cord, and y's are y cord
+        int key = 0;
+
+        // Add nodes floor to key
+        key +=  floor * 100000000;
+
+        // Add nodes x cord to key
+        key +=  x * 10000;
+
+        // Add nodes y cord to key
+        key += y;
+
+        return key;
     }
 }
