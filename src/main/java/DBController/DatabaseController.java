@@ -76,7 +76,7 @@ public class DatabaseController {
 =======
 >>>>>>> .merge_file_a07212
     public ArrayList<Node> getNodesInFloor(int floor){
-        String sqlString = "Select XPOS, YPOS, `HIDDEN?`, NAME FROM NODE WHERE FLOOR = " + floor;
+        String sqlString = "Select XPOS, YPOS, ISHIDDEN, NAME FROM NODE WHERE FLOOR = " + floor;
         ArrayList<Node> nodes = new ArrayList<>();
         int xPos;
         int yPos;
@@ -89,7 +89,7 @@ public class DatabaseController {
             while (rset.next()){
                 xPos = rset.getInt("XPOS");
                 yPos = rset.getInt("YPOS");
-                hiddenString = rset.getString("HIDDEN?");
+                hiddenString = rset.getString("HIDDEN");
                 hidden = hiddenString.equals("Y");
                 name = rset.getString("name");
                 nodes.add(new Node(xPos, yPos, hidden, name, floor));
@@ -137,6 +137,7 @@ public class DatabaseController {
 
     // creates a new node in the database
     public void newNode(int x, int y, boolean hidden, String name,int floor){
+        System.out.println("Adding node");
         String hiddenString;
         if (hidden) {
             hiddenString = "Y";
@@ -145,7 +146,7 @@ public class DatabaseController {
         }
         try {
             // sql statement with "?" to be filled later
-            String query = "INSERT INTO NODE (YPOS, XPOS, NAME, FLOOR, `HIDDEN?`)" +
+            String query = "INSERT INTO NODE (YPOS, XPOS, NAME, FLOOR, ISHIDDEN)" +
                     " values (?, ?, ?, ?, ?)";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -155,12 +156,12 @@ public class DatabaseController {
             preparedStatement.setInt(4, floor);
             preparedStatement.setString(5, hiddenString);
             // execute prepared statement
-            Statement stmt = conn.createStatement();
-            preparedStatement.execute(query);
-            stmt.close();
+            preparedStatement.execute();
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println("Node added");
     }
 
     // creates a new edge in the database
@@ -178,9 +179,8 @@ public class DatabaseController {
             preparedStatement.setInt(5, floor1);
             preparedStatement.setInt(6, floor2);
             // execute prepared statement
-            Statement stmt = conn.createStatement();
-            preparedStatement.execute(query);
-            stmt.close();
+            preparedStatement.execute();
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -210,9 +210,8 @@ public class DatabaseController {
             preparedStatement.setInt(5, yPos2);
             preparedStatement.setInt(6, floor2);
             // run statement and query
-            Statement stmt = conn.createStatement();
-            preparedStatement.execute(sqlString);
-            stmt.close();
+            preparedStatement.execute();
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -228,9 +227,8 @@ public class DatabaseController {
             preparedStatement.setInt(2, yPos);
             preparedStatement.setInt(3, floor);
             // run statement and query
-            Statement stmt = conn.createStatement();
-            preparedStatement.execute(query);
-            stmt.close();
+            preparedStatement.execute();
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
