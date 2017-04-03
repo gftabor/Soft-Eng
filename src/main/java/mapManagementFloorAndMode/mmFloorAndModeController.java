@@ -39,30 +39,6 @@ public class mmFloorAndModeController extends controllers.AbsController{
     @FXML
     private Button mainMenu_Button;
 
-
-
-    //Flag to only set choices once
-    int setChoices = 0;
-    int setTitleChoices = 0;
-
-    public void modeChoiceBox_Clicked(){
-        //System.out.println("Hello World");
-        if(setChoices == 0) {
-            System.out.println("Setting Choices");
-            mode_ChoiceBox.getItems().addAll("Add", "Remove", "Edit");
-            //mode_ChoiceBox.setValue("Add");
-            setChoices = 1;
-        }
-    }
-    //Make a function to set the value of the mode_ChoiceBox to "Add" with the same idea of the button
-    public void titleChoiceBox_Clicked(){
-        if(setTitleChoices == 0){
-            System.out.println("Setting choices");
-            title_ChoiceBox.getItems().addAll("Doctor's Office", "Food Service", "Restroom");
-            setTitleChoices = 1;
-        }
-    }
-
     public void emergencyButton_Clicked(){
         System.out.println("The user has clicked the emergency Button");
     }
@@ -75,8 +51,66 @@ public class mmFloorAndModeController extends controllers.AbsController{
         switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
     }
 
-    public void setUserString(String user){
-        username_Label.setText(user);
+    public void setUserString(String user){username_Label.setText(user); }
+
+    public void setModeChoices(){
+        mode_ChoiceBox.getItems().addAll("Add", "Remove", "Edit");
+    }
+    public void setTitleChoices(){
+        title_ChoiceBox.getItems().addAll("Doctor's Office", "Food Service", "Restroom");
+    }
+
+    //Check the current node
+    public int check_mode(){
+
+        String c_mode = mode_ChoiceBox.getValue();
+        System.out.println(c_mode);
+        if(c_mode.equals("Add")){
+            return 0;
+        }else if(c_mode.equals("Remove")){
+            return 1;
+        }else if(c_mode.equals("Edit")){
+            return 2;
+
+        }else if(c_mode == null){
+            return 3;
+
+        }else{
+            return 4;
+        }
+    }
+
+    public void create_Button(){
+        System.out.println("checking button");
+        int mode = check_mode();
+        if(mode == 0){
+            System.out.println("make button");
+            Button btK = new Button("ok");
+            // this code drags the button
+            btK.setOnMouseDragged(e -> {
+                btK.setLayoutX(e.getSceneX());
+                btK.setLayoutY(e.getSceneY());
+            });
+            backgroundAnchorPane.getChildren().add(btK);
+        }else{
+
+        }
+    }
+
+    public void a(){
+        System.out.println("a");
+    }
+    public void b(){
+        System.out.println("b");
+    }
+    public void c(){
+        System.out.println("c");
+    }
+    public void d(){
+        System.out.println("d");
+    }
+    public void e(){
+        System.out.println("e");
     }
 
 }
