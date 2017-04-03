@@ -1,5 +1,6 @@
 package mapManagementFloorAndMode;
 
+import javafx.beans.InvalidationListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -7,6 +8,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Label;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 /**
  * Created by AugustoR on 3/31/17.
@@ -39,6 +42,8 @@ public class mmFloorAndModeController extends controllers.AbsController{
     @FXML
     private Button mainMenu_Button;
 
+    private Button btK;
+
     public void emergencyButton_Clicked(){
         System.out.println("The user has clicked the emergency Button");
     }
@@ -53,64 +58,37 @@ public class mmFloorAndModeController extends controllers.AbsController{
 
     public void setUserString(String user){username_Label.setText(user); }
 
-    public void setModeChoices(){
+    public void setModeChoices() {
         mode_ChoiceBox.getItems().addAll("Add", "Remove", "Edit");
+        mode_ChoiceBox.getSelectionModel().selectedIndexProperty()
+                .addListener(new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                        // Do validation
+                        System.out.println(newValue);
+                        if(newValue.intValue()==0){
+                            create_Button();
+                        } else
+                        {
+                            backgroundAnchorPane.getChildren().remove(btK);
+                        }
+                    }
+                });
     }
-    public void setTitleChoices(){
+        public void setTitleChoices(){
         title_ChoiceBox.getItems().addAll("Doctor's Office", "Food Service", "Restroom");
     }
-
-    //Check the current node
-    public int check_mode(){
-
-        String c_mode = mode_ChoiceBox.getValue();
-        System.out.println(c_mode);
-        if(c_mode.equals("Add")){
-            return 0;
-        }else if(c_mode.equals("Remove")){
-            return 1;
-        }else if(c_mode.equals("Edit")){
-            return 2;
-
-        }else if(c_mode == null){
-            return 3;
-
-        }else{
-            return 4;
-        }
-    }
-
     public void create_Button(){
         System.out.println("checking button");
-        int mode = check_mode();
-        if(mode == 0){
             System.out.println("make button");
-            Button btK = new Button("ok");
+            btK = new Button("ok");
             // this code drags the button
             btK.setOnMouseDragged(e -> {
                 btK.setLayoutX(e.getSceneX());
                 btK.setLayoutY(e.getSceneY());
             });
             backgroundAnchorPane.getChildren().add(btK);
-        }else{
 
-        }
-    }
-
-    public void a(){
-        System.out.println("a");
-    }
-    public void b(){
-        System.out.println("b");
-    }
-    public void c(){
-        System.out.println("c");
-    }
-    public void d(){
-        System.out.println("d");
-    }
-    public void e(){
-        System.out.println("e");
     }
 
 }
