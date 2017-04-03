@@ -48,6 +48,8 @@ public class mmFloorAndModeController extends controllers.AbsController{
         System.out.println("The user has clicked the emergency Button");
     }
 
+    //submit button is clicked
+    //To Do - use this to send the information of your changes to the DB to get updated
     public void submitButton_Clicked(){
         System.out.println("The user has clicked the submit Button");
         System.out.println(mode_ChoiceBox.getValue());
