@@ -50,6 +50,17 @@ public class DatabaseController {
         return conn;
     }
 
+    public boolean closeDB(){
+        try{
+            conn.close();
+            return true;
+        } catch (SQLException e){
+            System.out.println("Unable to close database");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public ArrayList<Node> getNodesInFloor(int floor){
         String sqlString = "Select XPOS, YPOS, `HIDDEN?`, NAME FROM NODE WHERE FLOOR = " + floor;
         ArrayList nodes = new ArrayList();
