@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import controllers.Node;
 import controllers.CollectionOfNodes;
 
+import javax.xml.crypto.Data;
+
 public class Main extends Application {
 
     CollectionOfNodes collectionOfNodes;
@@ -30,17 +32,16 @@ public class Main extends Application {
         primaryStage.show();
 
 
-
+        /*
         DBController.DatabaseController DBobject = new DatabaseController();
         DBobject.startDB();
+         */
+        DatabaseController databaseController = DatabaseController.getInstance();
+        databaseController.startDB();
 
     }
 
     public static void main(String[] args) throws SQLException{
         launch(args);
-    }
-
-    public CollectionOfNodes getCollectionOfNodes() {
-        return collectionOfNodes;
     }
 }

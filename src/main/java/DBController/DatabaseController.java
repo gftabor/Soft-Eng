@@ -1,4 +1,5 @@
 package DBController;
+import controllers.MapController;
 import controllers.Node;
 import controllers.Edge;
 import java.sql.*;
@@ -10,7 +11,15 @@ import java.util.ArrayList;
  */
 public class DatabaseController {
 
+    private static DatabaseController databaseController = new DatabaseController();
+
     Connection conn;
+
+    private DatabaseController() {}
+
+    public static DatabaseController getInstance() {
+        return databaseController;
+    }
 
     public void startDB() {
         System.out.println("-------- Embedded Java DB Connection Testing ------");
@@ -59,8 +68,10 @@ public class DatabaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
+    /*
     public ArrayList<Node> getNodesInFloor(int floor){
         String sqlString = "Select XPOS, YPOS, `HIDDEN?`, NAME FROM NODE WHERE FLOOR = " + floor;
         ArrayList nodes = new ArrayList();
@@ -92,6 +103,23 @@ public class DatabaseController {
             e.printStackTrace();
         }
         return nodes;
+    }
+    */
+
+    public ResultSet getNodesSet(){
+        String sqlString = "Select * FROM NODE";
+
+        ResultSet rset = null;
+        try {
+            Statement stmt = conn.createStatement();
+            rset = stmt.executeQuery(sqlString);
+            stmt.close();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rset;
     }
 
     // creates a new node in the database
