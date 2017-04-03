@@ -48,7 +48,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
     public void modeChoiceBox_Clicked(){
         //System.out.println("Hello World");
         if(setChoices == 0) {
-            System.out.println("Setting Choices");
+            System.out.println("Setting Choices created - edit, add, remove");
             mode_ChoiceBox.getItems().addAll("Add", "Remove", "Edit");
             //mode_ChoiceBox.setValue("Add");
             setChoices = 1;
@@ -67,8 +67,25 @@ public class mmFloorAndModeController extends controllers.AbsController{
         System.out.println("The user has clicked the emergency Button");
     }
 
+    //submit button is clicked
+    //To Do - use this to send the information of your changes to the DB to get updated
     public void submitButton_Clicked(){
         System.out.println("The user has clicked the submit Button");
+        System.out.println(mode_ChoiceBox.getValue());
+        switch(mode_ChoiceBox.getValue()) {
+            case "Add":
+                System.out.println("Mode = add");
+                break;
+            case "Edit":
+                System.out.println("Mode = edit");
+                break;
+            case "Remove":
+                System.out.println("Mode = remove");
+                break;
+            default:
+                System.out.println("Nothing selected for mode");
+                break;
+        }
     }
 
     public void mainMenuButton_Clicked(){
