@@ -43,7 +43,7 @@
                               <HBox>
                                  <children>
                                     <Region HBox.hgrow="ALWAYS" />
-                                    <Label fx:id="invalidLogInputs" text="Incorrect" textFill="#da2b2b" />
+                                    <Label fx:id="invalidLogInputs" textFill="#da2b2b" />
                                     <Region HBox.hgrow="ALWAYS" />
                                  </children>
                                  <VBox.margin>

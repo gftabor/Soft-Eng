@@ -2,6 +2,7 @@ package mapManagementFloorAndMode;
 
 import javafx.beans.InvalidationListener;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -69,8 +70,13 @@ public class mmFloorAndModeController extends controllers.AbsController{
         }
     }
 
+    //Change to main Menu
     public void mainMenuButton_Clicked(){
-        switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
+
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
+        adminMenuStart.adminMenuStartController controller = loader.getController();
+        //Set the correct username for the next scene
+        controller.setUsername(username_Label.getText());
     }
 
     public void setUserString(String user){username_Label.setText(user); }
