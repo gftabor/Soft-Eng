@@ -9,28 +9,6 @@ import java.util.*;
 public class CollectionOfNodes {
 
     /*
-    private ArrayList<Node> nodes;
-
-    public CollectionOfNodes () {
-        nodes = new ArrayList<Node>();
-    }
-
-    public void addNode(Node node) {
-        nodes.add(node);
-    }
-
-    public String toString() {
-        System.out.println("---------- Printing all nodes in CollectionOfNodes ----------");
-        for (Node node : nodes) {
-            node.toString();
-            System.out.println();
-        }
-        System.out.println("-------------------------------------------------------------");
-
-        return null;
-    }
-*/
-    /*
     KEY: Floor-Xpos-Ypos
     Floor one digit, Xpos 4 digits, Ypos 4 digits
     Example: 401500220 --> 4th floor, Xpos = 150, Ypos = 220
@@ -46,6 +24,12 @@ public class CollectionOfNodes {
         // Add node entry to the hashmap
         nodes.put(node.getKey(), node);
     }
+
+    public void removeNode(Node node) {
+        // Remove node entry from hashmap
+        nodes.remove(node.getKey());
+    }
+
 
     public String toString() {
         System.out.println("---------- Printing all nodes in CollectionOfNodes ----------");
@@ -65,14 +49,10 @@ public class CollectionOfNodes {
         Node node;
         int key = generateNodeKey(x, y, floor);
 
-        node = nodes.get(key);
-
-        if(node == null) {
-            System.out.println("Failed to find node with key: " + key);
-            return null;
-        } else {
+        if(nodes.containsKey(key)) {
+            node = nodes.get(key);
             return node;
-        }
+        } else { return null; }
     }
 
     private int generateNodeKey(int x, int y, int floor) {

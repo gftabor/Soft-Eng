@@ -61,11 +61,11 @@ public class Edge {
 
     }
 
-    Node getStartNode() {
-        return startNode;
-    }
+    public double getWeight() { return weight; }
 
-    Node getEndNode() {
+    public Node getStartNode() { return startNode; }
+
+    public Node getEndNode() {
         return endNode;
     }
 }
