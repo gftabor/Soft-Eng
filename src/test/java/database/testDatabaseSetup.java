@@ -11,10 +11,11 @@ import static org.junit.Assert.*;
  */
 public class testDatabaseSetup {
 
-    DatabaseController dbControl = new DatabaseController();
+    //DatabaseController dbControl = new DatabaseController();
+    DatabaseController databaseController = DatabaseController.getInstance();
 
     @Test
     public void checkSetup(){
-        assertTrue(dbControl.startDB());
+        assertTrue(databaseController.startDB());
     }
 }
