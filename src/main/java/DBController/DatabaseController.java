@@ -129,11 +129,17 @@ public class DatabaseController {
     //delete edge between the two given node positions
     public void deleteEdge(int xPos1, int yPos1, int floor1, int xPos2, int yPos2, int floor2) {
         try {
-            String sqlString = "DELETE FROM EDGE WHERE XPOS1 = " + xPos1 +
-                    "AND YPOS1 = " + yPos1 + "AND FLOOR1 = " + floor1 + "AND XPOS2 = "
-                    + xPos2 + "AND YPOS2 = " + yPos2 + "AND FLOOR2 = " + floor2;
+            String sqlString = "DELETE FROM EDGE WHERE XPOS1 = ? AND YPOS1 = ?" +
+                    "AND FLOOR1 = ? AND XPOS2 = ? AND YPOS2 = ? AND FLOOR2 = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sqlString);
+            preparedStatement.setInt(1, xPos1);
+            preparedStatement.setInt(2, yPos1);
+            preparedStatement.setInt(3, floor1);
+            preparedStatement.setInt(4, xPos2);
+            preparedStatement.setInt(5, yPos2);
+            preparedStatement.setInt(6, floor2);
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate(sqlString);
+            preparedStatement.execute(sqlString);
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -142,10 +148,13 @@ public class DatabaseController {
     //delete node given its position
     public void deleteNode(int xPos, int yPos, int floor){
         try {
-            String sqlString = "DELETE FROM NODE WHERE XPOS = " + xPos +
-                    "AND YPOS= " + yPos + "AND FLOOR = " + floor;
+            String query = "DELETE FROM NODE WHERE XPOS = ? AND YPOS = ? AND FLOOR = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, xPos);
+            preparedStatement.setInt(2, yPos);
+            preparedStatement.setInt(3, floor);
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate(sqlString);
+            preparedStatement.execute(query);
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
