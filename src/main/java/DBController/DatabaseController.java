@@ -118,23 +118,6 @@ public class DatabaseController {
         return rset;
     }
 
-
-    public ResultSet getEdgeSet(){
-        String sqlString = "Select * FROM EDGE";
-
-        ResultSet rset = null;
-        try {
-            Statement stmt = conn.createStatement();
-            rset = stmt.executeQuery(sqlString);
-            stmt.close();
-        } catch (SQLException se) {
-            se.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return rset;
-    }
-
     // creates a new node in the database
     public void newNode(int x, int y, boolean hidden, String name,int floor){
         System.out.println("Adding node");
