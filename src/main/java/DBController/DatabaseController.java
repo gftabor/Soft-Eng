@@ -15,6 +15,7 @@ public class DatabaseController {
 
     Connection conn;
 
+<<<<<<< .merge_file_a09684
     private DatabaseController() {}
 
     public static DatabaseController getInstance() {
@@ -24,62 +25,69 @@ public class DatabaseController {
     public void startDB() {
         System.out.println("-------- Embedded Java DB Connection Testing ------");
         System.out.println("-------- Step 1: Registering Driver ------");
+=======
+    public boolean startDB() {
+
+        //check for database driver
+        if(!checkDatabaseDriver()){
+            return false;
+        }
+        conn = getDatabaseConnection();
+
+        if(conn == null){
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkDatabaseDriver(){
+        System.out.println("Registering DB Driver");
+>>>>>>> .merge_file_a07212
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+            return true;
         } catch (ClassNotFoundException e) {
-            System.out.println("Where is your Driver? Did you follow the execution steps. ");
-            System.out.println("");
-            System.out.println("");
+            System.out.println("Driver not found");
             e.printStackTrace();
-            return;
+            return false;
         }
+    }
 
-        System.out.println("Driver Registered Successfully !");
-
-        System.out.println("-------- Step 2: Building a Connection ------");
-
+    private Connection getDatabaseConnection(){
+        Connection conn;
         try {
             conn = DriverManager.getConnection("jdbc:derby:FaulknerDB");
         } catch (SQLException e) {
-            System.out.println("Connection Failed! Check output console");
+            System.out.println("Database connection failed.");
             e.printStackTrace();
-            return;
+            conn = null;
         }
-        if (conn != null) {
-            System.out.println("You made it. Connection is successful. Take control of your database now!");
-        } else {
-            System.out.println("Failed to make connection!");
-        }
-        try {
+        return conn;
+    }
 
-            String sql = "SELECT * FROM DOCTOR";
-            Statement stmt = conn.createStatement();
-            ResultSet rset = stmt.executeQuery(sql);
-            while (rset.next()) {
-                System.out.println("Doctor ID: " + rset.getInt("docID"));
-                System.out.println("First Name: " + rset.getString("firstName"));
-                System.out.println("Last Name: " + rset.getString("lastName"));
-            }
-            System.out.println("----------------------------------------------");
-            rset.close();
-            stmt.close();
-        } catch (SQLException se) {
-            se.printStackTrace();
-        } catch (Exception e) {
+    public boolean closeDB(){
+        try{
+            conn.close();
+            return true;
+        } catch (SQLException e){
+            System.out.println("Unable to close database");
             e.printStackTrace();
+            return false;
         }
 
     }
 
+<<<<<<< .merge_file_a09684
     /*
+=======
+>>>>>>> .merge_file_a07212
     public ArrayList<Node> getNodesInFloor(int floor){
         String sqlString = "Select XPOS, YPOS, `HIDDEN?`, NAME FROM NODE WHERE FLOOR = " + floor;
-        ArrayList nodes = new ArrayList();
+        ArrayList<Node> nodes = new ArrayList<>();
         int xPos;
         int yPos;
-        int nodeFloor;
         String hiddenString;
-        boolean hidden = false;
+        boolean hidden;
         String name;
         try {
             Statement stmt = conn.createStatement();
@@ -88,19 +96,13 @@ public class DatabaseController {
                 xPos = rset.getInt("XPOS");
                 yPos = rset.getInt("YPOS");
                 hiddenString = rset.getString("HIDDEN?");
-                if (hiddenString.equals('Y')){
-                    hidden = true;
-                } else {
-                    hidden = false;
-                }
+                hidden = hiddenString.equals("Y");
                 name = rset.getString("name");
                 nodes.add(new Node(xPos, yPos, hidden, name, floor));
             }
             stmt.close();
         } catch (SQLException se) {
             se.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return nodes;
     }
@@ -125,15 +127,25 @@ public class DatabaseController {
     // creates a new node in the database
     public void newNode(int x, int y, boolean hidden, String name,int floor){
         String hiddenString;
-        if (hidden == true) {
+        if (hidden) {
             hiddenString = "Y";
         } else {
             hiddenString = "N";
         }
         try {
-            String sqlString = "INSERT INTO NODE VALUES (y, x, name, floor, hiddenString)";
+            // sql statement with "?" to be filled later
+            String query = "INSERT INTO NODE (YPOS, XPOS, NAME, FLOOR, `HIDDEN?`)" +
+                    " values (?, ?, ?, ?, ?)";
+            // prepare statement by replacing "?" with corresponding variable
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, y);
+            preparedStatement.setInt(2, x);
+            preparedStatement.setString(3, name);
+            preparedStatement.setInt(4, floor);
+            preparedStatement.setString(5, hiddenString);
+            // execute prepared statement
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate(sqlString);
+            preparedStatement.execute(query);
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -143,9 +155,20 @@ public class DatabaseController {
     // creates a new edge in the database
     public void newEdge(int xPos1, int yPos1, int floor1, int xPos2, int yPos2, int floor2){
         try {
-            String sqlString = "INSERT INTO EDGE VALUES (xPos1, yPos1, xPos2, yPos2, floor1, floor2)";
+            // sql statement with "?" to be filled later
+            String query = "INSERT INTO EDGE (XPOS1, YPOS1, XPOS2, YPOS2, FLOOR1, FLOOR2)" +
+                    " values (?, ?, ?, ?, ?, ?)";
+            // prepare statement by replacing "?" with corresponding variable
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, xPos1);
+            preparedStatement.setInt(2, yPos1);
+            preparedStatement.setInt(3, xPos2);
+            preparedStatement.setInt(4, yPos2);
+            preparedStatement.setInt(5, floor1);
+            preparedStatement.setInt(6, floor2);
+            // execute prepared statement
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate(sqlString);
+            preparedStatement.execute(query);
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -153,18 +176,31 @@ public class DatabaseController {
     }
 
     // finds the node with the given info and edits it
+    // first deletes the nodes, then creates another one with the given information
     public void EditNode(int yPos, int xPos, int floor, boolean hidden, String name){
-        
+        // first we delete the node, because we don't want to change its primary keys
+        deleteNode(xPos, yPos, floor);
+        // then we create a new node with the old's one info
+        newNode(xPos, yPos, hidden, name, floor);
     }
 
     //delete edge between the two given node positions
     public void deleteEdge(int xPos1, int yPos1, int floor1, int xPos2, int yPos2, int floor2) {
         try {
-            String sqlString = "DELETE FROM EDGE WHERE XPOS1 = " + xPos1 +
-                    "AND YPOS1 = " + yPos1 + "AND FLOOR1 = " + floor1 + "AND XPOS2 = "
-                    + xPos2 + "AND YPOS2 = " + yPos2 + "AND FLOOR2 = " + floor2;
+            // SQL statement with "?" to be filled later
+            String sqlString = "DELETE FROM EDGE WHERE XPOS1 = ? AND YPOS1 = ?" +
+                    "AND FLOOR1 = ? AND XPOS2 = ? AND YPOS2 = ? AND FLOOR2 = ?";
+            // prepare statement by replacing each "?" with a variable
+            PreparedStatement preparedStatement = conn.prepareStatement(sqlString);
+            preparedStatement.setInt(1, xPos1);
+            preparedStatement.setInt(2, yPos1);
+            preparedStatement.setInt(3, floor1);
+            preparedStatement.setInt(4, xPos2);
+            preparedStatement.setInt(5, yPos2);
+            preparedStatement.setInt(6, floor2);
+            // run statement and query
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate(sqlString);
+            preparedStatement.execute(sqlString);
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -173,10 +209,16 @@ public class DatabaseController {
     //delete node given its position
     public void deleteNode(int xPos, int yPos, int floor){
         try {
-            String sqlString = "DELETE FROM NODE WHERE XPOS = " + xPos +
-                    "AND YPOS= " + yPos + "AND FLOOR = " + floor;
+            // SQL statement with "?" to be filled later
+            String query = "DELETE FROM NODE WHERE XPOS = ? AND YPOS = ? AND FLOOR = ?";
+            // prepare statement by replacing each "?" with a variable
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, xPos);
+            preparedStatement.setInt(2, yPos);
+            preparedStatement.setInt(3, floor);
+            // run statement and query
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate(sqlString);
+            preparedStatement.execute(query);
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();

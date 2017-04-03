@@ -137,7 +137,7 @@
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </HBox.margin>
                         </Label>
-                        <ChoiceBox fx:id="mode_ChoiceBox" onMouseClicked="#modeChoiceBox_Clicked" prefHeight="40.0" prefWidth="100.0">
+                        <ChoiceBox fx:id="mode_ChoiceBox" prefHeight="40.0" prefWidth="100.0">
                            <HBox.margin>
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </HBox.margin>
@@ -172,7 +172,7 @@
                               <Font name="System Bold Italic" size="26.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="title_ChoiceBox" onMouseClicked="#titleChoiceBox_Clicked" prefHeight="39.0" prefWidth="250.0">
+                        <ChoiceBox fx:id="title_ChoiceBox" prefHeight="39.0" prefWidth="250.0">
                            <HBox.margin>
                               <Insets left="105.0" />
                            </HBox.margin>
