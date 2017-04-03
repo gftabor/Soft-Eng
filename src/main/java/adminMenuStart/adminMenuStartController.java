@@ -4,6 +4,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import mapManagementFloorAndMode.mmFloorAndModeController;
+
 /**
  * Created by AugustoR on 4/1/17.
  */
@@ -40,6 +42,7 @@ public class adminMenuStartController extends controllers.AbsController{
 
     public void emergencyButton_Clicked(){
         System.out.println("The user has clicked the emergency button");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
 
     }
 
@@ -50,6 +53,7 @@ public class adminMenuStartController extends controllers.AbsController{
         pathFindingMenu.pathFindingMenuController controller = loader.getController();
 
         controller.setUserString(username_Label.getText());
+
 
     }
 
@@ -62,11 +66,22 @@ public class adminMenuStartController extends controllers.AbsController{
         System.out.println("The user has clicked the map management button");
         switch_screen(backgroundAnchorPane, "/views/mmFloorAndModeView.fxml");
 
+        //Get the scene loader
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/mmFloorAndModeView.fxml");
+        //Get the controller of the the scene
+        mapManagementFloorAndMode.mmFloorAndModeController controller = loader.getController();
+        //Set the username label
+        controller.setUserString(username_Label.getText());
+        controller.setModeChoices();
+        controller.setTitleChoices();
+
+
 
     }
 
     public void setUsername(String user){
-        username_Label.setText("Admin: " + user);
+
+        username_Label.setText(user);
     }
 
 }
