@@ -61,7 +61,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
         System.out.println(mode_ChoiceBox.getValue());
         name_TextField.setText("HELLO");
         room_TextField.setText("WORLD");
-        
+
         switch(mode_ChoiceBox.getValue()) {
             case "Add":
                 System.out.println("Mode = add");
