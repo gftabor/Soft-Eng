@@ -55,6 +55,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
         switch(mode_ChoiceBox.getValue()) {
             case "Add":
                 System.out.println("Mode = add");
+                //newNode(btK.getLayoutX(), btK.getLayoutY(),hidden_CheckBox.isSelected(), name,int floor)
                 break;
             case "Edit":
                 System.out.println("Mode = edit");
