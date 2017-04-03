@@ -7,17 +7,19 @@ import java.lang.Math;
  */
 public class Edge {
     private double weight;
-    private int floor;
+    private int floorStart;
+    private int floorEnd;
     private Node startNode;
     private Node endNode;
 
     //standard constructor
     //  -input all fields at constructor
-    public Edge(Node startNode, Node endNode, int floor){
+    public Edge(Node startNode, Node endNode, int floorStart, int floorEnd){
         this.startNode = startNode;
         this.endNode = endNode;
         double weight = calculateWeight(startNode.getPosX(), startNode.getPosY(), endNode.getPosX(), endNode.getPosY());
-        this.floor = floor;
+        this.floorStart = floorStart;
+        this.floorEnd = floorEnd;
     }
 
     public void addEdge() {
@@ -29,8 +31,12 @@ public class Edge {
     }
 
     //use distance formula to calculate weight of edge (weight is used in pathfinding)
+    //NOTE: ONLY CALCULATES FOR SAME FLOOR. Floor to floor calc is not implemented yet
     public double calculateWeight(int x1, int y1, int x2, int y2) {
         //implementation of this formula:
+        if (floorStart != floorEnd) {
+            System.out.println("CROSS FLOOR NOT IMPLEMENTED YET!!");
+        }
 
         //differences between coords
         int xDiff;
@@ -55,4 +61,11 @@ public class Edge {
 
     }
 
+    Node getStartNode() {
+        return startNode;
+    }
+
+    Node getEndNode() {
+        return endNode;
+    }
 }
