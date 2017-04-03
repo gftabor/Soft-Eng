@@ -118,7 +118,7 @@
                               <Insets top="3.0" />
                            </HBox.margin>
                         </Label>
-                        <Spinner fx:id="floorChoices_Spinner" prefHeight="40.0" prefWidth="100.0">
+                        <Spinner fx:id="floorChoices_Spinner" prefHeight="40.0" prefWidth="100.0" min="1" max="8">
                            <HBox.margin>
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </HBox.margin>
