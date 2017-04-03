@@ -60,4 +60,14 @@ public class Node {
         return floor;
     }
 
+    //add edge to arrayList of nearby edges
+    public void addEdge(Edge myEdge) {
+        edges.add(myEdge);
+    }
+
+    //remove edge to arrayList of nearby edges (uses edge object)
+    public void removeEdge(Edge myEdge) {
+        edges.remove(myEdge);
+    }
+
 }
