@@ -12,51 +12,42 @@ public class DatabaseController {
 
     Connection conn;
 
-    public void startDB() {
-        System.out.println("-------- Embedded Java DB Connection Testing ------");
-        System.out.println("-------- Step 1: Registering Driver ------");
+    public boolean startDB() {
+
+        //check for database driver
+        if(!checkDatabaseDriver()){
+            return false;
+        }
+        conn = getDatabaseConnection();
+
+        if(conn == null){
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkDatabaseDriver(){
+        System.out.println("Registering DB Driver");
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+            return true;
         } catch (ClassNotFoundException e) {
-            System.out.println("Where is your Driver? Did you follow the execution steps. ");
-            System.out.println("");
-            System.out.println("");
+            System.out.println("Driver not found");
             e.printStackTrace();
-            return;
+            return false;
         }
+    }
 
-        System.out.println("Driver Registered Successfully !");
-
-        System.out.println("-------- Step 2: Building a Connection ------");
-
+    private Connection getDatabaseConnection(){
+        Connection conn;
         try {
             conn = DriverManager.getConnection("jdbc:derby:FaulknerDB");
         } catch (SQLException e) {
-            System.out.println("Connection Failed! Check output console");
+            System.out.println("Database connection failed.");
             e.printStackTrace();
-            return;
+            conn = null;
         }
-        if (conn != null) {
-            System.out.println("You made it. Connection is successful. Take control of your database now!");
-        } else {
-            System.out.println("Failed to make connection!");
-        }
-        try {
-
-            String sql = "SELECT * FROM DOCTOR";
-            Statement stmt = conn.createStatement();
-            ResultSet rset = stmt.executeQuery(sql);
-            while (rset.next()) {
-                System.out.println("Doctor ID: " + rset.getInt("docID"));
-                System.out.println("First Name: " + rset.getString("firstName"));
-                System.out.println("Last Name: " + rset.getString("lastName"));
-            }
-            System.out.println("----------------------------------------------");
-            rset.close();
-            stmt.close();
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
+        return conn;
     }
 
     public ArrayList<Node> getNodesInFloor(int floor){
