@@ -115,6 +115,14 @@ public class DatabaseController {
     // creates a new edge in the database
     public void newEdge(int xPos1, int yPos1, int floor1, int xPos2, int yPos2, int floor2){
 
+        try {
+            String sqlString = "INSERT INTO EDGE VALUES (xPos1, yPos1, xPos2, yPos2, floor1, floor2)";
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sqlString);
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     // finds the node with the given info and edits it
