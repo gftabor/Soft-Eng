@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapManagementFloorAndMode.mmFloorAndModeController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapManagementFloorAndMode.mmFloorAndModeController">
    <children>
       <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -118,7 +118,7 @@
                               <Insets top="3.0" />
                            </HBox.margin>
                         </Label>
-                        <Spinner fx:id="floorChoices_Spinner" prefHeight="40.0" prefWidth="100.0" min="1" max="8">
+                        <Spinner fx:id="floorChoices_Spinner" max="8" min="1" prefHeight="40.0" prefWidth="100.0">
                            <HBox.margin>
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </HBox.margin>
@@ -189,7 +189,7 @@
                               <Font name="System Bold Italic" size="26.0" />
                            </font>
                         </Label>
-                        <TextField promptText="Name">
+                        <TextField fx:id="name_TextField" promptText="Name">
                            <HBox.margin>
                               <Insets bottom="5.0" left="85.0" right="5.0" top="10.0" />
                            </HBox.margin>
@@ -209,7 +209,7 @@
                               <Font name="System Bold Italic" size="26.0" />
                            </font>
                         </Label>
-                        <TextField promptText="title">
+                        <TextField fx:id="room_TextField" promptText="room">
                            <HBox.margin>
                               <Insets bottom="5.0" left="84.0" right="5.0" top="10.0" />
                            </HBox.margin>
