@@ -58,7 +58,7 @@ public class adminMenuStartController extends controllers.AbsController{
     }
 
     public void hospitalDirectoryButton_Clicked(){
-        System.out.println("The user has clicked the hospital directory button");
+        switch_screen(backgroundAnchorPane, "/views/mmNodeInformationView.fxml");
 
     }
 
