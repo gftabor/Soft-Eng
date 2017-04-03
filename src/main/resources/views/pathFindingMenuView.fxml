@@ -3,14 +3,13 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pathFindingMenu.pathFindingMenuController">
@@ -195,11 +194,12 @@
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <ImageView fx:id="view" fitHeight="400.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/4.png" />
-                           </image>
-                        </ImageView>
+                        <Region prefHeight="200.0" prefWidth="200.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="510.0" stroke="BLACK" strokeType="INSIDE" width="690.0">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Rectangle>
                         <Region prefHeight="200.0" prefWidth="200.0" />
                      </children>
                   </HBox>
