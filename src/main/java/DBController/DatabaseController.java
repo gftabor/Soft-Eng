@@ -114,7 +114,6 @@ public class DatabaseController {
 
     // creates a new edge in the database
     public void newEdge(int xPos1, int yPos1, int floor1, int xPos2, int yPos2, int floor2){
-
         try {
             String sqlString = "INSERT INTO EDGE VALUES (xPos1, yPos1, xPos2, yPos2, floor1, floor2)";
             Statement stmt = conn.createStatement();
@@ -127,15 +126,32 @@ public class DatabaseController {
 
     // finds the node with the given info and edits it
     public void EditNode(int yPos, int xPos, int floor, boolean hidden, String name){
-
+        
     }
 
     //delete edge between the two given node positions
-    public void deleteEdge(int xPos1, int yPos1, int floor1, int xPos2, int yPos2, int floor2){
-
+    public void deleteEdge(int xPos1, int yPos1, int floor1, int xPos2, int yPos2, int floor2) {
+        try {
+            String sqlString = "DELETE FROM EDGE WHERE XPOS1 = " + xPos1 +
+                    "AND YPOS1 = " + yPos1 + "AND FLOOR1 = " + floor1 + "AND XPOS2 = "
+                    + xPos2 + "AND YPOS2 = " + yPos2 + "AND FLOOR2 = " + floor2;
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sqlString);
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     //delete node given its position
     public void deleteNode(int xPos, int yPos, int floor){
-
+        try {
+            String sqlString = "DELETE FROM NODE WHERE XPOS = " + xPos +
+                    "AND YPOS= " + yPos + "AND FLOOR = " + floor;
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sqlString);
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
