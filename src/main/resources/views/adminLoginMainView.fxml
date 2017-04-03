@@ -28,7 +28,7 @@
                      <center>
                         <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                            <children>
-                              <HBox prefHeight="49.0" prefWidth="304.0" />
+                              <HBox prefHeight="21.0" prefWidth="304.0" />
                               <HBox>
                                  <children>
                                     <Region HBox.hgrow="ALWAYS" />
@@ -43,6 +43,16 @@
                               <HBox>
                                  <children>
                                     <Region HBox.hgrow="ALWAYS" />
+                                    <Label fx:id="invalidLogInputs" text="Incorrect" textFill="#da2b2b" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox>
+                                 <children>
+                                    <Region HBox.hgrow="ALWAYS" />
                                     <TextField fx:id="username_TextField" promptText="username">
                                        <HBox.margin>
                                           <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
@@ -51,7 +61,7 @@
                                     <Region HBox.hgrow="ALWAYS" />
                                  </children>
                                  <VBox.margin>
-                                    <Insets top="20.0" />
+                                    <Insets top="10.0" />
                                  </VBox.margin>
                               </HBox>
                               <HBox>
