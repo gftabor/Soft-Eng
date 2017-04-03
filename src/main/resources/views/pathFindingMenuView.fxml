@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -201,7 +202,15 @@
                   <HBox prefHeight="560.0" prefWidth="771.0">
                      <children>
                         <Region prefHeight="200.0" prefWidth="200.0" />
-                        <StackPane fx:id="node_Plane" alignment="TOP_LEFT" prefHeight="593.0" prefWidth="875.0" />
+                        <Pane fx:id="node_Plane" prefHeight="506.0" prefWidth="1006.0">
+                           <children>
+                              <ImageView fitHeight="489.0" fitWidth="772.0">
+                                 <image>
+                                    <Image url="@../images/4.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
                         <Region prefHeight="200.0" prefWidth="200.0" />
                      </children>
                   </HBox>
