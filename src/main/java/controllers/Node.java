@@ -38,12 +38,12 @@ public class Node {
     }
 
     public String toString() {
-        System.out.println("Node:");
+        System.out.println("Node " + name + ":");
         System.out.println("    Pos X: " + posX);
         System.out.println("    Pos y: " + posY);
         System.out.println("    Hidden: " + isHidden);
         System.out.println("    Enabled: " + isEnabled);
-        System.out.println("    Name: " + name);
+        //System.out.println("    Name: " + name);
 
         return null;
     }
@@ -58,6 +58,33 @@ public class Node {
 
     public int getFloor() {
         return floor;
+    }
+
+    //add edge to arrayList of nearby edges
+    public void addEdge(Edge myEdge) {
+        edges.add(myEdge);
+    }
+
+    //remove edge to arrayList of nearby edges (uses edge object)
+    public void removeEdge(Edge myEdge) {
+        edges.remove(myEdge);
+    }
+
+    public int getKey() {
+        // Key in format [FXXXXYYYY]
+        // where F is floor, x's is the x cord, and y's are y cord
+        int key = 0;
+
+        // Add nodes floor to key
+        key +=  floor * 100000000;
+
+        // Add nodes x cord to key
+        key +=  posX * 10000;
+
+        // Add nodes y cord to key
+        key += posY;
+
+        return key;
     }
 
 }
