@@ -1,6 +1,6 @@
 package DBController;
 import controllers.Node;
-import controllers.Edge;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -56,8 +56,6 @@ public class DatabaseController {
             stmt.close();
         } catch (SQLException se) {
             se.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -66,9 +64,8 @@ public class DatabaseController {
         ArrayList nodes = new ArrayList();
         int xPos;
         int yPos;
-        int nodeFloor;
         String hiddenString;
-        boolean hidden = false;
+        boolean hidden;
         String name;
         try {
             Statement stmt = conn.createStatement();
@@ -77,19 +74,13 @@ public class DatabaseController {
                 xPos = rset.getInt("XPOS");
                 yPos = rset.getInt("YPOS");
                 hiddenString = rset.getString("HIDDEN?");
-                if (hiddenString.equals('Y')){
-                    hidden = true;
-                } else {
-                    hidden = false;
-                }
+                hidden = hiddenString.equals("Y");
                 name = rset.getString("name");
                 nodes.add(new Node(xPos, yPos, hidden, name, floor));
             }
             stmt.close();
         } catch (SQLException se) {
             se.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return nodes;
     }
@@ -97,15 +88,22 @@ public class DatabaseController {
     // creates a new node in the database
     public void newNode(int x, int y, boolean hidden, String name,int floor){
         String hiddenString;
-        if (hidden == true) {
+        if (hidden) {
             hiddenString = "Y";
         } else {
             hiddenString = "N";
         }
         try {
-            String sqlString = "INSERT INTO NODE VALUES (y, x, name, floor, hiddenString)";
+            String query = "INSERT INTO NODE (YPOS, XPOS, NAME, FLOOR, `HIDDEN?`)" +
+                    " values (?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, y);
+            preparedStatement.setInt(2, x);
+            preparedStatement.setString(3, name);
+            preparedStatement.setInt(4, floor);
+            preparedStatement.setString(5, hiddenString);
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate(sqlString);
+            preparedStatement.execute(query);
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -115,9 +113,17 @@ public class DatabaseController {
     // creates a new edge in the database
     public void newEdge(int xPos1, int yPos1, int floor1, int xPos2, int yPos2, int floor2){
         try {
-            String sqlString = "INSERT INTO EDGE VALUES (xPos1, yPos1, xPos2, yPos2, floor1, floor2)";
+            String query = "INSERT INTO EDGE (XPOS1, YPOS1, XPOS2, YPOS2, FLOOR1, FLOOR2)" +
+                    " values (?, ?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, xPos1);
+            preparedStatement.setInt(2, yPos1);
+            preparedStatement.setInt(3, xPos2);
+            preparedStatement.setInt(4, yPos2);
+            preparedStatement.setInt(5, floor1);
+            preparedStatement.setInt(6, floor2);
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate(sqlString);
+            preparedStatement.execute(query);
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -126,7 +132,7 @@ public class DatabaseController {
 
     // finds the node with the given info and edits it
     public void EditNode(int yPos, int xPos, int floor, boolean hidden, String name){
-        
+
     }
 
     //delete edge between the two given node positions
