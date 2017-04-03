@@ -63,7 +63,7 @@ public class DatabaseController {
 
     public ArrayList<Node> getNodesInFloor(int floor){
         String sqlString = "Select XPOS, YPOS, `HIDDEN?`, NAME FROM NODE WHERE FLOOR = " + floor;
-        ArrayList nodes = new ArrayList();
+        ArrayList<Node> nodes = new ArrayList<>();
         int xPos;
         int yPos;
         String hiddenString;
