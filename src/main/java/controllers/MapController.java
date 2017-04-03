@@ -17,7 +17,6 @@ public class MapController {
     //internal representation of our node map
     private CollectionOfNodes collectionOfNodes;
 
-<<<<<<< HEAD
     DatabaseController databaseController = DatabaseController.getInstance();
 
     public MapController () {
@@ -27,14 +26,10 @@ public class MapController {
     // Testing as public, change to private in final
     public void requestFloorMapCopy() {
         ResultSet nodeRset = databaseController.getNodesSet();
+    }
 
-=======
     //internal listing of edges (used only in startup full query of DB)
     private ArrayList<Edge> edgeCollection;
-
-    MapController () {
-        collectionOfNodes = new CollectionOfNodes();
-    }
 
     //request full map info from the database (full reset of CollectionOfNodes)
     //  1. DB query
@@ -42,7 +37,6 @@ public class MapController {
     //  3. instantiate edges
     //  4. add edges to corresponding nodes in collectionOfNodes
     private void requestMapCopy(ResultSet nodeRset, ResultSet edgeRset) {
->>>>>>> 84ad999a0c3be1874f8dc02bdf973496957d8df3
         collectionOfNodes = new CollectionOfNodes();
         edgeCollection = new ArrayList<Edge>();
 
