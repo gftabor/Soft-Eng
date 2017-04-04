@@ -33,7 +33,10 @@ public class Pathfinder {
                 neighbor.setParentEdge(currentEdge);
                 neighbor.setCostToReach(neighbourNewCost);
                 neighbor.setTotalCost(neighbourNewCost + getHueristic(neighbor, goalNode));
-                frontier.add(neighbor);
+
+                //if the object is in frontier only edit the object
+                if(!frontier.contains(neighbor))
+                    frontier.add(neighbor);
             }
 
         }
