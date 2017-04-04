@@ -28,6 +28,10 @@ Dark Green: #2d626c
     -fx-font-size: 42pt;
 }
 
+.small{
+    -fx-font-size: 12pt;
+}
+
 .button{
     -fx-background-color: #2d626c;
     -fx-text-fill: white;
@@ -46,4 +50,8 @@ Dark Green: #2d626c
 
 .emergency:hover{
     -fx-background-color: rgba(255, 0, 0, 0.69);
+}
+
+.text-field{
+    -fx-background-radius: 10px;
 }
