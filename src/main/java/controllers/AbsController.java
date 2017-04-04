@@ -11,7 +11,7 @@ import java.io.IOException;
 public abstract class AbsController {
 
 
-    //
+    //enables screen switching
     public FXMLLoader switch_screen(AnchorPane BGCurrentanchor, String viewPath){
 
         try {//Try do this
@@ -39,6 +39,7 @@ public abstract class AbsController {
 
     }
 
+    //initializes the anchor pane
     public void setAnchorPane (AnchorPane pane){
         AnchorPane.setTopAnchor(pane,0.0);
         AnchorPane.setLeftAnchor(pane,0.0);
