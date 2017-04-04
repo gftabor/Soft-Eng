@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Line;
 
 import java.util.*;
 
@@ -60,7 +61,11 @@ public class pathFindingMenuController extends controllers.AbsController{
 
     private Button btK;
 
+    private Line lne;
+
     private ArrayList ButtonList = new ArrayList();
+
+    private ArrayList EdgeList = new ArrayList();
 
     private int selectionState = 0;
 
@@ -148,6 +153,30 @@ public class pathFindingMenuController extends controllers.AbsController{
         } else {
             //do nothing
             return 0;
+        }
+    }
+
+    //creates visual representations of the edges of nodes on the pane
+    //  input: any arraylist of Edge objects
+    //NOTE: caller is responsible for not sending duplicate edges
+    public void createEdgeLines(ArrayList<controllers.Edge> edgeList) {
+        //for-each loop through arraylist
+        for(controllers.Edge thisEdge: edgeList) {
+            lne = new Line();
+
+            //add to pane
+            node_Plane.getChildren().add(lne);
+            //set positioning
+            lne.setStartX(thisEdge.getStartNode().getPosX());
+            lne.setStartY(thisEdge.getStartNode().getPosY());
+            lne.setEndX(thisEdge.getEndNode().getPosX());
+            lne.setEndY(thisEdge.getEndNode().getPosY());
+
+            //show
+            lne.toFront();
+
+            //add to list
+            EdgeList.add(lne);
         }
     }
 
