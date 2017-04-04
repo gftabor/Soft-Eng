@@ -3,6 +3,7 @@ package pathFindingMenu;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -11,9 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.*;
 
 /**
  * Created by AugustoR on 3/30/17.
@@ -56,19 +55,29 @@ public class pathFindingMenuController extends controllers.AbsController{
 
     private ArrayList ButtonList = new ArrayList();
 
+    private int selectionState = 0;
+
+    private int startNodeX;
+    private int startNodeY;
+    private int endNodeX;
+    private int endNodeY;
+
     public void emergencyButton_Clicked(){
         System.out.println("The user has clicked the emergency Button");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
     }
 
     public void cancelButton_Clicked(){
-
-        System.out.println("The user has clicked the cancel Button");
+        selectionState = 0;
+        //Remove black and red dots from map
     }
 
     public void submitButton_Clicked(){
-        //creating button with sample x and y
-        create_Button(200, 200);
+        if (selectionState == 2) {
+            //submit stuff
+
+        }
+        System.out.println("The user has clicked the submit Button");
     }
 
     public void mainMenuButton_Clicked(){
@@ -86,17 +95,12 @@ public class pathFindingMenuController extends controllers.AbsController{
     }
 
     //takes in a Hashtable when scene is switched and calls setNodes
-    /*public void setMapAndNodes(Hashtable nodeTable){
+    public void setMapAndNodes(HashMap<Integer, controllers.Node> nodeMap){
         int currentKey;
-        Enumeration tableKeys;
-        tableKeys = nodeTable.keys();
-
-
-
-        while (tableKeys.hasMoreElements()) {
-            currentKey = (int) tableKeys.nextElement();
+        for(controllers.Node current: nodeMap.values()){
+         create_Button(current.getPosX(), current.getPosY());
         }
-    }*/
+    }
 
     public void setMode(String mode){
         mode_Label.setText(mode);
@@ -112,24 +116,38 @@ public class pathFindingMenuController extends controllers.AbsController{
         System.out.println("checking button");
         System.out.println("make button");
         btK = new Button("node");
+        btK.setOnMouseClicked(e -> {
+            btK.getLayoutX();
+            btK.getLayoutY();
 
-        // this code sets node's x and y pos to be on the plane below the graph
-        // later, will iterate through a list of coordinates and place nodes at each point
-        //btK.setLayoutX(nodeX);
-        //btK.setLayoutY(nodeY);
+        });
 
-        /*btK.setOnMouseDragged(e -> {
-            btK.setLayoutX(e.getSceneX());
-            btK.setLayoutY(e.getSceneY());
-        });*/
-
-        //node_Plane.setMargin(btK, new Insets(nodeY, 0,0,nodeX));
-        backgroundAnchorPane.getChildren().addAll(btK);
-        btK.setLayoutX(node_Plane.localToScene(node_Plane.getBoundsInLocal()).getMinX() + nodeX);
-        btK.setLayoutY(node_Plane.localToScene(node_Plane.getBoundsInLocal()).getMinY() + nodeY);
+        // this code sets node's x and y pos to be on the plane holding the graph
+        node_Plane.getChildren().add(btK);
+        btK.setLayoutX(nodeX);
+        btK.setLayoutY(nodeY);
+        btK.toFront();
 
         ButtonList.add(btK);
     }
 
+    public int nodeSelected(int x, int y) {
+        if (selectionState == 0) {
+            //place the black marker at the starting location
+            startNodeX = x;
+            startNodeY = y;
+            selectionState++;
+            return 0;
+        } else if (selectionState == 1){
+            //place the red marker at end location
+            endNodeX = x;
+            endNodeY = y;
+            selectionState++;
+            return 0;
+        } else {
+            //do nothing
+            return 0;
+        }
+    }
 
 }
