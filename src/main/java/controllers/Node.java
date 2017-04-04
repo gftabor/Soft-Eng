@@ -55,18 +55,7 @@ public class Node implements Comparable<Node>{
 
         return output;
     }
-
-    public int getPosX() {
-        return posX;
-    }
-
-    public int getPosY() {
-        return posY;
-    }
-
-    public int getFloor() {
-        return floor;
-    }
+    
 
     //add edge to arrayList of nearby edges
     public void addEdge(Edge myEdge) {
@@ -98,6 +87,18 @@ public class Node implements Comparable<Node>{
     }
 
     //some getters and setters
+    public int getPosX() {
+        return posX;
+    }
+
+    public int getPosY() {
+        return posY;
+    }
+
+    public int getFloor() {
+        return floor;
+    }
+
     public double getCostToReach() {
         return costToReach;
     }
