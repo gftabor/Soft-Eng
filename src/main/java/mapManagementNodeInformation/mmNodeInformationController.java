@@ -1,19 +1,28 @@
 package mapManagementNodeInformation;
 
+import DBController.DatabaseController;
+import controllers.Professional;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import javafx.scene.control.Accordion;
 import javafx.scene.control.TreeView;
 
+import javax.xml.crypto.Data;
 
 
 /**
  * Created by AugustoR on 3/31/17.
  */
-public class mmNodeInformationController extends controllers.AbsController{
+public class mmNodeInformationController extends controllers.AbsController {
+
     @FXML
     private AnchorPane backgroundAnchorPane;
 
@@ -27,7 +36,16 @@ public class mmNodeInformationController extends controllers.AbsController{
     private Button emergency_Button;
 
     @FXML
-    private TextField name_TextField;
+    private ChoiceBox<String> title_choiceBox;
+
+    @FXML
+    private TextField lastName_TextField;
+
+    @FXML
+    private TextField Firstname_TextField;
+
+    @FXML
+    private TextField id_TextField;
 
     @FXML
     private TextField room_TextField;
@@ -42,68 +60,120 @@ public class mmNodeInformationController extends controllers.AbsController{
     private TreeView<String> directory_TreeView;
 
 
+    //get an instance of database controller
+    DatabaseController databaseController = DatabaseController.getInstance();
 
-
-
-    public void cancelButton_Clicked(){
+    public void cancelButton_Clicked() {
         System.out.println("The user has clicked the cancel Button");
 
     }
 
-    public void submitButton_Clicked(){
+    public void submitButton_Clicked() {
         System.out.println("The user has clicked the submit Button");
-
+        final String tempID = id_TextField.getText();
+        final String tempFirstName = Firstname_TextField.getText();
+        final String tempLastName = lastName_TextField.getText();
+        switch(title_choiceBox.getValue()) {
+            case "Doctor":
+            case "doctor":
+            case "DOCTOR":
+                databaseController.newProfessional(tempID, 0, 0, 0,
+                        tempFirstName, tempLastName, "Doctor");
+                System.out.println("Adding doctor");
+                break;
+            case "Nurse":
+            case "nurse":
+            case "NURSE":
+                databaseController.newProfessional(tempID, 0, 0, 0,
+                        tempFirstName, tempLastName, "Nurse");
+                System.out.println("Adding Nurse");
+                break;
+            default:
+                System.out.println("Nothing selected for mode");
+                break;
+        }
     }
 
-    public void emergencyButton_Clicked(){
+    public void emergencyButton_Clicked() {
         switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
     }
 
 
-    public void mainMenuButton_Clicked(){
+    public void mainMenuButton_Clicked() {
         System.out.println("The user has clicked the sign out Button");
         switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
 
     }
 
     //Creates the directory of the tree view
-    public void createDirectoryTreeView(){
-        TreeItem<String> root,doctors,nurses;
+    public void createDirectoryTreeView() {
+        TreeItem<String> root, doctors, nurses;
 
         root = new TreeItem<>("List of Directories");
         root.setExpanded(true);
 
-        doctors = makeBranch("Doctor's", root);
-        makeBranch("Doctor A", doctors);
-        makeBranch("Doctor B", doctors);
-        makeBranch("Doctor C", doctors);
-        doctors.setExpanded(false);
+        ResultSet professionalsRset = databaseController.getTableSet("PROFESSIONAL");
+        ArrayList<Professional> doctorsList = new ArrayList<>();
+        ArrayList<Professional> nursesList = new ArrayList<>();
 
-        nurses = makeBranch("Nurses'", root);
-        makeBranch("Nurse A", nurses);
-        makeBranch("Nurse B", nurses);
+        try {
+            String firstName, lastName, type, id;
+
+            while (professionalsRset.next()) {
+                firstName = professionalsRset.getString("FIRSTNAME");
+                lastName = professionalsRset.getString("LASTNAME");
+                type = professionalsRset.getString("TYPE");
+                id = professionalsRset.getString("ID");
+                if (type.equals("doctor") || type.equals("Doctor") || type.equals("DOCTOR")) {
+                    doctorsList.add(new Professional(firstName, lastName, type, id));
+                } else if (type.equals("nurse") || type.equals("Nurse") || type.equals("NURSE")) {
+                    nursesList.add(new Professional(firstName, lastName, type, id));
+                }
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        doctors = makeBranch("Doctors", root);
+        int i = 0;
+        while (i < doctorsList.size()) {
+
+            makeBranch(doctorsList.get(i).getFirstName() + " " +
+                    doctorsList.get(i).getLastName(), doctors);
+            i++;
+        }
+        doctors.setExpanded(false);
+        i = 0;
+        nurses = makeBranch("Nurses", root);
+        while (i < nursesList.size()) {
+
+            makeBranch(nursesList.get(i).getFirstName() + " " +
+                    nursesList.get(i).getLastName(), nurses);
+            i++;
+        }
         nurses.setExpanded(false);
 
         directory_TreeView.setRoot(root);
 
         directory_TreeView.getSelectionModel().selectedItemProperty()
-                .addListener((v, oldValue, newValue) ->{
-                    if(newValue != null){
+                .addListener((v, oldValue, newValue) -> {
+                    if (newValue != null) {
                         System.out.println(newValue.getValue());
                     }
                 });
+    }
 
 
+    public void setTitleChoices() {
+        title_choiceBox.getItems().addAll("Doctor", "Nurse");
     }
 
     //Create branches
-    public TreeItem<String> makeBranch(String title, TreeItem<String> parent){
+    public TreeItem<String> makeBranch(String title, TreeItem<String> parent) {
         TreeItem<String> item = new TreeItem<>(title);
         item.setExpanded(true);
         parent.getChildren().add(item);
         return item;
     }
-
-
-
 }
