@@ -69,9 +69,14 @@ public class patientMenuStartController extends controllers.AbsController{
         pathFindingMenu.pathFindingMenuController controller = loader.getController();
 
         HashMap<Integer, controllers.Node> DBMap = new HashMap<>();
-        DBMap.put(5,new controllers.Node(11,100,true,true,"tests",4));
-        DBMap.put(6,new controllers.Node(200,100,true,true,"tests",4));
-        DBMap.put(7,new controllers.Node(300,300,true,true,"tests",4));
+        /*
+        databaseController.newNode(11, 100, 4, true, true, "doctor", "test", "4");
+        databaseController.newNode(200, 100, 4, true, true, "doctor", "test", "4");
+        databaseController.newNode(300, 300, 4,  true, true, "doctor", "test", "4");
+        */
+        DBMap.put(5,new controllers.Node(11,100, 4, true, true, "doctor", "tests", "4"));
+        DBMap.put(6,new controllers.Node(200,100, 4, true, true, "doctor", "tests", "4"));
+        DBMap.put(7,new controllers.Node(300,300, 4, true, true, "doctor", "tests", "4"));
         controller.setMapAndNodes(DBMap);
         controller.setUserString("");
 

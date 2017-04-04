@@ -12,6 +12,8 @@ public class Node {
     private boolean isEnabled;
     private String name;
     private int floor;
+    private String type;
+    private String roomNum;
 
     //fields used for pathfinding:
     private int costToReach;
@@ -21,20 +23,22 @@ public class Node {
 
     //Basic Constructor
     //  - must fill in all fields manually
-    public Node(int posX, int posY, boolean hidden, boolean enabled, String name, int floor) {
+    public Node(int posX, int posY, int floor, boolean hidden, boolean enabled, String type, String name, String roomNum) {
         this.posX = posX;
         this.posY = posY;
         this.isHidden = hidden;
         this.isEnabled = enabled;
         this.name = name;
         this.floor = floor;
+        this.roomNum = roomNum;
+        this.type = type;
         this.costToReach = Integer.MAX_VALUE;
         this.parentEdge = null; //instantiate reference to null
     }
 
     //Quick Constructor
     //  -assume enabled by default
-    public Node(int posX, int posY, boolean hidden, String name, int floor) {
+    public Node(int posX, int posY, boolean hidden, boolean isEnabled, String name, int floor) {
         this.posX = posX;
         this.posY = posY;
         this.isHidden = hidden;
@@ -73,12 +77,9 @@ public class Node {
     }
 
     public int getKey() {
-        // Key in format [FXXXXYYYY]
-        // where F is floor, x's is the x cord, and y's are y cord
+        // Key in format [XXXXYYYY]
+        // x's is the x cord, and y's are y cord
         int key = 0;
-
-        // Add nodes floor to key
-        key +=  floor * 100000000;
 
         // Add nodes x cord to key
         key +=  posX * 10000;
