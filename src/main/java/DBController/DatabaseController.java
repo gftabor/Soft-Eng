@@ -134,6 +134,24 @@ public class DatabaseController {
         return true;
     }
 
+    public ResultSet getNode(int x, int y, int floor){
+        ResultSet resultSet = null;
+        try{
+            String query = "SELECT * FROM NODE WHERE XPOS = ? AND YPOS = ? AND FLOOR = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, x);
+            preparedStatement.setInt(2, y);
+            preparedStatement.setInt(3, floor);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+            preparedStatement.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
     //delete node given its position
     public boolean deleteNode(int x, int y, int floor){
         try {
