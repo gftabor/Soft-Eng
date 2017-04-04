@@ -22,11 +22,20 @@ public class Edge {
         this.floorEnd = floorEnd;
     }
 
-    public void addEdge() {
+    //adds edge between two nodes
+    public void addEdge(Node startNode, Node endNode, int floorStart, int floorEnd) {
+        /*
+        Edge e = new Edge(startNode, endNode, floorStart, floorEnd);
+        startNode.addEdge(e);
+        endNode.addEdge(e);
+
         System.out.println("Edge has been added");
+        */
     }
 
     public void deleteEdge() {
+        this.startNode.removeEdge(this);
+        this.endNode.removeEdge(this);
         System.out.println("Edge has been deleted");
     }
 
@@ -61,6 +70,7 @@ public class Edge {
 
     }
 
+    //getters and setters
     public double getWeight() { return weight; }
 
     public Node getStartNode() { return startNode; }
@@ -69,6 +79,7 @@ public class Edge {
         return endNode;
     }
 
+    //returns node at the other end of the edge
     public Node getNeighbor(Node currentNode){
         if(currentNode.equals(startNode))
             return endNode;
