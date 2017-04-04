@@ -61,6 +61,10 @@ public class mmNodeInformationController extends controllers.AbsController {
     @FXML
     private TreeView<String> directory_TreeView;
 
+    @FXML
+    private ChoiceBox mode_ChoiceBox;
+
+
     boolean flag = false;
 
 
@@ -195,4 +199,51 @@ public class mmNodeInformationController extends controllers.AbsController {
                     }
                 });
     }
+
+    //Sets the choices for the mode Add, edit remove
+    public void setModeChoices(){
+        mode_ChoiceBox.getItems().addAll("Add", "Remove", "Edit");
+        mode_ChoiceBox.getSelectionModel().selectedIndexProperty()
+                .addListener(new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                        // Do validation
+                        System.out.println(newValue);
+
+                        //Sets the mode to Add
+                        if(newValue.intValue()==0){
+                            add_settings();
+
+                            //Sets the mode to remove
+                        } else if (newValue.intValue() == 1) {
+                            remove_settings();
+
+                            //Sets the mode to edit
+                        }else if(newValue.intValue() == 2){
+                            edit_settings();
+
+                        }
+                    }
+                });
+
+    }
+
+    //The add settings for the user to add a Doctor/nurse
+    public void add_settings(){
+        System.out.println("Add settings");
+    }
+
+    //The remove settings for the user to remove a Doctor/nurse
+    public void remove_settings(){
+        System.out.println("remove settings");
+
+    }
+
+    //The remove settings for the user to remove a Doctor/nurse
+    public void edit_settings(){
+        System.out.println("edit settings");
+
+    }
 }
+
+
