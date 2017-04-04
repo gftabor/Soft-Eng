@@ -63,15 +63,17 @@ public class MapController {
         try {
             int x, y, floor;
             boolean hidden;
+            boolean enabled;
             String name;
             Node node;
             while (nodeRset.next()) {
                 x = nodeRset.getInt("XPOS");
                 y = nodeRset.getInt("YPOS");
                 hidden = nodeRset.getBoolean("ISHIDDEN");
+                enabled = nodeRset.getBoolean("ENABLED");
                 name = nodeRset.getString("NAME");
                 floor = nodeRset.getInt("FLOOR");
-                node = new Node(x, y, hidden, true, name, floor);
+                node = new Node(x, y, hidden,enabled, name, floor);
                 collectionOfNodes.addNode(node);
                 System.out.println("MAPCONTROLLER: requestMapCopy(): Added a node from the rset to collection of nodes");
             }
