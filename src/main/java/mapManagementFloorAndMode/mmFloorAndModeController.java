@@ -2,14 +2,13 @@ package mapManagementFloorAndMode;
 
 import javafx.beans.InvalidationListener;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Spinner;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.control.Label;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+
+import javax.xml.soap.Text;
 
 /**
  * Created by AugustoR on 3/31/17.
@@ -42,6 +41,14 @@ public class mmFloorAndModeController extends controllers.AbsController{
     @FXML
     private Button mainMenu_Button;
 
+    //Add the name and Room
+    @FXML
+    private TextField name_TextField;
+
+    @FXML
+    private TextField room_TextField;
+
+
     private Button btK;
     public void emergencyButton_Clicked(){
         switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
@@ -52,6 +59,9 @@ public class mmFloorAndModeController extends controllers.AbsController{
     public void submitButton_Clicked(){
         System.out.println("The user has clicked the submit Button");
         System.out.println(mode_ChoiceBox.getValue());
+        name_TextField.setText("HELLO");
+        room_TextField.setText("WORLD");
+
         switch(mode_ChoiceBox.getValue()) {
             case "Add":
                 System.out.println("Mode = add");
@@ -69,8 +79,13 @@ public class mmFloorAndModeController extends controllers.AbsController{
         }
     }
 
+    //Change to main Menu
     public void mainMenuButton_Clicked(){
-        switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
+
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
+        adminMenuStart.adminMenuStartController controller = loader.getController();
+        //Set the correct username for the next scene
+        controller.setUsername(username_Label.getText());
     }
 
     public void setUserString(String user){username_Label.setText(user); }

@@ -37,7 +37,7 @@ public class MapController {
 
     // Testing as public, change to private in final
     public void requestFloorMapCopy() {
-        ResultSet nodeRset = databaseController.getNodeSet();
+        ResultSet nodeRset = databaseController.getTableSet("NODE");
     }
 
     //internal listing of edges (used only in startup full query of DB)
@@ -49,9 +49,8 @@ public class MapController {
     //  3. instantiate edges
     //  4. add edges to corresponding nodes in collectionOfNodes
     private void requestMapCopy() {
-        System.out.println("MAPCONTROLLER: requestMapCopy(): Starting to copy map from database");
-        ResultSet nodeRset = databaseController.getNodeSet();
-        ResultSet edgeRset = databaseController.getEdgeSet();
+        ResultSet nodeRset = databaseController.getTableSet("NODE");
+        ResultSet edgeRset = databaseController.getTableSet("EDGE");
 
         //wipes old verson of collection of nodess
         collectionOfNodes = new CollectionOfNodes();
@@ -117,7 +116,8 @@ public class MapController {
         }
         
 
-
+        databaseController.closeResultSet(nodeRset);
+        databaseController.closeResultSet(edgeRset);
     }
 
     private int generateMap() {
