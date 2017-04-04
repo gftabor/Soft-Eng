@@ -135,9 +135,11 @@ public class mmFloorAndModeController extends controllers.AbsController{
                     }
                 });
     }
+
     public void setTitleChoices(){
         title_ChoiceBox.getItems().addAll("Doctor's Office", "Food Service", "Restroom");
     }
+
     public void create_Button(){
         System.out.println("checking button");
             System.out.println("make button");
@@ -148,8 +150,8 @@ public class mmFloorAndModeController extends controllers.AbsController{
             btK.setOnMouseDragged(e -> {
                 if (e.getSceneX() > paneBounds.getMinX() && e.getSceneX() < paneBounds.getMaxX()
                         && e.getSceneY() > paneBounds.getMinY() && e.getSceneY() < paneBounds.getMaxY()) {
-                    btK.setLayoutX(e.getSceneX() - paneBounds.getMinX());
-                    btK.setLayoutY(e.getSceneY() - paneBounds.getMinY());
+                    btK.setLayoutX((e.getSceneX() - paneBounds.getMinX()) - (btK.getWidth()/2));
+                    btK.setLayoutY((e.getSceneY() - paneBounds.getMinY()) - (btK.getHeight()/2));
                 }
             });
 
