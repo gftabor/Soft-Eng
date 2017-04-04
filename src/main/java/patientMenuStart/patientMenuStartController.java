@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;  //NOT JAVA SWING
 import javafx.scene.layout.AnchorPane;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 
 
@@ -67,9 +68,11 @@ public class patientMenuStartController extends controllers.AbsController{
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/pathFindingMenuView.fxml");
         pathFindingMenu.pathFindingMenuController controller = loader.getController();
 
-        /*Hashtable<Integer, Node> DBTable = new Hashtable<>();
-
-        controller.setMapAndNodes(DBTable);*/
+        HashMap<Integer, controllers.Node> DBMap = new HashMap<>();
+        DBMap.put(5,new controllers.Node(11,100,true,true,"tests",4));
+        DBMap.put(6,new controllers.Node(200,100,true,true,"tests",4));
+        DBMap.put(7,new controllers.Node(300,300,true,true,"tests",5));
+        controller.setMapAndNodes(DBMap);
         controller.setUserString("");
 
     }
