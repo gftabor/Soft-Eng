@@ -81,9 +81,15 @@ public class adminMenuStartController extends controllers.AbsController{
 
     }
 
-    public void setUsername(String user){
+    //Set the username coming from the main login
+    public void setUsername_Admin(String user){
+        username_Label.setText("Admin: " + user);
+    }
 
+    //Set the username coming from a scene
+    public void setUsername(String user){
         username_Label.setText(user);
     }
+
 
 }
