@@ -134,9 +134,8 @@ public class CollectionOfNodes {
 
     public Node getNode(int x, int y, int floor) {
         Node node;
-
-        // TESTING SWAPPED X AND Y---------------------------------------------------------------------------------
-        int key = generateNodeKey(y, x);
+        
+        int key = generateNodeKey(x, y);
 
         if(allNodes.get(floor-1).containsKey(key)) {
             node = allNodes.get(floor-1).get(key);
