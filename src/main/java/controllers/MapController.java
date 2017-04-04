@@ -85,7 +85,7 @@ public class MapController {
         try {
             int x1, y1, x2, y2, floor1, floor2;
             Edge myEdge;
-            while (nodeRset.next()) {
+            while (edgeRset.next()) {
                 //get info from each query tuple
                 x1 = edgeRset.getInt("XPOS1");
                 y1 = edgeRset.getInt("YPOS1");
