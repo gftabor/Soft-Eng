@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by mylena on 4/1/17.
  */
-public class Node {
+public class Node implements Comparable<Node>{
     private int posX;
     private int posY;
     private boolean isHidden;
@@ -16,7 +16,8 @@ public class Node {
     private String roomNum;
 
     //fields used for pathfinding:
-    private int costToReach;
+    private double costToReach;
+    private double totalCost;
     private Edge parentEdge;
 
     private ArrayList<Edge> edges = new ArrayList<Edge>();
@@ -33,6 +34,7 @@ public class Node {
         this.roomNum = roomNum;
         this.type = type;
         this.costToReach = Integer.MAX_VALUE;
+        this.totalCost = Integer.MAX_VALUE; //costToReach + hueristic
         this.parentEdge = null; //instantiate reference to null
     }
 
@@ -71,6 +73,10 @@ public class Node {
         edges.add(myEdge);
     }
 
+    public ArrayList<Edge> getEdgeList(){
+        return edges;
+    }
+
     //remove edge to arrayList of nearby edges (uses edge object)
     public void removeEdge(Edge myEdge) {
         edges.remove(myEdge);
@@ -91,11 +97,11 @@ public class Node {
     }
 
     //some getters and setters
-    public int getCostToReach() {
+    public double getCostToReach() {
         return costToReach;
     }
 
-    public void setCostToReach(int costToReach) {
+    public void setCostToReach(double costToReach) {
         this.costToReach = costToReach;
     }
 
@@ -105,5 +111,19 @@ public class Node {
 
     public void setParentEdge(Edge parentEdge) {
         this.parentEdge = parentEdge;
+    }
+
+    public double getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(double newCost) {
+        this.totalCost = newCost;
+    }
+
+    //Allows sorting list based on totalCost
+    @Override
+    public int compareTo(Node o) {
+        return Double.compare(this.getTotalCost(),o.getTotalCost());
     }
 }

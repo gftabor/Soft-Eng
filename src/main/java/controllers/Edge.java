@@ -68,4 +68,12 @@ public class Edge {
     public Node getEndNode() {
         return endNode;
     }
+
+    public Node getNeighbor(Node currentNode){
+        if(currentNode.equals(startNode))
+            return endNode;
+        if(currentNode.equals((endNode)))
+            return startNode;
+        return null;
+    }
 }
