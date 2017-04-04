@@ -28,6 +28,8 @@ public class Node {
         this.isEnabled = enabled;
         this.name = name;
         this.floor = floor;
+        this.costToReach = Integer.MAX_VALUE;
+        this.parentEdge = null; //instantiate reference to null
     }
 
     //Quick Constructor
