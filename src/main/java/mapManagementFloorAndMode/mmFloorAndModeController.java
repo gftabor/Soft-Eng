@@ -3,10 +3,12 @@ package mapManagementFloorAndMode;
 import javafx.beans.InvalidationListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.layout.Pane;
 
 import javax.xml.soap.Text;
 
@@ -48,6 +50,9 @@ public class mmFloorAndModeController extends controllers.AbsController{
     @FXML
     private TextField room_TextField;
 
+    @FXML
+    private Pane admin_FloorPane;
+
 
     private Button btK;
     public void emergencyButton_Clicked(){
@@ -61,6 +66,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
         System.out.println(mode_ChoiceBox.getValue());
         name_TextField.setText("HELLO");
         room_TextField.setText("WORLD");
+        
 
         switch(mode_ChoiceBox.getValue()) {
             case "Add":
@@ -115,11 +121,17 @@ public class mmFloorAndModeController extends controllers.AbsController{
             System.out.println("make button");
             btK = new Button("ok");
             // this code drags the button
+            final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
+
             btK.setOnMouseDragged(e -> {
-                btK.setLayoutX(e.getSceneX());
-                btK.setLayoutY(e.getSceneY());
+                if (e.getSceneX() > paneBounds.getMinX() && e.getSceneX() < paneBounds.getMaxX()
+                        && e.getSceneY() > paneBounds.getMinY() && e.getSceneY() < paneBounds.getMaxY()) {
+                    btK.setLayoutX(e.getSceneX() - paneBounds.getMinX());
+                    btK.setLayoutY(e.getSceneY() - paneBounds.getMinY());
+                }
             });
-            backgroundAnchorPane.getChildren().add(btK);
+            admin_FloorPane.getChildren().add(btK);
+            btK.toFront();
 
     }
 
