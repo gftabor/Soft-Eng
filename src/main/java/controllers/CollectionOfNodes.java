@@ -22,6 +22,8 @@ public class CollectionOfNodes {
     private HashMap<Integer, Node> floor6nodes;
     private HashMap<Integer, Node> floor7nodes;
 
+    private ArrayList<HashMap<Integer, Node>> allNodes;
+
     public CollectionOfNodes() {
         floor1nodes = new HashMap<>();
         floor2nodes = new HashMap<>();
@@ -30,6 +32,15 @@ public class CollectionOfNodes {
         floor5nodes = new HashMap<>();
         floor6nodes = new HashMap<>();
         floor7nodes = new HashMap<>();
+
+        allNodes = new ArrayList<HashMap<Integer, Node>>();
+        allNodes.add(floor1nodes);
+        allNodes.add(floor2nodes);
+        allNodes.add(floor3nodes);
+        allNodes.add(floor4nodes);
+        allNodes.add(floor5nodes);
+        allNodes.add(floor6nodes);
+        allNodes.add(floor7nodes);
     }
 
     //resets all nodes to initial state for pathfinding
@@ -38,33 +49,12 @@ public class CollectionOfNodes {
     //  - sets cost to reach as infinite (MAX_INT)
     //  - sets the reference to parentEdge to null
     public void resetForPathfinding() {
-       for(Node n: floor1nodes.values()) {
-          n.setCostToReach(Integer.MAX_VALUE);
-          n.setParentEdge(null);
-       }
-        for(Node n: floor2nodes.values()) {
-            n.setCostToReach(Integer.MAX_VALUE);
-            n.setParentEdge(null);
-        }
-        for(Node n: floor3nodes.values()) {
-            n.setCostToReach(Integer.MAX_VALUE);
-            n.setParentEdge(null);
-        }
-        for(Node n: floor4nodes.values()) {
-            n.setCostToReach(Integer.MAX_VALUE);
-            n.setParentEdge(null);
-        }
-        for(Node n: floor5nodes.values()) {
-            n.setCostToReach(Integer.MAX_VALUE);
-            n.setParentEdge(null);
-        }
-        for(Node n: floor6nodes.values()) {
-            n.setCostToReach(Integer.MAX_VALUE);
-            n.setParentEdge(null);
-        }
-        for(Node n: floor7nodes.values()) {
-            n.setCostToReach(Integer.MAX_VALUE);
-            n.setParentEdge(null);
+
+        for(int i = 0; i < 7; i++) {
+            for(Node n: allNodes.get(i).values()) {
+                n.setCostToReach(Integer.MAX_VALUE);
+                n.setParentEdge(null);
+            }
         }
 
     }
@@ -73,78 +63,13 @@ public class CollectionOfNodes {
     public void addNode(Node node) {
         // Add node entry to the hashmap
         int floor = node.getFloor();
-
-        switch(floor) {
-            case 1:
-                floor1nodes.put(node.getKey(), node);
-                break;
-
-            case 2:
-                floor2nodes.put(node.getKey(), node);
-                break;
-
-            case 3:
-                floor3nodes.put(node.getKey(), node);
-                break;
-
-            case 4:
-                floor4nodes.put(node.getKey(), node);
-                break;
-
-            case 5:
-                floor5nodes.put(node.getKey(), node);
-                break;
-
-            case 6:
-                floor6nodes.put(node.getKey(), node);
-                break;
-
-            case 7:
-                floor7nodes.put(node.getKey(), node);
-                break;
-            default:
-                System.out.println("CollectionOfNodes.addNode: Invalid floor");
-                break;
-        }
-
+        allNodes.get(floor-1).put(node.getKey(), node);
     }
 
     public void removeNode(Node node) {
         // Remove node entry from hashmap
         int floor = node.getFloor();
-
-        switch(floor) {
-            case 1:
-                floor1nodes.remove(node.getKey());
-                break;
-
-            case 2:
-                floor2nodes.remove(node.getKey());
-                break;
-
-            case 3:
-                floor3nodes.remove(node.getKey());
-                break;
-
-            case 4:
-                floor4nodes.remove(node.getKey());
-                break;
-
-            case 5:
-                floor5nodes.remove(node.getKey());
-                break;
-
-            case 6:
-                floor6nodes.remove(node.getKey());
-                break;
-
-            case 7:
-                floor7nodes.remove(node.getKey());
-                break;
-            default:
-                System.out.println("CollectionOfNodes.addNode: Invalid floor");
-                break;
-        }
+        allNodes.get(floor-1).remove(node.getKey());
     }
 
 
@@ -200,66 +125,13 @@ public class CollectionOfNodes {
     }
 
     public Node getNode(int x, int y, int floor) {
-        /*
-        Node node;
-        int key = generateNodeKey(x, y, floor);
-
-        if(nodes.containsKey(key)) {
-            node = nodes.get(key);
-            return node;
-        } else { return null; }
-        */
         Node node;
         int key = generateNodeKey(x, y);
 
-        switch(floor) {
-            case 1:
-                if(floor1nodes.containsKey(key)) {
-                    node = floor1nodes.get(key);
-                    return node;
-                } else { return null; }
-
-            case 2:
-                if(floor2nodes.containsKey(key)) {
-                    node = floor2nodes.get(key);
-                    return node;
-                } else { return null; }
-
-            case 3:
-                if(floor3nodes.containsKey(key)) {
-                    node = floor3nodes.get(key);
-                    return node;
-                } else { return null; }
-
-            case 4:
-                if(floor4nodes.containsKey(key)) {
-                    node = floor4nodes.get(key);
-                    return node;
-                } else { return null; }
-
-            case 5:
-                if(floor5nodes.containsKey(key)) {
-                    node = floor5nodes.get(key);
-                    return node;
-                } else { return null; }
-
-            case 6:
-                if(floor6nodes.containsKey(key)) {
-                    node = floor6nodes.get(key);
-                    return node;
-                } else { return null; }
-
-            case 7:
-                if(floor7nodes.containsKey(key)) {
-                    node = floor7nodes.get(key);
-                    return node;
-                } else { return null; }
-
-            default:
-                System.out.println("CollectionOfNodes.getNode: Invalid location");
-                return null;
-
-        }
+        if(allNodes.get(floor-1).containsKey(key)) {
+            node = allNodes.get(floor-1).get(key);
+            return node;
+        } else { return null; }
 
     }
 
