@@ -38,7 +38,10 @@ public class Main extends Application {
          */
         DatabaseController databaseController = DatabaseController.getInstance();
         databaseController.startDB();
-        databaseController.newNode(9, 7, true, "test", 4);
+        //databaseController.newNode(9, 7, true, "test", 4);
+        databaseController.newNode(11, 100, true, "test", 4);
+        databaseController.newNode(200, 100, true, "test", 4);
+        databaseController.newNode(300, 300, true, "test", 4);
     }
 
     public static void main(String[] args) throws SQLException{

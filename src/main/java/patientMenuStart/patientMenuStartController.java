@@ -71,7 +71,7 @@ public class patientMenuStartController extends controllers.AbsController{
         HashMap<Integer, controllers.Node> DBMap = new HashMap<>();
         DBMap.put(5,new controllers.Node(11,100,true,true,"tests",4));
         DBMap.put(6,new controllers.Node(200,100,true,true,"tests",4));
-        DBMap.put(7,new controllers.Node(300,300,true,true,"tests",5));
+        DBMap.put(7,new controllers.Node(300,300,true,true,"tests",4));
         controller.setMapAndNodes(DBMap);
         controller.setUserString("");
 
