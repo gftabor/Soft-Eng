@@ -84,7 +84,7 @@
          <right>
             <VBox prefHeight="547.0" prefWidth="471.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox prefHeight="105.0" prefWidth="471.0">
+                  <HBox prefHeight="36.0" prefWidth="471.0">
                      <children>
                         <Label prefHeight="31.0" prefWidth="115.0" text="Mode:">
                            <font>
@@ -101,6 +101,17 @@
                   </HBox>
                   <HBox>
                      <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label text="Errors" textFill="#cd2727">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
                         <Label text="Title:">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
@@ -109,7 +120,7 @@
                               <Font name="System Bold Italic" size="26.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="title_choiceBox" prefHeight="40.0" prefWidth="234.0">
+                        <ChoiceBox fx:id="title_choiceBox" disable="true" prefHeight="40.0" prefWidth="234.0">
                            <HBox.margin>
                               <Insets bottom="5.0" left="127.0" right="5.0" top="5.0" />
                            </HBox.margin>
@@ -132,7 +143,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="id_TextField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="234.0" promptText="ID">
+                        <TextField fx:id="id_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="234.0" promptText="ID">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -152,7 +163,7 @@
                               <Font name="System Bold Italic" size="26.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="Firstname_TextField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="234.0" promptText="First">
+                        <TextField fx:id="Firstname_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="234.0" promptText="First">
                            <HBox.margin>
                               <Insets bottom="5.0" left="41.0" right="5.0" top="5.0" />
                            </HBox.margin>
@@ -172,7 +183,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="lastName_TextField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="234.0" promptText="Last">
+                        <TextField fx:id="lastName_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="234.0" promptText="Last">
                            <font>
                               <Font size="20.0" />
                            </font>
