@@ -104,6 +104,7 @@ public class DatabaseController {
             preparedStatement.setString(7, name);
             preparedStatement.setString(8, roomnum);
             // execute prepared statement
+            
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -131,6 +132,10 @@ public class DatabaseController {
 
     public ResultSet getNode(int x, int y, int floor){
         ResultSet resultSet = null;
+        System.out.println(
+                String.format(
+                        "Getting node. x: %s, y: %s, floor: %s",
+                        x, y, floor));
         try{
             String query = "SELECT * FROM NODE WHERE XPOS = ? AND YPOS = ? AND FLOOR = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -138,6 +143,7 @@ public class DatabaseController {
             preparedStatement.setInt(2, y);
             preparedStatement.setInt(3, floor);
             // run statement and query
+            
             resultSet = preparedStatement.executeQuery();
         } catch (SQLException e){
             e.printStackTrace();
@@ -158,6 +164,10 @@ public class DatabaseController {
 
     //delete node given its position
     public boolean deleteNode(int x, int y, int floor){
+        System.out.println(
+                String.format(
+                        "Delete node. x: %s, y: %s, floor: %s",
+                        x, y, floor));
         try {
             // SQL statement with "?" to be filled later
             String query = "DELETE FROM NODE WHERE XPOS = ? AND YPOS = ? AND FLOOR = ?";
@@ -167,6 +177,7 @@ public class DatabaseController {
             preparedStatement.setInt(2, y);
             preparedStatement.setInt(3, floor);
             // run statement and query
+            
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -178,6 +189,10 @@ public class DatabaseController {
 
     // creates a new edge in the database
     public boolean newEdge(int x1, int y1, int floor1, int x2, int y2, int floor2){
+        System.out.println(
+                String.format(
+                        "Adding edge. x1: %s, y1: %s, floor1: %s,\n x2: %s, y2: %s, floor2: %s",
+                        x1, y1, floor1, x2, y2, floor2));
         try {
             // sql statement with "?" to be filled later
             String query = "INSERT INTO EDGE (XPOS1, YPOS1, FLOOR1, XPOS2, YPOS2, FLOOR2)" +
@@ -191,6 +206,7 @@ public class DatabaseController {
             preparedStatement.setInt(5, y2);
             preparedStatement.setInt(6, floor2);
             // execute prepared statement
+            
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -202,6 +218,10 @@ public class DatabaseController {
 
     //delete edge between the two given node positions
     public boolean deleteEdge(int x1, int y1, int floor1, int x2, int y2, int floor2) {
+        System.out.println(
+                String.format(
+                        "Delete edge. x1: %s, y1: %s, floor1: %s,\n x2: %s, y2: %s, floor2: %s",
+                        x1, y1, floor1, x2, y2, floor2));
         try {
             // SQL statement with "?" to be filled later
             String sqlString = "DELETE FROM EDGE WHERE XPOS1 = ? AND YPOS1 = ?" +
@@ -215,6 +235,7 @@ public class DatabaseController {
             preparedStatement.setInt(5, y2);
             preparedStatement.setInt(6, floor2);
             // run statement and query
+            
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -226,6 +247,10 @@ public class DatabaseController {
 
     public boolean newProfessional(String ID, int x, int y, int floor,
                                    String firstName, String lastName, String type){
+        System.out.println(
+                String.format(
+                        "Adding professional. ID: %s, x: %s, y: %s, floor: %s, firstName: %s, lastName: %s, type: %s",
+                        ID, x, y, floor, firstName, lastName, type));
         try{
             // sql statement with "?" to be filled later
             String query = "INSERT INTO PROFESSIONAL (ID, XPOS, YPOS, FLOOR, FIRSTNAME, LASTNAME, TYPE)" +
@@ -240,6 +265,7 @@ public class DatabaseController {
             preparedStatement.setString(6, lastName);
             preparedStatement.setString(7, type);
             // execute prepared statement
+            
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -267,11 +293,16 @@ public class DatabaseController {
 
     public ResultSet getProfessional(String ID){
         ResultSet resultSet = null;
+        System.out.println(
+                String.format(
+                        "Getting professional. ID: %s",
+                        ID));
         try{
             String query = "SELECT * FROM PROFESSIONAL WHERE ID = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, ID);
             // run statement and query
+            
             resultSet = preparedStatement.executeQuery();
         } catch (SQLException e){
             e.printStackTrace();
@@ -281,10 +312,15 @@ public class DatabaseController {
     }
 
     public boolean deleteProfessional(String ID){
+        System.out.println(
+                String.format(
+                        "Deleting professional. ID: %s",
+                        ID));
         try{
             String sqlString = "DELETE FROM PROFESSIONAL WHERE ID = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(sqlString);
             preparedStatement.setString(1, ID);
+            
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e){

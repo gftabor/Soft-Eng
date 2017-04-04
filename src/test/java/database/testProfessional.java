@@ -24,18 +24,15 @@ public class testProfessional {
     String name = "TEST";
     String roomnum = "TEST";
 
+    @Before
     public void setUp(){
-
+        testNull();
         assertTrue(databaseController.newNode(x, y, floor, ishidden, enabled, type, name, roomnum));
     }
 
     @Test
-    public void testAdd(){
+    public void testAddDelete(){
         assertTrue(databaseController.newProfessional(ID, x, y, floor, firstName, lastName, type));
-    }
-
-    @Test
-    public void wasAdded(){
         ResultSet resultSet = databaseController.getProfessional(ID);
         try{
             resultSet.next();
@@ -50,14 +47,24 @@ public class testProfessional {
         } catch (SQLException e){
             e.printStackTrace();
         }
-    }
-
-    @Test
-    public void testDelete(){
         assertTrue(databaseController.deleteProfessional(ID));
     }
 
+    @Test
+    public void testNull(){
+        ResultSet resultSet = databaseController.getProfessional(ID);
+        try{
+            resultSet.next();
+            assertEquals(resultSet.getString("ID"), 0);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @After
     public void tearDown(){
         assertTrue(databaseController.deleteNode(x, y, floor));
+        testNull();
     }
+
 }
