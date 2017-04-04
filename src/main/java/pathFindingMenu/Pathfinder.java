@@ -4,6 +4,7 @@ import controllers.Edge;
 import controllers.Node;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 
 /**
@@ -32,21 +33,34 @@ public class Pathfinder {
                 neighbor.setParentEdge(currentEdge);
                 neighbor.setCostToReach(neighbourNewCost);
                 neighbor.setTotalCost(neighbourNewCost + getHueristic(neighbor, goalNode));
-
-                if (!frontier.contains(neighbor))//if object not already in a list
-                    frontier.add(neighbor);
+                frontier.add(neighbor);
             }
 
         }
         return false;
     }
 
-    public int generatePath(Node startNode, Node endNode) {
+    public double generatePath(Node startNode, Node endNode) {
         System.out.println("PATHFINDER: generating path from node at (" + startNode.getPosX() + ", " +
                             startNode.getPosY() + ") to node at (" + endNode.getPosX() + ", " +
                             endNode.getPosY() + ")");
-        
-        return 0;
+        startNode.setTotalCost(0);
+        startNode.setCostToReach(0);
+        frontier.add(startNode);
+        boolean finished = false;
+        while(!finished){
+            Collections.sort(frontier);
+            Node processing = frontier.get(0);//might be biggest cost currently
+            finished = processing.equals(endNode);//
+
+            if(!alreadyProcessed.contains(processing)) {
+                processNode(processing, endNode);
+                alreadyProcessed.add(processing);
+            }
+            //frontier.remove(processing);
+            frontier.remove(0);//maybe cheaper
+        }
+        return endNode.getTotalCost();
     }
 
 }
