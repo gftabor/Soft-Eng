@@ -51,6 +51,12 @@ public class pathFindingMenuController extends controllers.AbsController{
     @FXML
     private Pane node_Plane;
 
+    @FXML
+    private Circle start_Dot;
+
+    @FXML
+    private Circle end_Dot;
+
     private Button btK;
 
     private ArrayList ButtonList = new ArrayList();

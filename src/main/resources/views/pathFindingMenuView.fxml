@@ -204,6 +204,8 @@
                         <Region prefHeight="200.0" prefWidth="200.0" />
                         <Pane fx:id="node_Plane" prefHeight="506.0" prefWidth="1006.0">
                            <children>
+                              <Circle fx:id="start_Dot" layoutX="735.0" layoutY="35.0" radius="30.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                              <Circle fx:id="end_Dot" fill="#ff1f1f" radius="30.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
                               <ImageView fitHeight="489.0" fitWidth="772.0">
                                  <image>
                                     <Image url="@../images/4.png" />
