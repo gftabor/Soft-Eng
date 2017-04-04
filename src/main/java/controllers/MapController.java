@@ -52,7 +52,7 @@ public class MapController {
     //  2. instantiate objects of nodes & fill collectionOfNodes (internal representation)
     //  3. instantiate edges
     //  4. add edges to corresponding nodes in collectionOfNodes
-    private void requestMapCopy() {
+    public void requestMapCopy() {
         ResultSet nodeRset = databaseController.getTableSet("NODE");
         ResultSet edgeRset = databaseController.getTableSet("EDGE");
 
