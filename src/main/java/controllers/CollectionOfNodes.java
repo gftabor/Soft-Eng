@@ -6,6 +6,7 @@ import java.util.*;
 /**
  * Created by dgian on 4/1/2017.
  */
+//This is the internal representation of the map (grouping of node objects)
 public class CollectionOfNodes {
 
     /*
@@ -60,6 +61,7 @@ public class CollectionOfNodes {
     }
 
     //add a node to the collection
+    //  input: Node object you want to add to the HashTable collection
     public void addNode(Node node) {
         // Add node entry to the hashmap
         int floor = node.getFloor();
@@ -73,24 +75,29 @@ public class CollectionOfNodes {
 
     }
 
+    //remove node from the collection
+    //  input: Node object you want to remove
     public void removeNode(Node node) {
         // Remove node entry from hashmap
         int floor = node.getFloor();
         allNodes.get(floor-1).remove(node.getKey());
     }
 
-
+    //returns string representation of ALL FLOORS of the database
+    //  returns: concatenation of string representation of ALL 7 FLOORS
     public String toString() {
 
         String output = "";
         for (int i = 1; i < 8; i++) {
-            output += "Floor Number: " + i;
+            output += "\n\n||Floor Number: " + i + " |";
             output += toStringFloor(i);
+            output += "\n||";
         }
         return output;
     }
 
-    //do this
+    //returns string representation of all nodes belonging to a particular floor
+    //  returns: combination of toStrings for all nodes in a floor
     public String toStringFloor(int floor) {
 
         String output = "";
@@ -106,6 +113,10 @@ public class CollectionOfNodes {
         return output;
     }
 
+    //get a node from the hashmap using key data for the node
+    //  input: x, y, floor data of a node
+    //  output: returns corresponding node object.
+    //      -If unable to find, returns null - be sure to implement a check for it!
     public Node getNode(int x, int y, int floor) {
         Node node;
         
@@ -123,11 +134,17 @@ public class CollectionOfNodes {
 
     }
 
+    //get the hash map corresponding to a particular floor
+    //  input: floor number of the hash map you want to receive
+    //  output: returns one of the 7 hash maps in the collection
     public HashMap<Integer, Node> getMap(int floor) {
         return allNodes.get(floor - 1);
     }
 
-
+    //generate a key depending on the node information
+    //use for creating unique keys in the hash maps
+    //  input: x and y coords of a node
+    //  returns: integer hash key for a node
     private int generateNodeKey(int x, int y) {
         // Key in format [XXXXYYYY]
         // where x's is the x cord, and y's are y cord
@@ -142,6 +159,8 @@ public class CollectionOfNodes {
         return key;
     }
 
+    //get method for all 7 hash maps
+    //  returns: one array list (indexes 0 based - 0 to 6) containing all 7 hash maps of nodes
     public ArrayList<HashMap<Integer, Node>> getAllNodes() {
         return allNodes;
     }
