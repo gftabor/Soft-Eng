@@ -95,34 +95,8 @@ public class CollectionOfNodes {
 
         String output = "";
         Iterator it;
-        switch (floor) {
-            case 1:
-                it = floor1nodes.entrySet().iterator();
-                break;
-            case 2:
-                it = floor2nodes.entrySet().iterator();
-                break;
-            case 3:
-                it = floor3nodes.entrySet().iterator();
-                break;
-            case 4:
-                it = floor4nodes.entrySet().iterator();
-                break;
-            case 5:
-                it = floor5nodes.entrySet().iterator();
-                break;
-            case 6:
-                it = floor6nodes.entrySet().iterator();
-                break;
-            case 7:
-                it = floor7nodes.entrySet().iterator();
-                break;
-            default:
-                System.out.println("Error: ToStringFloor");
-                //by default set to first floor
-                it = floor1nodes.entrySet().iterator();
-                break;
-        }
+        it = allNodes.get(floor - 1).entrySet().iterator();
+        
         while(it.hasNext()) {
             Map.Entry node = (Map.Entry) it.next();
             output += node.toString();
