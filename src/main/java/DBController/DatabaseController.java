@@ -5,10 +5,6 @@ import controllers.Edge;
 import java.sql.*;
 import java.util.ArrayList;
 
-
-/**
- * Created by MZ on 4/2/17.
- */
 public class DatabaseController {
 
     private static DatabaseController databaseController = new DatabaseController();
