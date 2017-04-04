@@ -14,14 +14,19 @@ import java.util.ArrayList;
  */
 public class MapController {
 
-    //internal representation of our node map
-    private CollectionOfNodes collectionOfNodes;
+    private static MapController mapController = new MapController();
 
-    DatabaseController databaseController = DatabaseController.getInstance();
+    private MapController() {}
 
-    public MapController () {
-        collectionOfNodes = new CollectionOfNodes();
+    public static MapController getInstance() {
+        return mapController;
     }
+
+    //internal representation of our node map
+    private CollectionOfNodes collectionOfNodes = new CollectionOfNodes();
+
+    //get an instance of database controller
+    DatabaseController databaseController = DatabaseController.getInstance();
 
     // Testing as public, change to private in final
     public void requestFloorMapCopy() {
@@ -79,6 +84,10 @@ public class MapController {
                 Node node1, node2;
                 node1 = collectionOfNodes.getNode(x1, y1, floor1);
                 node2 = collectionOfNodes.getNode(x2, y2, floor2);
+                if (node1 == null || node2 == null) {
+                    System.out.println("Node lookup unsuccessful");
+                    continue;
+                }
 
                 myEdge = new Edge(node1, node2, floor1, floor2);
                 edgeCollection.add(myEdge);
