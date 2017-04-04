@@ -265,9 +265,24 @@ public class DatabaseController {
         return true;
     }
 
+    public ResultSet getProfessional(String ID){
+        ResultSet resultSet = null;
+        try{
+            String query = "SELECT * FROM PROFESSIONAL WHERE ID = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, ID);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
     public boolean deleteProfessional(String ID){
         try{
-            String sqlString = "DELTE FROM PROFESSIONAL WHERE ID = ?";
+            String sqlString = "DELETE FROM PROFESSIONAL WHERE ID = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(sqlString);
             preparedStatement.setString(1, ID);
             preparedStatement.execute();
