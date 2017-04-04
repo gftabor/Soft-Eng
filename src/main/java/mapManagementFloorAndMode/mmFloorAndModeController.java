@@ -55,7 +55,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
     @FXML
     private Pane admin_FloorPane;
 
-    private ArrayList<controllers.Node> nodeList;
+    private ArrayList nodeList = new ArrayList();
 
     private int selectNodeX;
     private int selectNodeY;
@@ -76,12 +76,26 @@ public class mmFloorAndModeController extends controllers.AbsController{
         final String name = "Mark?";
 
         switch(mode_ChoiceBox.getValue()) {
+            case "---":
+                System.out.println("Mode = default");
+
+                break;
             case "Add":
                 System.out.println("Mode = add");
                 Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
                         hidden_CheckBox.isSelected(), true, name, floor);
                 DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
                     floor, hidden_CheckBox.isSelected(), true, "Doctor", tempName, tempRoom);
+                nodeList.add(newNode);
+
+                Button newButton = new Button();
+                newButton.setLayoutX(newNode.getPosX());
+                newButton.setLayoutY(newNode.getPosY());
+
+                admin_FloorPane.getChildren().add(newButton);
+                newButton.toFront();
+
+                mode_ChoiceBox.getSelectionModel().select("---");
                 break;
             case "Edit":
                 System.out.println("Mode = edit");
@@ -107,22 +121,21 @@ public class mmFloorAndModeController extends controllers.AbsController{
     public void setUserString(String user){username_Label.setText(user); }
 
     public void setModeChoices() {
-        mode_ChoiceBox.getItems().addAll("Add", "Remove", "Edit");
-        mode_ChoiceBox.getSelectionModel().selectedIndexProperty()
-                .addListener(new ChangeListener<Number>() {
+        mode_ChoiceBox.getItems().addAll("---", "Add", "Remove", "Edit");
+        mode_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
                     @Override
                     public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                         // Do validation
                         System.out.println(newValue);
-                        if(newValue.intValue()==0){
+                        if(newValue.intValue()==1){
                             create_Button();
-                        } else if (newValue.intValue() == 1 || newValue.intValue() == 2) {
+                        } else if ( newValue.intValue() == 0 || newValue.intValue() == 2 || newValue.intValue() == 3) {
                             admin_FloorPane.getChildren().remove(btK);
                         }
                     }
                 });
     }
-        public void setTitleChoices(){
+    public void setTitleChoices(){
         title_ChoiceBox.getItems().addAll("Doctor's Office", "Food Service", "Restroom");
     }
     public void create_Button(){
@@ -138,10 +151,6 @@ public class mmFloorAndModeController extends controllers.AbsController{
                     btK.setLayoutX(e.getSceneX() - paneBounds.getMinX());
                     btK.setLayoutY(e.getSceneY() - paneBounds.getMinY());
                 }
-            });
-
-            btK.setOnMouseClicked(event -> {
-
             });
 
             admin_FloorPane.getChildren().add(btK);
