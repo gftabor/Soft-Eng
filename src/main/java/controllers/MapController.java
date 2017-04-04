@@ -14,14 +14,19 @@ import java.util.ArrayList;
  */
 public class MapController {
 
-    //internal representation of our node map
-    private CollectionOfNodes collectionOfNodes;
+    private static MapController mapController = new MapController();
 
-    DatabaseController databaseController = DatabaseController.getInstance();
+    private MapController() {}
 
-    public MapController () {
-        collectionOfNodes = new CollectionOfNodes();
+    public static MapController getInstance() {
+        return mapController;
     }
+
+    //internal representation of our node map
+    private CollectionOfNodes collectionOfNodes = new CollectionOfNodes();
+
+    //get an instance of database controller
+    DatabaseController databaseController = DatabaseController.getInstance();
 
     // Testing as public, change to private in final
     public void requestFloorMapCopy() {
