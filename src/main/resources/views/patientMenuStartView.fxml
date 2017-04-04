@@ -25,16 +25,10 @@
                               <Image url="@../images/BWH_logo.jpg" />
                            </image>
                         </ImageView>
-                        <Label prefHeight="38.0" prefWidth="512.0" scaleX="2.0" scaleY="2.0" text="Welcome to Brigham and Women's Faulkner Hospital" textAlignment="CENTER">
-                           <font>
-                              <Font name="System Bold Italic" size="54.0" />
-                           </font>
+                        <Label prefHeight="54.0" prefWidth="1059.0" style="-fx-font-size: 42;" text="Welcome to Brigham and Women's Faulkner Hospital">
                            <HBox.margin>
-                              <Insets bottom="20.0" left="270.0" right="20.0" top="20.0" />
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </HBox.margin>
-                           <padding>
-                              <Insets top="20.0" />
-                           </padding>
                         </Label>
                      </children>
                      <padding>
