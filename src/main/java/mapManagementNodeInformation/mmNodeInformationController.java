@@ -143,7 +143,12 @@ public class mmNodeInformationController extends controllers.AbsController {
                     doctorsList.get(i).getLastName(), doctors);
             i++;
         }
+        //Check
+        makeBranch("Doctor A", doctors);
+
         doctors.setExpanded(false);
+
+
         i = 0;
         nurses = makeBranch("Nurses", root);
         while (i < nursesList.size()) {
@@ -152,6 +157,8 @@ public class mmNodeInformationController extends controllers.AbsController {
                     nursesList.get(i).getLastName(), nurses);
             i++;
         }
+        //Check
+        makeBranch("Nurse A", nurses);
         nurses.setExpanded(false);
 
         directory_TreeView.setRoot(root);
