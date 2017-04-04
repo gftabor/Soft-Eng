@@ -1,13 +1,11 @@
 package controllers;
 
 import DBController.DatabaseController;
-import org.apache.derby.iapi.types.Resetable;
+import pathFindingMenu.Pathfinder;
 
-import java.sql.*;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import pathFindingMenu.Pathfinder;
 
 //import main.java.controllers.CollectionOfNodes;
 
@@ -52,7 +50,7 @@ public class MapController {
     //  2. instantiate objects of nodes & fill collectionOfNodes (internal representation)
     //  3. instantiate edges
     //  4. add edges to corresponding nodes in collectionOfNodes
-    private void requestMapCopy() {
+    public void requestMapCopy() {
         ResultSet nodeRset = databaseController.getTableSet("NODE");
         ResultSet edgeRset = databaseController.getTableSet("EDGE");
 
@@ -63,15 +61,17 @@ public class MapController {
         try {
             int x, y, floor;
             boolean hidden;
+            boolean enabled;
             String name;
             Node node;
             while (nodeRset.next()) {
                 x = nodeRset.getInt("XPOS");
                 y = nodeRset.getInt("YPOS");
                 hidden = nodeRset.getBoolean("ISHIDDEN");
+                enabled = nodeRset.getBoolean("ENABLED");
                 name = nodeRset.getString("NAME");
                 floor = nodeRset.getInt("FLOOR");
-                node = new Node(x, y, hidden, true, name, floor);
+                node = new Node(x, y, hidden,enabled, name, floor);
                 collectionOfNodes.addNode(node);
                 System.out.println("MAPCONTROLLER: requestMapCopy(): Added a node from the rset to collection of nodes");
             }
@@ -85,7 +85,7 @@ public class MapController {
         try {
             int x1, y1, x2, y2, floor1, floor2;
             Edge myEdge;
-            while (nodeRset.next()) {
+            while (edgeRset.next()) {
                 //get info from each query tuple
                 x1 = edgeRset.getInt("XPOS1");
                 y1 = edgeRset.getInt("YPOS1");
@@ -171,6 +171,8 @@ public class MapController {
 
         Pathfinder pathfinder = new Pathfinder();
         pathfinder.generatePath(startNode, endNode);
+        System.out.println("true cost  " + endNode.getTotalCost());
+        System.out.println("guess  " +startNode.getTotalCost());
         return 0;
     }
 

@@ -1,15 +1,13 @@
 package patientMenuStart;
 
+import controllers.MapController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;  //NOT JAVA SWING
 import javafx.scene.layout.AnchorPane;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 
 
 /**
@@ -67,16 +65,10 @@ public class patientMenuStartController extends controllers.AbsController{
 
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/pathFindingMenuView.fxml");
         pathFindingMenu.pathFindingMenuController controller = loader.getController();
+        MapController.getInstance().requestFloorMapCopy();
+        MapController.getInstance().requestMapCopy();
+        HashMap<Integer, controllers.Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
 
-        HashMap<Integer, controllers.Node> DBMap = new HashMap<>();
-        /*
-        databaseController.newNode(11, 100, 4, true, true, "doctor", "test", "4");
-        databaseController.newNode(200, 100, 4, true, true, "doctor", "test", "4");
-        databaseController.newNode(300, 300, 4,  true, true, "doctor", "test", "4");
-        */
-        DBMap.put(5,new controllers.Node(11,100, 4, true, true, "doctor", "tests", "4"));
-        DBMap.put(6,new controllers.Node(200,100, 4, true, true, "doctor", "tests", "4"));
-        DBMap.put(7,new controllers.Node(300,300, 4, true, true, "doctor", "tests", "4"));
         controller.setMapAndNodes(DBMap);
         controller.setUserString("");
 
