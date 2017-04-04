@@ -59,7 +59,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
 
     private ArrayList nodeList = new ArrayList();
 
-    private ArrayList EdgeList = new ArrayList();
+    private ArrayList lineList = new ArrayList();
 
     private Line lne;
 
@@ -235,7 +235,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
             lne.toFront();
 
             //add to list
-            EdgeList.add(lne);
+            lineList.add(lne);
         }
     }
 
