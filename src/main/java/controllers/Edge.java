@@ -13,7 +13,7 @@ public class Edge {
     private Node endNode;
 
     //standard constructor
-    //  -input all fields at constructor
+    //  input: all fields at constructor
     public Edge(Node startNode, Node endNode, int floorStart, int floorEnd){
         this.startNode = startNode;
         this.endNode = endNode;
@@ -22,7 +22,7 @@ public class Edge {
         this.floorEnd = floorEnd;
     }
 
-    //adds edge between two nodes
+    //adds edge between two nodes - don't know if needed yet
     public void addEdge(Node startNode, Node endNode, int floorStart, int floorEnd) {
         /*
         Edge e = new Edge(startNode, endNode, floorStart, floorEnd);
@@ -33,6 +33,7 @@ public class Edge {
         */
     }
 
+    //removes references to self from startNode and endNode
     public void deleteEdge() {
         this.startNode.removeEdge(this);
         this.endNode.removeEdge(this);
@@ -41,6 +42,8 @@ public class Edge {
 
     //use distance formula to calculate weight of edge (weight is used in pathfinding)
     //NOTE: ONLY CALCULATES FOR SAME FLOOR. Floor to floor calc is not implemented yet
+    //  input: x and y coordinates for both nodes - need to include floors in the future
+    //  output: distance between the nodes - SLD
     public double calculateWeight(int x1, int y1, int x2, int y2) {
         //implementation of this formula:
         if (floorStart != floorEnd) {
@@ -80,6 +83,9 @@ public class Edge {
     }
 
     //returns node at the other end of the edge
+    //  input: a node
+    //  output: node on other end of edge
+    //      -if node is not part of this edge, returns null
     public Node getNeighbor(Node currentNode){
         if(currentNode.equals(startNode))
             return endNode;
