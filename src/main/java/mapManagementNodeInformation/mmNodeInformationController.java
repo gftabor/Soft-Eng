@@ -61,6 +61,8 @@ public class mmNodeInformationController extends controllers.AbsController {
     @FXML
     private TreeView<String> directory_TreeView;
 
+    boolean flag = false;
+
 
     //get an instance of database controller
     DatabaseController databaseController = DatabaseController.getInstance();
@@ -77,15 +79,11 @@ public class mmNodeInformationController extends controllers.AbsController {
         final String tempLastName = lastName_TextField.getText();
         switch(title_choiceBox.getValue()) {
             case "Doctor":
-            case "doctor":
-            case "DOCTOR":
-                databaseController.newProfessional(tempID, 0, 0, 0,
+                databaseController.newProfessional(tempID, 4, 5, 0,
                         tempFirstName, tempLastName, "Doctor");
                 System.out.println("Adding doctor");
                 break;
             case "Nurse":
-            case "nurse":
-            case "NURSE":
                 databaseController.newProfessional(tempID, 0, 0, 0,
                         tempFirstName, tempLastName, "Nurse");
                 System.out.println("Adding Nurse");
@@ -94,6 +92,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                 System.out.println("Nothing selected for mode");
                 break;
         }
+        createDirectoryTreeView();
     }
 
     public void emergencyButton_Clicked() {
@@ -137,7 +136,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        doctors = makeBranch("Doctors", root);
+        doctors = makeBranch("Doctor", root);
         int i = 0;
         while (i < doctorsList.size()) {
 
@@ -145,32 +144,29 @@ public class mmNodeInformationController extends controllers.AbsController {
                     doctorsList.get(i).getLastName(), doctors);
             i++;
         }
-        //Check
-        makeBranch("Doctor A", doctors);
-
-        doctors.setExpanded(false);
-
+        if(!flag){
+          doctors.setExpanded(false);
+        }
 
         i = 0;
-        nurses = makeBranch("Nurses", root);
+        nurses = makeBranch("Nurse", root);
         while (i < nursesList.size()) {
 
             makeBranch(nursesList.get(i).getFirstName() + " " +
                     nursesList.get(i).getLastName(), nurses);
             i++;
         }
-        //Check
-        makeBranch("Nurse A", nurses);
-        nurses.setExpanded(false);
-
+        if(!flag) {
+            nurses.setExpanded(false);
+        }
         directory_TreeView.setRoot(root);
-
         directory_TreeView.getSelectionModel().selectedItemProperty()
                 .addListener((v, oldValue, newValue) -> {
                     if (newValue != null) {
                         System.out.println(newValue.getValue());
                     }
                 });
+        flag = false;
     }
 
     //Create branches
