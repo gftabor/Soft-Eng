@@ -43,6 +43,10 @@ public class MapController {
     //internal listing of edges (used only in startup full query of DB)
     private ArrayList<Edge> edgeCollection;
 
+    public CollectionOfNodes getCollectionOfNodes() {
+        return collectionOfNodes;
+    }
+
     //request full map info from the database (full reset of CollectionOfNodes)
     //  1. DB query
     //  2. instantiate objects of nodes & fill collectionOfNodes (internal representation)
@@ -155,10 +159,11 @@ public class MapController {
         startNode = collectionOfNodes.getNode(startNodeX, startNodeY, 4);
         if(startNode == null) {
             System.out.println("MAPCONTROLLER: getNode(startNode) returns null!");
+            //System.out.println("MAPCONTROLLER: requestPath: collectionOfNOdes size: " + collectionOfNodes.toString());
             return 1;
         }
 
-        endNode = collectionOfNodes.getNode(startNodeX, startNodeY, 4);
+        endNode = collectionOfNodes.getNode(endNodeX, endNodeY, 4);
         if(endNode == null) {
             System.out.println("MAPCONTROLLER: getNode(endNode) returns null!");
             return 1;

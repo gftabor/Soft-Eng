@@ -127,14 +127,13 @@ public class CollectionOfNodes {
             Map.Entry node = (Map.Entry) it.next();
             output += node.toString();
             output += "\n";
-            it.remove();
+            //it.remove();
         }
         return output;
     }
 
     public Node getNode(int x, int y, int floor) {
         Node node;
-        MapController mapController = MapController.getInstance();
 
         // TESTING SWAPPED X AND Y---------------------------------------------------------------------------------
         int key = generateNodeKey(y, x);
@@ -144,7 +143,7 @@ public class CollectionOfNodes {
             return node;
         }
         else {
-            System.out.println("COLLECTIONOFNODES: getNode(): Current floor hashmap: " + allNodes.toString());
+            //System.out.println("COLLECTIONOFNODES: getNode(): Current floor hashmap: " + mapController.getCollectionOfNodes().toString());
             System.out.println("COLLECTIONOFNODES: getNode(): could not find node with key: " + key);
             return null;
         }
@@ -163,5 +162,9 @@ public class CollectionOfNodes {
         key += y;
 
         return key;
+    }
+
+    public ArrayList<HashMap<Integer, Node>> getAllNodes() {
+        return allNodes;
     }
 }
