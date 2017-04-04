@@ -16,6 +16,11 @@ public class MapController {
 
     private static MapController mapController = new MapController();
 
+    private int startNodeX;
+    private int startNodeY;
+    private int endNodeX;
+    private int endNodeY;
+
     private MapController() {}
 
     public static MapController getInstance() {
@@ -117,11 +122,23 @@ public class MapController {
         return 0;
     }
 
-    private int markNode() {
-        return 0;
+    public int markNode(int x, int y, int type) {
+        if(type == 1) {
+            startNodeX = x;
+            startNodeY = y;
+            return 0;
+        }
+        else if(type == 2) {
+            endNodeX = x;
+            endNodeY = y;
+            return 0;
+        }
+        else {
+            return 1;
+        }
     }
 
-    private int requestPath() {
+    private int requestPath(int x1, int y1, int x2, int y2) {
         return 0;
     }
 

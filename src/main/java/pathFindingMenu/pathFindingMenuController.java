@@ -1,5 +1,6 @@
 package pathFindingMenu;
 
+import controllers.MapController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -63,10 +64,7 @@ public class pathFindingMenuController extends controllers.AbsController{
 
     private int selectionState = 0;
 
-    private int startNodeX;
-    private int startNodeY;
-    private int endNodeX;
-    private int endNodeY;
+    private MapController mapController = MapController.getInstance();
 
     public void emergencyButton_Clicked(){
         System.out.println("The user has clicked the emergency Button");
@@ -140,14 +138,12 @@ public class pathFindingMenuController extends controllers.AbsController{
     public int nodeSelected(int x, int y) {
         if (selectionState == 0) {
             //place the black marker at the starting location
-            startNodeX = x;
-            startNodeY = y;
+            mapController.markNode(x, y, 1);
             selectionState++;
             return 0;
         } else if (selectionState == 1){
             //place the red marker at end location
-            endNodeX = x;
-            endNodeY = y;
+            mapController.markNode(x, y, 2);
             selectionState++;
             return 0;
         } else {
