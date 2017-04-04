@@ -1,18 +1,16 @@
 package mapManagementFloorAndMode;
 
 import controllers.Node;
-import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 
-import javax.xml.soap.Text;
 import java.util.ArrayList;
 
 /**
@@ -104,6 +102,36 @@ public class mmFloorAndModeController extends controllers.AbsController{
                 Button newButton = new Button();
                 newButton.setLayoutX(newNode.getPosX());
                 newButton.setLayoutY(newNode.getPosY());
+                newButton.setOnMouseClicked(e -> {
+                    if (mode_ChoiceBox.getValue().equals( "Add Edge")) {
+                        edgesSelected++;
+
+                        if (edgesSelected == 1){
+                            //display edges already associated with selected node
+                            nodeEdgeX = (int) newButton.getLayoutX();
+                            nodeEdgeY = (int) newButton.getLayoutY();
+
+                            firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
+                                    .getNode(nodeEdgeX, nodeEdgeY, 4);
+
+                            createEdgeLines(firstNode.getEdgeList());
+
+                        }
+                        if (edgesSelected == 2) {
+                            //create edge between the two nodes
+                            nodeEdgeX = (int) newButton.getLayoutX();
+                            nodeEdgeY = (int) newButton.getLayoutY();
+
+                            secondNode = controllers.MapController.getInstance().getCollectionOfNodes()
+                                    .getNode(nodeEdgeX, nodeEdgeY, 4);
+
+                            DBController.DatabaseController.getInstance().newEdge( firstNode.getPosX(),
+                                    firstNode.getPosY(),4, secondNode.getPosX(), secondNode.getPosY(), 4);
+
+                            edgesSelected = 0;
+                        }
+                    }
+                });
 
                 admin_FloorPane.getChildren().add(newButton);
                 newButton.toFront();
@@ -176,36 +204,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
             });
 
             //Clicking on Nodes added to the Map
-            btK.setOnMouseClicked(e -> {
-                        if (mode_ChoiceBox.getValue() == "Add Edge") {
-                            edgesSelected++;
 
-                            if (edgesSelected == 1){
-                                //display edges already associated with selected node
-                                nodeEdgeX = (int) btK.getLayoutX();
-                                nodeEdgeY = (int) btK.getLayoutY();
-
-                                firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
-                                        .getNode(nodeEdgeX, nodeEdgeY, 4);
-
-                                createEdgeLines(firstNode.getEdgeList());
-
-                            }
-                            if (edgesSelected == 2) {
-                                //create edge between the two nodes
-                                nodeEdgeX = (int) btK.getLayoutX();
-                                nodeEdgeY = (int) btK.getLayoutY();
-
-                                secondNode = controllers.MapController.getInstance().getCollectionOfNodes()
-                                        .getNode(nodeEdgeX, nodeEdgeY, 4);
-
-                                DBController.DatabaseController.getInstance().newEdge( firstNode.getPosX(),
-                                        firstNode.getPosY(),4, secondNode.getPosX(), secondNode.getPosY(), 4);
-
-                                edgesSelected = 0;
-                            }
-                        }
-                    });
 
 
 
