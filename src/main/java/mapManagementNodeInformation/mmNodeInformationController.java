@@ -136,7 +136,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        doctors = makeBranch("Doctor", root);
+        doctors = makeBranch("Doctors", root);
         int i = 0;
         while (i < doctorsList.size()) {
 
@@ -149,7 +149,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         }
 
         i = 0;
-        nurses = makeBranch("Nurse", root);
+        nurses = makeBranch("Nurses", root);
         while (i < nursesList.size()) {
 
             makeBranch(nursesList.get(i).getFirstName() + " " +
@@ -179,7 +179,7 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     //set the title choices for the user
     public void setTitleChoices() {
-        title_choiceBox.getItems().addAll("Doctors", "Nurses");
+        title_choiceBox.getItems().addAll("Doctor", "Nurse");
         title_choiceBox.getSelectionModel().selectedIndexProperty()
                 .addListener(new ChangeListener<Number>() {
                     @Override
