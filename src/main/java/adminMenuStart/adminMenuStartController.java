@@ -62,6 +62,7 @@ public class adminMenuStartController extends controllers.AbsController{
          mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
          controller.createDirectoryTreeView();
          controller.setTitleChoices();
+         controller.setModeChoices();
 
     }
 
