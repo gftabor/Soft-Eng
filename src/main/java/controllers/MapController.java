@@ -7,6 +7,8 @@ import java.sql.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import pathFindingMenu.Pathfinder;
+
 //import main.java.controllers.CollectionOfNodes;
 
 /**
@@ -47,6 +49,7 @@ public class MapController {
     //  3. instantiate edges
     //  4. add edges to corresponding nodes in collectionOfNodes
     private void requestMapCopy() {
+        System.out.println("MAPCONTROLLER: requestMapCopy(): Starting to copy map from database");
         ResultSet nodeRset = databaseController.getNodeSet();
         ResultSet edgeRset = databaseController.getEdgeSet();
 
@@ -67,12 +70,14 @@ public class MapController {
                 floor = nodeRset.getInt("FLOOR");
                 node = new Node(x, y, hidden, true, name, floor);
                 collectionOfNodes.addNode(node);
+                System.out.println("MAPCONTROLLER: requestMapCopy(): Added a node from the rset to collection of nodes");
             }
         } catch (SQLException se) {
             se.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
         try {
             int x1, y1, x2, y2, floor1, floor2;
@@ -110,6 +115,7 @@ public class MapController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
 
 
     }
@@ -138,7 +144,28 @@ public class MapController {
         }
     }
 
-    private int requestPath(int x1, int y1, int x2, int y2) {
+    public int requestPath() {
+        Node startNode, endNode;
+
+        if(collectionOfNodes == null) {
+            requestMapCopy();
+        }
+        System.out.println("MAPCONTROLLER: requestPath: collectionOfNOdes size: " + collectionOfNodes.toString());
+
+        startNode = collectionOfNodes.getNode(startNodeX, startNodeY, 4);
+        if(startNode == null) {
+            System.out.println("MAPCONTROLLER: getNode(startNode) returns null!");
+            return 1;
+        }
+
+        endNode = collectionOfNodes.getNode(startNodeX, startNodeY, 4);
+        if(endNode == null) {
+            System.out.println("MAPCONTROLLER: getNode(endNode) returns null!");
+            return 1;
+        }
+
+        Pathfinder pathfinder = new Pathfinder();
+        pathfinder.generatePath(startNode, endNode);
         return 0;
     }
 

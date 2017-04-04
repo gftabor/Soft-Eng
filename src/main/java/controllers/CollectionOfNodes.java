@@ -64,6 +64,13 @@ public class CollectionOfNodes {
         // Add node entry to the hashmap
         int floor = node.getFloor();
         allNodes.get(floor-1).put(node.getKey(), node);
+        if(!allNodes.get(floor-1).containsKey(node.getKey())) {
+            System.out.println("COLLECTIONOFNODES: addNode(): added node but then couldn't find in hashmap");
+        }
+        else {
+            System.out.println("COLLECTIONOFNODES: addNode(): successfully added node to hashmap");
+        }
+
     }
 
     public void removeNode(Node node) {
@@ -131,7 +138,11 @@ public class CollectionOfNodes {
         if(allNodes.get(floor-1).containsKey(key)) {
             node = allNodes.get(floor-1).get(key);
             return node;
-        } else { return null; }
+        }
+        else {
+            System.out.println("COLLECTIONOFNODES: getNode(): could not find node with key: " + key);
+            return null;
+        }
 
     }
 

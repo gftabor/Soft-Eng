@@ -79,7 +79,7 @@ public class pathFindingMenuController extends controllers.AbsController{
     public void submitButton_Clicked(){
         if (selectionState == 2) {
             //submit stuff
-
+            mapController.requestPath();
         }
         System.out.println("The user has clicked the submit Button");
     }
@@ -121,9 +121,7 @@ public class pathFindingMenuController extends controllers.AbsController{
         System.out.println("make button");
         btK = new Button("node");
         btK.setOnMouseClicked(e -> {
-            btK.getLayoutX();
-            btK.getLayoutY();
-
+            nodeSelected((int)nodeX, (int)nodeY);
         });
 
         // this code sets node's x and y pos to be on the plane holding the graph
@@ -136,6 +134,7 @@ public class pathFindingMenuController extends controllers.AbsController{
     }
 
     public int nodeSelected(int x, int y) {
+        System.out.println("Node at (" + x + ", " + y + ") selected during state: " + selectionState);
         if (selectionState == 0) {
             //place the black marker at the starting location
             mapController.markNode(x, y, 1);
