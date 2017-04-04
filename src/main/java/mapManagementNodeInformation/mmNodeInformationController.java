@@ -2,6 +2,8 @@ package mapManagementNodeInformation;
 
 import DBController.DatabaseController;
 import controllers.Professional;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -171,16 +173,30 @@ public class mmNodeInformationController extends controllers.AbsController {
                 });
     }
 
-
-    public void setTitleChoices() {
-        title_choiceBox.getItems().addAll("Doctor", "Nurse");
-    }
-
     //Create branches
     public TreeItem<String> makeBranch(String title, TreeItem<String> parent) {
         TreeItem<String> item = new TreeItem<>(title);
         item.setExpanded(true);
         parent.getChildren().add(item);
         return item;
+    }
+
+    //set the title choices for the user
+    public void setTitleChoices() {
+        title_choiceBox.getItems().addAll("Doctors", "Nurses");
+        title_choiceBox.getSelectionModel().selectedIndexProperty()
+                .addListener(new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                        // Do validation
+                        System.out.println(newValue);
+                        if(newValue.intValue()==0){
+                            System.out.println("Hello world");
+                            //create_Button();
+                        } else if (newValue.intValue() == 1 || newValue.intValue() == 2) {
+                            //admin_FloorPane.getChildren().remove(btK);
+                        }
+                    }
+                });
     }
 }
