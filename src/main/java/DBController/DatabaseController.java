@@ -74,7 +74,6 @@ public class DatabaseController {
         try {
             Statement stmt = conn.createStatement();
             resultSet = stmt.executeQuery(sqlString);
-            stmt.close();
         } catch (SQLException se) {
             se.printStackTrace();
         } catch (Exception e) {
@@ -140,12 +139,21 @@ public class DatabaseController {
             preparedStatement.setInt(3, floor);
             // run statement and query
             resultSet = preparedStatement.executeQuery();
-            preparedStatement.close();
         } catch (SQLException e){
             e.printStackTrace();
             return null;
         }
         return resultSet;
+    }
+
+    public boolean closeResultSet(ResultSet resultSet){
+        try{
+            resultSet.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     //delete node given its position
