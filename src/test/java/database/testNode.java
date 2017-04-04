@@ -25,7 +25,7 @@ public class testNode {
     public void wasAdded(){
         ResultSet resultSet = databaseController.getNode(x, y, floor);
         try{
-            resultSet.first();
+            resultSet.next();
             assertEquals(resultSet.getInt("XPOS"), x);
             assertEquals(resultSet.getInt("YPOS"), y);
             assertEquals(resultSet.getInt("FLOOR"), floor);
@@ -34,6 +34,7 @@ public class testNode {
             assertEquals(resultSet.getString("TYPE"), type);
             assertEquals(resultSet.getString("NAME"), name);
             assertEquals(resultSet.getString("ROOMNUM"), roomnum);
+            databaseController.closeResultSet(resultSet);
         } catch (SQLException e){
             e.printStackTrace();
         }

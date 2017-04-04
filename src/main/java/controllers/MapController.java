@@ -96,7 +96,8 @@ public class MapController {
             e.printStackTrace();
         }
 
-
+        databaseController.closeResultSet(nodeRset);
+        databaseController.closeResultSet(edgeRset);
     }
 
     private int generateMap() {
