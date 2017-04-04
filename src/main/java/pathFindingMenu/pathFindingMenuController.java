@@ -126,13 +126,13 @@ public class pathFindingMenuController extends controllers.AbsController{
         System.out.println("make button");
         btK = new Button("node");
         btK.setOnMouseClicked(e -> {
-            nodeSelected((int)nodeX, (int)nodeY);
+            nodeSelected((int)((nodeX)), (int)((nodeY)));
         });
 
         // this code sets node's x and y pos to be on the plane holding the graph
         node_Plane.getChildren().add(btK);
-        btK.setLayoutX(nodeX);
-        btK.setLayoutY(nodeY);
+        btK.setLayoutX(nodeX + (btK.getWidth()/2));
+        btK.setLayoutY(nodeY + (btK.getHeight()/2));
         btK.toFront();
 
         ButtonList.add(btK);
