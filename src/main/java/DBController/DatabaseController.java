@@ -95,8 +95,8 @@ public class DatabaseController {
                     " values (?, ?, ?, ?, ?, ?, ?, ?)";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setInt(1, y);
-            preparedStatement.setInt(2, x);
+            preparedStatement.setInt(1, x);
+            preparedStatement.setInt(2, y);
             preparedStatement.setInt(3, floor);
             preparedStatement.setBoolean(4, ishidden);
             preparedStatement.setBoolean(5, enabled);
