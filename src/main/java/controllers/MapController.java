@@ -64,7 +64,7 @@ public class MapController {
             while (nodeRset.next()) {
                 x = nodeRset.getInt("XPOS");
                 y = nodeRset.getInt("YPOS");
-                hidden = nodeRset.getBoolean("HIDDEN?");
+                hidden = nodeRset.getBoolean("ISHIDDEN");
                 name = nodeRset.getString("NAME");
                 floor = nodeRset.getInt("FLOOR");
                 node = new Node(x, y, hidden, true, name, floor);

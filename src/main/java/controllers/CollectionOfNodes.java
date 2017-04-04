@@ -84,6 +84,7 @@ public class CollectionOfNodes {
 
         String output = "";
         for (int i = 1; i < 8; i++) {
+            output += "Floor Number: " + i;
             output += toStringFloor(i);
         }
         return output;
@@ -133,13 +134,17 @@ public class CollectionOfNodes {
 
     public Node getNode(int x, int y, int floor) {
         Node node;
-        int key = generateNodeKey(x, y);
+        MapController mapController = MapController.getInstance();
+
+        // TESTING SWAPPED X AND Y---------------------------------------------------------------------------------
+        int key = generateNodeKey(y, x);
 
         if(allNodes.get(floor-1).containsKey(key)) {
             node = allNodes.get(floor-1).get(key);
             return node;
         }
         else {
+            System.out.println("COLLECTIONOFNODES: getNode(): Current floor hashmap: " + allNodes.toString());
             System.out.println("COLLECTIONOFNODES: getNode(): could not find node with key: " + key);
             return null;
         }
