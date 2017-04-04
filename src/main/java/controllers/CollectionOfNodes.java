@@ -96,7 +96,7 @@ public class CollectionOfNodes {
         String output = "";
         Iterator it;
         it = allNodes.get(floor - 1).entrySet().iterator();
-        
+
         while(it.hasNext()) {
             Map.Entry node = (Map.Entry) it.next();
             output += node.toString();
@@ -122,6 +122,11 @@ public class CollectionOfNodes {
         }
 
     }
+
+    public HashMap<Integer, Node> getMap(int floor) {
+        return allNodes.get(floor - 1);
+    }
+
 
     private int generateNodeKey(int x, int y) {
         // Key in format [XXXXYYYY]
