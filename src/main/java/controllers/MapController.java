@@ -59,6 +59,7 @@ public class MapController {
         edgeCollection = new ArrayList<Edge>();
 
         try {
+            //instantiate all node objects and add to collection
             int x, y, floor;
             boolean hidden;
             boolean enabled;
@@ -83,6 +84,8 @@ public class MapController {
 
 
         try {
+
+            //instantiate edges and add to corresponding nodes
             int x1, y1, x2, y2, floor1, floor2;
             Edge myEdge;
             while (edgeRset.next()) {
@@ -98,11 +101,14 @@ public class MapController {
                 Node node1, node2;
                 node1 = collectionOfNodes.getNode(x1, y1, floor1);
                 node2 = collectionOfNodes.getNode(x2, y2, floor2);
+
+                //continue if can't find corresponding nodes
                 if (node1 == null || node2 == null) {
                     System.out.println("Node lookup unsuccessful");
                     continue;
                 }
 
+                //add to arraylist to go through later
                 myEdge = new Edge(node1, node2, floor1, floor2);
                 edgeCollection.add(myEdge);
 
@@ -119,7 +125,7 @@ public class MapController {
             e.printStackTrace();
         }
         
-
+        //close the ResultSets
         databaseController.closeResultSet(nodeRset);
         databaseController.closeResultSet(edgeRset);
     }
@@ -132,6 +138,7 @@ public class MapController {
         return 0;
     }
 
+    //Helper function to set nodes as start or end
     public int markNode(int x, int y, int type) {
         if(type == 1) {
             startNodeX = x;
@@ -148,9 +155,13 @@ public class MapController {
         }
     }
 
+    //used for pathfinding
+    //creates a pathfinder and runs pathfinding on the startnode and the end node.
+    //  returns: 0 if success, 1 if error
     public int requestPath() {
         Node startNode, endNode;
 
+        //instantiates the collection if nothing is there yet
         if(collectionOfNodes == null) {
             requestMapCopy();
         }
@@ -169,6 +180,7 @@ public class MapController {
             return 1;
         }
 
+        //creates and runs a pathfinder
         Pathfinder pathfinder = new Pathfinder();
         pathfinder.generatePath(startNode, endNode);
         System.out.println("true cost  " + endNode.getTotalCost());
