@@ -1,13 +1,11 @@
 package controllers;
 
 import DBController.DatabaseController;
-import org.apache.derby.iapi.types.Resetable;
+import pathFindingMenu.Pathfinder;
 
-import java.sql.*;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import pathFindingMenu.Pathfinder;
 
 //import main.java.controllers.CollectionOfNodes;
 
@@ -173,6 +171,8 @@ public class MapController {
 
         Pathfinder pathfinder = new Pathfinder();
         pathfinder.generatePath(startNode, endNode);
+        System.out.println("true cost  " + endNode.getTotalCost());
+        System.out.println("guess  " +startNode.getTotalCost());
         return 0;
     }
 
