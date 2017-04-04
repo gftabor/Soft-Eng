@@ -58,7 +58,9 @@ public class adminMenuStartController extends controllers.AbsController{
     }
 
     public void hospitalDirectoryButton_Clicked(){
-        switch_screen(backgroundAnchorPane, "/views/mmNodeInformationView.fxml");
+         FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/mmNodeInformationView.fxml");
+         mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
+         controller.createDirectoryTreeView();
 
     }
 

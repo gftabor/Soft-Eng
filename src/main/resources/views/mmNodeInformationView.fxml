@@ -2,17 +2,18 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapManagementNodeInformation.mmNodeInformationController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapManagementNodeInformation.mmNodeInformationController">
    <children>
       <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -23,181 +24,47 @@
                         <Region HBox.hgrow="ALWAYS" />
                         <Label text="Hospital Directory">
                            <font>
-                              <Font name="System Bold" size="28.0" />
+                              <Font name="System Bold" size="50.0" />
                            </font>
                            <HBox.margin>
                               <Insets bottom="1.0" left="50.0" right="1.0" top="1.0" />
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label fx:id="currentMode_Label" text="MODE" textAlignment="CENTER">
-                           <HBox.margin>
-                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                           </HBox.margin>
-                           <padding>
-                              <Insets top="10.0" />
-                           </padding>
-                        </Label>
                      </children>
                   </HBox>
                   <HBox>
                      <children>
-                        <Label text="Admin:">
+                        <Label fx:id="currentAdmin_Label" text="Admin:">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                            <font>
-                              <Font name="System Bold Italic" size="17.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="currentAdmin_Label" text="John P.">
-                           <HBox.margin>
-                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font name="System Bold" size="17.0" />
+                              <Font name="System Bold Italic" size="30.0" />
                            </font>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="signOut_Button" mnemonicParsing="false" onMouseClicked="#signOutButton_Clicked" text="Sign Out">
+                        <Button fx:id="mainMenu_Button" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="40.0" prefWidth="170.0" text="Main Menu">
                            <HBox.margin>
-                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
+                           <font>
+                              <Font size="23.0" />
+                           </font>
                         </Button>
-                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="40.0" prefWidth="180.0" text="EMERGENCY">
                            <HBox.margin>
-                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
+                           <font>
+                              <Font name="System Bold Italic" size="21.0" />
+                           </font>
                         </Button>
                      </children>
                   </HBox>
                </children>
             </VBox>
          </top>
-         <left>
-            <VBox prefHeight="315.0" prefWidth="336.0" BorderPane.alignment="CENTER">
-               <children>
-                  <HBox>
-                     <children>
-                        <Label text="Title:">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font name="System Bold Italic" size="15.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="title_TextField" promptText="title">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="115.0" right="5.0" top="10.0" />
-                           </HBox.margin>
-                        </TextField>
-                     </children>
-                  </HBox>
-                  <HBox>
-                     <children>
-                        <Label text="Name:">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font name="System Bold Italic" size="15.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="name_TextField" promptText="name">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="105.0" right="5.0" top="5.0" />
-                           </HBox.margin>
-                        </TextField>
-                     </children>
-                  </HBox>
-                  <HBox>
-                     <children>
-                        <Label text="Department:">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font name="System Bold Italic" size="15.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="department_TextField" promptText="department">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="60.0" right="5.0" top="5.0" />
-                           </HBox.margin>
-                        </TextField>
-                     </children>
-                  </HBox>
-                  <HBox>
-                     <children>
-                        <Label text="Location:">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font name="System Bold Italic" size="15.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="location_TextField" promptText="location">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="85.0" right="5.0" top="5.0" />
-                           </HBox.margin>
-                        </TextField>
-                     </children>
-                  </HBox>
-                  <HBox>
-                     <children>
-                        <Label text="Availability:">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font name="System Bold Italic" size="15.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="availability_TextField" promptText="availability">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="70.0" right="5.0" top="5.0" />
-                           </HBox.margin>
-                        </TextField>
-                     </children>
-                  </HBox>
-                  <HBox>
-                     <children>
-                        <Label text="Contact Information">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font name="System Bold Italic" size="15.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="contactInfo_TextField" promptText="contact information">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin>
-                        </TextField>
-                     </children>
-                  </HBox>
-                  <Region prefHeight="61.0" prefWidth="340.0" />
-                  <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Button fx:id="cancel_Button" mnemonicParsing="false" onMouseClicked="#cancelButton_Clicked" prefHeight="26.0" prefWidth="61.0" text="Cancel">
-                           <HBox.margin>
-                              <Insets bottom="4.0" left="15.0" right="4.0" top="4.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="submit_Button" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" text="Submit">
-                           <HBox.margin>
-                              <Insets bottom="4.0" left="4.0" right="40.0" top="4.0" />
-                           </HBox.margin>
-                        </Button>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </left>
          <bottom>
             <HBox BorderPane.alignment="CENTER">
                <children>
@@ -206,42 +73,119 @@
                      <HBox.margin>
                         <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                      </HBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
                   </Label>
                   <Region HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
          </bottom>
-         <center>
-            <VBox prefHeight="315.0" prefWidth="269.0" BorderPane.alignment="CENTER">
+         <right>
+            <VBox prefHeight="547.0" prefWidth="471.0" BorderPane.alignment="CENTER">
                <children>
                   <HBox>
                      <children>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Label text="Floor Map">
-                           <font>
-                              <Font name="System Bold" size="18.0" />
-                           </font>
+                        <Label text="Title:">
                            <HBox.margin>
-                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
+                           <font>
+                              <Font name="System Bold Italic" size="26.0" />
+                           </font>
                         </Label>
-                        <Region HBox.hgrow="ALWAYS" />
+                        <ChoiceBox prefHeight="39.0" prefWidth="250.0">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="105.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </ChoiceBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Label text="Name:">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="System Bold Italic" size="26.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="name_TextField" prefHeight="39.0" prefWidth="250.0" promptText="name">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="85.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
                      </children>
                   </HBox>
-                  <HBox prefHeight="250.0" prefWidth="269.0">
+                  <HBox>
                      <children>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="250.0" stroke="BLACK" strokeType="INSIDE" width="250.0">
+                        <Label text="Room:">
                            <HBox.margin>
-                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
-                        </Rectangle>
+                           <font>
+                              <Font name="System Bold Italic" size="26.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="room_TextField" promptText="room">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="85.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox />
+                  <HBox />
+                  <HBox />
+                  <Region prefHeight="61.0" prefWidth="340.0" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="cancel_Button" mnemonicParsing="false" onMouseClicked="#cancelButton_Clicked" prefHeight="40.0" prefWidth="120.0" text="Cancel">
+                           <HBox.margin>
+                              <Insets bottom="4.0" left="15.0" right="4.0" top="4.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="23.0" />
+                           </font>
+                        </Button>
                         <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="submit_Button" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" prefHeight="40.0" prefWidth="120.0" text="Submit">
+                           <HBox.margin>
+                              <Insets bottom="4.0" left="4.0" right="40.0" top="4.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="23.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+               <BorderPane.margin>
+                  <Insets top="20.0" />
+               </BorderPane.margin>
+            </VBox>
+         </right>
+         <left>
+            <VBox prefHeight="567.0" prefWidth="547.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox prefHeight="583.0" prefWidth="422.0">
+                     <children>
+                        <TreeView fx:id="directory_TreeView" prefHeight="385.0" prefWidth="520.0" />
                      </children>
                   </HBox>
                </children>
             </VBox>
-         </center>
+         </left>
       </BorderPane>
    </children>
 </AnchorPane>
