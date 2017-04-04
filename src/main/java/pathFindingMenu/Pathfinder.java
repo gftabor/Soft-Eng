@@ -14,6 +14,12 @@ public class Pathfinder {
     private ArrayList<Node> frontier = new ArrayList<Node>();
     private HashSet<Node> alreadyProcessed = new HashSet<Node>();;
 
+    //double heuristic function for A* pathfinding
+    //uses a straight-line-distance (SLD) heuristic
+    //  input: 2 nodes
+    //      - current node pathfinding is looking at
+    //      - goal node pathfinding is trying to reach
+    //  output: SLD (double) between input nodes as heuristic val
     private double getHueristic(Node currentNode, Node goalNode){
        double squareX = Math.pow((currentNode.getPosX()-goalNode.getPosX()),2);
        double squareY = Math.pow((currentNode.getPosY()-goalNode.getPosY()),2);
@@ -43,6 +49,10 @@ public class Pathfinder {
         return false;
     }
 
+    //generates a path on the map given a start node and the end node
+    //runs A* pathfinding algorithm
+    //  input: 2 nodes - a start and an end
+    //  output: the total cost of the shortest path (type=double)
     public double generatePath(Node startNode, Node endNode) {
         System.out.println("PATHFINDER: generating path from node at (" + startNode.getPosX() + ", " +
                 startNode.getPosY() + ") to node at (" + endNode.getPosX() + ", " +

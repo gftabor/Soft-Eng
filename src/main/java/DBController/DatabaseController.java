@@ -130,6 +130,9 @@ public class DatabaseController {
         return true;
     }
 
+    //queries a particular node in the database
+    //  input: node key information
+    //  returns: ResultSet of node from the database query
     public ResultSet getNode(int x, int y, int floor){
         ResultSet resultSet = null;
         System.out.println(
