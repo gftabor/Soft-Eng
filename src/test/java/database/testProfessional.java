@@ -1,16 +1,20 @@
 package database;
 
 import DBController.DatabaseController;
-import org.junit.Test;
-import java.sql.*;
+import org.junit.*;
 
+import java.sql.*;
 import static org.junit.Assert.*;
 
 /**
  * Created by jasonashton on 4/3/17.
+ * This test is definitely broken
  */
-public class testNode {
+public class testProfessional {
     DatabaseController databaseController = DatabaseController.getInstance();
+    String ID = "TEST";
+    String firstName = "TEST";
+    String lastName = "TEST";
     int x = 0;
     int y = 0;
     int floor = 0;
@@ -20,24 +24,28 @@ public class testNode {
     String name = "TEST";
     String roomnum = "TEST";
 
-    @Test
-    public void testAdd(){
+    public void setUp(){
+
         assertTrue(databaseController.newNode(x, y, floor, ishidden, enabled, type, name, roomnum));
     }
 
     @Test
+    public void testAdd(){
+        assertTrue(databaseController.newProfessional(ID, x, y, floor, firstName, lastName, type));
+    }
+
+    @Test
     public void wasAdded(){
-        ResultSet resultSet = databaseController.getNode(x, y, floor);
+        ResultSet resultSet = databaseController.getProfessional(ID);
         try{
             resultSet.next();
+            assertEquals(resultSet.getString("ID"), ID);
             assertEquals(resultSet.getInt("XPOS"), x);
             assertEquals(resultSet.getInt("YPOS"), y);
             assertEquals(resultSet.getInt("FLOOR"), floor);
-            assertEquals(resultSet.getBoolean("ISHIDDEN"), ishidden);
-            assertEquals(resultSet.getBoolean("ENABLED"), enabled);
+            assertEquals(resultSet.getString("FIRSTNAME"), firstName);
+            assertEquals(resultSet.getString("LASTNAME"), lastName);
             assertEquals(resultSet.getString("TYPE"), type);
-            assertEquals(resultSet.getString("NAME"), name);
-            assertEquals(resultSet.getString("ROOMNUM"), roomnum);
             databaseController.closeResultSet(resultSet);
         } catch (SQLException e){
             e.printStackTrace();
@@ -46,7 +54,10 @@ public class testNode {
 
     @Test
     public void testDelete(){
-        assertTrue(databaseController.deleteNode(x, y, floor));
+        assertTrue(databaseController.deleteProfessional(ID));
     }
 
+    public void tearDown(){
+        assertTrue(databaseController.deleteNode(x, y, floor));
+    }
 }
