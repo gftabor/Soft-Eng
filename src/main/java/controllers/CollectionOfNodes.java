@@ -32,6 +32,44 @@ public class CollectionOfNodes {
         floor7nodes = new HashMap<>();
     }
 
+    //resets all nodes to initial state for pathfinding
+    //applies to nodes in all hashmaps
+    //does two things to each node:
+    //  - sets cost to reach as infinite (MAX_INT)
+    //  - sets the reference to parentEdge to null
+    public void resetForPathfinding() {
+       for(Node n: floor1nodes.values()) {
+          n.setCostToReach(Integer.MAX_VALUE);
+          n.setParentEdge(null);
+       }
+        for(Node n: floor2nodes.values()) {
+            n.setCostToReach(Integer.MAX_VALUE);
+            n.setParentEdge(null);
+        }
+        for(Node n: floor3nodes.values()) {
+            n.setCostToReach(Integer.MAX_VALUE);
+            n.setParentEdge(null);
+        }
+        for(Node n: floor4nodes.values()) {
+            n.setCostToReach(Integer.MAX_VALUE);
+            n.setParentEdge(null);
+        }
+        for(Node n: floor5nodes.values()) {
+            n.setCostToReach(Integer.MAX_VALUE);
+            n.setParentEdge(null);
+        }
+        for(Node n: floor6nodes.values()) {
+            n.setCostToReach(Integer.MAX_VALUE);
+            n.setParentEdge(null);
+        }
+        for(Node n: floor7nodes.values()) {
+            n.setCostToReach(Integer.MAX_VALUE);
+            n.setParentEdge(null);
+        }
+
+    }
+
+    //add a node to the collection
     public void addNode(Node node) {
         // Add node entry to the hashmap
         int floor = node.getFloor();
