@@ -13,6 +13,10 @@ public class Node {
     private String name;
     private int floor;
 
+    //fields used for pathfinding:
+    private int costToReach;
+    private Edge parentEdge;
+
     private ArrayList<Edge> edges = new ArrayList<Edge>();
 
     //Basic Constructor
@@ -83,4 +87,20 @@ public class Node {
         return key;
     }
 
+    //some getters and setters
+    public int getCostToReach() {
+        return costToReach;
+    }
+
+    public void setCostToReach(int costToReach) {
+        this.costToReach = costToReach;
+    }
+
+    public Edge getParentEdge() {
+        return parentEdge;
+    }
+
+    public void setParentEdge(Edge parentEdge) {
+        this.parentEdge = parentEdge;
+    }
 }

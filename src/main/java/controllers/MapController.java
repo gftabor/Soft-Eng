@@ -23,7 +23,7 @@ public class MapController {
     }
 
     //internal representation of our node map
-    private CollectionOfNodes collectionOfNodes = new CollectionOfNodes();
+    private CollectionOfNodes collectionOfNodes;
 
     //get an instance of database controller
     DatabaseController databaseController = DatabaseController.getInstance();
@@ -45,6 +45,7 @@ public class MapController {
         ResultSet nodeRset = databaseController.getNodeSet();
         ResultSet edgeRset = databaseController.getEdgeSet();
 
+        //wipes old verson of collection of nodess
         collectionOfNodes = new CollectionOfNodes();
         edgeCollection = new ArrayList<Edge>();
 
