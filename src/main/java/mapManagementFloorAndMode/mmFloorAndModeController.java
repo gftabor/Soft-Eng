@@ -14,6 +14,7 @@ import javafx.scene.shape.Line;
 
 import javax.xml.soap.Text;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by AugustoR on 3/31/17.
@@ -177,7 +178,8 @@ public class mmFloorAndModeController extends controllers.AbsController{
 
             //Clicking on Nodes added to the Map
             btK.setOnMouseClicked(e -> {
-                        if (mode_ChoiceBox.getValue() == "Add Edge") {
+                        if (mode_ChoiceBox.getValue().equals("Add Edge")) {
+                            System.out.println("attempting to add edge");
                             edgesSelected++;
 
                             if (edgesSelected == 1){
@@ -235,6 +237,61 @@ public class mmFloorAndModeController extends controllers.AbsController{
             //add to list
             EdgeList.add(lne);
         }
+    }
+
+    public void setMapAndNodes(HashMap<Integer, Node> nodeMap){
+        int currentKey;
+        for(controllers.Node current: nodeMap.values()){
+            place_Old_Buttons(current.getPosX(), current.getPosY());
+        }
+    }
+
+    public void place_Old_Buttons(double nodeX, double nodeY){
+        System.out.println("checking button");
+        System.out.println("make button");
+        btK = new Button("node");
+
+        btK.setOnMouseClicked(e -> {
+            if (mode_ChoiceBox.getValue().equals("Add Edge")) {
+                System.out.println("attempting to add edge");
+                edgesSelected++;
+
+                if (edgesSelected == 1){
+                    //display edges already associated with selected node
+                    nodeEdgeX = (int) btK.getLayoutX();
+                    nodeEdgeY = (int) btK.getLayoutY();
+
+                    firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
+                            .getNode(nodeEdgeX, nodeEdgeY, 4);
+
+                    createEdgeLines(firstNode.getEdgeList());
+
+                }
+                if (edgesSelected == 2) {
+                    //create edge between the two nodes
+                    nodeEdgeX = (int) btK.getLayoutX();
+                    nodeEdgeY = (int) btK.getLayoutY();
+
+                    secondNode = controllers.MapController.getInstance().getCollectionOfNodes()
+                            .getNode(nodeEdgeX, nodeEdgeY, 4);
+
+                    DBController.DatabaseController.getInstance().newEdge( firstNode.getPosX(),
+                            firstNode.getPosY(),4, secondNode.getPosX(), secondNode.getPosY(), 4);
+
+                    edgesSelected = 0;
+                }
+            }
+        });
+
+        // this code sets node's x and y pos to be on the plane holding the graph
+        admin_FloorPane.getChildren().add(btK);
+        btK.setLayoutX(nodeX + (btK.getWidth()/2));
+        btK.setLayoutY(nodeY + (btK.getHeight()/2));
+        btK.toFront();
+
+        //copy functionality of other btKs except for placement
+
+        nodeList.add(btK);
     }
 
 }

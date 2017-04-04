@@ -80,6 +80,8 @@ public class adminMenuStartController extends controllers.AbsController{
         //Get the controller of the the scene
         mapManagementFloorAndMode.mmFloorAndModeController controller = loader.getController();
         //Set the username label
+        HashMap<Integer, Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
+        controller.setMapAndNodes(DBMap);
         controller.setUserString(username_Label.getText());
         controller.setModeChoices();
         controller.setTitleChoices();
