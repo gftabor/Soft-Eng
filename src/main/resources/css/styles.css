@@ -24,6 +24,10 @@ Dark Green: #2d626c
     -fx-font-size: 16pt;
 }
 
+.title{
+    -fx-font-size: 42pt;
+}
+
 .button{
     -fx-background-color: #2d626c;
     -fx-text-fill: white;
