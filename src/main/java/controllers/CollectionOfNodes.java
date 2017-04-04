@@ -109,21 +109,57 @@ public class CollectionOfNodes {
         }
     }
 
-/*
-    public String toString() {
-        System.out.println("---------- Printing all nodes in CollectionOfNodes ----------");
 
-        Iterator it = nodes.entrySet().iterator();
+    public String toString() {
+
+        String output = "";
+        for (int i = 1; i < 8; i++) {
+            output += toStringFloor(i);
+        }
+        return output;
+    }
+
+    //do this
+    public String toStringFloor(int floor) {
+
+        String output = "";
+        Iterator it;
+        switch (floor) {
+            case 1:
+                it = floor1nodes.entrySet().iterator();
+                break;
+            case 2:
+                it = floor2nodes.entrySet().iterator();
+                break;
+            case 3:
+                it = floor3nodes.entrySet().iterator();
+                break;
+            case 4:
+                it = floor4nodes.entrySet().iterator();
+                break;
+            case 5:
+                it = floor5nodes.entrySet().iterator();
+                break;
+            case 6:
+                it = floor6nodes.entrySet().iterator();
+                break;
+            case 7:
+                it = floor7nodes.entrySet().iterator();
+                break;
+            default:
+                System.out.println("Error: ToStringFloor");
+                //by default set to first floor
+                it = floor1nodes.entrySet().iterator();
+                break;
+        }
         while(it.hasNext()) {
-            Map.Entry node = (Map.Entry)it.next();
-            node.toString();
+            Map.Entry node = (Map.Entry) it.next();
+            output += node.toString();
             it.remove();
         }
-
-        System.out.println("-------------------------------------------------------------");
-        return null;
+        return output;
     }
-*/
+
     public Node getNode(int x, int y, int floor) {
         /*
         Node node;
