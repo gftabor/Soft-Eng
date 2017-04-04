@@ -38,14 +38,10 @@ public class Node {
     }
 
     public String toString() {
-        System.out.println("Node " + name + ":");
-        System.out.println("    Pos X: " + posX);
-        System.out.println("    Pos y: " + posY);
-        System.out.println("    Hidden: " + isHidden);
-        System.out.println("    Enabled: " + isEnabled);
-        //System.out.println("    Name: " + name);
+        String output;
+        output = "|Node " + name + ":" + " Pos X: " + posX + " Pos y: " + posY + "  Hidden: " + isHidden + "  Enabled: " + isEnabled + "|";
 
-        return null;
+        return output;
     }
 
     public int getPosX() {

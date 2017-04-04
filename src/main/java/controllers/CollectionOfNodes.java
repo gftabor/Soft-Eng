@@ -155,6 +155,7 @@ public class CollectionOfNodes {
         while(it.hasNext()) {
             Map.Entry node = (Map.Entry) it.next();
             output += node.toString();
+            output += "\n";
             it.remove();
         }
         return output;
