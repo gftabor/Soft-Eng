@@ -1,6 +1,8 @@
 package database;
 
 import DBController.DatabaseController;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import java.sql.*;
 
@@ -20,13 +22,14 @@ public class testNode {
     String name = "TEST";
     String roomnum = "TEST";
 
-    @Test
-    public void testAdd(){
-        assertTrue(databaseController.newNode(x, y, floor, ishidden, enabled, type, name, roomnum));
+    @Before
+    public void setUp(){
+        testNull();
     }
 
     @Test
-    public void wasAdded(){
+    public void testAddDelete(){
+        assertTrue(databaseController.newNode(x, y, floor, ishidden, enabled, type, name, roomnum));
         ResultSet resultSet = databaseController.getNode(x, y, floor);
         try{
             resultSet.next();
@@ -42,11 +45,21 @@ public class testNode {
         } catch (SQLException e){
             e.printStackTrace();
         }
-    }
-
-    @Test
-    public void testDelete(){
         assertTrue(databaseController.deleteNode(x, y, floor));
     }
 
+    public void testNull(){
+        ResultSet resultSet = databaseController.getNode(x, y, floor);
+        try{
+            resultSet.next();
+            assertEquals(resultSet.getInt("XPOS"), 0);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @After
+    public void tearDown(){
+        testNull();
+    }
 }
