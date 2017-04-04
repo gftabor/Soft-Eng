@@ -115,7 +115,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
                         // Do validation
                         System.out.println(newValue);
                         if(newValue.intValue()==0){
-                            create_Button();
+                            //create_Button();
                         } else if (newValue.intValue() == 1 || newValue.intValue() == 2) {
                             admin_FloorPane.getChildren().remove(btK);
                         }

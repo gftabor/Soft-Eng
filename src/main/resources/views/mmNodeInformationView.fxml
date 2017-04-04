@@ -84,6 +84,21 @@
          <right>
             <VBox prefHeight="547.0" prefWidth="471.0" BorderPane.alignment="CENTER">
                <children>
+                  <HBox prefHeight="105.0" prefWidth="471.0">
+                     <children>
+                        <Label prefHeight="31.0" prefWidth="115.0" text="Mode:">
+                           <font>
+                              <Font name="System Bold Italic" size="26.0" />
+                           </font>
+                        </Label>
+                        <ChoiceBox fx:id="mode_ChoiceBox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="234.0">
+                           <HBox.margin>
+                              <Insets bottom="3.0" left="80.0" right="5.0" top="3.0" />
+                           </HBox.margin>
+                        </ChoiceBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
                   <HBox>
                      <children>
                         <Label text="Title:">
@@ -96,7 +111,7 @@
                         </Label>
                         <ChoiceBox fx:id="title_choiceBox" prefHeight="40.0" prefWidth="234.0">
                            <HBox.margin>
-                              <Insets bottom="5.0" left="156.0" right="5.0" top="5.0" />
+                              <Insets bottom="5.0" left="127.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </ChoiceBox>
                      </children>
@@ -109,7 +124,7 @@
                   <HBox />
                   <HBox>
                      <children>
-                        <Label prefHeight="42.0" prefWidth="251.0" text="ID">
+                        <Label prefHeight="42.0" prefWidth="67.0" text="ID:">
                            <font>
                               <Font name="System Bold Italic" size="26.0" />
                            </font>
@@ -117,19 +132,19 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="id_TextField" prefHeight="40.0" prefWidth="348.0" promptText="ID">
+                        <TextField fx:id="id_TextField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="234.0" promptText="ID">
                            <font>
                               <Font size="20.0" />
                            </font>
                            <HBox.margin>
-                              <Insets bottom="5.0" left="85.0" right="5.0" top="5.0" />
+                              <Insets bottom="5.0" left="125.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </TextField>
                      </children>
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefHeight="42.0" prefWidth="251.0" text="First Name">
+                        <Label prefHeight="42.0" prefWidth="151.0" text="First Name:">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
@@ -137,9 +152,9 @@
                               <Font name="System Bold Italic" size="26.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="Firstname_TextField" prefHeight="40.0" prefWidth="348.0" promptText="First">
+                        <TextField fx:id="Firstname_TextField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="234.0" promptText="First">
                            <HBox.margin>
-                              <Insets bottom="5.0" left="85.0" right="5.0" top="5.0" />
+                              <Insets bottom="5.0" left="41.0" right="5.0" top="5.0" />
                            </HBox.margin>
                            <font>
                               <Font size="20.0" />
@@ -149,7 +164,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefHeight="42.0" prefWidth="151.0" text="Last Name">
+                        <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="156.0" text="Last Name:">
                            <font>
                               <Font name="System Bold Italic" size="26.0" />
                            </font>
@@ -157,12 +172,12 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="lastName_TextField" prefHeight="40.0" prefWidth="247.0" promptText="Last">
+                        <TextField fx:id="lastName_TextField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="234.0" promptText="Last">
                            <font>
                               <Font size="20.0" />
                            </font>
                            <HBox.margin>
-                              <Insets bottom="5.0" left="85.0" right="5.0" top="5.0" />
+                              <Insets bottom="5.0" left="38.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </TextField>
                      </children>
