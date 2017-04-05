@@ -132,14 +132,6 @@ public class MapController {
         databaseController.closeResultSet(edgeRset);
     }
 
-    private int generateMap() {
-        return 0;
-    }
-
-    private int drawMap() {
-        return 0;
-    }
-
     //Helper function to set nodes as start or end
     public int markNode(int x, int y, int type) {
         if(type == 1) {
@@ -187,10 +179,6 @@ public class MapController {
         pathfinder.generatePath(startNode, endNode);
         System.out.println("true cost  " + endNode.getTotalCost());
         System.out.println("guess  " +startNode.getTotalCost());
-        return 0;
-    }
-
-    private int updateInstructions() {
         return 0;
     }
 }
