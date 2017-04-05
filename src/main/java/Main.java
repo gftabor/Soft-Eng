@@ -1,6 +1,5 @@
-import java.sql.*;
-
 import DBController.DatabaseController;
+import controllers.CollectionOfNodes;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,11 +7,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
-
-import controllers.Node;
-import controllers.CollectionOfNodes;
-
-import javax.xml.crypto.Data;
 
 public class Main extends Application {
 
@@ -32,13 +26,9 @@ public class Main extends Application {
         primaryStage.show();
 
 
-        /*
-        DBController.DatabaseController DBobject = new DatabaseController();
-        DBobject.startDB();
-         */
         DatabaseController databaseController = DatabaseController.getInstance();
         databaseController.startDB();
-        //databaseController.newNode(9, 7, true, "test", 4);
+
     }
 
     public static void main(String[] args) throws SQLException{

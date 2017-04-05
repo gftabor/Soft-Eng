@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -15,7 +21,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapManagementFloorAndMode.mmFloorAndModeController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapManagementFloorAndMode.mmFloorAndModeController">
    <children>
       <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -77,7 +83,7 @@
             </HBox>
          </bottom>
          <right>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="546.0" prefWidth="792.0" BorderPane.alignment="CENTER">
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="771.0" BorderPane.alignment="CENTER">
                <children>
                   <HBox>
                      <children>
@@ -93,10 +99,18 @@
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox prefHeight="560.0" prefWidth="771.0">
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8f8f8" height="510.0" stroke="BLACK" strokeType="INSIDE" width="690.0" />
+                        <Pane fx:id="admin_FloorPane" prefHeight="506.0" prefWidth="1006.0">
+                           <children>
+                              <ImageView fitHeight="489.0" fitWidth="772.0">
+                                 <image>
+                                    <Image url="@../images/4.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
@@ -104,7 +118,7 @@
             </VBox>
          </right>
          <center>
-            <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="503.0" BorderPane.alignment="CENTER">
+            <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="548.0" prefWidth="503.0" BorderPane.alignment="CENTER">
                <children>
                   <Region prefHeight="57.0" prefWidth="503.0" />
                   <HBox>
@@ -118,11 +132,6 @@
                               <Insets top="3.0" />
                            </HBox.margin>
                         </Label>
-                        <Spinner fx:id="floorChoices_Spinner" max="8" min="1" prefHeight="40.0" prefWidth="100.0">
-                           <HBox.margin>
-                              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-                           </HBox.margin>
-                        </Spinner>
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
@@ -137,7 +146,7 @@
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </HBox.margin>
                         </Label>
-                        <ChoiceBox fx:id="mode_ChoiceBox" prefHeight="40.0" prefWidth="100.0">
+                        <ChoiceBox fx:id="mode_ChoiceBox" prefHeight="40.0" prefWidth="210.0">
                            <HBox.margin>
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </HBox.margin>
@@ -238,7 +247,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Button fx:id="cancel_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Cancel">
+                        <Button fx:id="clear_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#clearButton_Clicked" prefHeight="48.0" prefWidth="120.0" text="Clear">
                            <HBox.margin>
                               <Insets bottom="4.0" left="15.0" right="4.0" top="4.0" />
                            </HBox.margin>
@@ -247,7 +256,7 @@
                            </font>
                         </Button>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="submit_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" prefHeight="40.0" prefWidth="120.0" text="Submit">
+                        <Button fx:id="submit_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" prefHeight="47.0" prefWidth="120.0" text="Submit">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
@@ -255,6 +264,7 @@
                               <Font size="23.0" />
                            </font>
                         </Button>
+                        <Region prefHeight="63.0" prefWidth="82.0" />
                      </children>
                      <VBox.margin>
                         <Insets top="20.0" />
