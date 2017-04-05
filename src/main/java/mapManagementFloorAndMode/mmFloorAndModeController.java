@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -298,11 +299,11 @@ public class mmFloorAndModeController extends controllers.AbsController{
             admin_FloorPane.getChildren().remove(current);
         }
         for(controllers.Node current: nodeMap.values()){
-            place_Old_Buttons(current.getPosX(), current.getPosY());
+            place_Old_Buttons(current.getPosX(), current.getPosY(), current.getIsHidden(), current.getEnabled());
         }
     }
 
-    public void place_Old_Buttons(double nodeX, double nodeY){
+    public void place_Old_Buttons(double nodeX, double nodeY, boolean hidden, boolean enabled){
         System.out.println("checking button");
         System.out.println("make button");
         btK = new Circle(lableRadius);//new Button("node");
@@ -315,6 +316,16 @@ public class mmFloorAndModeController extends controllers.AbsController{
         admin_FloorPane.getChildren().add(btK);
         btK.setLayoutX(nodeX);
         btK.setLayoutY(nodeY);
+
+        //change color if required
+        //hidden -> grey
+        //disabled -> dark red
+        if (enabled == false) {
+            btK.setFill(Color.DARKRED);
+        } else if (hidden == true) {
+            btK.setFill(Color.GRAY);
+        }
+
         btK.toFront();
 
         //copy functionality of other btKs except for placement
