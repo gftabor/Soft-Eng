@@ -67,6 +67,8 @@ public class mmNodeInformationController extends controllers.AbsController {
     @FXML
     private Label error_LabelText;
 
+    int c_mode = -1;
+
 
 
     boolean flag = false;
@@ -214,10 +216,12 @@ public class mmNodeInformationController extends controllers.AbsController {
             flag = 0;
         }
 
-        title_choiceBox.getSelectionModel().select(flag);
-        id_TextField.setText(id);
-        Firstname_TextField.setText(firstName);
-        lastName_TextField.setText(lastName);
+        if(c_mode != 0) {
+            title_choiceBox.getSelectionModel().select(flag);
+            id_TextField.setText(id);
+            Firstname_TextField.setText(firstName);
+            lastName_TextField.setText(lastName);
+        }
 
 
     }
@@ -280,6 +284,7 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     //The add settings for the user to add a Doctor/nurse
     public void add_settings(){
+        c_mode = 0;
         System.out.println("Add settings");
         error_LabelText.setText("Adding");
 
@@ -301,6 +306,7 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     //The remove settings for the user to remove a Doctor/nurse
     public void remove_settings(){
+        c_mode = 1;
         System.out.println("remove settings");
 
         //sets the properties
@@ -313,6 +319,7 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     //The remove settings for the user to remove a Doctor/nurse
     public void edit_settings(){
+        c_mode = 2;
         System.out.println("edit settings");
 
         //sets the properties
