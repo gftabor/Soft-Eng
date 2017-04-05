@@ -247,7 +247,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Button fx:id="cancel_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="48.0" prefWidth="120.0" text="Cancel">
+                        <Button fx:id="clear_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="48.0" prefWidth="120.0" text="Clear">
                            <HBox.margin>
                               <Insets bottom="4.0" left="15.0" right="4.0" top="4.0" />
                            </HBox.margin>
