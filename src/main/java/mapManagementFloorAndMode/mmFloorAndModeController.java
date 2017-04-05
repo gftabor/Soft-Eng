@@ -161,8 +161,9 @@ public class mmFloorAndModeController extends controllers.AbsController{
                     admin_FloorPane.getChildren().add(newButton);
                     newButton.toFront();
 
-                    mode_ChoiceBox.getSelectionModel().select("---");
                 }
+                mode_ChoiceBox.getSelectionModel().select("---");
+
                 break;
 
             case "Edit Node":
