@@ -87,27 +87,41 @@ public class mmNodeInformationController extends controllers.AbsController {
         final String tempID = id_TextField.getText();
         final String tempFirstName = Firstname_TextField.getText();
         final String tempLastName = lastName_TextField.getText();
-        switch(title_choiceBox.getValue()) {
-            case "Doctor":
-                databaseController.newProfessional(tempID, 4, 5, 0,
-                        tempFirstName, tempLastName, "Doctor");
-                System.out.println("Adding doctor");
-                break;
-            case "Nurse":
-                databaseController.newProfessional(tempID, 0, 0, 0,
-                        tempFirstName, tempLastName, "Nurse");
-                System.out.println("Adding Nurse");
-                break;
-            default:
-                System.out.println("Nothing selected for mode");
-                break;
+        if (c_mode == 0) {
+            // add
+            switch (title_choiceBox.getValue()) {
+                case "Doctor":
+                    databaseController.newProfessional(tempID, 4, 5, 0,
+                            tempFirstName, tempLastName, "Doctor");
+                    System.out.println("Adding doctor");
+                    break;
+                case "Nurse":
+                    databaseController.newProfessional(tempID, 0, 0, 0,
+                            tempFirstName, tempLastName, "Nurse");
+                    System.out.println("Adding Nurse");
+                    break;
+                default:
+                    System.out.println("Nothing selected for mode");
+                    break;
+            }
+        } else if (c_mode == 1) {
+            // remove
+            databaseController.deleteProfessional(id_TextField.getText());
+        } else if (c_mode == 2) {
+            // edit
+            databaseController.EditProfessional(id_TextField.getText(), 0, 0, 0, Firstname_TextField.getText(),
+                    lastName_TextField.getText(), title_choiceBox.getValue());
+        } else {
+            // nothing
         }
         // createDirectoryTreeView();
-        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/mmNodeInformationView.fxml");
-        mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
-        controller.createDirectoryTreeView();
-        controller.setTitleChoices();
-        controller.setModeChoices();
+        if(c_mode != -1) {
+            FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/mmNodeInformationView.fxml");
+            mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
+            controller.createDirectoryTreeView();
+            controller.setTitleChoices();
+            controller.setModeChoices();
+        }
     }
 
     public void emergencyButton_Clicked() {
@@ -308,7 +322,6 @@ public class mmNodeInformationController extends controllers.AbsController {
     public void remove_settings(){
         c_mode = 1;
         System.out.println("remove settings");
-
         //sets the properties
         title_choiceBox.setDisable(true);
         id_TextField.setEditable(false);
