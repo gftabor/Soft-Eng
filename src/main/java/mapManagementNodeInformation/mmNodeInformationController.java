@@ -173,9 +173,48 @@ public class mmNodeInformationController extends controllers.AbsController {
                 .addListener((v, oldValue, newValue) -> {
                     if (newValue != null) {
                         System.out.println(newValue.getValue());
+                        pullProfessional(newValue.getValue());
                     }
                 });
         flag = false;
+
+    }
+
+    // this is to include id to allow for multiple doctors
+    public void pullProfessional(String fullName){
+        ResultSet rset;
+        String id = null;
+        String firstName;
+        String lastName;
+        String type = null;
+
+        String[] bothNames = fullName.split("\\s+");
+        firstName = bothNames[0];
+        lastName = bothNames[1];
+
+        rset = databaseController.getProfessional(firstName, lastName);
+
+        try {
+            rset = databaseController.getProfessional(firstName, lastName);
+            while (rset.next()){
+                id = rset.getString("ID");
+                type = rset.getString("TYPE");
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        int flag = 1;
+        if ("Doctor".equals(type)){
+            flag = 0;
+        }
+
+        title_choiceBox.getSelectionModel().select(flag);
+        id_TextField.setText(id);
+        Firstname_TextField.setText(firstName);
+        lastName_TextField.setText(lastName);
+
 
     }
 
