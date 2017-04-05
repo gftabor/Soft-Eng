@@ -1,11 +1,13 @@
 package patientMenuStart;
 
+import controllers.MapController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;  //NOT JAVA SWING
 import javafx.scene.layout.AnchorPane;
+
+import java.util.HashMap;
 
 
 /**
@@ -63,8 +65,11 @@ public class patientMenuStartController extends controllers.AbsController{
 
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/pathFindingMenuView.fxml");
         pathFindingMenu.pathFindingMenuController controller = loader.getController();
+        MapController.getInstance().requestFloorMapCopy();
+        MapController.getInstance().requestMapCopy();
+        HashMap<Integer, controllers.Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
 
-
+        controller.setMapAndNodes(DBMap);
         controller.setUserString("");
 
     }
