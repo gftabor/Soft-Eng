@@ -45,6 +45,9 @@ public class mmFloorAndModeController extends controllers.AbsController{
     @FXML
     private Button mainMenu_Button;
 
+    @FXML
+    private Button clear_Button;
+
     //Add the name and Room
     @FXML
     private TextField name_TextField;
@@ -59,7 +62,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
 
     private ArrayList<Button> nodeList = new ArrayList();
 
-    private ArrayList lineList = new ArrayList();
+    private ArrayList<Line> lineList = new ArrayList();
 
     private Line lne;
 
@@ -107,7 +110,6 @@ public class mmFloorAndModeController extends controllers.AbsController{
         final String tempRoom = room_TextField.getText();
         final int floor = 4;
         final String name = "Mark?";
-        edgesSelected = 0;
 
 
         switch(mode_ChoiceBox.getValue()) {
@@ -146,10 +148,12 @@ public class mmFloorAndModeController extends controllers.AbsController{
                 System.out.println("Mode = remove node");
                 break;
             case "Add Edge":
-                System.out.println("Mode = add edge");
-                DBController.DatabaseController.getInstance().newEdge( nodeEdgeX1,
-                        nodeEdgeY1,4, nodeEdgeX2, nodeEdgeY2, 4);
-
+                if (edgesSelected == 2) {
+                    System.out.println("Mode = add edge");
+                    DBController.DatabaseController.getInstance().newEdge(nodeEdgeX1,
+                            nodeEdgeY1, 4, nodeEdgeX2, nodeEdgeY2, 4);
+                    System.out.println("added edge");
+                }
                 break;
             case "Remove Edge":
                 System.out.println("Mode = remove edge");
@@ -160,6 +164,8 @@ public class mmFloorAndModeController extends controllers.AbsController{
         }
         controllers.MapController.getInstance().requestMapCopy();
         setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(4));
+
+        edgesSelected = 0;
 
     }
 
@@ -241,6 +247,9 @@ public class mmFloorAndModeController extends controllers.AbsController{
     //NOTE: caller is responsible for not sending duplicate edges
     public void createEdgeLines(ArrayList<controllers.Edge> edgeList) {
         //for-each loop through arraylist
+        for(Line currentLine : lineList) {
+            admin_FloorPane.getChildren().remove(currentLine);
+        }
         for(controllers.Edge thisEdge: edgeList) {
             lne = new Line();
 
