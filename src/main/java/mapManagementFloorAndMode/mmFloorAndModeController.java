@@ -92,7 +92,6 @@ public class mmFloorAndModeController extends controllers.AbsController{
             //create edge between the two nodes
             nodeEdgeX2 = (int) x;
             nodeEdgeY2 = (int) y;
-            edgesSelected = 0;
         }
     }
 
@@ -105,6 +104,8 @@ public class mmFloorAndModeController extends controllers.AbsController{
         final String tempRoom = room_TextField.getText();
         final int floor = 4;
         final String name = "Mark?";
+        edgesSelected = 0;
+
 
         switch(mode_ChoiceBox.getValue()) {
             case "---":
