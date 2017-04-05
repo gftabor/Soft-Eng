@@ -20,7 +20,9 @@ public class AdminLoginManager {
         */
 
         encrypted = databaseController.getPassword(username);
-
+        if(encrypted == null){
+            return 0;
+        }
         if(BCrypt.checkpw(password, encrypted)){
             return 1;
         }
