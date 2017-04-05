@@ -1,29 +1,18 @@
 package pathFindingMenu;
 
 import controllers.MapController;
-import javafx.beans.InvalidationListener;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Line;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.ColorModel;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by AugustoR on 3/30/17.
@@ -74,9 +63,11 @@ public class pathFindingMenuController extends controllers.AbsController{
 
     private ArrayList ButtonList = new ArrayList();
 
-    private ArrayList EdgeList = new ArrayList();
+    private ArrayList<Line> lineList = new ArrayList();
 
     private int selectionState = 0;
+
+    private HashMap<Integer, controllers.Node> currentNodeMap;
 
     private MapController mapController = MapController.getInstance();
 
@@ -89,15 +80,19 @@ public class pathFindingMenuController extends controllers.AbsController{
 
     public void cancelButton_Clicked(){
         selectionState = 0;
+        setMapAndNodes(currentNodeMap);
         //Remove black and red dots from map
     }
 
     public void submitButton_Clicked(){
         if (selectionState == 2) {
             //submit stuff
+            createEdgeLines(mapController.getEdgeCollection());
             mapController.requestPath();
         }
+        selectionState=0;
         System.out.println("The user has clicked the submit Button");
+        cancelButton_Clicked();
     }
 
     public void mainMenuButton_Clicked(){
@@ -115,10 +110,25 @@ public class pathFindingMenuController extends controllers.AbsController{
     }
 
     //takes in a Hashtable when scene is switched and calls setNodes
-    public void setMapAndNodes(HashMap<Integer, controllers.Node> nodeMap){
-        int currentKey;
+    public void setMapAndNodes(HashMap<Integer, controllers.Node> nodeMap) {
+        currentNodeMap = nodeMap;
+
+        // Clear circles from the scene
+        while (ButtonList.size() < 0) {
+            node_Plane.getChildren().remove(ButtonList.get(0));
+            ButtonList.remove(0);
+        }
+
+        // Add all the nodes onto the scene as buttons
         for(controllers.Node current: nodeMap.values()){
-         create_Button(current.getPosX(), current.getPosY());
+
+            //criteria for node to display:
+            //  - node must be enabled
+            //  - node must not be hidden
+            if (current.getIsHidden() == false && current.getEnabled() == true) {
+                create_Button(current.getPosX(), current.getPosY());
+            }
+            //else skip displaying the node
         }
     }
 
@@ -133,8 +143,8 @@ public class pathFindingMenuController extends controllers.AbsController{
     }
 
     public void create_Button(double nodeX, double nodeY){
-        System.out.println("checking button");
-        System.out.println("make button");
+        //System.out.println("checking button");
+        //System.out.println("make button");
         btK = new Circle(lableRadius);
         btK.setOnMouseClicked(e -> {
 
@@ -192,6 +202,9 @@ public class pathFindingMenuController extends controllers.AbsController{
     //NOTE: caller is responsible for not sending duplicate edges
     public void createEdgeLines(ArrayList<controllers.Edge> edgeList) {
         //for-each loop through arraylist
+        for(Line currentLine : lineList) {
+            node_Plane.getChildren().remove(currentLine);
+        }
         for(controllers.Edge thisEdge: edgeList) {
             lne = new Line();
 
@@ -207,7 +220,7 @@ public class pathFindingMenuController extends controllers.AbsController{
             lne.toFront();
 
             //add to list
-            EdgeList.add(lne);
+            lineList.add(lne);
         }
     }
 
