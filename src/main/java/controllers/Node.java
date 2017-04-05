@@ -48,6 +48,7 @@ public class Node implements Comparable<Node>{
         this.isEnabled = true;
         this.name = name;
         this.floor = floor;
+        this.type = "Doctor's Office";
         this.costToReach = Integer.MAX_VALUE;
         this.totalCost = Integer.MAX_VALUE; //costToReach + hueristic
     }
