@@ -86,7 +86,6 @@ public class MapController {
 
 
         try {
-
             //instantiate edges and add to corresponding nodes
             int x1, y1, x2, y2, floor1, floor2;
             Edge myEdge;
