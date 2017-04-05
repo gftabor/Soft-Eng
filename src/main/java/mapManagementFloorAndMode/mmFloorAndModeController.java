@@ -138,10 +138,20 @@ public class mmFloorAndModeController extends controllers.AbsController{
                         !("".equals(room_TextField.getText()))) {
 
                     System.out.println("Mode = add");
+                    //get type
+                    String type;
+                    switch(title_ChoiceBox.getValue()) {
+                        case "---":
+                            type = "Doctor's Office"; //doctor by default
+                            break;
+                        default:
+                            type = title_ChoiceBox.getValue();
+                            break;
+                    }
                     Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                            hidden_CheckBox.isSelected(), true, name, floor);
+                            floor, hidden_CheckBox.isSelected(), true, type, tempName, tempRoom);
                     DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                            floor, hidden_CheckBox.isSelected(), true, "Doctor", tempName, tempRoom);
+                            floor, hidden_CheckBox.isSelected(), true, type, tempName, tempRoom);
 
                     Circle newButton = new Circle(lableRadius);
                     newButton.setLayoutX(newNode.getPosX());
@@ -168,6 +178,29 @@ public class mmFloorAndModeController extends controllers.AbsController{
 
             case "Edit Node":
                 System.out.println("Mode = edit node");
+                //get latest touched node
+                boolean newHidden = hidden_CheckBox.isSelected();
+                boolean newEnabled = true;
+                String newType;
+                String newName = name_TextField.getText();
+                String newRoomnum = room_TextField.getText();
+
+                switch(title_ChoiceBox.getValue()) {
+                    case "---":
+                        newType = "Doctor's Office"; //doctor by default
+                        break;
+                    default:
+                        newType = title_ChoiceBox.getValue();
+                        break;
+                }
+
+                //delete old node
+                DBController.DatabaseController.getInstance().deleteNode(firstNode.getPosX(), firstNode.getPosY(), 4);
+
+                //add new version
+                DBController.DatabaseController.getInstance().newNode(firstNode.getPosX(), firstNode.getPosY(),
+                        firstNode.getFloor(),newHidden, true,newType,newName,newRoomnum);
+
                 break;
             case "Remove Node":
                 System.out.println("Mode = remove node");
