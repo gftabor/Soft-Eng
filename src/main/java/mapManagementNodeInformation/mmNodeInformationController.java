@@ -96,7 +96,12 @@ public class mmNodeInformationController extends controllers.AbsController {
                 System.out.println("Nothing selected for mode");
                 break;
         }
-        createDirectoryTreeView();
+        // createDirectoryTreeView();
+        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/mmNodeInformationView.fxml");
+        mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
+        controller.createDirectoryTreeView();
+        controller.setTitleChoices();
+        controller.setModeChoices();
     }
 
     public void emergencyButton_Clicked() {
@@ -171,7 +176,9 @@ public class mmNodeInformationController extends controllers.AbsController {
                     }
                 });
         flag = false;
+
     }
+
 
     //Create branches
     public TreeItem<String> makeBranch(String title, TreeItem<String> parent) {
