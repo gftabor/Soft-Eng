@@ -206,6 +206,9 @@ public class mmFloorAndModeController extends controllers.AbsController{
                 System.out.println("Mode = remove node");
                 for(controllers.Edge thisEdge : firstNode.getEdgeList()) {
                     thisEdge.getNeighbor(firstNode).getEdgeList().remove(thisEdge);
+                    DBController.DatabaseController.getInstance().deleteEdge(thisEdge.getStartNode().getPosX(),
+                            thisEdge.getStartNode().getPosY(), thisEdge.getStartNode().getFloor(),thisEdge.getEndNode().getPosX(),
+                            thisEdge.getEndNode().getPosY(), thisEdge.getEndNode().getFloor());
                 }
                 DBController.DatabaseController.getInstance().deleteNode(firstNode.getPosX(),firstNode.getPosY(),4);
                 break;
