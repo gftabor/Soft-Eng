@@ -40,7 +40,7 @@
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                            <font>
-                              <Font name="System Bold Italic" size="30.0" />
+                              <Font size="30.0" />
                            </font>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />

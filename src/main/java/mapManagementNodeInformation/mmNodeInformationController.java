@@ -71,7 +71,8 @@ public class mmNodeInformationController extends controllers.AbsController {
 
 
 
-    boolean flag = true;
+    int openDirectory;
+
 
 
     //get an instance of database controller
@@ -93,10 +94,12 @@ public class mmNodeInformationController extends controllers.AbsController {
             // add
             switch (title_choiceBox.getValue()) {
                 case "Doctor":
+                    openDirectory = 1;
                     added = databaseController.newProfessional(tempID, 4, 5, 0,
                             tempFirstName, tempLastName, "Doctor");
                     break;
                 case "Nurse":
+                    openDirectory = 2;
                     added = databaseController.newProfessional(tempID, 0, 0, 0,
                             tempFirstName, tempLastName, "Nurse");
                     break;
@@ -106,9 +109,19 @@ public class mmNodeInformationController extends controllers.AbsController {
             }
         } else if (c_mode == 1) {
             // remove
+            if(title_choiceBox.getValue().equals("Doctor")) {
+                openDirectory = 1;
+            }else if(title_choiceBox.getValue().equals("Nurse")){
+                openDirectory = 2;
+            }
             databaseController.deleteProfessional(id_TextField.getText());
         } else if (c_mode == 2) {
             // edit
+            if(title_choiceBox.getValue().equals("Doctor")) {
+                openDirectory = 1;
+            }else if(title_choiceBox.getValue().equals("Nurse")){
+                openDirectory = 2;
+            }
             databaseController.EditProfessional(id_TextField.getText(), 0, 0, 0, Firstname_TextField.getText(),
                     lastName_TextField.getText(), title_choiceBox.getValue());
         } else {
@@ -118,9 +131,13 @@ public class mmNodeInformationController extends controllers.AbsController {
         if(c_mode != -1) {
             FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/mmNodeInformationView.fxml");
             mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
+            controller.setOpenDirectory(openDirectory);
             controller.createDirectoryTreeView();
             controller.setTitleChoices();
             controller.setModeChoices();
+            controller.setCurrentMode(c_mode);
+            controller.setUser(currentAdmin_Label.getText());
+            System.out.println(openDirectory);
             if(!added){
                 controller.setError("This ID already exists!");
            }else{
@@ -136,7 +153,11 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     public void mainMenuButton_Clicked() {
         System.out.println("The user has clicked the sign out Button");
-        switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
+
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
+        adminMenuStart.adminMenuStartController controller = loader.getController();
+        //Set the correct username for the next scene
+        controller.setUsername(currentAdmin_Label.getText());
 
     }
 
@@ -178,8 +199,10 @@ public class mmNodeInformationController extends controllers.AbsController {
                     doctorsList.get(i).getLastName(), doctors);
             i++;
         }
-        if(!flag){
-          doctors.setExpanded(false);
+
+        doctors.setExpanded(false);
+        if(openDirectory == 1){
+            doctors.setExpanded(true);
         }
 
         i = 0;
@@ -190,9 +213,12 @@ public class mmNodeInformationController extends controllers.AbsController {
                     nursesList.get(i).getLastName(), nurses);
             i++;
         }
-        if(flag) {
-            nurses.setExpanded(false);
+
+        nurses.setExpanded(false);
+        if(openDirectory == 2){
+            nurses.setExpanded(true);
         }
+
         directory_TreeView.setRoot(root);
         directory_TreeView.getSelectionModel().selectedItemProperty()
                 .addListener((v, oldValue, newValue) -> {
@@ -201,7 +227,6 @@ public class mmNodeInformationController extends controllers.AbsController {
                         pullProfessional(newValue.getValue());
                     }
                 });
-        flag = true;
 
     }
 
@@ -350,6 +375,21 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     public void setError(String error){
         error_LabelText.setText(error);
+    }
+
+    public void setUser(String user){
+        currentAdmin_Label.setText(user);
+    }
+
+    public void setOpenDirectory(int i){
+        System.out.println("LOOK THIS");
+        System.out.println(i);
+        openDirectory = i;
+    }
+
+    public void setCurrentMode(int i){
+        mode_ChoiceBox.getSelectionModel().select(i);
+
     }
 }
 
