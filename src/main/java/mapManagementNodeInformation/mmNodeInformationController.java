@@ -92,14 +92,14 @@ public class mmNodeInformationController extends controllers.AbsController {
                 case "Doctor":
                     openDirectory = 1;
                     System.out.println("Adding new professional -------------------");
-                    added = databaseController.newProfessional(tempID, 0, 0, 0,
-                            tempFirstName, tempLastName, "Doctor");
+                    added = databaseController.newProfessional(tempFirstName,
+                            tempLastName, "Doctor");
                     System.out.println("Added the professional ====================");
                     break;
                 case "Nurse":
                     openDirectory = 2;
-                    added = databaseController.newProfessional(tempID, 0, 0, 0,
-                            tempFirstName, tempLastName, "Nurse");
+                    added = databaseController.newProfessional(tempFirstName,
+                            tempLastName, "Nurse");
                     break;
                 default:
                     System.out.println("Nothing selected for mode");
@@ -120,7 +120,21 @@ public class mmNodeInformationController extends controllers.AbsController {
             }else if(title_choiceBox.getValue().equals("Nurse")){
                 openDirectory = 2;
             }
-            databaseController.EditProfessional(id_TextField.getText(), 0, 0, 0, Firstname_TextField.getText(),
+
+            int id = 0;
+            ResultSet rset = databaseController.getProfessional(Firstname_TextField.getText(),
+                    lastName_TextField.getText());
+            System.out.println("===================== editing");
+            try {
+                while(rset.next()){
+                    id = rset.getInt("ID");
+                    System.out.println("--------------------- ID: " + id);
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+
+            databaseController.EditProfessional(id, Firstname_TextField.getText(),
                     lastName_TextField.getText(), title_choiceBox.getValue());
         } else {
             // nothing
@@ -239,8 +253,6 @@ public class mmNodeInformationController extends controllers.AbsController {
         String[] bothNames = fullName.split("\\s+");
         firstName = bothNames[0];
         lastName = bothNames[1];
-
-        rset = databaseController.getProfessional(firstName, lastName);
 
         try {
             rset = databaseController.getProfessional(firstName, lastName);

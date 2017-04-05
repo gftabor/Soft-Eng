@@ -54,7 +54,7 @@ public class DatabaseController {
     private Connection getDatabaseConnection(){
         Connection conn;
         try {
-            conn = DriverManager.getConnection("jdbc:derby:FaulknerDB");
+            conn = DriverManager.getConnection("jdbc:derby:FaulknerDB;create=true;");
         } catch (SQLException e) {
             System.out.println("Database connection failed.");
             e.printStackTrace();
@@ -382,6 +382,25 @@ public class DatabaseController {
         return true;
     }
 
+    public ResultSet getProfessional (String firstName, String lastName){
+        ResultSet resultSet = null;
+        System.out.println(
+                String.format(
+                        "Getting professional. firstName: %s, lastName: %s",
+                        firstName, lastName));
+        try{
+            String query = "SELECT * FROM PROFESSIONAL WHERE FIRSTNAME = ? AND LASTNAME = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
     public ResultSet getProfessional(String firstName, String lastName, String type){
         ResultSet resultSet = null;
         System.out.println(
@@ -417,7 +436,6 @@ public class DatabaseController {
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, type);
             // run statement and query
-
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -427,6 +445,46 @@ public class DatabaseController {
         return true;
     }
 
+    public boolean deleteProfessional(String ID){
+        ResultSet resultSet = null;
+        System.out.println(
+                String.format(
+                        "Deleting professional. String %s", ID));
+        try{
+            String query = "DELETE FROM PROFESSIONAL WHERE ID = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, ID);
+            // run statement and query
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean EditProfessional(int ID, String firstName, String lastName, String type){
+        System.out.println(
+                String.format(
+                        "Editing professional. firstName: %s, lastName: %s, type: %s",
+                        firstName, lastName, type));
+        try{
+            String query = "UPDATE PROFESSIONAL SET FIRSTNAME = ?, LASTNAME = ? AND TYPE = ?" +
+                    "WHERE ID = ";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setString(3, type);
+            preparedStatement.setInt(4, ID);
+            // run statement and query
+            preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
     /*******************************************************************************
      * PROFESSIONAL - LOCATION actions
      *
