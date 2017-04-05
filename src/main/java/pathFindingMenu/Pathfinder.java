@@ -86,7 +86,7 @@ public class Pathfinder {
             frontier.remove(0);
         }
         Node viewingNode = endNode;
-        while(!viewingNode.equals(startNode)){
+        while(!viewingNode.equals(startNode) && finished){
             path.add(viewingNode.getParentEdge());
             viewingNode = viewingNode.getParentEdge().getNeighbor(viewingNode);
         }
