@@ -280,6 +280,22 @@ public class DatabaseController {
         return resultSet;
     }
 
+    public ResultSet getProfessional(String firstName, String lastName){
+        ResultSet resultSet = null;
+        try{
+            String query = "SELECT * FROM PROFESSIONAL WHERE FIRSTNAME = ? AND LASTNAME = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
     public boolean deleteProfessional(String ID){
         try{
             String sqlString = "DELETE FROM PROFESSIONAL WHERE ID = ?";
