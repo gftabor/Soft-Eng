@@ -71,7 +71,7 @@ public class mmNodeInformationController extends controllers.AbsController {
 
 
 
-    boolean flag = false;
+    boolean flag = true;
 
 
     //get an instance of database controller
@@ -83,22 +83,22 @@ public class mmNodeInformationController extends controllers.AbsController {
     }
 
     public void submitButton_Clicked() {
+
         System.out.println("The user has clicked the submit Button");
         final String tempID = id_TextField.getText();
         final String tempFirstName = Firstname_TextField.getText();
         final String tempLastName = lastName_TextField.getText();
+        boolean added = true;
         if (c_mode == 0) {
             // add
             switch (title_choiceBox.getValue()) {
                 case "Doctor":
-                    databaseController.newProfessional(tempID, 4, 5, 0,
+                    added = databaseController.newProfessional(tempID, 4, 5, 0,
                             tempFirstName, tempLastName, "Doctor");
-                    System.out.println("Adding doctor");
                     break;
                 case "Nurse":
-                    databaseController.newProfessional(tempID, 0, 0, 0,
+                    added = databaseController.newProfessional(tempID, 0, 0, 0,
                             tempFirstName, tempLastName, "Nurse");
-                    System.out.println("Adding Nurse");
                     break;
                 default:
                     System.out.println("Nothing selected for mode");
@@ -121,6 +121,11 @@ public class mmNodeInformationController extends controllers.AbsController {
             controller.createDirectoryTreeView();
             controller.setTitleChoices();
             controller.setModeChoices();
+            if(!added){
+                controller.setError("This ID already exists!");
+           }else{
+                controller.setError("");
+            }
         }
     }
 
@@ -185,7 +190,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                     nursesList.get(i).getLastName(), nurses);
             i++;
         }
-        if(!flag) {
+        if(flag) {
             nurses.setExpanded(false);
         }
         directory_TreeView.setRoot(root);
@@ -196,7 +201,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                         pullProfessional(newValue.getValue());
                     }
                 });
-        flag = false;
+        flag = true;
 
     }
 
@@ -236,8 +241,6 @@ public class mmNodeInformationController extends controllers.AbsController {
             Firstname_TextField.setText(firstName);
             lastName_TextField.setText(lastName);
         }
-
-
     }
 
 
@@ -300,7 +303,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     public void add_settings(){
         c_mode = 0;
         System.out.println("Add settings");
-        error_LabelText.setText("Adding");
+        error_LabelText.setText("");
 
 
         //Starts the choices for the user
@@ -322,6 +325,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     public void remove_settings(){
         c_mode = 1;
         System.out.println("remove settings");
+        error_LabelText.setText("");
         //sets the properties
         title_choiceBox.setDisable(true);
         id_TextField.setEditable(false);
@@ -334,6 +338,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     public void edit_settings(){
         c_mode = 2;
         System.out.println("edit settings");
+        error_LabelText.setText("");
 
         //sets the properties
         title_choiceBox.setDisable(false);
@@ -341,6 +346,10 @@ public class mmNodeInformationController extends controllers.AbsController {
         Firstname_TextField.setEditable(true);
         lastName_TextField.setEditable(true);
 
+    }
+
+    public void setError(String error){
+        error_LabelText.setText(error);
     }
 }
 
