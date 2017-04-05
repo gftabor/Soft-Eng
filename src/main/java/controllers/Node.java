@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Node implements Comparable<Node>{
     private int posX;
     private int posY;
+
     private boolean isHidden;
     private boolean isEnabled; //if isEnabled is true, node is valid for pathfinding. If false, it's looked over in pathfinding
     private String name; //room number, general location, etc. ex: "Room 123" or "Cafeteria"
@@ -123,6 +124,22 @@ public class Node implements Comparable<Node>{
 
     public void setTotalCost(double newCost) {
         this.totalCost = newCost;
+    }
+
+    public boolean getIsHidden() {
+        return isHidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        isHidden = hidden;
+    }
+
+    public boolean getEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 
     //Allows sorting list based on totalCost
