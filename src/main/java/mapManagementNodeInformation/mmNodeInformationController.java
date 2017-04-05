@@ -69,11 +69,7 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     int c_mode = -1;
 
-
-
     int openDirectory;
-
-
 
     //get an instance of database controller
     DatabaseController databaseController = DatabaseController.getInstance();
