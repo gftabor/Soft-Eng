@@ -64,6 +64,10 @@ public class mmNodeInformationController extends controllers.AbsController {
     @FXML
     private ChoiceBox mode_ChoiceBox;
 
+    @FXML
+    private Label error_LabelText;
+
+
 
     boolean flag = false;
 
@@ -277,7 +281,18 @@ public class mmNodeInformationController extends controllers.AbsController {
     //The add settings for the user to add a Doctor/nurse
     public void add_settings(){
         System.out.println("Add settings");
+        error_LabelText.setText("Adding");
 
+
+        //Starts the choices for the user
+        title_choiceBox.getSelectionModel().select(0);
+        id_TextField.setText("");
+        Firstname_TextField.setText("");
+        lastName_TextField.setText("");
+        id_TextField.setPromptText("ID");
+        Firstname_TextField.setPromptText("First");
+        lastName_TextField.setPromptText("Last");
+        //Sets the properties
         title_choiceBox.setDisable(false);
         id_TextField.setEditable(true);
         Firstname_TextField.setEditable(true);
@@ -288,10 +303,11 @@ public class mmNodeInformationController extends controllers.AbsController {
     public void remove_settings(){
         System.out.println("remove settings");
 
-        title_choiceBox.setDisable(false);
-        id_TextField.setEditable(true);
-        Firstname_TextField.setEditable(true);
-        lastName_TextField.setEditable(true);
+        //sets the properties
+        title_choiceBox.setDisable(true);
+        id_TextField.setEditable(false);
+        Firstname_TextField.setEditable(false);
+        lastName_TextField.setEditable(false);
 
     }
 
@@ -299,6 +315,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     public void edit_settings(){
         System.out.println("edit settings");
 
+        //sets the properties
         title_choiceBox.setDisable(false);
         id_TextField.setEditable(true);
         Firstname_TextField.setEditable(true);

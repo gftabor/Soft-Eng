@@ -102,13 +102,16 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label text="Errors" textFill="#cd2727">
+                        <Label fx:id="error_LabelText" textFill="#cd2727">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
                   </HBox>
                   <HBox>
                      <children>
