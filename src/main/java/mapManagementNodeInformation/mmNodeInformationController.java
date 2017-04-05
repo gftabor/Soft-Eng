@@ -120,21 +120,11 @@ public class mmNodeInformationController extends controllers.AbsController {
             }else if(title_choiceBox.getValue().equals("Nurse")){
                 openDirectory = 2;
             }
-
             int id = 0;
-            ResultSet rset = databaseController.getProfessional(Firstname_TextField.getText(),
-                    lastName_TextField.getText());
+            ResultSet rset = databaseController.getProfessional(Integer.parseInt(id_TextField.getText()));
             System.out.println("===================== editing");
-            try {
-                while(rset.next()){
-                    id = rset.getInt("ID");
-                    System.out.println("--------------------- ID: " + id);
-                }
-            } catch (SQLException e){
-                e.printStackTrace();
-            }
 
-            databaseController.EditProfessional(id, Firstname_TextField.getText(),
+            databaseController.EditProfessional(Integer.parseInt(id_TextField.getText()), Firstname_TextField.getText(),
                     lastName_TextField.getText(), title_choiceBox.getValue());
         } else {
             // nothing
@@ -351,7 +341,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         lastName_TextField.setPromptText("Last");
         //Sets the properties
         title_choiceBox.setDisable(false);
-        id_TextField.setEditable(true);
+        id_TextField.setEditable(false);
         Firstname_TextField.setEditable(true);
         lastName_TextField.setEditable(true);
     }

@@ -414,7 +414,7 @@ public class DatabaseController {
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, type);
             // run statement and query
-            
+
             resultSet = preparedStatement.executeQuery();
         } catch (SQLException e){
             e.printStackTrace();
@@ -467,23 +467,40 @@ public class DatabaseController {
     public boolean EditProfessional(int ID, String firstName, String lastName, String type){
         System.out.println(
                 String.format(
-                        "Editing professional. firstName: %s, lastName: %s, type: %s",
-                        firstName, lastName, type));
+                        "Editing professional. id %d firstName: %s, lastName: %s, type: %s",
+                        ID, firstName, lastName, type));
         try{
-            String query = "UPDATE PROFESSIONAL SET FIRSTNAME = ?, LASTNAME = ? AND TYPE = ?" +
-                    "WHERE ID = ";
+            String query = "UPDATE PROFESSIONAL SET FIRSTNAME = ?, LASTNAME = ?, TYPE = ? " +
+                    "WHERE ID = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, type);
             preparedStatement.setInt(4, ID);
             // run statement and query
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
         } catch (SQLException e){
             e.printStackTrace();
             return false;
         }
         return true;
+    }
+
+    public ResultSet getProfessional(int id){
+        System.out.println("Getting professional with ID" + id);
+        ResultSet resultSet = null;
+
+        try{
+            String query = "SELECT * FROM PROFESSIONAL WHERE ID = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return resultSet;
+
     }
     /*******************************************************************************
      * PROFESSIONAL - LOCATION actions
