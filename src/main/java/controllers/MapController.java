@@ -43,6 +43,10 @@ public class MapController {
     //internal listing of edges (used only in startup full query of DB)
     private ArrayList<Edge> edgeCollection;
 
+    public ArrayList<Edge> getEdgeCollection() {
+        return edgeCollection;
+    }
+
     public CollectionOfNodes getCollectionOfNodes() {
         return collectionOfNodes;
     }

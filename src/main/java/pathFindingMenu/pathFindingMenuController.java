@@ -3,18 +3,15 @@ package pathFindingMenu;
 import controllers.MapController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Line;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by AugustoR on 3/30/17.
@@ -65,7 +62,7 @@ public class pathFindingMenuController extends controllers.AbsController{
 
     private ArrayList ButtonList = new ArrayList();
 
-    private ArrayList EdgeList = new ArrayList();
+    private ArrayList<Line> lineList = new ArrayList();
 
     private int selectionState = 0;
 
@@ -84,8 +81,10 @@ public class pathFindingMenuController extends controllers.AbsController{
     public void submitButton_Clicked(){
         if (selectionState == 2) {
             //submit stuff
+            createEdgeLines(mapController.getEdgeCollection());
             mapController.requestPath();
         }
+        selectionState=0;
         System.out.println("The user has clicked the submit Button");
     }
 
@@ -161,6 +160,9 @@ public class pathFindingMenuController extends controllers.AbsController{
     //NOTE: caller is responsible for not sending duplicate edges
     public void createEdgeLines(ArrayList<controllers.Edge> edgeList) {
         //for-each loop through arraylist
+        for(Line currentLine : lineList) {
+            node_Plane.getChildren().remove(currentLine);
+        }
         for(controllers.Edge thisEdge: edgeList) {
             lne = new Line();
 
@@ -176,7 +178,7 @@ public class pathFindingMenuController extends controllers.AbsController{
             lne.toFront();
 
             //add to list
-            EdgeList.add(lne);
+            lineList.add(lne);
         }
     }
 
