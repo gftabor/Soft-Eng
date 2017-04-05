@@ -85,9 +85,12 @@ public class mmFloorAndModeController extends controllers.AbsController{
     }
 
     public void clearButton_Clicked() {
-        edgesSelected = 0;
-        admin_FloorPane.getChildren().remove(btK);
+        //if(mode_ChoiceBox.getValue().equals("Add Node")) {
+        if("Add Node".equals(mode_ChoiceBox.getValue())) {
+            admin_FloorPane.getChildren().remove(btK);
+        }
 
+        edgesSelected = 0;
     }
 
     private void nodeChosen(double x, double y, int floor){
@@ -125,32 +128,39 @@ public class mmFloorAndModeController extends controllers.AbsController{
 
                 break;
             case "Add Node":
-                System.out.println("Mode = add");
-                Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                        hidden_CheckBox.isSelected(), true, name, floor);
-                DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                    floor, hidden_CheckBox.isSelected(), true, "Doctor", tempName, tempRoom);
 
-                Circle newButton = new Circle(lableRadius);
-                newButton.setLayoutX(newNode.getPosX());
-                newButton.setLayoutY(newNode.getPosY());
+                if(!(title_ChoiceBox.getValue().equals("")) &&
+                        !(name_TextField.getText().equals("")) &&
+                        !(room_TextField.getText().equals(""))) {
 
-                nodeList.add(newButton);
-                newButton.setOnMouseClicked(e -> {
-                    if (mode_ChoiceBox.getValue().equals( "Add Edge")) {
-                        nodeChosen(newButton.getLayoutX(),newButton.getLayoutY(),4);
-                    }
-                    if (mode_ChoiceBox.getValue().equals( "Remove Node")) {
-                        nodeChosen(newButton.getLayoutX(),newButton.getLayoutY(),4);
-                    }
+                    System.out.println("Mode = add");
+                    Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
+                            hidden_CheckBox.isSelected(), true, name, floor);
+                    DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
+                            floor, hidden_CheckBox.isSelected(), true, "Doctor", tempName, tempRoom);
 
-                });
+                    Circle newButton = new Circle(lableRadius);
+                    newButton.setLayoutX(newNode.getPosX());
+                    newButton.setLayoutY(newNode.getPosY());
 
-                admin_FloorPane.getChildren().add(newButton);
-                newButton.toFront();
+                    nodeList.add(newButton);
+                    newButton.setOnMouseClicked(e -> {
+                        if (mode_ChoiceBox.getValue().equals( "Add Edge")) {
+                            nodeChosen(newButton.getLayoutX(),newButton.getLayoutY(),4);
+                        }
+                        if (mode_ChoiceBox.getValue().equals( "Remove Node")) {
+                            nodeChosen(newButton.getLayoutX(),newButton.getLayoutY(),4);
+                        }
 
-                mode_ChoiceBox.getSelectionModel().select("---");
-                break;
+                    });
+
+                    admin_FloorPane.getChildren().add(newButton);
+                    newButton.toFront();
+
+                    mode_ChoiceBox.getSelectionModel().select("---");
+                    break;
+                }
+
             case "Edit Node":
                 System.out.println("Mode = edit node");
                 break;
@@ -200,11 +210,10 @@ public class mmFloorAndModeController extends controllers.AbsController{
                     @Override
                     public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                         // Do validation
+                        clearButton_Clicked();
                         System.out.println(newValue);
                         if(newValue.intValue()==1){
                             create_Button();
-                        } else {
-                            admin_FloorPane.getChildren().remove(btK);
                         }
                         
                     }
