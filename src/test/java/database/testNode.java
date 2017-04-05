@@ -5,6 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import java.sql.*;
+import controllers.Node;
 
 import static org.junit.Assert.*;
 
@@ -48,6 +49,7 @@ public class testNode {
         assertTrue(databaseController.deleteNode(x, y, floor));
     }
 
+    @Test
     public void testNull(){
         ResultSet resultSet = databaseController.getNode(x, y, floor);
         try{
@@ -56,6 +58,15 @@ public class testNode {
         } catch (SQLException e){
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testKey(){
+        Node exampleNode = new Node(150, 220, 4, false, true, "Restroom", "Bathroom 1", "417");
+        int correctKey = 01500220;
+        int keyGotten = exampleNode.getKey();
+        assertEquals(correctKey, keyGotten);
+
     }
 
     @After
