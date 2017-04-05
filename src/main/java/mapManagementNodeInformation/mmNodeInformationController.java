@@ -96,7 +96,12 @@ public class mmNodeInformationController extends controllers.AbsController {
                 System.out.println("Nothing selected for mode");
                 break;
         }
-        createDirectoryTreeView();
+        // createDirectoryTreeView();
+        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/mmNodeInformationView.fxml");
+        mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
+        controller.createDirectoryTreeView();
+        controller.setTitleChoices();
+        controller.setModeChoices();
     }
 
     public void emergencyButton_Clicked() {
@@ -171,7 +176,9 @@ public class mmNodeInformationController extends controllers.AbsController {
                     }
                 });
         flag = false;
+
     }
+
 
     //Create branches
     public TreeItem<String> makeBranch(String title, TreeItem<String> parent) {
@@ -231,17 +238,32 @@ public class mmNodeInformationController extends controllers.AbsController {
     //The add settings for the user to add a Doctor/nurse
     public void add_settings(){
         System.out.println("Add settings");
+
+        title_choiceBox.setDisable(false);
+        id_TextField.setEditable(true);
+        Firstname_TextField.setEditable(true);
+        lastName_TextField.setEditable(true);
     }
 
     //The remove settings for the user to remove a Doctor/nurse
     public void remove_settings(){
         System.out.println("remove settings");
 
+        title_choiceBox.setDisable(false);
+        id_TextField.setEditable(true);
+        Firstname_TextField.setEditable(true);
+        lastName_TextField.setEditable(true);
+
     }
 
     //The remove settings for the user to remove a Doctor/nurse
     public void edit_settings(){
         System.out.println("edit settings");
+
+        title_choiceBox.setDisable(false);
+        id_TextField.setEditable(true);
+        Firstname_TextField.setEditable(true);
+        lastName_TextField.setEditable(true);
 
     }
 }
