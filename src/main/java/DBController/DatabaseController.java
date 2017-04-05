@@ -4,6 +4,7 @@ import controllers.Node;
 import controllers.Edge;
 import java.sql.*;
 import java.util.ArrayList;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class DatabaseController {
 
@@ -82,6 +83,16 @@ public class DatabaseController {
         return resultSet;
     }
 
+    public boolean closeResultSet(ResultSet resultSet){
+        try{
+            resultSet.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     // creates a new node in the database
     public boolean newNode(int x, int y, int floor, boolean ishidden, boolean enabled,
                            String type, String name, String roomnum){
@@ -155,16 +166,6 @@ public class DatabaseController {
         return resultSet;
     }
 
-    public boolean closeResultSet(ResultSet resultSet){
-        try{
-            resultSet.close();
-        } catch (SQLException e){
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
     //delete node given its position
     public boolean deleteNode(int x, int y, int floor){
         System.out.println(
@@ -190,24 +191,66 @@ public class DatabaseController {
         return true;
     }
 
-    // creates a new edge in the database
+    /*
+    To solve two way edges, the database will always query from x1 < x2 and y1 < y2
+     */
     public boolean newEdge(int x1, int y1, int floor1, int x2, int y2, int floor2){
+        int firstXInsert, firstYInsert, firstFloorInsert, secondXInsert, secondYInsert, secondFloorInsert;
+
+        if(x1 < x2){
+            firstXInsert = x1;
+            firstYInsert = y1;
+            firstFloorInsert = floor1;
+            secondXInsert = x2;
+            secondYInsert = y2;
+            secondFloorInsert = floor2;
+        }else if (x1 > x2){
+            firstXInsert = x2;
+            firstYInsert = y2;
+            firstFloorInsert = floor2;
+            secondXInsert = x1;
+            secondYInsert = y1;
+            secondFloorInsert = floor1;
+        }else if (x1 == x2){
+            if(y1 < y2){
+                firstXInsert = x1;
+                firstYInsert = y1;
+                firstFloorInsert = floor1;
+                secondXInsert = x2;
+                secondYInsert = y2;
+                secondFloorInsert = floor2;
+            }else if (y1 > y2) {
+                firstXInsert = x2;
+                firstYInsert = y2;
+                firstFloorInsert = floor2;
+                secondXInsert = x1;
+                secondYInsert = y1;
+                secondFloorInsert = floor1;
+            }else{
+                System.out.println("Something went wrong with newEdge");
+                return false;
+            }
+        }else{
+            System.out.println("Something went wrong with newEdge");
+            return false;
+        }
+
         System.out.println(
                 String.format(
                         "Adding edge. x1: %s, y1: %s, floor1: %s,\n x2: %s, y2: %s, floor2: %s",
-                        x1, y1, floor1, x2, y2, floor2));
+                        firstXInsert, firstYInsert, firstFloorInsert, secondXInsert, secondYInsert, secondFloorInsert));
         try {
             // sql statement with "?" to be filled later
             String query = "INSERT INTO EDGE (XPOS1, YPOS1, FLOOR1, XPOS2, YPOS2, FLOOR2)" +
                     " values (?, ?, ?, ?, ?, ?)";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setInt(1, x1);
-            preparedStatement.setInt(2, y1);
-            preparedStatement.setInt(3, floor1);
-            preparedStatement.setInt(4, x2);
-            preparedStatement.setInt(5, y2);
-            preparedStatement.setInt(6, floor2);
+            preparedStatement.setInt(1, firstXInsert);
+            preparedStatement.setInt(2, firstYInsert);
+            preparedStatement.setInt(3, firstFloorInsert);
+            preparedStatement.setInt(4, secondXInsert);
+            preparedStatement.setInt(5, secondYInsert);
+            preparedStatement.setInt(6, secondFloorInsert);
             // execute prepared statement
             
             preparedStatement.execute();
@@ -221,22 +264,61 @@ public class DatabaseController {
 
     //delete edge between the two given node positions
     public boolean deleteEdge(int x1, int y1, int floor1, int x2, int y2, int floor2) {
+        int firstXInsert, firstYInsert, firstFloorInsert, secondXInsert, secondYInsert, secondFloorInsert;
+
+        if(x1 < x2){
+            firstXInsert = x1;
+            firstYInsert = y1;
+            firstFloorInsert = floor1;
+            secondXInsert = x2;
+            secondYInsert = y2;
+            secondFloorInsert = floor2;
+        }else if (x1 > x2){
+            firstXInsert = x2;
+            firstYInsert = y2;
+            firstFloorInsert = floor2;
+            secondXInsert = x1;
+            secondYInsert = y1;
+            secondFloorInsert = floor1;
+        }else if (x1 == x2){
+            if(y1 < y2){
+                firstXInsert = x1;
+                firstYInsert = y1;
+                firstFloorInsert = floor1;
+                secondXInsert = x2;
+                secondYInsert = y2;
+                secondFloorInsert = floor2;
+            }else if (y1 > y2) {
+                firstXInsert = x2;
+                firstYInsert = y2;
+                firstFloorInsert = floor2;
+                secondXInsert = x1;
+                secondYInsert = y1;
+                secondFloorInsert = floor1;
+            }else{
+                System.out.println("Something went wrong with deleteEdge");
+                return false;
+            }
+        }else{
+            System.out.println("Something went wrong with deleteEdge");
+            return false;
+        }
         System.out.println(
                 String.format(
                         "Delete edge. x1: %s, y1: %s, floor1: %s,\n x2: %s, y2: %s, floor2: %s",
-                        x1, y1, floor1, x2, y2, floor2));
+                        firstXInsert, firstYInsert, firstFloorInsert, secondXInsert, secondYInsert, secondFloorInsert));
         try {
             // SQL statement with "?" to be filled later
             String sqlString = "DELETE FROM EDGE WHERE XPOS1 = ? AND YPOS1 = ?" +
                     "AND FLOOR1 = ? AND XPOS2 = ? AND YPOS2 = ? AND FLOOR2 = ?";
             // prepare statement by replacing each "?" with a variable
             PreparedStatement preparedStatement = conn.prepareStatement(sqlString);
-            preparedStatement.setInt(1, x1);
-            preparedStatement.setInt(2, y1);
-            preparedStatement.setInt(3, floor1);
-            preparedStatement.setInt(4, x2);
-            preparedStatement.setInt(5, y2);
-            preparedStatement.setInt(6, floor2);
+            preparedStatement.setInt(1, firstXInsert);
+            preparedStatement.setInt(2, firstYInsert);
+            preparedStatement.setInt(3, firstFloorInsert);
+            preparedStatement.setInt(4, secondXInsert);
+            preparedStatement.setInt(5, secondYInsert);
+            preparedStatement.setInt(6, secondFloorInsert);
             // run statement and query
             
             preparedStatement.execute();
@@ -324,6 +406,105 @@ public class DatabaseController {
             PreparedStatement preparedStatement = conn.prepareStatement(sqlString);
             preparedStatement.setString(1, ID);
             
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean newAdmin(int ID, String firstName, String lastName, String userName, String password){
+        String encrypted = BCrypt.hashpw(password, BCrypt.gensalt());
+
+        System.out.println(
+                String.format(
+                        "Adding Admin. ID: %s, firstName: %s, lastName: %s, userName: %s, password: REDACTED",
+                        ID, firstName, lastName, userName));
+        try {
+            // sql statement with "?" to be filled later
+            String query = "INSERT INTO ADMIN (ID, FIRSTNAME, LASTNAME, USERNAME, PASSWORD)" +
+                    " values (?, ?, ?, ?, ?)";
+            // prepare statement by replacing "?" with corresponding variable
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, ID);
+            preparedStatement.setString(2, firstName);
+            preparedStatement.setString(3, lastName);
+            preparedStatement.setString(4, userName);
+            preparedStatement.setString(5, encrypted);
+            // execute prepared statement
+
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public ResultSet getAdmin(String ID){
+        ResultSet resultSet = null;
+        System.out.println(
+                String.format(
+                        "Getting admin. ID: %s",
+                        ID));
+        try{
+            String query = "SELECT * FROM ADMIN WHERE ID = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, ID);
+            // run statement and query
+
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
+    public String getPassword(String username){
+        ResultSet resultSet = null;
+        String pw;
+        System.out.println(
+                String.format(
+                        "Getting admin password. Username: %s",
+                        username));
+        try{
+            String query = "SELECT * FROM ADMIN WHERE USERNAME = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, username);
+            // run statement and query
+
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        try {
+            if(!resultSet.next()){
+                return null;
+            }
+            pw = resultSet.getString("PASSWORD");
+            closeResultSet(resultSet);
+            return pw;
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public boolean deleteAdmin(int ID){
+        System.out.println(
+                String.format("Removing admin id: ?", ID)
+        );
+        try{
+            String sqlString = "DELETE FROM ADMIN WHERE ID = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sqlString);
+            preparedStatement.setInt(1, ID);
+
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e){
