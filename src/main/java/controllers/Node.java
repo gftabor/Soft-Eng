@@ -47,6 +47,8 @@ public class Node implements Comparable<Node>{
         this.isEnabled = true;
         this.name = name;
         this.floor = floor;
+        this.costToReach = 1000000;
+        this.totalCost = 1000000; //costToReach + hueristic
     }
 
     public String toString() {

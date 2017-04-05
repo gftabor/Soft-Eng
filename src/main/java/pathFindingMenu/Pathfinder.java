@@ -31,21 +31,23 @@ public class Pathfinder {
     private boolean processNode(Node currentNode, Node goalNode){
         if(currentNode.equals(goalNode))
             return true;
-        System.out.println(currentNode);
+        //System.out.println(currentNode);
 
         for(Edge currentEdge:currentNode.getEdgeList()){
             Node neighbor = currentEdge.getNeighbor(currentNode);
-            System.out.println("edge   "+neighbor);
+            //System.out.println("weight" + currentEdge.getWeight());
             double neighbourNewCost = currentNode.getCostToReach() + currentEdge.getWeight();
-
+            //System.out.println(neighbor.getCostToReach() + "   " + neighbourNewCost);
             if(neighbor.getCostToReach() > neighbourNewCost) { //if better path found
                 neighbor.setParentEdge(currentEdge);
                 neighbor.setCostToReach(neighbourNewCost);
                 neighbor.setTotalCost(neighbourNewCost + getHueristic(neighbor, goalNode));
 
                 //if the object is in frontier only edit the object
-                if(!frontier.contains(neighbor))
+                if(!frontier.contains(neighbor)) {
                     frontier.add(neighbor);
+                    System.out.println("new frontier");
+                }
             }
 
         }
