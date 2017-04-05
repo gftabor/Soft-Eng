@@ -9,3 +9,4 @@ addons:
 
 notifications:
   slack: softengteame:xX44WQGpnJEqD1H6XRWKzjzK
+  email: false

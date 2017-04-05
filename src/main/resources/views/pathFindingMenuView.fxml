@@ -125,7 +125,7 @@
                   <Region prefHeight="110.0" prefWidth="210.0" />
                   <HBox>
                      <children>
-                        <Button fx:id="cancel_Button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#cancelButton_Clicked" prefHeight="45.0" prefWidth="120.0" text="Cancel">
+                        <Button fx:id="cancel_Button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#cancelButton_Clicked" prefHeight="45.0" prefWidth="120.0" text="Clear">
                            <HBox.margin>
                               <Insets bottom="4.0" left="15.0" right="4.0" top="4.0" />
                            </HBox.margin>
