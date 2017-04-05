@@ -9,6 +9,7 @@ import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
 
     HashMap<Integer, Node> DBMap;
 
-    private ArrayList<Button> nodeList = new ArrayList();
+    private ArrayList<Circle> nodeList = new ArrayList();
 
     private ArrayList<Line> lineList = new ArrayList();
 
@@ -78,7 +79,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
 
     private Node firstNode;
 
-    private Button btK;
+    private Circle btK;
     public void emergencyButton_Clicked(){
         switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
     }
@@ -124,7 +125,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
                 DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
                     floor, hidden_CheckBox.isSelected(), true, "Doctor", tempName, tempRoom);
 
-                Button newButton = new Button();
+                Circle newButton = new Circle(7);
                 newButton.setLayoutX(newNode.getPosX());
                 newButton.setLayoutY(newNode.getPosY());
 
@@ -204,7 +205,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
     public void create_Button(){
         System.out.println("checking button");
             System.out.println("make button");
-            btK = new Button();
+            btK = new Circle(7);//new Button();
             // this code drags the button
             final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
 
@@ -271,7 +272,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
 
     public void setMapAndNodes(HashMap<Integer, Node> nodeMap){
         int currentKey;
-        for( Button current : nodeList){
+        for( Circle current : nodeList){
             admin_FloorPane.getChildren().remove(current);
         }
         for(controllers.Node current: nodeMap.values()){
@@ -282,7 +283,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
     public void place_Old_Buttons(double nodeX, double nodeY){
         System.out.println("checking button");
         System.out.println("make button");
-        btK = new Button("node");
+        btK = new Circle(7);//new Button("node");
 
         btK.setOnMouseClicked(e -> {
             nodeChosen(nodeX, nodeY, 4);
