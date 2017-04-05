@@ -67,6 +67,8 @@ public class pathFindingMenuController extends controllers.AbsController{
 
     private int selectionState = 0;
 
+    private HashMap<Integer, controllers.Node> currentNodeMap;
+
     private MapController mapController = MapController.getInstance();
 
     private static final double lableRadius = 8.5;
@@ -78,6 +80,7 @@ public class pathFindingMenuController extends controllers.AbsController{
 
     public void cancelButton_Clicked(){
         selectionState = 0;
+        setMapAndNodes(currentNodeMap);
         //Remove black and red dots from map
     }
 
@@ -89,6 +92,7 @@ public class pathFindingMenuController extends controllers.AbsController{
         }
         selectionState=0;
         System.out.println("The user has clicked the submit Button");
+        cancelButton_Clicked();
     }
 
     public void mainMenuButton_Clicked(){
@@ -106,10 +110,18 @@ public class pathFindingMenuController extends controllers.AbsController{
     }
 
     //takes in a Hashtable when scene is switched and calls setNodes
-    public void setMapAndNodes(HashMap<Integer, controllers.Node> nodeMap){
-        int currentKey;
+    public void setMapAndNodes(HashMap<Integer, controllers.Node> nodeMap) {
+        currentNodeMap = nodeMap;
+
+        // Clear circles from the scene
+        while (ButtonList.size() < 0) {
+            node_Plane.getChildren().remove(ButtonList.get(0));
+            ButtonList.remove(0);
+        }
+
+        // Add all the nodes onto the scene as buttons
         for(controllers.Node current: nodeMap.values()){
-         create_Button(current.getPosX(), current.getPosY());
+            create_Button(current.getPosX(), current.getPosY());
         }
     }
 
