@@ -54,6 +54,7 @@ public class CollectionOfNodes {
         for(int i = 0; i < 7; i++) {
             for(Node n: allNodes.get(i).values()) {
                 n.setCostToReach(Integer.MAX_VALUE);
+                n.setTotalCost(Integer.MAX_VALUE);
                 n.setParentEdge(null);
             }
         }

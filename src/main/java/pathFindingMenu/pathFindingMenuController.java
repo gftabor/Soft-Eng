@@ -88,6 +88,7 @@ public class pathFindingMenuController extends controllers.AbsController{
         if (selectionState == 2) {
             //submit stuff
             //createEdgeLines
+            MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
             createEdgeLines(mapController.requestPath());
         }
         selectionState=0;
@@ -213,11 +214,8 @@ public class pathFindingMenuController extends controllers.AbsController{
             lne.setStartY(thisEdge.getStartNode().getPosY());
             lne.setEndX(thisEdge.getEndNode().getPosX());
             lne.setEndY(thisEdge.getEndNode().getPosY());
-
-
             //show
             lne.toFront();
-
             //add to list
             lineList.add(lne);
         }
