@@ -239,6 +239,16 @@ public class mmNodeInformationController extends controllers.AbsController {
     public void add_settings(){
         System.out.println("Add settings");
 
+
+        //Starts the choices for the user
+        title_choiceBox.getSelectionModel().selectFirst();
+        id_TextField.setText("");
+        Firstname_TextField.setText("");
+        lastName_TextField.setText("");
+        id_TextField.setPromptText("ID");
+        Firstname_TextField.setPromptText("First");
+        lastName_TextField.setPromptText("Last");
+        //Sets the properties
         title_choiceBox.setDisable(false);
         id_TextField.setEditable(true);
         Firstname_TextField.setEditable(true);
@@ -249,6 +259,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     public void remove_settings(){
         System.out.println("remove settings");
 
+        //sets the properties
         title_choiceBox.setDisable(true);
         id_TextField.setEditable(false);
         Firstname_TextField.setEditable(false);
@@ -260,6 +271,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     public void edit_settings(){
         System.out.println("edit settings");
 
+        //sets the properties
         title_choiceBox.setDisable(false);
         id_TextField.setEditable(true);
         Firstname_TextField.setEditable(true);
