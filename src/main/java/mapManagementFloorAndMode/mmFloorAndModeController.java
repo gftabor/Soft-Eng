@@ -133,9 +133,9 @@ public class mmFloorAndModeController extends controllers.AbsController{
                 break;
             case "Add Node":
 
-                if(!(title_ChoiceBox.getValue().equals("")) &&
-                        !(name_TextField.getText().equals("")) &&
-                        !(room_TextField.getText().equals(""))) {
+                if(!(title_ChoiceBox.getValue() != null) &&
+                        !(name_TextField.getText() != null) &&
+                        !(room_TextField.getText() != null)) {
 
                     System.out.println("Mode = add");
                     Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
