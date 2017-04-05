@@ -17,7 +17,7 @@ public class Edge {
     public Edge(Node startNode, Node endNode, int floorStart, int floorEnd){
         this.startNode = startNode;
         this.endNode = endNode;
-        double weight = calculateWeight(startNode.getPosX(), startNode.getPosY(), endNode.getPosX(), endNode.getPosY());
+        this.weight = calculateWeight(startNode.getPosX(), startNode.getPosY(), endNode.getPosX(), endNode.getPosY());
         this.floorStart = floorStart;
         this.floorEnd = floorEnd;
     }
@@ -74,7 +74,8 @@ public class Edge {
     }
 
     //getters and setters
-    public double getWeight() { return weight; }
+    public double getWeight() {
+        return weight; }
 
     public Node getStartNode() { return startNode; }
 
