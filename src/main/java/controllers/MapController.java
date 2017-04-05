@@ -43,6 +43,10 @@ public class MapController {
     //internal listing of edges (used only in startup full query of DB)
     private ArrayList<Edge> edgeCollection;
 
+    public ArrayList<Edge> getEdgeCollection() {
+        return edgeCollection;
+    }
+
     public CollectionOfNodes getCollectionOfNodes() {
         return collectionOfNodes;
     }
@@ -59,7 +63,7 @@ public class MapController {
         //wipes old verson of collection of nodess
         collectionOfNodes = new CollectionOfNodes();
         edgeCollection = new ArrayList<Edge>();
-
+        System.out.println("new");
         try {
             //instantiate all node objects and add to collection
             int x, y, floor;
@@ -76,7 +80,7 @@ public class MapController {
                 floor = nodeRset.getInt("FLOOR");
                 node = new Node(x, y, hidden,enabled, name, floor);
                 collectionOfNodes.addNode(node);
-                System.out.println("MAPCONTROLLER: requestMapCopy(): Added a node from the rset to collection of nodes");
+                //System.out.println("MAPCONTROLLER: requestMapCopy(): Added a node from the rset to collection of nodes");
             }
         } catch (SQLException se) {
             se.printStackTrace();
@@ -86,7 +90,6 @@ public class MapController {
 
 
         try {
-
             //instantiate edges and add to corresponding nodes
             int x1, y1, x2, y2, floor1, floor2;
             Edge myEdge;
@@ -98,6 +101,14 @@ public class MapController {
                 y2 = edgeRset.getInt("YPOS2");
                 floor1 = edgeRset.getInt("FLOOR1");
                 floor2 = edgeRset.getInt("FLOOR2");
+               /* System.out.print("totes DB edge");
+                System.out.print(x1);
+                System.out.print(" ");
+                System.out.print(y1);
+                System.out.print(" ");
+                System.out.print(x2);
+                System.out.print(" ");
+                System.out.println(y2);*/
 
                 //lookup node object pointer
                 Node node1, node2;
@@ -111,16 +122,15 @@ public class MapController {
                 }
 
                 //add to arraylist to go through later
-                myEdge = new Edge(node1, node2, floor1, floor2);
-                edgeCollection.add(myEdge);
-
+                edgeCollection.add(new Edge(node1, node2, floor1, floor2));
+            }
                 //go through collection of edges and add them to their corresponding nodes
                 for(Edge thisEdge:edgeCollection) {
                     thisEdge.getStartNode().addEdge(thisEdge);
                     thisEdge.getEndNode().addEdge(thisEdge);
                 }
 
-            }
+
         } catch (SQLException se) {
             se.printStackTrace();
         } catch (Exception e) {
@@ -159,7 +169,7 @@ public class MapController {
         if(collectionOfNodes == null) {
             requestMapCopy();
         }
-        System.out.println("MAPCONTROLLER: requestPath: collectionOfNOdes size: " + collectionOfNodes.toString());
+        //System.out.println("MAPCONTROLLER: requestPath: collectionOfNOdes size: " + collectionOfNodes.toString());
 
         startNode = collectionOfNodes.getNode(startNodeX, startNodeY, 4);
         if(startNode == null) {

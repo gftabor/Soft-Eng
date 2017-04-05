@@ -70,7 +70,7 @@ public class CollectionOfNodes {
             System.out.println("COLLECTIONOFNODES: addNode(): added node but then couldn't find in hashmap");
         }
         else {
-            System.out.println("COLLECTIONOFNODES: addNode(): successfully added node to hashmap");
+           // System.out.println("COLLECTIONOFNODES: addNode(): successfully added node to hashmap");
         }
 
     }
