@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
  */
 public class testProfessional {
     DatabaseController databaseController = DatabaseController.getInstance();
-    String ID = "TEST";
+    int ID;
     String firstName = "TEST";
     String lastName = "TEST";
     int x = 0;
@@ -26,20 +26,20 @@ public class testProfessional {
 
     @Before
     public void setUp(){
-        testNull();
+        //testNull();
         assertTrue(databaseController.newNode(x, y, floor, ishidden, enabled, type, name, roomnum));
     }
 
     @Test
     public void testAddDelete(){
-        assertTrue(databaseController.newProfessional(ID, x, y, floor, firstName, lastName, type));
-        ResultSet resultSet = databaseController.getProfessional(ID);
+        //add professional
+        assertTrue(databaseController.newProfessional(firstName, lastName, type));
+
+        //make sure it is there
+        ResultSet resultSet = databaseController.getProfessional(firstName, lastName, type);
         try{
             resultSet.next();
-            assertEquals(resultSet.getString("ID"), ID);
-            assertEquals(resultSet.getInt("XPOS"), x);
-            assertEquals(resultSet.getInt("YPOS"), y);
-            assertEquals(resultSet.getInt("FLOOR"), floor);
+            ID = resultSet.getInt("ID");
             assertEquals(resultSet.getString("FIRSTNAME"), firstName);
             assertEquals(resultSet.getString("LASTNAME"), lastName);
             assertEquals(resultSet.getString("TYPE"), type);
@@ -47,12 +47,18 @@ public class testProfessional {
         } catch (SQLException e){
             e.printStackTrace();
         }
-        assertTrue(databaseController.deleteProfessional(ID));
+
+        //add a location
+        assertTrue(databaseController.newProfessionalLocation(ID, x, y, floor));
+
+        assertTrue(databaseController.deleteProfessionalLocation(ID, x, y, floor));
+
+        assertTrue(databaseController.deleteProfessional(firstName, lastName, type));
     }
 
     @Test
     public void testNull(){
-        ResultSet resultSet = databaseController.getProfessional(ID);
+        ResultSet resultSet = databaseController.getProfessional(firstName, lastName, type);
         try{
             resultSet.next();
             assertEquals(resultSet.getString("ID"), 0);
@@ -64,7 +70,7 @@ public class testProfessional {
     @After
     public void tearDown(){
         assertTrue(databaseController.deleteNode(x, y, floor));
-        testNull();
+        //testNull();
     }
 
 }
