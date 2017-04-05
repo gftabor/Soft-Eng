@@ -85,9 +85,12 @@ public class mmFloorAndModeController extends controllers.AbsController{
     }
 
     public void clearButton_Clicked() {
-        edgesSelected = 0;
-        admin_FloorPane.getChildren().remove(btK);
+        //if(mode_ChoiceBox.getValue().equals("Add Node")) {
+        if("Add Node".equals(mode_ChoiceBox.getValue())) {
+            admin_FloorPane.getChildren().remove(btK);
+        }
 
+        edgesSelected = 0;
     }
 
     private void nodeChosen(double x, double y, int floor){
@@ -200,11 +203,10 @@ public class mmFloorAndModeController extends controllers.AbsController{
                     @Override
                     public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                         // Do validation
+                        clearButton_Clicked();
                         System.out.println(newValue);
                         if(newValue.intValue()==1){
                             create_Button();
-                        } else {
-                            admin_FloorPane.getChildren().remove(btK);
                         }
                         
                     }
