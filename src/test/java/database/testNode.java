@@ -66,7 +66,6 @@ public class testNode {
         int correctKey = 01500220;
         int keyGotten = exampleNode.getKey();
         assertEquals(correctKey, keyGotten);
-
     }
 
     @After
