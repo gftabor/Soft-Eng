@@ -1,5 +1,6 @@
 package mapManagementFloorAndMode;
 
+import controllers.Edge;
 import controllers.Node;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -24,9 +25,6 @@ public class mmFloorAndModeController extends controllers.AbsController{
 
     @FXML
     private Button emergency_Button;
-
-    @FXML
-    private Spinner<Integer> floorChoices_Spinner;
 
     @FXML
     private ChoiceBox<String> mode_ChoiceBox;
@@ -86,6 +84,12 @@ public class mmFloorAndModeController extends controllers.AbsController{
         switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
     }
 
+    public void clearButton_Clicked() {
+        edgesSelected = 0;
+        admin_FloorPane.getChildren().remove(btK);
+
+    }
+
     private void nodeChosen(double x, double y, int floor){
         edgesSelected++;
         if (edgesSelected == 1){
@@ -136,6 +140,9 @@ public class mmFloorAndModeController extends controllers.AbsController{
                     if (mode_ChoiceBox.getValue().equals( "Add Edge")) {
                         nodeChosen(newButton.getLayoutX(),newButton.getLayoutY(),4);
                     }
+                    if (mode_ChoiceBox.getValue().equals( "Remove Node")) {
+                        nodeChosen(newButton.getLayoutX(),newButton.getLayoutY(),4);
+                    }
 
                 });
 
@@ -149,6 +156,10 @@ public class mmFloorAndModeController extends controllers.AbsController{
                 break;
             case "Remove Node":
                 System.out.println("Mode = remove node");
+                for(controllers.Edge thisEdge : firstNode.getEdgeList()) {
+                    thisEdge.getNeighbor(firstNode).getEdgeList().remove(thisEdge);
+                }
+                DBController.DatabaseController.getInstance().deleteNode(firstNode.getPosX(),firstNode.getPosY(),4);
                 break;
             case "Add Edge":
                 if (edgesSelected == 2) {
