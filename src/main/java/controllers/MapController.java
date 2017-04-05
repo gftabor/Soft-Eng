@@ -21,7 +21,9 @@ public class MapController {
     private int endNodeX;
     private int endNodeY;
 
-    private MapController() {}
+    private MapController() {
+        requestMapCopy();
+    }
 
     public static MapController getInstance() {
         return mapController;

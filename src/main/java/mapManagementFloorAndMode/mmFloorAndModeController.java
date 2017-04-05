@@ -1,18 +1,16 @@
 package mapManagementFloorAndMode;
 
 import controllers.Node;
-import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 
-import javax.xml.soap.Text;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -57,7 +55,9 @@ public class mmFloorAndModeController extends controllers.AbsController{
     @FXML
     private Pane admin_FloorPane;
 
-    private ArrayList nodeList = new ArrayList();
+    HashMap<Integer, Node> DBMap;
+
+    private ArrayList<Button> nodeList = new ArrayList();
 
     private ArrayList lineList = new ArrayList();
 
@@ -66,17 +66,36 @@ public class mmFloorAndModeController extends controllers.AbsController{
     private int selectNodeX;
     private int selectNodeY;
 
-    private int nodeEdgeX;
-    private int nodeEdgeY;
+    private int nodeEdgeX1;
+    private int nodeEdgeY1;
+    private int nodeEdgeX2;
+    private int nodeEdgeY2;
 
     private int edgesSelected = 0;
 
     private Node firstNode;
-    private Node secondNode;
 
     private Button btK;
     public void emergencyButton_Clicked(){
         switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+    }
+
+    private void nodeChosen(double x, double y, int floor){
+        edgesSelected++;
+        if (edgesSelected == 1){
+            //display edges already associated with selected node
+            nodeEdgeX1 = (int) x;
+            nodeEdgeY1 = (int) y;
+            System.out.println(nodeEdgeX1 + "     "+ nodeEdgeY1);
+            firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
+                    .getNode(nodeEdgeX1, nodeEdgeY1, floor);
+            createEdgeLines(firstNode.getEdgeList());
+        }
+        if (edgesSelected == 2) {
+            //create edge between the two nodes
+            nodeEdgeX2 = (int) x;
+            nodeEdgeY2 = (int) y;
+        }
     }
 
     //submit button is clicked
@@ -100,11 +119,18 @@ public class mmFloorAndModeController extends controllers.AbsController{
                         hidden_CheckBox.isSelected(), true, name, floor);
                 DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
                     floor, hidden_CheckBox.isSelected(), true, "Doctor", tempName, tempRoom);
-                nodeList.add(newNode);
 
                 Button newButton = new Button();
                 newButton.setLayoutX(newNode.getPosX());
                 newButton.setLayoutY(newNode.getPosY());
+
+                nodeList.add(newButton);
+                newButton.setOnMouseClicked(e -> {
+                    if (mode_ChoiceBox.getValue().equals( "Add Edge")) {
+                        nodeChosen(newButton.getLayoutX(),newButton.getLayoutY(),4);
+                    }
+
+                });
 
                 admin_FloorPane.getChildren().add(newButton);
                 newButton.toFront();
@@ -119,6 +145,9 @@ public class mmFloorAndModeController extends controllers.AbsController{
                 break;
             case "Add Edge":
                 System.out.println("Mode = add edge");
+                DBController.DatabaseController.getInstance().newEdge( nodeEdgeX1,
+                        nodeEdgeY1,4, nodeEdgeX2, nodeEdgeY2, 4);
+
                 break;
             case "Remove Edge":
                 System.out.println("Mode = remove edge");
@@ -127,6 +156,9 @@ public class mmFloorAndModeController extends controllers.AbsController{
                 System.out.println("Nothing selected for mode");
                 break;
         }
+        controllers.MapController.getInstance().requestMapCopy();
+        setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(4));
+
     }
 
     //Change to main Menu
@@ -152,6 +184,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
                         } else {
                             admin_FloorPane.getChildren().remove(btK);
                         }
+                        
                     }
                 });
     }
@@ -171,8 +204,8 @@ public class mmFloorAndModeController extends controllers.AbsController{
             btK.setOnMouseDragged(e -> {
                 if (e.getSceneX() > paneBounds.getMinX() && e.getSceneX() < paneBounds.getMaxX()
                         && e.getSceneY() > paneBounds.getMinY() && e.getSceneY() < paneBounds.getMaxY()) {
-                    btK.setLayoutX((e.getSceneX() - paneBounds.getMinX()) - (btK.getWidth()/2));
-                    btK.setLayoutY((e.getSceneY() - paneBounds.getMinY()) - (btK.getHeight()/2));
+                    btK.setLayoutX((e.getSceneX() - paneBounds.getMinX()));
+                    btK.setLayoutY((e.getSceneY() - paneBounds.getMinY()));
                 }
             });
 
@@ -182,29 +215,15 @@ public class mmFloorAndModeController extends controllers.AbsController{
                             System.out.println("attempting to add edge");
                             edgesSelected++;
 
-                            if (edgesSelected == 1){
+                            if (edgesSelected == 1) {
                                 //display edges already associated with selected node
-                                nodeEdgeX = (int) btK.getLayoutX();
-                                nodeEdgeY = (int) btK.getLayoutY();
+                                nodeEdgeX1 = (int) btK.getLayoutX();
+                                nodeEdgeY1 = (int) btK.getLayoutY();
 
                                 firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
-                                        .getNode(nodeEdgeX, nodeEdgeY, 4);
+                                        .getNode(nodeEdgeX1, nodeEdgeY1, 4);
 
                                 createEdgeLines(firstNode.getEdgeList());
-
-                            }
-                            if (edgesSelected == 2) {
-                                //create edge between the two nodes
-                                nodeEdgeX = (int) btK.getLayoutX();
-                                nodeEdgeY = (int) btK.getLayoutY();
-
-                                secondNode = controllers.MapController.getInstance().getCollectionOfNodes()
-                                        .getNode(nodeEdgeX, nodeEdgeY, 4);
-
-                                DBController.DatabaseController.getInstance().newEdge( firstNode.getPosX(),
-                                        firstNode.getPosY(),4, secondNode.getPosX(), secondNode.getPosY(), 4);
-
-                                edgesSelected = 0;
                             }
                         }
                     });
@@ -241,6 +260,9 @@ public class mmFloorAndModeController extends controllers.AbsController{
 
     public void setMapAndNodes(HashMap<Integer, Node> nodeMap){
         int currentKey;
+        for( Button current : nodeList){
+            admin_FloorPane.getChildren().remove(current);
+        }
         for(controllers.Node current: nodeMap.values()){
             place_Old_Buttons(current.getPosX(), current.getPosY());
         }
@@ -252,41 +274,13 @@ public class mmFloorAndModeController extends controllers.AbsController{
         btK = new Button("node");
 
         btK.setOnMouseClicked(e -> {
-            if (mode_ChoiceBox.getValue().equals("Add Edge")) {
-                System.out.println("attempting to add edge");
-                edgesSelected++;
-
-                if (edgesSelected == 1){
-                    //display edges already associated with selected node
-                    nodeEdgeX = (int) btK.getLayoutX();
-                    nodeEdgeY = (int) btK.getLayoutY();
-
-                    firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
-                            .getNode(nodeEdgeX, nodeEdgeY, 4);
-
-                    createEdgeLines(firstNode.getEdgeList());
-
-                }
-                if (edgesSelected == 2) {
-                    //create edge between the two nodes
-                    nodeEdgeX = (int) btK.getLayoutX();
-                    nodeEdgeY = (int) btK.getLayoutY();
-
-                    secondNode = controllers.MapController.getInstance().getCollectionOfNodes()
-                            .getNode(nodeEdgeX, nodeEdgeY, 4);
-
-                    DBController.DatabaseController.getInstance().newEdge( firstNode.getPosX(),
-                            firstNode.getPosY(),4, secondNode.getPosX(), secondNode.getPosY(), 4);
-
-                    edgesSelected = 0;
-                }
-            }
+            nodeChosen(nodeX, nodeY, 4);
         });
 
         // this code sets node's x and y pos to be on the plane holding the graph
         admin_FloorPane.getChildren().add(btK);
-        btK.setLayoutX(nodeX + (btK.getWidth()/2));
-        btK.setLayoutY(nodeY + (btK.getHeight()/2));
+        btK.setLayoutX(nodeX);
+        btK.setLayoutY(nodeY);
         btK.toFront();
 
         //copy functionality of other btKs except for placement
