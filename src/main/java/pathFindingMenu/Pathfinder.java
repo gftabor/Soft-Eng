@@ -31,9 +31,11 @@ public class Pathfinder {
     private boolean processNode(Node currentNode, Node goalNode){
         if(currentNode.equals(goalNode))
             return true;
+        System.out.println(currentNode);
+
         for(Edge currentEdge:currentNode.getEdgeList()){
-            System.out.println("edge");
             Node neighbor = currentEdge.getNeighbor(currentNode);
+            System.out.println("edge   "+neighbor);
             double neighbourNewCost = currentNode.getCostToReach() + currentEdge.getWeight();
 
             if(neighbor.getCostToReach() > neighbourNewCost) { //if better path found

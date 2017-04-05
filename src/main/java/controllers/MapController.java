@@ -80,7 +80,7 @@ public class MapController {
                 floor = nodeRset.getInt("FLOOR");
                 node = new Node(x, y, hidden,enabled, name, floor);
                 collectionOfNodes.addNode(node);
-                System.out.println("MAPCONTROLLER: requestMapCopy(): Added a node from the rset to collection of nodes");
+                //System.out.println("MAPCONTROLLER: requestMapCopy(): Added a node from the rset to collection of nodes");
             }
         } catch (SQLException se) {
             se.printStackTrace();
@@ -102,6 +102,14 @@ public class MapController {
                 y2 = edgeRset.getInt("YPOS2");
                 floor1 = edgeRset.getInt("FLOOR1");
                 floor2 = edgeRset.getInt("FLOOR2");
+                System.out.print("totes DB edge"  );
+                System.out.print(x1  );
+                System.out.print(" ");
+                System.out.print(y1  );
+                System.out.print(" ");
+                System.out.print(x2  );
+                System.out.print(" ");
+                System.out.println(y2  );
 
                 //lookup node object pointer
                 Node node1, node2;
@@ -171,7 +179,7 @@ public class MapController {
         if(collectionOfNodes == null) {
             requestMapCopy();
         }
-        System.out.println("MAPCONTROLLER: requestPath: collectionOfNOdes size: " + collectionOfNodes.toString());
+        //System.out.println("MAPCONTROLLER: requestPath: collectionOfNOdes size: " + collectionOfNodes.toString());
 
         startNode = collectionOfNodes.getNode(startNodeX, startNodeY, 4);
         if(startNode == null) {

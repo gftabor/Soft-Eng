@@ -121,8 +121,8 @@ public class pathFindingMenuController extends controllers.AbsController{
     }
 
     public void create_Button(double nodeX, double nodeY){
-        System.out.println("checking button");
-        System.out.println("make button");
+        //System.out.println("checking button");
+        //System.out.println("make button");
         btK = new Circle(7);
         btK.setOnMouseClicked(e -> {
             nodeSelected((int)((nodeX)), (int)((nodeY)));
