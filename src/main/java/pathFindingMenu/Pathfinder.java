@@ -32,6 +32,7 @@ public class Pathfinder {
         if(currentNode.equals(goalNode))
             return true;
         for(Edge currentEdge:currentNode.getEdgeList()){
+            System.out.println("edge");
             Node neighbor = currentEdge.getNeighbor(currentNode);
             double neighbourNewCost = currentNode.getCostToReach() + currentEdge.getWeight();
 
@@ -57,6 +58,8 @@ public class Pathfinder {
         System.out.println("PATHFINDER: generating path from node at (" + startNode.getPosX() + ", " +
                 startNode.getPosY() + ") to node at (" + endNode.getPosX() + ", " +
                 endNode.getPosY() + ")");
+        alreadyProcessed.clear();
+        frontier.clear();
         startNode.setTotalCost(getHueristic(startNode, endNode));
         startNode.setCostToReach(0);
         frontier.add(startNode);
@@ -73,8 +76,10 @@ public class Pathfinder {
             //frontier.remove(processing);
             frontier.remove(0);//maybe cheaper
         }
+
         if (finished)
             return endNode.getTotalCost();
+        System.out.println("not possible");
         return -1;
     }
 
