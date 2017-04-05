@@ -15,12 +15,4 @@ public class AdminLoginManager {
         }
         return 0;
     }
-
-    private int updateInstructions() {
-        return 0;
-    }
-
-    public int checkAdminPowers() {
-        return 0;
-    }
 }
