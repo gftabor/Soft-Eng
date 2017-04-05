@@ -1,27 +1,18 @@
 package pathFindingMenu;
 
 import controllers.MapController;
-import javafx.beans.InvalidationListener;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.ColorModel;
-import java.util.*;
 
 /**
  * Created by AugustoR on 3/30/17.
@@ -133,8 +124,8 @@ public class pathFindingMenuController extends controllers.AbsController{
     }
 
     public void create_Button(double nodeX, double nodeY){
-        System.out.println("checking button");
-        System.out.println("make button");
+        //System.out.println("checking button");
+        //System.out.println("make button");
         btK = new Circle(lableRadius);
         btK.setOnMouseClicked(e -> {
 
