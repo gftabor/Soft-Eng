@@ -13,11 +13,10 @@ public class AdminLoginManager {
 
     //uses BCrypt hash function to check password encryption
     public int verifyCredentials(String username, String password) {
-        /*
+
         if((username.equals("Griffin")) && (BCrypt.checkpw(password, hashed1234))){
             return 1;
         }
-        */
 
         encrypted = databaseController.getPassword(username);
         if(encrypted == null){
