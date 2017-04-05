@@ -9,9 +9,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.ColorModel;
+import java.util.*;
 
 /**
  * Created by AugustoR on 3/30/17.
@@ -126,6 +132,14 @@ public class pathFindingMenuController extends controllers.AbsController{
         btK = new Circle(7);
         btK.setOnMouseClicked(e -> {
             nodeSelected((int)((nodeX)), (int)((nodeY)));
+            //set color -- needs work
+            if (selectionState == 0) {
+                btK.setFill(Color.MAGENTA);
+            } else if (selectionState == 1) {
+                btK.setFill(Color.AQUAMARINE);
+            } else {
+                //do nothing
+            }
         });
 
         // this code sets node's x and y pos to be on the plane holding the graph
@@ -143,11 +157,13 @@ public class pathFindingMenuController extends controllers.AbsController{
             //place the black marker at the starting location
             mapController.markNode(x, y, 1);
             selectionState++;
+
             return 0;
         } else if (selectionState == 1){
             //place the red marker at end location
             mapController.markNode(x, y, 2);
             selectionState++;
+
             return 0;
         } else {
             //do nothing
