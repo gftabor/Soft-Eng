@@ -14,6 +14,13 @@ public class Pathfinder {
     private ArrayList<Node> frontier = new ArrayList<Node>();
     private HashSet<Node> alreadyProcessed = new HashSet<Node>();;
 
+    private ArrayList<Edge> path = new ArrayList<Edge>();
+
+
+    public ArrayList<Edge> getPath() {
+        return path;
+    }
+
     //double heuristic function for A* pathfinding
     //uses a straight-line-distance (SLD) heuristic
     //  input: 2 nodes
@@ -31,7 +38,6 @@ public class Pathfinder {
     private boolean processNode(Node currentNode, Node goalNode){
         if(currentNode.equals(goalNode))
             return true;
-        //System.out.println(currentNode);
 
         for(Edge currentEdge:currentNode.getEdgeList()){
             Node neighbor = currentEdge.getNeighbor(currentNode);
@@ -46,7 +52,7 @@ public class Pathfinder {
                 //if the object is in frontier only edit the object
                 if(!frontier.contains(neighbor)) {
                     frontier.add(neighbor);
-                    System.out.println("new frontier");
+                    //System.out.println("new frontier");
                 }
             }
 
@@ -64,12 +70,12 @@ public class Pathfinder {
                 endNode.getPosY() + ")");
         alreadyProcessed.clear();
         frontier.clear();
+        path.clear();
         startNode.setTotalCost(getHueristic(startNode, endNode));
         startNode.setCostToReach(0);
         frontier.add(startNode);
         boolean finished = false;
         while (!finished && !frontier.isEmpty()) {
-            System.out.println("loop");
             Collections.sort(frontier);
             Node processing = frontier.get(0);//might be biggest cost currently
             finished = processing.equals(endNode);//
@@ -77,8 +83,12 @@ public class Pathfinder {
                 processNode(processing, endNode);
                 alreadyProcessed.add(processing);
             }
-            //frontier.remove(processing);
-            frontier.remove(0);//maybe cheaper
+            frontier.remove(0);
+        }
+        Node viewingNode = endNode;
+        while(!viewingNode.equals(startNode)){
+            path.add(viewingNode.getParentEdge());
+            viewingNode = viewingNode.getParentEdge().getNeighbor(viewingNode);
         }
 
         if (finished)
