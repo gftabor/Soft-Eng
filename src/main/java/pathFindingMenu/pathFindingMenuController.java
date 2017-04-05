@@ -59,7 +59,7 @@ public class pathFindingMenuController extends controllers.AbsController{
     @FXML
     private Circle end_Dot;
 
-    private Button btK;
+    private Circle btK;
 
     private Line lne;
 
@@ -124,7 +124,7 @@ public class pathFindingMenuController extends controllers.AbsController{
     public void create_Button(double nodeX, double nodeY){
         System.out.println("checking button");
         System.out.println("make button");
-        btK = new Button("node");
+        btK = new Circle(7);
         btK.setOnMouseClicked(e -> {
             nodeSelected((int)((nodeX)), (int)((nodeY)));
         });
