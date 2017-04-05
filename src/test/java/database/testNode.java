@@ -63,8 +63,9 @@ public class testNode {
     @Test
     public void testKey(){
         Node exampleNode = new Node(150, 220, 4, false, true, "Restroom", "Bathroom 1", "417");
-        int correctKey = 01500220;
+        int correctKey = 1500220;
         int keyGotten = exampleNode.getKey();
+        System.out.println(keyGotten);
         assertEquals(correctKey, keyGotten);
     }
 
