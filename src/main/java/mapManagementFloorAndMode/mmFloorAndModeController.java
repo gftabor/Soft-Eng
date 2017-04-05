@@ -77,6 +77,8 @@ public class mmFloorAndModeController extends controllers.AbsController{
 
     private int edgesSelected = 0;
 
+    private static final double lableRadius = 8.5;
+
     private Node firstNode;
 
     private Circle btK;
@@ -125,7 +127,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
                 DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
                     floor, hidden_CheckBox.isSelected(), true, "Doctor", tempName, tempRoom);
 
-                Circle newButton = new Circle(7);
+                Circle newButton = new Circle(lableRadius);
                 newButton.setLayoutX(newNode.getPosX());
                 newButton.setLayoutY(newNode.getPosY());
 
@@ -205,7 +207,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
     public void create_Button(){
         System.out.println("checking button");
             System.out.println("make button");
-            btK = new Circle(7);//new Button();
+            btK = new Circle(lableRadius);//new Button();
             // this code drags the button
             final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
 
@@ -283,7 +285,7 @@ public class mmFloorAndModeController extends controllers.AbsController{
     public void place_Old_Buttons(double nodeX, double nodeY){
         System.out.println("checking button");
         System.out.println("make button");
-        btK = new Circle(7);//new Button("node");
+        btK = new Circle(lableRadius);//new Button("node");
 
         btK.setOnMouseClicked(e -> {
             nodeChosen(nodeX, nodeY, 4);
