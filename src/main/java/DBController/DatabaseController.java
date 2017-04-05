@@ -266,6 +266,7 @@ public class DatabaseController {
     }
 
 
+
     public ResultSet getProfessional(String ID){
         ResultSet resultSet = null;
         try{
