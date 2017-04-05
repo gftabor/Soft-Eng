@@ -64,6 +64,10 @@ public class mmNodeInformationController extends controllers.AbsController {
     @FXML
     private ChoiceBox mode_ChoiceBox;
 
+    @FXML
+    private Label error_LabelText;
+
+
 
     boolean flag = false;
 
@@ -238,10 +242,11 @@ public class mmNodeInformationController extends controllers.AbsController {
     //The add settings for the user to add a Doctor/nurse
     public void add_settings(){
         System.out.println("Add settings");
+        error_LabelText.setText("Adding");
 
 
         //Starts the choices for the user
-        title_choiceBox.getSelectionModel().selectFirst();
+        title_choiceBox.getSelectionModel().select(0);
         id_TextField.setText("");
         Firstname_TextField.setText("");
         lastName_TextField.setText("");
