@@ -121,7 +121,14 @@ public class pathFindingMenuController extends controllers.AbsController{
 
         // Add all the nodes onto the scene as buttons
         for(controllers.Node current: nodeMap.values()){
-            create_Button(current.getPosX(), current.getPosY());
+
+            //criteria for node to display:
+            //  - node must be enabled
+            //  - node must not be hidden
+            if (current.getIsHidden() == false && current.getEnabled() == true) {
+                create_Button(current.getPosX(), current.getPosY());
+            }
+            //else skip displaying the node
         }
     }
 

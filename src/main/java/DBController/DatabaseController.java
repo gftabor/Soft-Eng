@@ -6,6 +6,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import org.mindrot.jbcrypt.BCrypt;
 
+import javax.xml.transform.Result;
+
 public class DatabaseController {
 
     private static DatabaseController databaseController = new DatabaseController();
@@ -17,6 +19,11 @@ public class DatabaseController {
     public static DatabaseController getInstance() {
         return databaseController;
     }
+
+    /*******************************************************************************
+     * Starting the database, checking drivers
+     *
+     ******************************************************************************/
 
     public boolean startDB() {
 
@@ -68,6 +75,11 @@ public class DatabaseController {
 
     }
 
+    /*******************************************************************************
+     * getting tables, closing result sets
+     *
+     ******************************************************************************/
+
     public ResultSet getTableSet(String table){
         String sqlString = "Select * FROM " + table;
 
@@ -92,6 +104,11 @@ public class DatabaseController {
         }
         return true;
     }
+
+    /*******************************************************************************
+     * NODE actions
+     *
+     ******************************************************************************/
 
     // creates a new node in the database
     public boolean newNode(int x, int y, int floor, boolean ishidden, boolean enabled,
@@ -190,6 +207,11 @@ public class DatabaseController {
         }
         return true;
     }
+
+    /*******************************************************************************
+     * EDGE actions
+     *
+     ******************************************************************************/
 
     /*
     To solve two way edges, the database will always query from x1 < x2 and y1 < y2
@@ -330,25 +352,25 @@ public class DatabaseController {
         return true;
     }
 
-    public boolean newProfessional(String ID, int x, int y, int floor,
-                                   String firstName, String lastName, String type){
+    /*******************************************************************************
+     * PROFESSIONAL actions
+     *
+     ******************************************************************************/
+
+    public boolean newProfessional(String firstName, String lastName, String type){
         System.out.println(
                 String.format(
-                        "Adding professional. ID: %s, x: %s, y: %s, floor: %s, firstName: %s, lastName: %s, type: %s",
-                        ID, x, y, floor, firstName, lastName, type));
+                        "Adding professional. firstName: %s, lastName: %s, type: %s",
+                        firstName, lastName, type));
         try{
             // sql statement with "?" to be filled later
-            String query = "INSERT INTO PROFESSIONAL (ID, XPOS, YPOS, FLOOR, FIRSTNAME, LASTNAME, TYPE)" +
-                    " values (?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO PROFESSIONAL (FIRSTNAME, LASTNAME, TYPE)" +
+                    " values (?, ?, ?)";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setString(1, ID);
-            preparedStatement.setInt(2, x);
-            preparedStatement.setInt(3, y);
-            preparedStatement.setInt(4, floor);
-            preparedStatement.setString(5, firstName);
-            preparedStatement.setString(6, lastName);
-            preparedStatement.setString(7, type);
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setString(3, type);
             // execute prepared statement
             
             preparedStatement.execute();
@@ -360,32 +382,18 @@ public class DatabaseController {
         return true;
     }
 
-    // finds the node with the given info and edits it
-    // first deletes the nodes, then creates another one with the given information
-    public boolean EditProfessional(String ID, int x, int y, int floor,
-                                    String firstName, String lastName, String type){
-        // first we delete the node, because we don't want to change its primary keys
-        if(!deleteProfessional(ID)){
-            return false;
-        }
-        // then we create a new node with the old's one info
-        if(!newProfessional(ID, x, y, floor, firstName, lastName, type)){
-            return false;
-        }
-
-        return true;
-    }
-
-    public ResultSet getProfessional(String ID){
+    public ResultSet getProfessional(String firstName, String lastName, String type){
         ResultSet resultSet = null;
         System.out.println(
                 String.format(
-                        "Getting professional. ID: %s",
-                        ID));
+                        "Getting professional. firstName: %s, lastName: %s, type: %s",
+                        firstName, lastName, type));
         try{
-            String query = "SELECT * FROM PROFESSIONAL WHERE ID = ?";
+            String query = "SELECT * FROM PROFESSIONAL WHERE FIRSTNAME = ? AND LASTNAME = ? AND TYPE = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setString(1, ID);
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setString(3, type);
             // run statement and query
             
             resultSet = preparedStatement.executeQuery();
@@ -396,24 +404,115 @@ public class DatabaseController {
         return resultSet;
     }
 
-    public boolean deleteProfessional(String ID){
+    public boolean deleteProfessional(String firstName, String lastName, String type){
+        ResultSet resultSet = null;
         System.out.println(
                 String.format(
-                        "Deleting professional. ID: %s",
-                        ID));
+                        "Deleting professional. firstName: %s, lastName: %s, type: %s",
+                        firstName, lastName, type));
         try{
-            String sqlString = "DELETE FROM PROFESSIONAL WHERE ID = ?";
-            PreparedStatement preparedStatement = conn.prepareStatement(sqlString);
-            preparedStatement.setString(1, ID);
-            
+            String query = "DELETE FROM PROFESSIONAL WHERE FIRSTNAME = ? AND LASTNAME = ? AND TYPE = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setString(3, type);
+            // run statement and query
+
             preparedStatement.execute();
             preparedStatement.close();
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
         return true;
     }
+
+    /*******************************************************************************
+     * PROFESSIONAL - LOCATION actions
+     *
+     ******************************************************************************/
+
+    public boolean newProfessionalLocation(int PROID, int x, int y, int floor){
+        System.out.println(
+                String.format(
+                        "Adding professional Location. ID: %s, x: %s, y: %s, floor: %s",
+                        PROID, x, y, floor));
+        try{
+            // sql statement with "?" to be filled later
+            String query = "INSERT INTO PROLOCATION (PROID, XPOS, YPOS, FLOOR)" +
+                    " values (?, ?, ?, ?)";
+            // prepare statement by replacing "?" with corresponding variable
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, PROID);
+            preparedStatement.setInt(2, x);
+            preparedStatement.setInt(3, y);
+            preparedStatement.setInt(4, floor);
+            // execute prepared statement
+
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public ResultSet getProfessionalLocation(int PROID, int x, int y, int floor){
+        ResultSet resultSet = null;
+        System.out.println(
+                String.format(
+                        "Getting professional Location. ID: %s, x: %s, y: %s, floor: %s",
+                        PROID, x, y, floor));
+        try{
+            // sql statement with "?" to be filled later
+            String query = "SELECT * FROM PROLOCATION WHERE PROID = ? AND XPOS = ? AND YPOS = ? AND FLOOR = ?";
+            // prepare statement by replacing "?" with corresponding variable
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, PROID);
+            preparedStatement.setInt(2, x);
+            preparedStatement.setInt(3, y);
+            preparedStatement.setInt(4, floor);
+            // execute prepared statement
+
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
+    public boolean deleteProfessionalLocation(int PROID, int x, int y, int floor){
+        System.out.println(
+                String.format(
+                        "Adding professional Location. ID: %s, x: %s, y: %s, floor: %s",
+                        PROID, x, y, floor));
+        try{
+            // sql statement with "?" to be filled later
+            String query = "DELETE FROM PROLOCATION WHERE PROID = ? AND XPOS = ? AND YPOS = ? AND FLOOR = ?";
+            // prepare statement by replacing "?" with corresponding variable
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, PROID);
+            preparedStatement.setInt(2, x);
+            preparedStatement.setInt(3, y);
+            preparedStatement.setInt(4, floor);
+            // execute prepared statement
+
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
+    /*******************************************************************************
+     * ADMIN actions
+     *
+     ******************************************************************************/
 
     public boolean newAdmin(int ID, String firstName, String lastName, String userName, String password){
         String encrypted = BCrypt.hashpw(password, BCrypt.gensalt());

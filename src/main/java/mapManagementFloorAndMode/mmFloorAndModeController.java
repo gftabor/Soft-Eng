@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,6 +91,9 @@ public class mmFloorAndModeController extends controllers.AbsController{
             admin_FloorPane.getChildren().remove(btK);
         }
 
+        name_TextField.clear();
+        room_TextField.clear();
+
         edgesSelected = 0;
     }
 
@@ -128,32 +132,39 @@ public class mmFloorAndModeController extends controllers.AbsController{
 
                 break;
             case "Add Node":
-                System.out.println("Mode = add");
-                Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                        hidden_CheckBox.isSelected(), true, name, floor);
-                DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                    floor, hidden_CheckBox.isSelected(), true, "Doctor", tempName, tempRoom);
 
-                Circle newButton = new Circle(lableRadius);
-                newButton.setLayoutX(newNode.getPosX());
-                newButton.setLayoutY(newNode.getPosY());
+                if(!(title_ChoiceBox.getValue().equals("")) &&
+                        !(name_TextField.getText().equals("")) &&
+                        !(room_TextField.getText().equals(""))) {
 
-                nodeList.add(newButton);
-                newButton.setOnMouseClicked(e -> {
-                    if (mode_ChoiceBox.getValue().equals( "Add Edge")) {
-                        nodeChosen(newButton.getLayoutX(),newButton.getLayoutY(),4);
-                    }
-                    if (mode_ChoiceBox.getValue().equals( "Remove Node")) {
-                        nodeChosen(newButton.getLayoutX(),newButton.getLayoutY(),4);
-                    }
+                    System.out.println("Mode = add");
+                    Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
+                            hidden_CheckBox.isSelected(), true, name, floor);
+                    DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
+                            floor, hidden_CheckBox.isSelected(), true, "Doctor", tempName, tempRoom);
 
-                });
+                    Circle newButton = new Circle(lableRadius);
+                    newButton.setLayoutX(newNode.getPosX());
+                    newButton.setLayoutY(newNode.getPosY());
 
-                admin_FloorPane.getChildren().add(newButton);
-                newButton.toFront();
+                    nodeList.add(newButton);
+                    newButton.setOnMouseClicked(e -> {
+                        if (mode_ChoiceBox.getValue().equals( "Add Edge")) {
+                            nodeChosen(newButton.getLayoutX(),newButton.getLayoutY(),4);
+                        }
+                        if (mode_ChoiceBox.getValue().equals( "Remove Node")) {
+                            nodeChosen(newButton.getLayoutX(),newButton.getLayoutY(),4);
+                        }
 
-                mode_ChoiceBox.getSelectionModel().select("---");
+                    });
+
+                    admin_FloorPane.getChildren().add(newButton);
+                    newButton.toFront();
+
+                    mode_ChoiceBox.getSelectionModel().select("---");
+                }
                 break;
+
             case "Edit Node":
                 System.out.println("Mode = edit node");
                 break;
@@ -291,11 +302,11 @@ public class mmFloorAndModeController extends controllers.AbsController{
             admin_FloorPane.getChildren().remove(current);
         }
         for(controllers.Node current: nodeMap.values()){
-            place_Old_Buttons(current.getPosX(), current.getPosY());
+            place_Old_Buttons(current.getPosX(), current.getPosY(), current.getIsHidden(), current.getEnabled());
         }
     }
 
-    public void place_Old_Buttons(double nodeX, double nodeY){
+    public void place_Old_Buttons(double nodeX, double nodeY, boolean hidden, boolean enabled){
         System.out.println("checking button");
         System.out.println("make button");
         btK = new Circle(lableRadius);//new Button("node");
@@ -308,6 +319,16 @@ public class mmFloorAndModeController extends controllers.AbsController{
         admin_FloorPane.getChildren().add(btK);
         btK.setLayoutX(nodeX);
         btK.setLayoutY(nodeY);
+
+        //change color if required
+        //hidden -> grey
+        //disabled -> dark red
+        if (enabled == false) {
+            btK.setFill(Color.DARKRED);
+        } else if (hidden == true) {
+            btK.setFill(Color.GRAY);
+        }
+
         btK.toFront();
 
         //copy functionality of other btKs except for placement
