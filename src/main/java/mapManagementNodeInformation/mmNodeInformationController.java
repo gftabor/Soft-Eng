@@ -91,8 +91,10 @@ public class mmNodeInformationController extends controllers.AbsController {
             switch (title_choiceBox.getValue()) {
                 case "Doctor":
                     openDirectory = 1;
-                    added = databaseController.newProfessional(tempID, 4, 5, 0,
+                    System.out.println("Adding new professional -------------------");
+                    added = databaseController.newProfessional(tempID, 0, 0, 0,
                             tempFirstName, tempLastName, "Doctor");
+                    System.out.println("Added the professional ====================");
                     break;
                 case "Nurse":
                     openDirectory = 2;

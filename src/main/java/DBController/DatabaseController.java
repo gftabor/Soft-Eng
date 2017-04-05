@@ -304,7 +304,7 @@ public class DatabaseController {
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, ID);
             // run statement and query
-            
+            System.out.println("Getting a professional ------------------");
             resultSet = preparedStatement.executeQuery();
         } catch (SQLException e){
             e.printStackTrace();
