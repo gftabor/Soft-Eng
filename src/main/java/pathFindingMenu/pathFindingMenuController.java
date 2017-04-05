@@ -1,6 +1,10 @@
 package pathFindingMenu;
 
 import controllers.MapController;
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -76,6 +80,8 @@ public class pathFindingMenuController extends controllers.AbsController{
 
     private MapController mapController = MapController.getInstance();
 
+    private static final double lableRadius = 8.5;
+
     public void emergencyButton_Clicked(){
         System.out.println("The user has clicked the emergency Button");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
@@ -129,17 +135,23 @@ public class pathFindingMenuController extends controllers.AbsController{
     public void create_Button(double nodeX, double nodeY){
         System.out.println("checking button");
         System.out.println("make button");
-        btK = new Circle(7);
+        btK = new Circle(lableRadius);
         btK.setOnMouseClicked(e -> {
-            nodeSelected((int)((nodeX)), (int)((nodeY)));
-            //set color -- needs work
-            if (selectionState == 0) {
-                btK.setFill(Color.MAGENTA);
-            } else if (selectionState == 1) {
-                btK.setFill(Color.AQUAMARINE);
-            } else {
-                //do nothing
-            }
+
+            Object o = e.getSource();
+            Circle c = (Circle) o;
+
+
+            nodeSelected((int)((nodeX)), (int)((nodeY)), c);
+            //set color --
+
+//            if (selectionState == 0) {
+//                c.setFill(Color.MAGENTA);
+//            } else if (selectionState == 1) {
+//                c.setFill(Color.GREEN);
+//            } else {
+//                //do nothing
+//            }
         });
 
         // this code sets node's x and y pos to be on the plane holding the graph
@@ -151,19 +163,23 @@ public class pathFindingMenuController extends controllers.AbsController{
         ButtonList.add(btK);
     }
 
-    public int nodeSelected(int x, int y) {
+    public int nodeSelected(int x, int y, Circle c) {
         System.out.println("Node at (" + x + ", " + y + ") selected during state: " + selectionState);
         if (selectionState == 0) {
             //place the black marker at the starting location
             mapController.markNode(x, y, 1);
             selectionState++;
 
+            //color
+            c.setFill(Color.MAGENTA);
             return 0;
         } else if (selectionState == 1){
             //place the red marker at end location
             mapController.markNode(x, y, 2);
             selectionState++;
 
+            //color
+            c.setFill(Color.BROWN);
             return 0;
         } else {
             //do nothing
