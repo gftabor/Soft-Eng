@@ -32,6 +32,16 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'Main'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 // Define the main class for the application
 mainClassName = 'Main'
 
