@@ -249,10 +249,10 @@ public class mmNodeInformationController extends controllers.AbsController {
     public void remove_settings(){
         System.out.println("remove settings");
 
-        title_choiceBox.setDisable(false);
-        id_TextField.setEditable(true);
-        Firstname_TextField.setEditable(true);
-        lastName_TextField.setEditable(true);
+        title_choiceBox.setDisable(true);
+        id_TextField.setEditable(false);
+        Firstname_TextField.setEditable(false);
+        lastName_TextField.setEditable(false);
 
     }
 
