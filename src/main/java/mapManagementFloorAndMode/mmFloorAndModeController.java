@@ -91,6 +91,9 @@ public class mmFloorAndModeController extends controllers.AbsController{
             admin_FloorPane.getChildren().remove(btK);
         }
 
+        name_TextField.clear();
+        room_TextField.clear();
+
         edgesSelected = 0;
     }
 
@@ -159,8 +162,8 @@ public class mmFloorAndModeController extends controllers.AbsController{
                     newButton.toFront();
 
                     mode_ChoiceBox.getSelectionModel().select("---");
-                    break;
                 }
+                break;
 
             case "Edit Node":
                 System.out.println("Mode = edit node");
