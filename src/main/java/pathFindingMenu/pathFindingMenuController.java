@@ -87,8 +87,8 @@ public class pathFindingMenuController extends controllers.AbsController{
     public void submitButton_Clicked(){
         if (selectionState == 2) {
             //submit stuff
-            createEdgeLines(mapController.getEdgeCollection());
-            mapController.requestPath();
+            //createEdgeLines
+            createEdgeLines(mapController.requestPath());
         }
         selectionState=0;
         System.out.println("The user has clicked the submit Button");
@@ -207,14 +207,13 @@ public class pathFindingMenuController extends controllers.AbsController{
         }
         for(controllers.Edge thisEdge: edgeList) {
             lne = new Line();
-
             //add to pane
             node_Plane.getChildren().add(lne);
-            //set positioning
             lne.setStartX(thisEdge.getStartNode().getPosX());
             lne.setStartY(thisEdge.getStartNode().getPosY());
             lne.setEndX(thisEdge.getEndNode().getPosX());
             lne.setEndY(thisEdge.getEndNode().getPosY());
+
 
             //show
             lne.toFront();

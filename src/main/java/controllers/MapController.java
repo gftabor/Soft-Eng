@@ -101,15 +101,6 @@ public class MapController {
                 y2 = edgeRset.getInt("YPOS2");
                 floor1 = edgeRset.getInt("FLOOR1");
                 floor2 = edgeRset.getInt("FLOOR2");
-               /* System.out.print("totes DB edge");
-                System.out.print(x1);
-                System.out.print(" ");
-                System.out.print(y1);
-                System.out.print(" ");
-                System.out.print(x2);
-                System.out.print(" ");
-                System.out.println(y2);*/
-
                 //lookup node object pointer
                 Node node1, node2;
                 node1 = collectionOfNodes.getNode(x1, y1, floor1);
@@ -162,7 +153,7 @@ public class MapController {
     //used for pathfinding
     //creates a pathfinder and runs pathfinding on the startnode and the end node.
     //  returns: 0 if success, 1 if error
-    public int requestPath() {
+    public ArrayList<Edge> requestPath() {
         Node startNode, endNode;
 
         //instantiates the collection if nothing is there yet
@@ -175,20 +166,19 @@ public class MapController {
         if(startNode == null) {
             System.out.println("MAPCONTROLLER: getNode(startNode) returns null!");
             //System.out.println("MAPCONTROLLER: requestPath: collectionOfNOdes size: " + collectionOfNodes.toString());
-            return 1;
+            return null;
         }
 
         endNode = collectionOfNodes.getNode(endNodeX, endNodeY, 4);
         if(endNode == null) {
             System.out.println("MAPCONTROLLER: getNode(endNode) returns null!");
-            return 1;
+            return null;
         }
 
         //creates and runs a pathfinder
         Pathfinder pathfinder = new Pathfinder();
         pathfinder.generatePath(startNode, endNode);
-        System.out.println("true cost  " + endNode.getTotalCost());
-        System.out.println("guess  " +startNode.getTotalCost());
-        return 0;
+        return pathfinder.getPath();
+
     }
 }
