@@ -337,7 +337,7 @@ public class mmNodeInformationController extends controllers.AbsController {
 
         //sets the properties
         title_choiceBox.setDisable(false);
-        id_TextField.setEditable(true);
+        id_TextField.setEditable(false);
         Firstname_TextField.setEditable(true);
         lastName_TextField.setEditable(true);
 
