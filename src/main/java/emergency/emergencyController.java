@@ -17,7 +17,6 @@ public class emergencyController extends controllers.AbsController{
 
     @FXML
     private Button mainMenu_Button;
-    public void sceneEvent(int x,int y,Object o){}
 
     //Return the the patient main menu
     public void mainMenuButton_Clicked() {

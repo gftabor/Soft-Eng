@@ -12,7 +12,7 @@ import java.util.HashMap;
  * Created by Griffin on 4/5/2017.
  */
 public class MapOverlay {
-    public MapOverlay(Pane scenePane , AbsController controller){
+    public MapOverlay(Pane scenePane , mapScene controller){
         this.currentPane = scenePane;
         System.out.println("map   " + currentPane );
         this.sceneController = controller;
@@ -23,7 +23,7 @@ public class MapOverlay {
     private Line lne;
     private Circle location;
     private static final double lableRadius = 8.5;
-    AbsController sceneController;
+    mapScene sceneController;
 
     private ArrayList<Circle> ButtonList = new ArrayList<Circle>();
 
