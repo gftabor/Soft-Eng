@@ -39,8 +39,6 @@ public class patientMenuStartController extends controllers.AbsController{
 
     Boolean logInSuccess = true;
 
-    public void sceneEvent(int x,int y,Object o){}
-
     //Handling when the logIn Button is clicked
     public void logInButton_Clicked(){
         System.out.println("The log in button was clicked by the user");

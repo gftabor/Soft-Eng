@@ -1,7 +1,7 @@
 package pathFindingMenu;
 
-import controllers.AbsController;
 import controllers.MapController;
+import controllers.mapScene;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -14,7 +14,7 @@ import javafx.scene.shape.Circle;
 /**
  * Created by AugustoR on 3/30/17.
  */
-public class pathFindingMenuController extends controllers.AbsController{
+public class pathFindingMenuController extends controllers.mapScene{
     @FXML
     private AnchorPane backgroundAnchorPane;
 
@@ -48,11 +48,8 @@ public class pathFindingMenuController extends controllers.AbsController{
     @FXML
     private Pane node_Plane;
 
-    @FXML
-    private Circle start_Dot;
-
-    @FXML
-    private Circle end_Dot;
+    private Circle start;
+    private Circle end;
 
     private Circle btK;
 
@@ -68,13 +65,12 @@ public class pathFindingMenuController extends controllers.AbsController{
     }
     @FXML
     public void initialize() {
-        graph = new controllers.MapOverlay(node_Plane,(AbsController)this);
+        graph = new controllers.MapOverlay(node_Plane,(mapScene) this);
         MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4),false);
     }
     public void cancelButton_Clicked(){
         MapController.getInstance().requestMapCopy();
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4),false);
         selectionState = 0;
         //Remove black and red dots from map
     }
@@ -104,21 +100,25 @@ public class pathFindingMenuController extends controllers.AbsController{
         }
     }
 
-    public void sceneEvent(int x, int y, Object o){
+    public void sceneEvent(int x, int y, Circle c){
         System.out.println("Node at (" + x + ", " + y + ") selected during state: " + selectionState);
-        Circle c = (Circle) o;
         if (selectionState == 0) {
             //place the black marker at the starting location
             mapController.markNode(x, y, 1);
             selectionState++;
-
+            if(start != null)
+                start.setFill(Color.BLACK);
+            if(end != null)
+                end.setFill(Color.BLACK);
+            graph.wipeEdgeLines();
+            start =c;
             //color
             c.setFill(Color.MAGENTA);
         } else if (selectionState == 1){
             //place the red marker at end location
             mapController.markNode(x, y, 2);
             selectionState++;
-
+            end = c;
             //color
             c.setFill(Color.BROWN);
         } else {

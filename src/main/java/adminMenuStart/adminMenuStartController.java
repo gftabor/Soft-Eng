@@ -15,7 +15,6 @@ import java.util.HashMap;
 public class adminMenuStartController extends controllers.AbsController{
     @FXML
     private AnchorPane backgroundAnchorPane;
-    public void sceneEvent(int x,int y,Object o){}
 
     @FXML
     private Label username_Label;

@@ -1,8 +1,8 @@
 package mapManagementFloorAndMode;
 
-import controllers.AbsController;
 import controllers.MapController;
 import controllers.Node;
+import controllers.mapScene;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -16,7 +16,7 @@ import javafx.scene.shape.Circle;
 /**
  * Created by AugustoR on 3/31/17.
  */
-public class mmFloorAndModeController extends controllers.AbsController {
+public class mmFloorAndModeController extends controllers.mapScene{
     @FXML
     private AnchorPane backgroundAnchorPane;
 
@@ -74,7 +74,7 @@ public class mmFloorAndModeController extends controllers.AbsController {
         setModeChoices();
         setTitleChoices();
 
-        graph = new controllers.MapOverlay(admin_FloorPane,(AbsController)this);
+        graph = new controllers.MapOverlay(admin_FloorPane,(mapScene) this);
         MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4),true);
     }
@@ -96,8 +96,7 @@ public class mmFloorAndModeController extends controllers.AbsController {
         edgesSelected = 0;
     }
 
-    public void sceneEvent(int x, int y, Object o) {
-        Circle c = (Circle) o;
+    public void sceneEvent(int x, int y, Circle c) {
         edgesSelected++;
         if (edgesSelected == 1) {
             //display edges already associated with selected node
@@ -208,7 +207,6 @@ public class mmFloorAndModeController extends controllers.AbsController {
         }
         controllers.MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(4),true);
-
         edgesSelected = 0;
 
     }

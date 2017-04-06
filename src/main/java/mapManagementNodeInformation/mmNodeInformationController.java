@@ -18,8 +18,6 @@ import java.util.ArrayList;
  * Created by AugustoR on 3/31/17.
  */
 public class mmNodeInformationController extends controllers.AbsController {
-    public void sceneEvent(int x,int y,Object o){}
-
     @FXML
     private AnchorPane backgroundAnchorPane;
 
