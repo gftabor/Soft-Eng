@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import mapManagementFloorAndMode.mmFloorAndModeController;
 
 import java.util.HashMap;
 
@@ -58,8 +57,7 @@ public class adminMenuStartController extends controllers.AbsController{
         MapController.getInstance().requestFloorMapCopy();
         MapController.getInstance().requestMapCopy();
         HashMap<Integer, Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
-
-        controller.setMapAndNodes(DBMap);
+        //controller.setMapAndNodes(DBMap);
         controller.setUserString(username_Label.getText());
 
     }
@@ -83,14 +81,6 @@ public class adminMenuStartController extends controllers.AbsController{
         //Get the controller of the the scene
         mapManagementFloorAndMode.mmFloorAndModeController controller = loader.getController();
         //Set the username label
-        HashMap<Integer, Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
-        controller.setMapAndNodes(DBMap);
-        controller.setUserString(username_Label.getText());
-        controller.setModeChoices();
-        controller.setTitleChoices();
-
-
-
     }
 
     //Set the username coming from the main login
