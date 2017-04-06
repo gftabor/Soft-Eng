@@ -1,6 +1,7 @@
 package controllers;
 
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
@@ -61,18 +62,8 @@ public class MapOverlay {
 
             Object o = e.getSource();
             Circle c = (Circle) o;
-
-
             sceneController.sceneEvent((int)((nodeX)), (int)((nodeY)), c);
             //set color --
-
-//            if (selectionState == 0) {
-//                c.setFill(Color.MAGENTA);
-//            } else if (selectionState == 1) {
-//                c.setFill(Color.GREEN);
-//            } else {
-//                //do nothing
-//            }
         });
 
         // this code sets node's x and y pos to be on the plane holding the graph
@@ -80,6 +71,8 @@ public class MapOverlay {
         location.setLayoutX(nodeX);
         location.setLayoutY(nodeY);
         location.toFront();
+        if(hidden)
+            location.setFill(Color.GRAY);
 
         ButtonList.add(location);
     }
