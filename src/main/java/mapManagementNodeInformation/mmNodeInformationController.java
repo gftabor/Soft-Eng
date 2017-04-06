@@ -335,6 +335,8 @@ public class mmNodeInformationController extends controllers.AbsController {
 
         //Starts the choices for the user
         title_choiceBox.getSelectionModel().select(0);
+        department_ChoiceBox.getSelectionModel().select(0);
+        room_ChoiceBox.getSelectionModel().select(0);
         id_TextField.setText("");
         Firstname_TextField.setText("");
         lastName_TextField.setText("");
@@ -343,6 +345,8 @@ public class mmNodeInformationController extends controllers.AbsController {
         lastName_TextField.setPromptText("Last");
         //Sets the properties
         title_choiceBox.setDisable(false);
+        department_ChoiceBox.setDisable(false);
+        room_ChoiceBox.setDisable(false);
         id_TextField.setEditable(false);
         Firstname_TextField.setEditable(true);
         lastName_TextField.setEditable(true);
@@ -355,6 +359,8 @@ public class mmNodeInformationController extends controllers.AbsController {
         error_LabelText.setText("");
         //sets the properties
         title_choiceBox.setDisable(true);
+        department_ChoiceBox.setDisable(true);
+        room_ChoiceBox.setDisable(true);
         id_TextField.setEditable(false);
         Firstname_TextField.setEditable(false);
         lastName_TextField.setEditable(false);
@@ -369,6 +375,8 @@ public class mmNodeInformationController extends controllers.AbsController {
 
         //sets the properties
         title_choiceBox.setDisable(false);
+        department_ChoiceBox.setDisable(false);
+        room_ChoiceBox.setDisable(false);
         id_TextField.setEditable(false);
         Firstname_TextField.setEditable(true);
         lastName_TextField.setEditable(true);
@@ -394,7 +402,16 @@ public class mmNodeInformationController extends controllers.AbsController {
     //Sets the current mode whene refreshing the scene
     public void setCurrentMode(int i){
         mode_ChoiceBox.getSelectionModel().select(i);
+    }
 
+    //sets the choices for the rooms
+    public void setRoomChoices(){
+        room_ChoiceBox.getItems().addAll("AH229", "SH289", "SL123");
+    }
+
+    //sets the choices for the department
+    public void setDepartmentChoices(){
+        department_ChoiceBox.getItems().addAll("Accident and emergency (A&E)", "Anaesthetics", "Breast screening");
     }
 }
 
