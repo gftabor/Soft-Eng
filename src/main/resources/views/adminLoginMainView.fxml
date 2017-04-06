@@ -7,6 +7,8 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -21,6 +23,17 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
+                  <HBox prefHeight="55.0" prefWidth="423.0">
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="invalidLogInputs" styleClass="small">
+                           <HBox.margin>
+                              <Insets top="20.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
                   <TextField fx:id="username_TextField" promptText="username">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -41,7 +54,6 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </Button>
-                  <Label fx:id="invalidLogInputs" prefHeight="68.0" prefWidth="403.0" styleClass="small" text="Incorrect username or password, try again." />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
