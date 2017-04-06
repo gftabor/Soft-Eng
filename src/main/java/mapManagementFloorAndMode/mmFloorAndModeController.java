@@ -92,7 +92,7 @@ public class mmFloorAndModeController extends controllers.AbsController {
 
         name_TextField.clear();
         room_TextField.clear();
-
+        graph.wipeEdgeLines();
         edgesSelected = 0;
     }
 
@@ -150,13 +150,6 @@ public class mmFloorAndModeController extends controllers.AbsController {
                             floor, hidden_CheckBox.isSelected(), true, type, tempName, tempRoom);
                     DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
                             floor, hidden_CheckBox.isSelected(), true, type, tempName, tempRoom);
-
-                    Circle newButton = new Circle(lableRadius);
-                    newButton.setLayoutX(newNode.getPosX());
-                    newButton.setLayoutY(newNode.getPosY());
-                    admin_FloorPane.getChildren().add(newButton);
-                    newButton.toFront();
-
                 }
                 mode_ChoiceBox.getSelectionModel().select("---");
 
@@ -268,5 +261,8 @@ public class mmFloorAndModeController extends controllers.AbsController {
                 btK.setLayoutY((e.getSceneY() - paneBounds.getMinY()));
             }
         });
+
+        admin_FloorPane.getChildren().add(btK);
     }
+
 }

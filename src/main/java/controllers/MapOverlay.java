@@ -49,6 +49,7 @@ public class MapOverlay {
             }
             //else skip displaying the node
         }
+        wipeEdgeLines();
     }
 
     public void create_Button(double nodeX, double nodeY){
@@ -81,14 +82,20 @@ public class MapOverlay {
 
         ButtonList.add(location);
     }
+
+
+    public void wipeEdgeLines(){
+        for(Line currentLine : lineList) {
+            currentPane.getChildren().remove(currentLine);
+        }
+
+    }
     //creates visual representations of the edges of nodes on the pane
     //  input: any arraylist of Edge objects
     //NOTE: caller is responsible for not sending duplicate edges
     public void createEdgeLines(ArrayList<controllers.Edge> edgeList) {
         //for-each loop through arraylist
-        for(Line currentLine : lineList) {
-            currentPane.getChildren().remove(currentLine);
-        }
+        wipeEdgeLines();
         for(controllers.Edge thisEdge: edgeList) {
             lne = new Line();
             //add to pane
