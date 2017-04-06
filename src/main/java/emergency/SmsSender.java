@@ -19,7 +19,7 @@ public class SmsSender {
     loadConfig config = new loadConfig();
 
 
-    public void sendSMS() throws URISyntaxException {
+    public String sendSMS() throws URISyntaxException {
         Twilio.init(config.getTwilioAuth(), config.getTwilioPW());
 
         Message message = Message
@@ -29,5 +29,6 @@ public class SmsSender {
                 .create();
         System.out.println("Message SID: " + message.getSid());
         System.out.println("Message Status: " + message.getStatus());
+        return message.getStatus().toString();
     }
 }
