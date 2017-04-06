@@ -29,30 +29,31 @@ public class MapOverlay {
     private ArrayList<Line> lineList = new ArrayList<Line>();
 
     //takes in a Hashtable when scene is switched and calls setNodes
-    public void setMapAndNodes(HashMap<Integer, Node> nodeMap) {
+    public void setMapAndNodes(HashMap<Integer, Node> nodeMap, boolean showHidden) {
         currentNodeMap = nodeMap;
-
         // Clear circles from the scene
         while (ButtonList.size() < 0) {
             currentPane.getChildren().remove(ButtonList.get(0));
             ButtonList.remove(0);
         }
-
         // Add all the nodes onto the scene as buttons
         for(controllers.Node current: nodeMap.values()){
 
             //criteria for node to display:
             //  - node must be enabled
-            //  - node must not be hidden
-            if (current.getIsHidden() == false && current.getEnabled() == true) {
-                create_Button(current.getPosX(), current.getPosY());
+            if (current.getEnabled() == true) {
+                if(current.getIsHidden() == false)
+                    create_Button(current.getPosX(), current.getPosY(),false);
+                if(current.getIsHidden() == true && showHidden)
+                    create_Button(current.getPosX(), current.getPosY(),true);
+
             }
             //else skip displaying the node
         }
         wipeEdgeLines();
     }
 
-    public void create_Button(double nodeX, double nodeY){
+    public void create_Button(double nodeX, double nodeY, boolean hidden){
         //System.out.println("checking button");
         //System.out.println("make button");
         location = new Circle(lableRadius);
