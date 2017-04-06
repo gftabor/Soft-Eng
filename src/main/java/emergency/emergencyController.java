@@ -34,6 +34,8 @@ public class emergencyController extends controllers.AbsController{
       FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
     }
 
+
+
     public void callAuthorities(){
         SmsSender mySMS = new SmsSender();
         try {

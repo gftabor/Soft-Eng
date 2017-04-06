@@ -34,10 +34,10 @@ public class loadConfig {
         return auth.get("sendfrom").asString();
     }
 
-    private Reader startReader(){
+    public Reader startReader(){
         Reader reader = null;
         try {
-            reader = new FileReader("/Users/jasonashton/IdeaProjects/Soft-Eng/build/resources/main/config/config.json");
+            reader = new FileReader("build/resources/main/config/config.json");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
