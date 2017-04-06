@@ -4,14 +4,19 @@ import DBController.DatabaseController;
 import controllers.Professional;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -64,12 +69,17 @@ public class mmNodeInformationController extends controllers.AbsController {
     private Label error_LabelText;
 
 
-
-    /** Flags for passing different info */
+    /**
+     * Flags for passing different info
+     */
     // 
     int c_mode = -1;
 
     int openDirectory;
+
+    boolean empty_inputs;
+
+    boolean check_space;
 
     //get an instance of database controller
     DatabaseController databaseController = DatabaseController.getInstance();
@@ -88,36 +98,48 @@ public class mmNodeInformationController extends controllers.AbsController {
         boolean added = true;
         if (c_mode == 0) {
             // add
-            switch (title_choiceBox.getValue()) {
-                case "Doctor":
-                    openDirectory = 1;
-                    System.out.println("Adding new professional -------------------");
-                    added = databaseController.newProfessional(tempFirstName,
-                            tempLastName, "Doctor");
-                    System.out.println("Added the professional ====================");
-                    break;
-                case "Nurse":
-                    openDirectory = 2;
-                    added = databaseController.newProfessional(tempFirstName,
-                            tempLastName, "Nurse");
-                    break;
-                default:
-                    System.out.println("Nothing selected for mode");
-                    break;
+            empty_inputs = Firstname_TextField.getText().equals("") || Firstname_TextField.getText() == null
+                    || lastName_TextField.equals("") || lastName_TextField.getText() == null;
+
+            Pattern pattern = Pattern.compile("\\s");
+            Matcher matcher = pattern.matcher(Firstname_TextField.getText());
+            boolean found = matcher.find();
+            System.out.println(found);
+
+            if (!empty_inputs) {
+                switch (title_choiceBox.getValue()) {
+                    case "Doctor":
+                        openDirectory = 1;
+                        System.out.println("Adding new professional -------------------");
+                        added = databaseController.newProfessional(tempFirstName,
+                                tempLastName, "Doctor");
+                        System.out.println("Added the professional ====================");
+                        break;
+                    case "Nurse":
+                        openDirectory = 2;
+                        added = databaseController.newProfessional(tempFirstName,
+                                tempLastName, "Nurse");
+                        break;
+                    default:
+                        System.out.println("Nothing selected for mode");
+                        break;
+                }
             }
+
+
         } else if (c_mode == 1) {
             // remove
-            if(title_choiceBox.getValue().equals("Doctor")) {
+            if (title_choiceBox.getValue().equals("Doctor")) {
                 openDirectory = 1;
-            }else if(title_choiceBox.getValue().equals("Nurse")){
+            } else if (title_choiceBox.getValue().equals("Nurse")) {
                 openDirectory = 2;
             }
             databaseController.deleteProfessional(id_TextField.getText());
         } else if (c_mode == 2) {
             // edit
-            if(title_choiceBox.getValue().equals("Doctor")) {
+            if (title_choiceBox.getValue().equals("Doctor")) {
                 openDirectory = 1;
-            }else if(title_choiceBox.getValue().equals("Nurse")){
+            } else if (title_choiceBox.getValue().equals("Nurse")) {
                 openDirectory = 2;
             }
             int id = 0;
@@ -131,7 +153,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         }
         // createDirectoryTreeView();
 
-        if(c_mode != -1) {
+        if (c_mode != -1) {
             FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/mmNodeInformationView.fxml");
             mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
             controller.setOpenDirectory(openDirectory);
@@ -141,9 +163,9 @@ public class mmNodeInformationController extends controllers.AbsController {
             controller.setCurrentMode(c_mode);
             controller.setUser(currentAdmin_Label.getText());
             System.out.println(openDirectory);
-            if(!added){
+            if (!added) {
                 controller.setError("This ID already exists!");
-           }else{
+            } else {
                 controller.setError("");
             }
         }
@@ -205,7 +227,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         }
 
         doctors.setExpanded(false);
-        if(openDirectory == 1){
+        if (openDirectory == 1) {
             doctors.setExpanded(true);
         }
 
@@ -219,7 +241,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         }
 
         nurses.setExpanded(false);
-        if(openDirectory == 2){
+        if (openDirectory == 2) {
             nurses.setExpanded(true);
         }
 
@@ -235,7 +257,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     }
 
     // this is to include id to allow for multiple doctors
-    public void pullProfessional(String fullName){
+    public void pullProfessional(String fullName) {
         ResultSet rset;
         String id = null;
         String firstName;
@@ -248,21 +270,21 @@ public class mmNodeInformationController extends controllers.AbsController {
 
         try {
             rset = databaseController.getProfessional(firstName, lastName);
-            while (rset.next()){
+            while (rset.next()) {
                 id = rset.getString("ID");
                 type = rset.getString("TYPE");
             }
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
         int flag = 1;
-        if ("Doctor".equals(type)){
+        if ("Doctor".equals(type)) {
             flag = 0;
         }
 
-        if(c_mode != 0) {
+        if (c_mode != 0) {
             title_choiceBox.getSelectionModel().select(flag);
             id_TextField.setText(id);
             Firstname_TextField.setText(firstName);
@@ -288,7 +310,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                     public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                         // Do validation
                         System.out.println(newValue);
-                        if(newValue.intValue()==0){
+                        if (newValue.intValue() == 0) {
                             System.out.println("Hello world");
                             //create_Button();
                         } else if (newValue.intValue() == 1 || newValue.intValue() == 2) {
@@ -299,7 +321,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     }
 
     //Sets the choices for the mode Add, edit remove
-    public void setModeChoices(){
+    public void setModeChoices() {
         mode_ChoiceBox.getItems().addAll("Add", "Remove", "Edit");
         mode_ChoiceBox.getSelectionModel().selectedIndexProperty()
                 .addListener(new ChangeListener<Number>() {
@@ -309,7 +331,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                         System.out.println(newValue);
 
                         //Sets the mode to Add
-                        if(newValue.intValue()==0){
+                        if (newValue.intValue() == 0) {
                             add_settings();
 
                             //Sets the mode to remove
@@ -317,7 +339,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                             remove_settings();
 
                             //Sets the mode to edit
-                        }else if(newValue.intValue() == 2){
+                        } else if (newValue.intValue() == 2) {
                             edit_settings();
 
                         }
@@ -327,7 +349,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     }
 
     //The add settings for the user to add a Doctor/nurse
-    public void add_settings(){
+    public void add_settings() {
         c_mode = 0;
         System.out.println("Add settings");
         error_LabelText.setText("");
@@ -340,7 +362,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         id_TextField.setText("");
         Firstname_TextField.setText("");
         lastName_TextField.setText("");
-        id_TextField.setPromptText("ID");
+        id_TextField.setPromptText("Automatically Generated ID");
         Firstname_TextField.setPromptText("First");
         lastName_TextField.setPromptText("Last");
         //Sets the properties
@@ -353,7 +375,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     }
 
     //The remove settings for the user to remove a Doctor/nurse
-    public void remove_settings(){
+    public void remove_settings() {
         c_mode = 1;
         System.out.println("remove settings");
         error_LabelText.setText("");
@@ -368,7 +390,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     }
 
     //The remove settings for the user to remove a Doctor/nurse
-    public void edit_settings(){
+    public void edit_settings() {
         c_mode = 2;
         System.out.println("edit settings");
         error_LabelText.setText("");
@@ -384,35 +406,37 @@ public class mmNodeInformationController extends controllers.AbsController {
     }
 
     //Sets the label of an error
-    public void setError(String error){
+    public void setError(String error) {
         error_LabelText.setText(error);
     }
 
     //Sets the user in the scene
-    public void setUser(String user){
+    public void setUser(String user) {
         currentAdmin_Label.setText(user);
     }
 
-    public void setOpenDirectory(int i){
+    public void setOpenDirectory(int i) {
         System.out.println("LOOK THIS");
         System.out.println(i);
         openDirectory = i;
     }
 
     //Sets the current mode whene refreshing the scene
-    public void setCurrentMode(int i){
+    public void setCurrentMode(int i) {
         mode_ChoiceBox.getSelectionModel().select(i);
     }
 
-    //sets the choices for the rooms
-    public void setRoomChoices(){
+    //sets the choices for the rooms DB
+    public void setRoomChoices() {
         room_ChoiceBox.getItems().addAll("AH229", "SH289", "SL123");
     }
 
-    //sets the choices for the department
-    public void setDepartmentChoices(){
+    //sets the choices for the department DB
+    public void setDepartmentChoices() {
         department_ChoiceBox.getItems().addAll("Accident and emergency (A&E)", "Anaesthetics", "Breast screening");
     }
 }
+
+
 
 
