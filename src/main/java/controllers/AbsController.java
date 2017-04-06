@@ -46,6 +46,4 @@ public abstract class AbsController {
         AnchorPane.setRightAnchor(pane,0.0);
         AnchorPane.setBottomAnchor(pane,0.0);
     }
-
-
 }
