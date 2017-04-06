@@ -92,6 +92,12 @@ public class MapOverlay {
         wipeEdgeLines();
         for(controllers.Edge thisEdge: edgeList) {
             lne = new Line();
+
+            //config to display properly
+            lne.setFill(Color.RED);
+            lne.setStroke(Color.RED);
+            lne.setStrokeWidth(4.5);
+
             //add to pane
             currentPane.getChildren().add(lne);
             lne.setStartX(thisEdge.getStartNode().getPosX());
