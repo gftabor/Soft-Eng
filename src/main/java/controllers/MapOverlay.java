@@ -33,7 +33,7 @@ public class MapOverlay {
     public void setMapAndNodes(HashMap<Integer, Node> nodeMap, boolean showHidden) {
         currentNodeMap = nodeMap;
         // Clear circles from the scene
-        while (ButtonList.size() < 0) {
+        while (ButtonList.size() > 0) {
             currentPane.getChildren().remove(ButtonList.get(0));
             ButtonList.remove(0);
         }
