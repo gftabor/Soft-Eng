@@ -199,6 +199,12 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 }
                 break;
             case "Remove Edge":
+                if (edgesSelected == 2) {
+                    System.out.println("Mode = add edge");
+                    DBController.DatabaseController.getInstance().deleteEdge(nodeEdgeX1,
+                            nodeEdgeY1, 4, nodeEdgeX2, nodeEdgeY2, 4);
+                    System.out.println("added edge");
+                }
                 System.out.println("Mode = remove edge");
                 break;
             default:
