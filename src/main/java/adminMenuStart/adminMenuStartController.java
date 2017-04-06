@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import mapManagementFloorAndMode.mmFloorAndModeController;
 
 import java.util.HashMap;
 
@@ -16,6 +15,7 @@ import java.util.HashMap;
 public class adminMenuStartController extends controllers.AbsController{
     @FXML
     private AnchorPane backgroundAnchorPane;
+    public void sceneEvent(int x,int y,Object o){}
 
     @FXML
     private Label username_Label;
@@ -58,8 +58,7 @@ public class adminMenuStartController extends controllers.AbsController{
         MapController.getInstance().requestFloorMapCopy();
         MapController.getInstance().requestMapCopy();
         HashMap<Integer, Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
-
-        controller.setMapAndNodes(DBMap);
+        //controller.setMapAndNodes(DBMap);
         controller.setUserString(username_Label.getText());
 
     }

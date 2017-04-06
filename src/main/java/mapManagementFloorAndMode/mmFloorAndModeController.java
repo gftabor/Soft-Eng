@@ -1,6 +1,5 @@
 package mapManagementFloorAndMode;
 
-import controllers.Edge;
 import controllers.Node;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -10,9 +9,9 @@ import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +25,8 @@ public class mmFloorAndModeController extends controllers.AbsController{
 
     @FXML
     private Button emergency_Button;
+
+    public void sceneEvent(int x,int y,Object o){}
 
     @FXML
     private ChoiceBox<String> mode_ChoiceBox;

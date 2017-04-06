@@ -38,6 +38,7 @@ public abstract class AbsController {
         }
 
     }
+    public abstract void sceneEvent(int x,int y,Object o);
 
     //initializes the anchor pane
     public void setAnchorPane (AnchorPane pane){
@@ -46,6 +47,4 @@ public abstract class AbsController {
         AnchorPane.setRightAnchor(pane,0.0);
         AnchorPane.setBottomAnchor(pane,0.0);
     }
-
-
 }

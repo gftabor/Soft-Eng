@@ -39,6 +39,8 @@ public class patientMenuStartController extends controllers.AbsController{
 
     Boolean logInSuccess = true;
 
+    public void sceneEvent(int x,int y,Object o){}
+
     //Handling when the logIn Button is clicked
     public void logInButton_Clicked(){
         System.out.println("The log in button was clicked by the user");
@@ -59,17 +61,11 @@ public class patientMenuStartController extends controllers.AbsController{
     //Handling when the pathFinding Button is clicked
     //IMPORTANT
     public void pathFindingButton_Clicked(){
-        //FXMLLoader loader = switch_screen(backgroundAnchorPane,"../main/resources/views/pathFindingMenuView.fxml");
-        //pathFindingMenuController controller = loader.getController();
-        //controller.setMode(username_TextField.getText());
-
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/pathFindingMenuView.fxml");
         pathFindingMenu.pathFindingMenuController controller = loader.getController();
         MapController.getInstance().requestFloorMapCopy();
         MapController.getInstance().requestMapCopy();
         HashMap<Integer, controllers.Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
-
-        controller.setMapAndNodes(DBMap);
         controller.setUserString("");
 
     }

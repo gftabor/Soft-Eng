@@ -15,6 +15,8 @@ public class adminLoginMainController extends controllers.AbsController{
     @FXML
     private TextField username_TextField;
 
+    public void sceneEvent(int x,int y,Object o){}
+
     @FXML
     private PasswordField password_PasswordField;
 
