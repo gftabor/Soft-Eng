@@ -39,8 +39,6 @@ public class pathFindingMenuController extends controllers.mapScene{
     @FXML
     private Label currentFloor_Label;
 
-    @FXML
-    private Label mode_Label;
 
     @FXML
     private Label username_Label;
@@ -126,11 +124,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         }
     }
 
-    public void setMode(String mode){
-        mode_Label.setText(mode);
-
-    }
-
+    //Sets the string of the user into the scene
     public void setUserString(String user){
         username_Label.setText(user);
 
