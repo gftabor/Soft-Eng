@@ -6,24 +6,19 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import java.io.IOException;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import javafx.scene.control.Accordion;
-import javafx.scene.control.TreeView;
-
-import javax.xml.crypto.Data;
 
 
 /**
  * Created by AugustoR on 3/31/17.
  */
 public class mmNodeInformationController extends controllers.AbsController {
+    public void sceneEvent(int x,int y,Object o){}
 
     @FXML
     private AnchorPane backgroundAnchorPane;

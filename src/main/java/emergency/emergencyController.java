@@ -4,9 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;  //NOT JAVA SWING
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Circle;
 /**
  * Created by AugustoR on 3/31/17.
  */
@@ -19,6 +17,7 @@ public class emergencyController extends controllers.AbsController{
 
     @FXML
     private Button mainMenu_Button;
+    public void sceneEvent(int x,int y,Object o){}
 
     //Return the the patient main menu
     public void mainMenuButton_Clicked() {
