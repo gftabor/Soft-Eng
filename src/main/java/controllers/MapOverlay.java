@@ -1,8 +1,9 @@
 package controllers;
 
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -10,13 +11,13 @@ import java.util.HashMap;
  * Created by Griffin on 4/5/2017.
  */
 public class MapOverlay {
-    public MapOverlay(AnchorPane scenePane , AbsController controller){
+    public MapOverlay(Pane scenePane , AbsController controller){
         this.currentPane = scenePane;
         System.out.println("map   " + currentPane );
         this.sceneController = controller;
     }
 
-    private AnchorPane currentPane;
+    private Pane currentPane;
     private HashMap<Integer, controllers.Node> currentNodeMap;
     private Line lne;
     private Circle location;
