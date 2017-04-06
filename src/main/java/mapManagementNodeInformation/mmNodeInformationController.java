@@ -60,6 +60,8 @@ public class mmNodeInformationController extends controllers.AbsController {
     @FXML
     private Label error_LabelText;
 
+    /** Flags for passing different info */
+    // 
     int c_mode = -1;
 
     int openDirectory;
