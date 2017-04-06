@@ -66,24 +66,20 @@ public class pathFindingMenuController extends controllers.AbsController{
         System.out.println("The user has clicked the emergency Button");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
     }
-
-    public pathFindingMenuController(){
-        System.out.println("object");
-
-
+    @FXML
+    public void initialize() {
+        graph = new controllers.MapOverlay(node_Plane,(AbsController)this);
+        MapController.getInstance().requestMapCopy();
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4));
     }
-
     public void cancelButton_Clicked(){
+        System.out.println(node_Plane);
         selectionState = 0;
         //Remove black and red dots from map
     }
 
     public void submitButton_Clicked(){
-        graph = new controllers.MapOverlay(backgroundAnchorPane,(AbsController)this);
 
-        System.out.println(graph);
-        MapController.getInstance().requestMapCopy();
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4));
         if (selectionState == 2) {
             //submit stuff
             //createEdgeLines
