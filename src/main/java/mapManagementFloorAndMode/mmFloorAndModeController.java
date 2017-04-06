@@ -53,6 +53,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     @FXML
     private Pane admin_FloorPane;
+    
+    @FXML
+    private CheckBox enabled_CheckBox;
 
     private int nodeEdgeX1;
     private int nodeEdgeY1;
