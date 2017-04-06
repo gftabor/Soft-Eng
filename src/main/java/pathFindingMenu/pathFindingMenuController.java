@@ -70,11 +70,11 @@ public class pathFindingMenuController extends controllers.AbsController{
     public void initialize() {
         graph = new controllers.MapOverlay(node_Plane,(AbsController)this);
         MapController.getInstance().requestMapCopy();
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4));
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4),false);
     }
     public void cancelButton_Clicked(){
         MapController.getInstance().requestMapCopy();
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4));
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4),false);
         selectionState = 0;
         //Remove black and red dots from map
     }

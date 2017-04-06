@@ -76,7 +76,7 @@ public class mmFloorAndModeController extends controllers.AbsController {
 
         graph = new controllers.MapOverlay(admin_FloorPane,(AbsController)this);
         MapController.getInstance().requestMapCopy();
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4));
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4),true);
     }
 
 
@@ -207,7 +207,7 @@ public class mmFloorAndModeController extends controllers.AbsController {
                 break;
         }
         controllers.MapController.getInstance().requestMapCopy();
-        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(4));
+        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(4),true);
 
         edgesSelected = 0;
 
