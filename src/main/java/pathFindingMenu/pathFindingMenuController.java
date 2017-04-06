@@ -73,7 +73,8 @@ public class pathFindingMenuController extends controllers.AbsController{
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4));
     }
     public void cancelButton_Clicked(){
-        System.out.println(node_Plane);
+        MapController.getInstance().requestMapCopy();
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4));
         selectionState = 0;
         //Remove black and red dots from map
     }
