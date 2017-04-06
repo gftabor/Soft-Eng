@@ -139,6 +139,14 @@ public class Node implements Comparable<Node>{
         return isEnabled;
     }
 
+    public String getName(){
+        return name;
+    }
+
+    public String getType(){
+        return type;
+    }
+
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
     }
