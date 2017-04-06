@@ -34,6 +34,12 @@ public class mmNodeInformationController extends controllers.AbsController {
     private ChoiceBox<String> title_choiceBox;
 
     @FXML
+    private ChoiceBox<String> room_ChoiceBox;
+
+    @FXML
+    private ChoiceBox<String> department_ChoiceBox;
+
+    @FXML
     private TextField lastName_TextField;
 
     @FXML
@@ -41,9 +47,6 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     @FXML
     private TextField id_TextField;
-
-    @FXML
-    private TextField room_TextField;
 
     @FXML
     private Button cancel_Button;
@@ -59,6 +62,8 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     @FXML
     private Label error_LabelText;
+
+
 
     /** Flags for passing different info */
     // 
@@ -125,6 +130,7 @@ public class mmNodeInformationController extends controllers.AbsController {
             // nothing
         }
         // createDirectoryTreeView();
+
         if(c_mode != -1) {
             FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/mmNodeInformationView.fxml");
             mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
@@ -143,11 +149,12 @@ public class mmNodeInformationController extends controllers.AbsController {
         }
     }
 
+    //switches to the emergency scene
     public void emergencyButton_Clicked() {
         switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
     }
 
-
+    //switches to main menu
     public void mainMenuButton_Clicked() {
         System.out.println("The user has clicked the sign out Button");
 
@@ -368,10 +375,12 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     }
 
+    //Sets the label of an error
     public void setError(String error){
         error_LabelText.setText(error);
     }
 
+    //Sets the user in the scene
     public void setUser(String user){
         currentAdmin_Label.setText(user);
     }
@@ -382,6 +391,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         openDirectory = i;
     }
 
+    //Sets the current mode whene refreshing the scene
     public void setCurrentMode(int i){
         mode_ChoiceBox.getSelectionModel().select(i);
 
