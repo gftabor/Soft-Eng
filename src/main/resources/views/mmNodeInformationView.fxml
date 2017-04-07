@@ -254,15 +254,30 @@
          <left>
             <VBox prefHeight="567.0" prefWidth="400.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox prefHeight="567.0" prefWidth="446.0">
+                  <HBox>
                      <children>
-                        <TreeView fx:id="directory_TreeView" prefHeight="557.0" prefWidth="397.0">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin>
-                        </TreeView>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label text="Directories">
+                           <font>
+                              <Font name="System Bold Italic" size="26.0" />
+                           </font>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
+                  <VBox prefHeight="601.0" prefWidth="400.0">
+                     <children>
+                        <HBox prefHeight="567.0" prefWidth="446.0">
+                           <children>
+                              <TreeView fx:id="directory_TreeView" prefHeight="557.0" prefWidth="417.0">
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
+                              </TreeView>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
                </children>
             </VBox>
          </left>
