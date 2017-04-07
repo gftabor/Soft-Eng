@@ -81,6 +81,10 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     boolean check_space;
 
+    String fn;
+    String ln;
+
+
     //get an instance of database controller
     DatabaseController databaseController = DatabaseController.getInstance();
 
@@ -93,18 +97,18 @@ public class mmNodeInformationController extends controllers.AbsController {
 
         System.out.println("The user has clicked the submit Button");
         final String tempID = id_TextField.getText();
-        final String tempFirstName = Firstname_TextField.getText();
-        final String tempLastName = lastName_TextField.getText();
+        String tempFirstName = Firstname_TextField.getText();
+        String tempLastName = lastName_TextField.getText();
         boolean added = true;
+        empty_inputs = (tempFirstName == null || tempFirstName.equals("")
+                || tempLastName == null || tempLastName.equals(""));
+
         if (c_mode == 0) {
             // add
-            empty_inputs = Firstname_TextField.getText().equals("") || Firstname_TextField.getText() == null
-                    || lastName_TextField.equals("") || lastName_TextField.getText() == null;
-
-            Pattern pattern = Pattern.compile("\\s");
-            Matcher matcher = pattern.matcher(Firstname_TextField.getText());
-            boolean found = matcher.find();
-            System.out.println(found);
+           if(!empty_inputs) {
+               tempLastName = tempLastName.replaceAll("\\s", "");
+               tempFirstName = tempFirstName.replaceAll("\\s", "");
+           }
 
             if (!empty_inputs) {
                 switch (title_choiceBox.getValue()) {
@@ -134,7 +138,11 @@ public class mmNodeInformationController extends controllers.AbsController {
             } else if (title_choiceBox.getValue().equals("Nurse")) {
                 openDirectory = 2;
             }
-            databaseController.deleteProfessional(id_TextField.getText());
+
+            if(!empty_inputs) {
+                databaseController.deleteProfessional(id_TextField.getText());
+            }
+
         } else if (c_mode == 2) {
             // edit
             if (title_choiceBox.getValue().equals("Doctor")) {
@@ -143,11 +151,13 @@ public class mmNodeInformationController extends controllers.AbsController {
                 openDirectory = 2;
             }
             int id = 0;
-            ResultSet rset = databaseController.getProfessional(Integer.parseInt(id_TextField.getText()));
-            System.out.println("===================== editing");
+            if(!empty_inputs) {
+                ResultSet rset = databaseController.getProfessional(Integer.parseInt(id_TextField.getText()));
+                System.out.println("===================== editing");
 
-            databaseController.EditProfessional(Integer.parseInt(id_TextField.getText()), Firstname_TextField.getText(),
-                    lastName_TextField.getText(), title_choiceBox.getValue());
+                databaseController.EditProfessional(Integer.parseInt(id_TextField.getText()), tempFirstName,
+                        tempLastName, title_choiceBox.getValue());
+            }
         } else {
             // nothing
         }
@@ -165,8 +175,8 @@ public class mmNodeInformationController extends controllers.AbsController {
             System.out.println(openDirectory);
             if (!added) {
                 controller.setError("This ID already exists!");
-            } else {
-                controller.setError("");
+            } else if(empty_inputs){
+                controller.setError("You have entered an invalid input");
             }
         }
     }
@@ -191,7 +201,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     public void createDirectoryTreeView() {
         TreeItem<String> root, doctors, nurses;
 
-        root = new TreeItem<>("List of Directories");
+        root = new TreeItem<>("Professionals");
         root.setExpanded(true);
 
         ResultSet professionalsRset = databaseController.getTableSet("PROFESSIONAL");
@@ -250,7 +260,9 @@ public class mmNodeInformationController extends controllers.AbsController {
                 .addListener((v, oldValue, newValue) -> {
                     if (newValue != null) {
                         System.out.println(newValue.getValue());
-                        pullProfessional(newValue.getValue());
+                        if(!(newValue.getValue().equals("Professionals"))) {
+                            pullProfessional(newValue.getValue());
+                        }
                     }
                 });
 
@@ -435,6 +447,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     public void setDepartmentChoices() {
         department_ChoiceBox.getItems().addAll("Accident and emergency (A&E)", "Anaesthetics", "Breast screening");
     }
+
 }
 
 
