@@ -3,6 +3,8 @@ package hospitalDirectorySearch;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import DBController.DatabaseController;
@@ -26,6 +28,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -112,10 +115,12 @@ public class hospitalDirectorySearchController extends controllers.AbsController
 
 
     //DATABASE
-   final ObservableList<Table> data = FXCollections.observableArrayList(
+   ObservableList<Table> data = FXCollections.observableArrayList(
            new Table(iNumber++, "Wilson", "Wong", "Doctor","Ginecologo", "AS"),
            new Table (iNumber++, "Augusto", "Rolando", "Nurse","Ginecologo", "AS"),
            new Table (iNumber++, "Mason", "Handy", "Doctor","Optometrista", "B3")
+
+
 
    );
 
@@ -128,9 +133,29 @@ public class hospitalDirectorySearchController extends controllers.AbsController
         department_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rDepartment"));
         room_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rRoom"));
 
-        Table_TableView.setItems(data);
+        FilteredList<Table> filteredData = new FilteredList<>(data, e-> true);
+        serach_TextField.setOnKeyReleased(e -> {
+            serach_TextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredData.setPredicate((Predicate<? super Table>) Table ->{
+                    if(newValue == null || newValue.isEmpty()){
+                        return true;
+                    }
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    if(Table.getrFirstName().toLowerCase().contains(lowerCaseFilter)){
+                        return true;
 
+                    }else if(Table.getrLastName().toLowerCase().contains(lowerCaseFilter)){
+                        return true;
+                    }
+                    return false;
+                });
+            });
 
+        });
+        SortedList<Table> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(Table_TableView.comparatorProperty());
+
+        Table_TableView.setItems(sortedData);
     }
 
 
