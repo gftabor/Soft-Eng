@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import DBController.DatabaseController;
 import controllers.Professional;
@@ -133,6 +134,12 @@ public class hospitalDirectorySearchController extends controllers.AbsController
         department_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rDepartment"));
         room_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rRoom"));
 
+
+        /*Table.setOnMousePressed(new EventHandler<MouseEvent>() {
+
+        }); */
+
+
         FilteredList<Table> filteredData = new FilteredList<>(data, e-> true);
         serach_TextField.setOnKeyReleased(e -> {
             serach_TextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -145,6 +152,12 @@ public class hospitalDirectorySearchController extends controllers.AbsController
                         return true;
 
                     }else if(Table.getrLastName().toLowerCase().contains(lowerCaseFilter)){
+                        return true;
+                    }else if(Table.getrDepartment().toLowerCase().contains(lowerCaseFilter)){
+                        return true;
+                    }else if(Table.getrTitle().toLowerCase().contains(lowerCaseFilter)){
+                        return true;
+                    }else if(Table.getrRoom().toLowerCase().contains(lowerCaseFilter)){
                         return true;
                     }
                     return false;
