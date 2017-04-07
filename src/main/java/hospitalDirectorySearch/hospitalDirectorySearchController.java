@@ -90,6 +90,9 @@ public class hospitalDirectorySearchController extends controllers.AbsController
     int iNumber = 1;
 
 
+    //get an instance of database controller
+    DatabaseController databaseController = DatabaseController.getInstance();
+
     //
     public void mainMenuButton_Clicked(){
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
@@ -116,6 +119,7 @@ public class hospitalDirectorySearchController extends controllers.AbsController
 
 
     //DATABASE
+
    ObservableList<Table> data = FXCollections.observableArrayList(
            new Table(iNumber++, "Wilson", "Wong", "Doctor","Ginecologo", "AS"),
            new Table (iNumber++, "Augusto", "Rolando", "Nurse","Ginecologo", "AS"),
@@ -131,13 +135,33 @@ public class hospitalDirectorySearchController extends controllers.AbsController
         firstName_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rFirstName"));
         lastName_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rLastName"));
         title_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rTitle"));
-        department_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rDepartment"));
+        department_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rType"));
         room_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rRoom"));
 
 
         /*Table.setOnMousePressed(new EventHandler<MouseEvent>() {
 
         }); */
+        ResultSet rset;
+        rset = databaseController.getProRoomNums();
+
+        ObservableList<Table> data = FXCollections.observableArrayList();
+
+        int id;
+        String firstName, lastName, title, profile, roomNum;
+        try {
+            while (rset.next()){
+                id = rset.getInt("ID");
+                firstName = rset.getString("FIRSTNAME");
+                lastName = rset.getString("LASTNAME");
+                title = rset.getString("PROFESSIONAL.TYPE");
+                profile = rset.getString("PROFSSIONAL.PROFILE");
+                roomNum = rset.getString("ROOMNUM");
+                data.add(new Table(id, firstName, lastName, title, profile, roomNum));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
 
 
         FilteredList<Table> filteredData = new FilteredList<>(data, e-> true);
@@ -153,7 +177,7 @@ public class hospitalDirectorySearchController extends controllers.AbsController
 
                     }else if(Table.getrLastName().toLowerCase().contains(lowerCaseFilter)){
                         return true;
-                    }else if(Table.getrDepartment().toLowerCase().contains(lowerCaseFilter)){
+                    }else if(Table.getrType().toLowerCase().contains(lowerCaseFilter)){
                         return true;
                     }else if(Table.getrTitle().toLowerCase().contains(lowerCaseFilter)){
                         return true;
