@@ -8,10 +8,6 @@ import javafx.collections.transformation.SortedList;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import DBController.DatabaseController;
-import controllers.Professional;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,18 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 
 
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.AnchorPane;
-
-import java.awt.event.KeyEvent;
-import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
 import java.util.function.Predicate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 /**
@@ -49,7 +34,7 @@ public class hospitalDirectorySearchController extends controllers.AbsController
     private Button emergency_Button;
 
     @FXML
-    private TextField serach_TextField;
+    private TextField search_TextField;
 
     @FXML
     private TextField from_TextField;
@@ -86,6 +71,9 @@ public class hospitalDirectorySearchController extends controllers.AbsController
 
     @FXML
     private TableColumn<Table, String> room_TableColumn;
+
+    @FXML
+    private Label error_Label;
 
     int iNumber = 1;
 
@@ -125,6 +113,18 @@ public class hospitalDirectorySearchController extends controllers.AbsController
 
    );
 
+    /*@FXML
+    public void clickItem(MouseEvent event)
+    {
+        if (event.getClickCount() == 2) //Checking double click
+        {
+            System.out.println(Table_TableView.getSelectionModel().getSelectedItem().getrFirstName());
+            System.out.println(Table_TableView.getSelectionModel().getSelectedItem().getrLastName());
+            System.out.println(Table_TableView.getSelectionModel().getSelectedItem().getrID());
+            error_Label.setText(Table_TableView.getSelectionModel().getSelectedItem().getrFirstName());
+        }
+    }*/
+
     //sets up the tree
     public void setUpTreeView(){
         ID_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, Integer>("rID"));
@@ -134,15 +134,19 @@ public class hospitalDirectorySearchController extends controllers.AbsController
         department_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rDepartment"));
         room_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rRoom"));
 
-
-        /*Table.setOnMousePressed(new EventHandler<MouseEvent>() {
-
-        }); */
+        Table_TableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.getClickCount() > 1) {
+                    error_Label.setText(Table_TableView.getSelectionModel().getSelectedItem().getrFirstName());
+                }
+            }
+        });
 
 
         FilteredList<Table> filteredData = new FilteredList<>(data, e-> true);
-        serach_TextField.setOnKeyReleased(e -> {
-            serach_TextField.textProperty().addListener((observable, oldValue, newValue) -> {
+        search_TextField.setOnKeyReleased(e -> {
+            search_TextField.textProperty().addListener((observable, oldValue, newValue) -> {
                 filteredData.setPredicate((Predicate<? super Table>) Table ->{
                     if(newValue == null || newValue.isEmpty()){
                         return true;
@@ -163,11 +167,13 @@ public class hospitalDirectorySearchController extends controllers.AbsController
                     return false;
                 });
             });
-
         });
+
+        
+
+
         SortedList<Table> sortedData = new SortedList<>(filteredData);
         sortedData.comparatorProperty().bind(Table_TableView.comparatorProperty());
-
         Table_TableView.setItems(sortedData);
     }
 
