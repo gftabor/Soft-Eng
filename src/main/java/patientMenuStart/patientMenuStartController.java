@@ -91,7 +91,8 @@ public class patientMenuStartController extends controllers.AbsController{
     public void directoryButton_Clicked(){
         System.out.println("The user has clicked the directory button");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/hospitalDirectorySearchView.fxml");
-
+        hospitalDirectorySearch.hospitalDirectorySearchController controller = loader.getController();
+        controller.setUpTreeView();
     }
 
 
