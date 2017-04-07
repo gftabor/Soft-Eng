@@ -56,7 +56,7 @@ public class Pathfinder {
                 neighbor.setTotalCost(neighbourNewCost + getHueristic(neighbor, goalNode));
 
                 //if the object is in frontier only edit the object
-                if(!frontier.contains(neighbor)) {
+                if(!frontier.contains(neighbor) && neighbor.getEnabled()) {
                     frontier.add(neighbor);
                     //System.out.println("new frontier");
                 }
@@ -77,6 +77,10 @@ public class Pathfinder {
         alreadyProcessed.clear();
         frontier.clear();
         path.clear();
+        if(!(startNode.getEnabled() && endNode.getEnabled())){
+            System.out.println("selected node not enabled")
+            return -2;
+        }
         startNode.setTotalCost(getHueristic(startNode, endNode));
         startNode.setCostToReach(0);
         frontier.add(startNode);
