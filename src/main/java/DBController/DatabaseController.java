@@ -688,5 +688,85 @@ public class DatabaseController {
         return true;
     }
 
+    /*******************************************************************************
+     * ADMIN actions
+     *
+     ******************************************************************************/
+    public boolean newService(String name, String type, int x, int y, int floor){
+        System.out.println(
+                String.format(
+                        "Adding service. name: %s, type: %s, x: %d, y: %d, floor: %d",
+                        name, type, x, y, floor));
+        try{
+            // sql statement with "?" to be filled later
+            String query = "INSERT INTO SERVICE (NAME, TYPE, XPOS, YPOS, FLOOR)" +
+                    " values (?, ?, ?, ?, ?)";
+            // prepare statement by replacing "?" with corresponding variable
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, type);
+            preparedStatement.setInt(3, x);
+            preparedStatement.setInt(4, y);
+            preparedStatement.setInt(5, floor);
+            // execute prepared statement
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public ResultSet getService(String name, String type, int x, int y, int floor){
+        ResultSet resultSet = null;
+        System.out.println(
+                String.format(
+                        "Getting service. name: %s, type: %s, x: %d, y: %d, floor: %d",
+                        name, type, x, y, floor));
+        try{
+            String query = "SELECT * FROM SERVICE WHERE NAME = ? AND TYPE = ? AND XPOS = ?" +
+                    "AND YPOS = ? AND FLOOR = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, type);
+            preparedStatement.setInt(3, x);
+            preparedStatement.setInt(4, y);
+            preparedStatement.setInt(5, floor);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
+    public boolean deleteService(String name, String type, int x, int y, int floor){
+        ResultSet resultSet = null;
+        System.out.println(
+                String.format(
+                        "Deleting service. name: %s, type: %s, x: %s, y: %d, floor: %d",
+                        name, type, x, y, floor));
+        try{
+            String query = "DELETE FROM SERVICE WHERE NAME = ? AND TYPE = ?" +
+                    "AND XPOS = ? AND YPOS = ? AND FLOOR = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, type);
+            preparedStatement.setInt(3, x);
+            preparedStatement.setInt(4, y);
+            preparedStatement.setInt(5, floor);
+            // run statement and query
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
 
 }
