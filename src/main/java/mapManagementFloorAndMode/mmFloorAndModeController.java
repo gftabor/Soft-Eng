@@ -11,6 +11,7 @@ import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 /**
@@ -70,6 +71,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     private Node firstNode;
 
+    private Circle lastColored;
+
     private Circle btK;
 
     public void initialize() {
@@ -80,6 +83,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         graph = new controllers.MapOverlay(admin_FloorPane,(mapScene) this);
         MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4),true);
+
     }
 
 
@@ -97,12 +101,18 @@ public class mmFloorAndModeController extends controllers.mapScene{
         room_TextField.clear();
         graph.wipeEdgeLines();
         edgesSelected = 0;
+
+        //reset last colored stroke to default
+        if (lastColored != null) {
+            lastColored.setStroke(lastColored.getFill());
+            lastColored.setStrokeWidth(1);
+        }
     }
 
     public void sceneEvent(int x, int y, Circle c) {
         edgesSelected++;
         if (edgesSelected == 1) {
-            //display edges already associated with selected node
+            //display edges already associated witdh selected node
             nodeEdgeX1 = (int) x;
             nodeEdgeY1 = (int) y;
             System.out.println(nodeEdgeX1 + "     " + nodeEdgeY1);
@@ -114,6 +124,11 @@ public class mmFloorAndModeController extends controllers.mapScene{
             //create edge between the two nodes
             nodeEdgeX2 = (int) x;
             nodeEdgeY2 = (int) y;
+
+            lastColored = c;
+
+            c.setStrokeWidth(2.5);
+            c.setStroke(Color.FUCHSIA);
         }
     }
 
@@ -197,6 +212,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
                     System.out.println("Mode = add edge");
                     DBController.DatabaseController.getInstance().newEdge(nodeEdgeX1,
                             nodeEdgeY1, 4, nodeEdgeX2, nodeEdgeY2, 4);
+
                     System.out.println("added edge");
                 }
                 break;
@@ -216,6 +232,16 @@ public class mmFloorAndModeController extends controllers.mapScene{
         controllers.MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(4),true);
         edgesSelected = 0;
+
+
+        //try to display last touched edge list
+        //requery firstnode to reset edge list
+        firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
+                .getNode(firstNode.getPosX(), firstNode.getPosY(), firstNode.getFloor());
+
+        if (firstNode != null) {
+            graph.createEdgeLines(firstNode.getEdgeList());
+        }
 
     }
 
