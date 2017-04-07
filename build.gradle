@@ -24,6 +24,8 @@ dependencies {
     // This dependency is found on compile classpath of this component and consumers.
     compile 'com.google.guava:guava:20.0'
     compile 'org.apache.derby:derby:10.13.1.1'
+    // https://mvnrepository.com/artifact/org.controlsfx/controlsfx
+    compile group: 'org.controlsfx', name: 'controlsfx', version: '8.40.12'
 
     // https://mvnrepository.com/artifact/org.mindrot/jbcrypt
     compile 'org.mindrot:jbcrypt:0.4'

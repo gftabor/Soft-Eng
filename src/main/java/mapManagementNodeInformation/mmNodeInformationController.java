@@ -15,8 +15,12 @@ import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static javafx.scene.control.TextField.*;
+import org.controlsfx.control.textfield.TextFields;
 
 
 /**
@@ -68,14 +72,17 @@ public class mmNodeInformationController extends controllers.AbsController {
     @FXML
     private Label error_LabelText;
 
+    @FXML
+    private TextField testTextField;
+
 
     /**
      * Flags for passing different info
      */
-    // 
+    // Flag for current mode chosen (add, edit, remove)
     int c_mode = -1;
 
-    int openDirectory;
+    int openDirectory; // opens listings when view reloads
 
     boolean empty_inputs;
 
@@ -161,7 +168,6 @@ public class mmNodeInformationController extends controllers.AbsController {
         } else {
             // nothing
         }
-        // createDirectoryTreeView();
 
         if (c_mode != -1) {
             FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/mmNodeInformationView.fxml");
@@ -433,6 +439,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         openDirectory = i;
     }
 
+
     //Sets the current mode whene refreshing the scene
     public void setCurrentMode(int i) {
         mode_ChoiceBox.getSelectionModel().select(i);
@@ -440,6 +447,21 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     //sets the choices for the rooms DB
     public void setRoomChoices() {
+
+
+        ArrayList<String> rooms = new ArrayList<>();
+
+        ResultSet rset = databaseController.getRoomNames();
+        try {
+            while (rset.next()){
+                rooms.add(rset.getString("ROOMNUM"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        TextFields.bindAutoCompletion(testTextField,rooms);
+
         room_ChoiceBox.getItems().addAll("AH229", "SH289", "SL123");
     }
 
