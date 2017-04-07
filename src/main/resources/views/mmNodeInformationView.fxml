@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -18,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapManagementNodeInformation.mmNodeInformationController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapManagementNodeInformation.mmNodeInformationController">
    <children>
       <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -86,24 +81,31 @@
                </children>
             </HBox>
          </bottom>
-         <right>
-            <VBox prefHeight="542.0" prefWidth="211.0" BorderPane.alignment="CENTER_RIGHT">
+         <left>
+            <VBox prefHeight="544.0" prefWidth="386.0" BorderPane.alignment="CENTER">
                <children>
                   <HBox>
                      <children>
-                        <Label prefWidth="150.0" text="Mode:">
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label text="Manage Directory">
                            <font>
-                              <Font name="System Bold Italic" size="18.0" />
+                              <Font name="System Bold Italic" size="36.0" />
                            </font>
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
-                           </HBox.margin>
                         </Label>
-                        <ChoiceBox fx:id="mode_ChoiceBox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="100.0">
-                           <HBox.margin>
-                              <Insets bottom="1.0" left="40.0" right="1.0" top="1.0" />
-                           </HBox.margin>
-                        </ChoiceBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="3.0" right="3.0" top="3.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <TextField alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="200.0" promptText="search">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
@@ -123,15 +125,33 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefWidth="120.0" text="Title:">
+                        <Label prefWidth="140.0" text="Mode:">
+                           <font>
+                              <Font name="System Bold Italic" size="23.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
+                           </HBox.margin>
+                        </Label>
+                        <ChoiceBox fx:id="mode_ChoiceBox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="180.0">
+                           <HBox.margin>
+                              <Insets bottom="1.0" left="40.0" right="1.0" top="1.0" />
+                           </HBox.margin>
+                        </ChoiceBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Label prefWidth="140.0" text="Title:">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                            <font>
-                              <Font name="System Bold Italic" size="18.0" />
+                              <Font name="System Bold Italic" size="23.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="title_choiceBox" disable="true" minHeight="-Infinity" prefHeight="20.0" prefWidth="100.0">
+                        <ChoiceBox fx:id="title_choiceBox" disable="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="180.0">
                            <HBox.margin>
                               <Insets bottom="1.0" left="40.0" right="1.0" top="1.0" />
                            </HBox.margin>
@@ -143,15 +163,15 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefWidth="120.0" text="Room:">
+                        <Label minWidth="-Infinity" prefWidth="140.0" text="Department:">
                            <font>
-                              <Font name="System Bold Italic" size="18.0" />
+                              <Font name="System Bold Italic" size="23.0" />
                            </font>
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <ChoiceBox fx:id="room_ChoiceBox" disable="true" minHeight="-Infinity" prefHeight="20.0" prefWidth="100.0">
+                        <ChoiceBox fx:id="department_ChoiceBox" disable="true" minHeight="-Infinity" prefHeight="30.0" prefWidth="180.0">
                            <HBox.margin>
                               <Insets bottom="5.0" left="40.0" right="5.0" top="5.0" />
                            </HBox.margin>
@@ -160,34 +180,37 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefWidth="120.0" text="Department:">
+                        <Label prefWidth="140.0" text="Room:">
                            <font>
-                              <Font name="System Bold Italic" size="18.0" />
+                              <Font name="System Bold Italic" size="23.0" />
                            </font>
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <ChoiceBox fx:id="department_ChoiceBox" disable="true" minHeight="-Infinity" prefHeight="20.0" prefWidth="100.0">
+                        <TextField fx:id="testTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="180.0" promptText="Room">
                            <HBox.margin>
-                              <Insets bottom="5.0" left="40.0" right="5.0" top="5.0" />
+                              <Insets bottom="1.0" left="40.0" right="1.0" top="1.0" />
                            </HBox.margin>
-                        </ChoiceBox>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextField>
                      </children>
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefWidth="120.0" text="ID:">
+                        <Label prefWidth="140.0" text="ID:">
                            <font>
-                              <Font name="System Bold Italic" size="18.0" />
+                              <Font name="System Bold Italic" size="23.0" />
                            </font>
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="id_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="150.0" promptText="Automatically Generated ID">
+                        <TextField fx:id="id_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="180.0" promptText="ID">
                            <font>
-                              <Font size="10.0" />
+                              <Font size="18.0" />
                            </font>
                            <HBox.margin>
                               <Insets bottom="5.0" left="40.0" right="5.0" top="5.0" />
@@ -197,37 +220,37 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefWidth="120.0" text="First Name:">
+                        <Label minHeight="-Infinity" minWidth="-Infinity" prefWidth="140.0" text="First Name:">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                            <font>
-                              <Font name="System Bold Italic" size="18.0" />
+                              <Font name="System Bold Italic" size="23.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="Firstname_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="150.0" promptText="First">
+                        <TextField fx:id="Firstname_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="180.0" promptText="First Name">
                            <HBox.margin>
                               <Insets bottom="5.0" left="40.0" right="5.0" top="5.0" />
                            </HBox.margin>
                            <font>
-                              <Font size="10.0" />
+                              <Font size="18.0" />
                            </font>
                         </TextField>
                      </children>
                   </HBox>
                   <HBox>
                      <children>
-                        <Label minHeight="-Infinity" minWidth="-Infinity" prefWidth="120.0" text="Last Name:">
+                        <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="140.0" text="Last Name:">
                            <font>
-                              <Font name="System Bold Italic" size="18.0" />
+                              <Font name="System Bold Italic" size="23.0" />
                            </font>
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="lastName_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" onAction="#submitButton_Clicked" prefHeight="20.0" prefWidth="150.0" promptText="Last">
+                        <TextField fx:id="lastName_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" onAction="#submitButton_Clicked" prefHeight="30.0" prefWidth="180.0" promptText="Last Name">
                            <font>
-                              <Font size="10.0" />
+                              <Font size="18.0" />
                            </font>
                            <HBox.margin>
                               <Insets bottom="5.0" left="40.0" right="5.0" top="5.0" />
@@ -249,15 +272,18 @@
                            </font>
                         </Button>
                      </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                     </VBox.margin>
                   </HBox>
                </children>
                <BorderPane.margin>
                   <Insets bottom="5.0" left="5.0" right="10.0" top="20.0" />
                </BorderPane.margin>
             </VBox>
-         </right>
-         <left>
-            <VBox prefHeight="567.0" prefWidth="634.0" BorderPane.alignment="CENTER">
+         </left>
+         <right>
+            <VBox prefHeight="569.0" prefWidth="523.0" BorderPane.alignment="CENTER">
                <children>
                   <HBox>
                      <children>
@@ -270,7 +296,7 @@
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <VBox prefHeight="536.0" prefWidth="230.0">
+                  <VBox prefHeight="536.0" prefWidth="550.0">
                      <children>
                         <HBox prefHeight="536.0" prefWidth="559.0">
                            <children>
@@ -285,10 +311,7 @@
                   </VBox>
                </children>
             </VBox>
-         </left>
-         <center>
-            <TextField fx:id="testTextField" prefHeight="27.0" prefWidth="287.0" BorderPane.alignment="CENTER" />
-         </center>
+         </right>
       </BorderPane>
    </children>
 </AnchorPane>
