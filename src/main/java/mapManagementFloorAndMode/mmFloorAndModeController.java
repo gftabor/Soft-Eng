@@ -111,7 +111,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     public void sceneEvent(int x, int y, Circle c) {
         edgesSelected++;
-        if (edgesSelected == 1) {
+        if (edgesSelected == 1 || mode_ChoiceBox.getValue().equals("Edit Node")
+                || mode_ChoiceBox.getValue().equals("Remove Node")) {
             //display edges already associated witdh selected node
             nodeEdgeX1 = (int) x;
             nodeEdgeY1 = (int) y;
@@ -119,8 +120,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
             firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
                     .getNode(nodeEdgeX1, nodeEdgeY1, 4);
             graph.createEdgeLines(firstNode.getEdgeList());
-        }
-        if (edgesSelected == 2) {
+        } else if (edgesSelected == 2) {
             //create edge between the two nodes
             nodeEdgeX2 = (int) x;
             nodeEdgeY2 = (int) y;
