@@ -106,6 +106,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         final String tempID = id_TextField.getText();
         String tempFirstName = Firstname_TextField.getText();
         String tempLastName = lastName_TextField.getText();
+        String profile = department_ChoiceBox.getValue();
         boolean added = true;
         empty_inputs = (tempFirstName == null || tempFirstName.equals("")
                 || tempLastName == null || tempLastName.equals(""));
@@ -123,13 +124,13 @@ public class mmNodeInformationController extends controllers.AbsController {
                         openDirectory = 1;
                         System.out.println("Adding new professional -------------------");
                         added = databaseController.newProfessional(tempFirstName,
-                                tempLastName, "Doctor");
+                                tempLastName, "Doctor", profile);
                         System.out.println("Added the professional ====================");
                         break;
                     case "Nurse":
                         openDirectory = 2;
                         added = databaseController.newProfessional(tempFirstName,
-                                tempLastName, "Nurse");
+                                tempLastName, "Nurse", profile);
                         break;
                     default:
                         System.out.println("Nothing selected for mode");
@@ -163,7 +164,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                 System.out.println("===================== editing");
 
                 databaseController.EditProfessional(Integer.parseInt(id_TextField.getText()), tempFirstName,
-                        tempLastName, title_choiceBox.getValue());
+                        tempLastName, title_choiceBox.getValue(), department_ChoiceBox.getValue());
             }
         } else {
             // nothing
