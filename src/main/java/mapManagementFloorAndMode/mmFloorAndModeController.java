@@ -125,7 +125,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
         final int floor = 4;
         final String name = "Mark?";
 
-
+        if (mode_ChoiceBox.getValue() == null) {
+            System.out.println("incoming null ptr exception");
+        }
         switch (mode_ChoiceBox.getValue()) {
             case "---":
                 System.out.println("Mode = default");
@@ -149,9 +151,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
                             break;
                     }
                     Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                            floor, hidden_CheckBox.isSelected(), true, type, tempName, tempRoom);
+                            floor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom);
                     DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                            floor, hidden_CheckBox.isSelected(), true, type, tempName, tempRoom);
+                            floor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom);
                 }
                 mode_ChoiceBox.getSelectionModel().select("---");
 
@@ -161,7 +163,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 System.out.println("Mode = edit node");
                 //get latest touched node
                 boolean newHidden = hidden_CheckBox.isSelected();
-                boolean newEnabled = true;
+                boolean newEnabled = enabled_CheckBox.isSelected();
                 String newType;
                 String newName = name_TextField.getText();
                 String newRoomnum = room_TextField.getText();
@@ -175,12 +177,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
                         break;
                 }
 
-                //delete old node
-                DBController.DatabaseController.getInstance().deleteNode(firstNode.getPosX(), firstNode.getPosY(), 4);
-
-                //add new version
-                DBController.DatabaseController.getInstance().newNode(firstNode.getPosX(), firstNode.getPosY(),
-                        firstNode.getFloor(), newHidden, true, newType, newName, newRoomnum);
+                //update to new version in db
+                DBController.DatabaseController.getInstance().updateNode(firstNode.getPosX(), firstNode.getPosY(),
+                        firstNode.getFloor(), newHidden, newEnabled, newType, newName, newRoomnum);
 
                 break;
             case "Remove Node":
