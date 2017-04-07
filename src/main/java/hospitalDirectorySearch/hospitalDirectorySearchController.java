@@ -21,9 +21,11 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 
 import java.awt.event.KeyEvent;
+import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -81,7 +83,7 @@ public class hospitalDirectorySearchController extends controllers.AbsController
     @FXML
     private TableColumn<Table, String> room_TableColumn;
 
-    int iNumber = 1; 
+    int iNumber = 1;
 
 
     //
@@ -109,9 +111,16 @@ public class hospitalDirectorySearchController extends controllers.AbsController
 
 
 
-   final ObservableList<Table> data = FXCollections.observableArrayList();
-    //Sets the table
-    public void setTable(){
+    //DATABASE
+   final ObservableList<Table> data = FXCollections.observableArrayList(
+           new Table(iNumber++, "Wilson", "Wong", "Doctor","Ginecologo", "AS"),
+           new Table (iNumber++, "Augusto", "Rolando", "Nurse","Ginecologo", "AS"),
+           new Table (iNumber++, "Mason", "Handy", "Doctor","Optometrista", "B3")
+
+   );
+
+    //sets up the tree
+    public void setUpTreeView(){
         ID_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, Integer>("rID"));
         firstName_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rFirstName"));
         lastName_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rLastName"));
