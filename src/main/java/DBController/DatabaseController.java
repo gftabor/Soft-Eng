@@ -814,4 +814,22 @@ public class DatabaseController {
         return resultSet;
     }
 
+
+    public ResultSet getProfileNames(){
+        ResultSet resultSet = null;
+        System.out.println(
+                String.format(
+                        "Getting all professional room numbers"));
+        try{
+            String query = "SELECT PROFILE FROM PROFESSIONAL";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
 }

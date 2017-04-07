@@ -22,6 +22,8 @@ import java.util.regex.Pattern;
 import static javafx.scene.control.TextField.*;
 import org.controlsfx.control.textfield.TextFields;
 
+import javax.xml.transform.Result;
+
 
 /**
  * Created by AugustoR on 3/31/17.
@@ -41,12 +43,6 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     @FXML
     private ChoiceBox<String> title_choiceBox;
-
-    @FXML
-    private ChoiceBox<String> room_ChoiceBox;
-
-    @FXML
-    private ChoiceBox<String> department_ChoiceBox;
 
     @FXML
     private TextField lastName_TextField;
@@ -74,6 +70,9 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     @FXML
     private TextField testTextField;
+
+    @FXML
+    private TextField profile_textField;
 
 
     /**
@@ -106,7 +105,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         final String tempID = id_TextField.getText();
         String tempFirstName = Firstname_TextField.getText();
         String tempLastName = lastName_TextField.getText();
-        String profile = department_ChoiceBox.getValue();
+        String profile = profile_textField.getText();
         boolean added = true;
         empty_inputs = (tempFirstName == null || tempFirstName.equals("")
                 || tempLastName == null || tempLastName.equals(""));
@@ -164,7 +163,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                 System.out.println("===================== editing");
 
                 databaseController.EditProfessional(Integer.parseInt(id_TextField.getText()), tempFirstName,
-                        tempLastName, title_choiceBox.getValue(), department_ChoiceBox.getValue());
+                        tempLastName, title_choiceBox.getValue(), profile_textField.getText());
             }
         } else {
             // nothing
@@ -376,8 +375,8 @@ public class mmNodeInformationController extends controllers.AbsController {
 
         //Starts the choices for the user
         title_choiceBox.getSelectionModel().select(0);
-        department_ChoiceBox.getSelectionModel().select(0);
-        room_ChoiceBox.getSelectionModel().select(0);
+        profile_textField.setText("");
+//        room_ChoiceBox.getSelectionModel().select(0);
         id_TextField.setText("");
         Firstname_TextField.setText("");
         lastName_TextField.setText("");
@@ -386,8 +385,8 @@ public class mmNodeInformationController extends controllers.AbsController {
         lastName_TextField.setPromptText("Last");
         //Sets the properties
         title_choiceBox.setDisable(false);
-        department_ChoiceBox.setDisable(false);
-        room_ChoiceBox.setDisable(false);
+        profile_textField.setDisable(false);
+//        room_ChoiceBox.setDisable(false);
         id_TextField.setEditable(false);
         Firstname_TextField.setEditable(true);
         lastName_TextField.setEditable(true);
@@ -400,8 +399,8 @@ public class mmNodeInformationController extends controllers.AbsController {
         error_LabelText.setText("");
         //sets the properties
         title_choiceBox.setDisable(true);
-        department_ChoiceBox.setDisable(true);
-        room_ChoiceBox.setDisable(true);
+        profile_textField.setDisable(true);
+        testTextField.setDisable(true);
         id_TextField.setEditable(false);
         Firstname_TextField.setEditable(false);
         lastName_TextField.setEditable(false);
@@ -416,8 +415,8 @@ public class mmNodeInformationController extends controllers.AbsController {
 
         //sets the properties
         title_choiceBox.setDisable(false);
-        department_ChoiceBox.setDisable(false);
-        room_ChoiceBox.setDisable(false);
+        profile_textField.setDisable(false);
+        testTextField.setDisable(false);
         id_TextField.setEditable(false);
         Firstname_TextField.setEditable(true);
         lastName_TextField.setEditable(true);
@@ -451,24 +450,27 @@ public class mmNodeInformationController extends controllers.AbsController {
 
 
         ArrayList<String> rooms = new ArrayList<>();
+        ArrayList<String> profiles = new ArrayList<>();
 
+        ResultSet rset_profiles = databaseController.getProfileNames();
         ResultSet rset = databaseController.getRoomNames();
         try {
             while (rset.next()){
                 rooms.add(rset.getString("ROOMNUM"));
             }
+            while (rset_profiles.next()){
+                profiles.add(rset_profiles.getString("PROFILE"));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+
         TextFields.bindAutoCompletion(testTextField,rooms);
 
-        room_ChoiceBox.getItems().addAll("AH229", "SH289", "SL123");
-    }
+        //room_ChoiceBox.getItems().addAll("AH229", "SH289", "SL123");
 
-    //sets the choices for the department DB
-    public void setDepartmentChoices() {
-        department_ChoiceBox.getItems().addAll("Accident and emergency (A&E)", "Anaesthetics", "Breast screening");
+        TextFields.bindAutoCompletion(profile_textField, profiles);
     }
 
 }

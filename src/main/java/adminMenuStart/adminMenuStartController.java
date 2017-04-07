@@ -68,8 +68,7 @@ public class adminMenuStartController extends controllers.AbsController{
          controller.createDirectoryTreeView();
          controller.setTitleChoices();
          controller.setModeChoices();
-        controller.setRoomChoices();
-        controller.setDepartmentChoices();
+         controller.setRoomChoices();
          controller.setUser(username_Label.getText());
 
 
