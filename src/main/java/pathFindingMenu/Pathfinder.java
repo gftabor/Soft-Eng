@@ -78,7 +78,7 @@ public class Pathfinder {
         frontier.clear();
         path.clear();
         if(!(startNode.getEnabled() && endNode.getEnabled())){
-            System.out.println("selected node not enabled")
+            System.out.println("selected node not enabled");
             return -2;
         }
         startNode.setTotalCost(getHueristic(startNode, endNode));
