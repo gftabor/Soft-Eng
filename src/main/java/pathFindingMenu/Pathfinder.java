@@ -41,6 +41,12 @@ public class Pathfinder {
 
         for(Edge currentEdge:currentNode.getEdgeList()){
             Node neighbor = currentEdge.getNeighbor(currentNode);
+
+            //--node must be enabled
+            if (!neighbor.getEnabled()) {
+                continue;
+            }
+
             //System.out.println("weight" + currentEdge.getWeight());
             double neighbourNewCost = currentNode.getCostToReach() + currentEdge.getWeight();
             //System.out.println(neighbor.getCostToReach() + "   " + neighbourNewCost);
@@ -77,7 +83,7 @@ public class Pathfinder {
         boolean finished = false;
         while (!finished && !frontier.isEmpty()) {
             Collections.sort(frontier);
-            Node processing = frontier.get(0);//might be biggest cost currently
+            Node processing = frontier.get(0);
             finished = processing.equals(endNode);//
             if (!alreadyProcessed.contains(processing)) {
                 processNode(processing, endNode);
