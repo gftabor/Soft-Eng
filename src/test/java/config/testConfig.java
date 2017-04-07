@@ -13,15 +13,7 @@ import controllers.MapController;
  * Created by jasonashton on 4/6/17.
  */
 public class testConfig {
-    loadConfig config;
-    @Before
-    public void setUp(){
-        try{
-            config = new loadConfig();
-        } catch( Exception e){
-            e.printStackTrace();
-        }
-    }
+    loadConfig config = new loadConfig();
 
     @Test
     public void testReader(){
