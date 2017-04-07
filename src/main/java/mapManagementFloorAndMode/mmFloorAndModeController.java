@@ -236,11 +236,14 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
         //try to display last touched edge list
         //requery firstnode to reset edge list
-        firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
-                .getNode(firstNode.getPosX(), firstNode.getPosY(), firstNode.getFloor());
-
-        if (firstNode != null) {
-            graph.createEdgeLines(firstNode.getEdgeList());
+        if(firstNode != null) {
+            firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
+                    .getNode(firstNode.getPosX(), firstNode.getPosY(), firstNode.getFloor());
+            //don't know if above method is successful
+            //must check again if firstNode is not null
+            if (firstNode != null) {
+                graph.createEdgeLines(firstNode.getEdgeList());
+            }
         }
 
     }
