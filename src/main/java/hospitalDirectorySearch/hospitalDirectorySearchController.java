@@ -75,7 +75,10 @@ public class hospitalDirectorySearchController extends controllers.AbsController
     @FXML
     private Label error_Label;
 
+
     int iNumber = 1;
+    //Flag to check if the user has selected a first and second choice
+    int flag = 0;
 
 
     //
@@ -138,7 +141,18 @@ public class hospitalDirectorySearchController extends controllers.AbsController
             @Override
             public void handle(MouseEvent event) {
                 if(event.getClickCount() > 1) {
-                    error_Label.setText(Table_TableView.getSelectionModel().getSelectedItem().getrFirstName());
+                    if(flag == 0) {
+                        from_TextField.setText(Table_TableView.getSelectionModel().getSelectedItem().getrFirstName());
+                        search_TextField.setText("");
+                        flag++;
+                    }else if(flag == 1){
+                        to_TextField.setText(Table_TableView.getSelectionModel().getSelectedItem().getrFirstName());
+                        search_TextField.setText("");
+                    }else{
+                        flag = 0;
+                    }
+
+
                 }
             }
         });
@@ -169,7 +183,7 @@ public class hospitalDirectorySearchController extends controllers.AbsController
             });
         });
 
-        
+
 
 
         SortedList<Table> sortedData = new SortedList<>(filteredData);
