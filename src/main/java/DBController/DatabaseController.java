@@ -692,6 +692,7 @@ public class DatabaseController {
      * ADMIN actions
      *
      ******************************************************************************/
+
     public boolean newService(String name, String type, int x, int y, int floor){
         System.out.println(
                 String.format(
@@ -766,6 +767,25 @@ public class DatabaseController {
         }
         return true;
     }
+
+
+    public ResultSet getRoomNames(){
+        System.out.println("Getting room names");
+
+        ResultSet resultSet = null;
+        try{
+            String query = "SELECT ROOMNUM FROM NODE";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            //preparedStatement.setString(1, "%"+roomName);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
 
 
 
