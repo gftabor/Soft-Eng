@@ -1,29 +1,27 @@
 package mapManagementNodeInformation;
 
 import DBController.DatabaseController;
-import controllers.Professional;
 import hospitalDirectorySearch.Table;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
-import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.function.Predicate;
 
-import static javafx.scene.control.TextField.*;
 import org.controlsfx.control.textfield.TextFields;
-
-import javax.xml.transform.Result;
 
 
 /**
@@ -67,7 +65,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     private Label error_LabelText;
 
     @FXML
-    private TextField testTextField;
+    private TextField room_TextField;
 
 
     @FXML
@@ -92,8 +90,19 @@ public class mmNodeInformationController extends controllers.AbsController {
     private TableColumn<Table, String> room_TableColumn;
 
     @FXML
-    private TextField profile_textField;
+    private TextField department_TextField;
 
+    @FXML
+    private TextField search_textField;
+
+    int c_title;
+
+    int ID;
+    String First_N;
+    String Last_N;
+    String Title;
+    String Department;
+    String Room;
 
 
     /**
@@ -132,6 +141,95 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     }
 
+    //sets up the tree
+    public void setUpTreeView(){
+        ID_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, Integer>("rID"));
+        firstName_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rFirstName"));
+        lastName_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rLastName"));
+        title_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rTitle"));
+        department_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rType"));
+        room_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rRoom"));
+
+
+        ResultSet rset;
+        rset = databaseController.getProRoomNums();
+
+        ObservableList<Table> data = FXCollections.observableArrayList();
+
+        int id;
+        String firstName, lastName, title, department, roomNum;
+        try {
+            while (rset.next()){
+                id = rset.getInt("ID");
+                firstName = rset.getString("FIRSTNAME");
+                lastName = rset.getString("LASTNAME");
+                title = rset.getString("TYPE");
+                department = rset.getString("DEPARTMENT");
+                roomNum = rset.getString("ROOMNUM");
+                System.out.println("Name: " + firstName + lastName);
+                data.add(new Table(id, firstName, lastName, title, department, roomNum));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        Table_TableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.getClickCount() > 1) {
+                    ID = Table_TableView.getSelectionModel().getSelectedItem().getrID();
+                    First_N = Table_TableView.getSelectionModel().getSelectedItem().getrFirstName();
+                    Last_N = Table_TableView.getSelectionModel().getSelectedItem().getrLastName();
+                    Title = Table_TableView.getSelectionModel().getSelectedItem().getrTitle();
+                    Department = Table_TableView.getSelectionModel().getSelectedItem().getrType();
+                    Room = Table_TableView.getSelectionModel().getSelectedItem().getrRoom();
+
+                    if(Title.equals("Doctor")){
+                        c_title = 0;
+                    }else if(Title.equals("Nurse")){
+                        c_title = 1;
+                    }
+                    title_choiceBox.getSelectionModel().select(c_title);
+                    department_TextField.setText(Department);
+                    room_TextField.setText(Room);
+                    //
+
+                    id_TextField.setText(Integer.toString(ID));
+                    Firstname_TextField.setText(First_N);
+                    lastName_TextField.setText(Last_N);
+
+
+                }
+            }
+        });
+        FilteredList<Table> filteredData = new FilteredList<>(data, e-> true);
+        search_textField.setOnKeyReleased(e -> {
+            search_textField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredData.setPredicate((Predicate<? super Table>) Table ->{
+                    if(newValue == null || newValue.isEmpty()){
+                        return true;
+                    }
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    if(Table.getrFirstName().toLowerCase().contains(lowerCaseFilter)){
+                        return true;
+
+                    }else if(Table.getrLastName().toLowerCase().contains(lowerCaseFilter)){
+                        return true;
+                    }else if(Table.getrType().toLowerCase().contains(lowerCaseFilter)){
+                        return true;
+                    }else if(Table.getrTitle().toLowerCase().contains(lowerCaseFilter)){
+                        return true;
+                    }else if(Table.getrRoom().toLowerCase().contains(lowerCaseFilter)){
+                        return true;
+                    }
+                    return false;
+                });
+            });
+        });
+        SortedList<Table> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(Table_TableView.comparatorProperty());
+        Table_TableView.setItems(sortedData);
+    }
     //Sets the choices for the mode Add, edit remove
     public void setModeChoices() {
         mode_ChoiceBox.getItems().addAll("Add", "Remove", "Edit");
@@ -164,218 +262,6 @@ public class mmNodeInformationController extends controllers.AbsController {
         //department_ChoiceBox.getItems().addAll("Accident and emergency (A&E)", "Anaesthetics", "Breast screening");
     }
 
-     /* public void submitButton_Clicked() {
-
-        System.out.println("The user has clicked the submit Button");
-        final String tempID = id_TextField.getText();
-        String tempFirstName = Firstname_TextField.getText();
-        String tempLastName = lastName_TextField.getText();
-        String profile = profile_textField.getText();
-        boolean added = true;
-        empty_inputs = (tempFirstName == null || tempFirstName.equals("")
-                || tempLastName == null || tempLastName.equals(""));
-
-        if (c_mode == 0) {
-            // add
-           if(!empty_inputs) {
-               tempLastName = tempLastName.replaceAll("\\s", "");
-               tempFirstName = tempFirstName.replaceAll("\\s", "");
-           }
-
-            if (!empty_inputs) {
-                switch (title_choiceBox.getValue()) {
-                    case "Doctor":
-                        openDirectory = 1;
-                        System.out.println("Adding new professional -------------------");
-                        added = databaseController.newProfessional(tempFirstName,
-                                tempLastName, "Doctor", profile);
-                        System.out.println("Added the professional ====================");
-                        break;
-                    case "Nurse":
-                        openDirectory = 2;
-                        added = databaseController.newProfessional(tempFirstName,
-                                tempLastName, "Nurse", profile);
-                        break;
-                    default:
-                        System.out.println("Nothing selected for mode");
-                        break;
-                }
-            }
-
-
-        } else if (c_mode == 1) {
-            // remove
-            if (title_choiceBox.getValue().equals("Doctor")) {
-                openDirectory = 1;
-            } else if (title_choiceBox.getValue().equals("Nurse")) {
-                openDirectory = 2;
-            }
-
-            if(!empty_inputs) {
-                databaseController.deleteProfessional(id_TextField.getText());
-            }
-
-        } else if (c_mode == 2) {
-            // edit
-            if (title_choiceBox.getValue().equals("Doctor")) {
-                openDirectory = 1;
-            } else if (title_choiceBox.getValue().equals("Nurse")) {
-                openDirectory = 2;
-            }
-            int id = 0;
-            if(!empty_inputs) {
-                ResultSet rset = databaseController.getProfessional(Integer.parseInt(id_TextField.getText()));
-                System.out.println("===================== editing");
-
-                databaseController.EditProfessional(Integer.parseInt(id_TextField.getText()), tempFirstName,
-                        tempLastName, title_choiceBox.getValue(), profile_textField.getText());
-            }
-        } else {
-            // nothing
-        }
-
-        if (c_mode != -1) {
-            FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/mmNodeInformationView.fxml");
-            mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
-            controller.setOpenDirectory(openDirectory);
-            controller.createDirectoryTreeView();
-            controller.setTitleChoices();
-            controller.setModeChoices();
-            controller.setCurrentMode(c_mode);
-            controller.setUser(currentAdmin_Label.getText());
-            System.out.println(openDirectory);
-            if (!added) {
-                controller.setError("This ID already exists!");
-            } else if(empty_inputs){
-                controller.setError("You have entered an invalid input");
-            }
-        }
-    } */
-
-    //Creates the directory of the tree view
-    /*public void createDirectoryTreeView() {
-        TreeItem<String> root, doctors, nurses;
-
-        root = new TreeItem<>("Professionals");
-        root.setExpanded(true);
-
-        ResultSet professionalsRset = databaseController.getTableSet("PROFESSIONAL");
-        ArrayList<Professional> doctorsList = new ArrayList<>();
-        ArrayList<Professional> nursesList = new ArrayList<>();
-
-        try {
-            String firstName, lastName, type, id;
-
-            while (professionalsRset.next()) {
-                firstName = professionalsRset.getString("FIRSTNAME");
-                lastName = professionalsRset.getString("LASTNAME");
-                type = professionalsRset.getString("TYPE");
-                id = professionalsRset.getString("ID");
-                if (type.equals("doctor") || type.equals("Doctor") || type.equals("DOCTOR")) {
-                    doctorsList.add(new Professional(firstName, lastName, type, id));
-                } else if (type.equals("nurse") || type.equals("Nurse") || type.equals("NURSE")) {
-                    nursesList.add(new Professional(firstName, lastName, type, id));
-                }
-            }
-        } catch (SQLException se) {
-            se.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        doctors = makeBranch("Doctors", root);
-        int i = 0;
-        while (i < doctorsList.size()) {
-
-            makeBranch(doctorsList.get(i).getFirstName() + " " +
-                    doctorsList.get(i).getLastName(), doctors);
-            i++;
-        }
-
-        doctors.setExpanded(false);
-        if (openDirectory == 1) {
-            doctors.setExpanded(true);
-        }
-
-        i = 0;
-        nurses = makeBranch("Nurses", root);
-        while (i < nursesList.size()) {
-
-            makeBranch(nursesList.get(i).getFirstName() + " " +
-                    nursesList.get(i).getLastName(), nurses);
-            i++;
-        }
-
-        nurses.setExpanded(false);
-        if (openDirectory == 2) {
-            nurses.setExpanded(true);
-        }
-
-//        directory_TreeView.setRoot(root);
-//        directory_TreeView.getSelectionModel().selectedItemProperty()
-//                .addListener((v, oldValue, newValue) -> {
-//                    if (newValue != null) {
-//                        System.out.println(newValue.getValue());
-//                        if(!(newValue.getValue().equals("Professionals"))) {
-//                            pullProfessional(newValue.getValue());
-//                        }
-//                    }
-//                });
-
-    } */
-
-    // this is to include id to allow for multiple doctors
-   /* public void pullProfessional(String fullName) {
-        ResultSet rset;
-        String id = null;
-        String firstName;
-        String lastName;
-        String type = null;
-
-        String[] bothNames = fullName.split("\\s+");
-        firstName = bothNames[0];
-        lastName = bothNames[1];
-
-        try {
-            rset = databaseController.getProfessional(firstName, lastName);
-            while (rset.next()) {
-                id = rset.getString("ID");
-                type = rset.getString("TYPE");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        int flag = 1;
-        if ("Doctor".equals(type)) {
-            flag = 0;
-        }
-
-        if (c_mode != 0) {
-            title_choiceBox.getSelectionModel().select(flag);
-            id_TextField.setText(id);
-            Firstname_TextField.setText(firstName);
-            lastName_TextField.setText(lastName);
-        }
-    } */
-
-
-    //Create branches
-   /* public TreeItem<String> makeBranch(String title, TreeItem<String> parent) {
-        TreeItem<String> item = new TreeItem<>(title);
-        item.setExpanded(true);
-        parent.getChildren().add(item);
-        return item;
-    } */
-
-
-   /* public void setOpenDirectory(int i) {
-        System.out.println("LOOK THIS");
-        System.out.println(i);
-        openDirectory = i;
-    } */
-
-
     //set the title choices for the user
     public void setTitleChoices() {
         title_choiceBox.getItems().addAll("Doctor", "Nurse");
@@ -395,17 +281,15 @@ public class mmNodeInformationController extends controllers.AbsController {
                 });
     }
 
-
     //The add settings for the user to add a Doctor/nurse
     public void add_settings() {
         c_mode = 0;
         System.out.println("Add settings");
         error_LabelText.setText("");
 
-
         //Starts the choices for the user
         title_choiceBox.getSelectionModel().select(0);
-        profile_textField.setText("");
+        department_TextField.setText("");
         id_TextField.setText("");
         Firstname_TextField.setText("");
         lastName_TextField.setText("");
@@ -414,7 +298,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         lastName_TextField.setPromptText("Last");
         //Sets the properties
         title_choiceBox.setDisable(false);
-        profile_textField.setDisable(false);
+        department_TextField.setDisable(false);
         id_TextField.setEditable(false);
         Firstname_TextField.setEditable(true);
         lastName_TextField.setEditable(true);
@@ -427,8 +311,8 @@ public class mmNodeInformationController extends controllers.AbsController {
         error_LabelText.setText("");
         //sets the properties
         title_choiceBox.setDisable(true);
-        profile_textField.setDisable(true);
-        testTextField.setDisable(true);
+        department_TextField.setDisable(true);
+        room_TextField.setDisable(true);
         id_TextField.setEditable(false);
         Firstname_TextField.setEditable(false);
         lastName_TextField.setEditable(false);
@@ -443,8 +327,8 @@ public class mmNodeInformationController extends controllers.AbsController {
 
         //sets the properties
         title_choiceBox.setDisable(false);
-        profile_textField.setDisable(false);
-        testTextField.setDisable(false);
+        department_TextField.setDisable(false);
+        room_TextField.setDisable(false);
         id_TextField.setEditable(false);
         Firstname_TextField.setEditable(true);
         lastName_TextField.setEditable(true);
@@ -481,16 +365,16 @@ public class mmNodeInformationController extends controllers.AbsController {
                 rooms.add(rset.getString("ROOMNUM"));
             }
             while (rset_profiles.next()){
-                profiles.add(rset_profiles.getString("PROFILE"));
+                profiles.add(rset_profiles.getString("DEPARTMENT"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
 
-        TextFields.bindAutoCompletion(testTextField,rooms);
+        TextFields.bindAutoCompletion(room_TextField,rooms);
 
-        TextFields.bindAutoCompletion(profile_textField, profiles);
+        TextFields.bindAutoCompletion(department_TextField, profiles);
     }
 
 }

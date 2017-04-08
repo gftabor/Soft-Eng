@@ -175,7 +175,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="profile_textField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0">
+                        <TextField fx:id="department_TextField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0">
                            <HBox.margin>
                               <Insets bottom="5.0" left="40.0" right="5.0" top="5.0" />
                            </HBox.margin>
@@ -192,7 +192,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="testTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="Room">
+                        <TextField fx:id="room_TextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="Room">
                            <HBox.margin>
                               <Insets bottom="5.0" left="40.0" right="5.0" top="5.0" />
                            </HBox.margin>
