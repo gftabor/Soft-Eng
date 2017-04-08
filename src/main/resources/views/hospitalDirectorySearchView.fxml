@@ -163,8 +163,8 @@
                       <TableColumn fx:id="firstName_TableColumn" editable="false" prefWidth="170.0" resizable="false" text="First Name" />
                         <TableColumn fx:id="lastName_TableColumn" editable="false" prefWidth="170.0" resizable="false" text="Last Name" />
                         <TableColumn fx:id="title_TableColumn" editable="false" prefWidth="170.0" resizable="false" text="Title" />
-                        <TableColumn fx:id="department_TableColumn" editable="false" minWidth="0.0" prefWidth="185.0" resizable="false" text="Profile" />
-                        <TableColumn fx:id="room_TableColumn" editable="false" minWidth="0.0" prefWidth="150.0" resizable="false" text="Room" />
+                        <TableColumn fx:id="department_TableColumn" editable="false" minWidth="0.0" prefWidth="185.0" resizable="false" text="Department" />
+                        <TableColumn fx:id="room_TableColumn" editable="false" minWidth="0.0" prefWidth="173.408203125" resizable="false" text="Room" />
                     </columns>
                      <opaqueInsets>
                         <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />

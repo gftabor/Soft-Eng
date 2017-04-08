@@ -65,14 +65,12 @@ public class adminMenuStartController extends controllers.AbsController{
     public void hospitalDirectoryButton_Clicked(){
          FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/mmNodeInformationView.fxml");
          mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
-
-         //controller.setTitleChoices();
-         //controller.setModeChoices();
-         //controller.setRoomChoices();
-         //controller.setDepartmentChoices();
-         //controller.setUser(username_Label.getText());
-
-
+         
+         controller.setTitleChoices();
+         controller.setModeChoices();
+         controller.setRoomChoices();
+         controller.setDepartmentChoices();
+         controller.setUser(username_Label.getText());
 
     }
 
