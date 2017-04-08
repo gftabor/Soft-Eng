@@ -357,20 +357,21 @@ public class DatabaseController {
      *
      ******************************************************************************/
 
-    public boolean newProfessional(String firstName, String lastName, String type){
+    public boolean newProfessional(String firstName, String lastName, String type, String profile){
         System.out.println(
                 String.format(
-                        "Adding professional. firstName: %s, lastName: %s, type: %s",
-                        firstName, lastName, type));
+                        "Adding professional. firstName: %s, lastName: %s, type: %s, profile: %s",
+                        firstName, lastName, type, profile));
         try{
             // sql statement with "?" to be filled later
-            String query = "INSERT INTO PROFESSIONAL (FIRSTNAME, LASTNAME, TYPE)" +
-                    " values (?, ?, ?)";
+            String query = "INSERT INTO PROFESSIONAL (FIRSTNAME, LASTNAME, TYPE, PROFILE)" +
+                    " values (?, ?, ?, ?)";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, type);
+            preparedStatement.setString(4, profile);
             // execute prepared statement
             
             preparedStatement.execute();
@@ -464,19 +465,20 @@ public class DatabaseController {
         return true;
     }
 
-    public boolean EditProfessional(int ID, String firstName, String lastName, String type){
+    public boolean EditProfessional(int ID, String firstName, String lastName, String type, String profile){
         System.out.println(
                 String.format(
-                        "Editing professional. id %d firstName: %s, lastName: %s, type: %s",
-                        ID, firstName, lastName, type));
+                        "Editing professional. id %d firstName: %s, lastName: %s, type: %s, profile: %s",
+                        ID, firstName, lastName, type, profile));
         try{
-            String query = "UPDATE PROFESSIONAL SET FIRSTNAME = ?, LASTNAME = ?, TYPE = ? " +
+            String query = "UPDATE PROFESSIONAL SET FIRSTNAME = ?, LASTNAME = ?, TYPE = ?, PROFILE = ?" +
                     "WHERE ID = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, type);
-            preparedStatement.setInt(4, ID);
+            preparedStatement.setString(4, profile);
+            preparedStatement.setInt(5, ID);
             // run statement and query
             preparedStatement.executeUpdate();
         } catch (SQLException e){
@@ -788,5 +790,46 @@ public class DatabaseController {
 
 
 
+    /*******************************************************************************
+     * Combinations
+     *
+     ******************************************************************************/
+
+    public ResultSet getProRoomNums(){
+        ResultSet resultSet = null;
+        System.out.println(
+                String.format(
+                        "Getting all professional room numbers"));
+        try{
+            String query = "SELECT ID, FIRSTNAME, LASTNAME, PROFESSIONAL.TYPE, PROFESSIONAL.PROFILE, ROOMNUM FROM PROFESSIONAL, PROLOCATION, NODE WHERE " +
+                    "PROID = ID AND NODE.XPOS = PROLOCATION.XPOS AND NODE.YPOS = PROLOCATION.YPOS AND " +
+                    "NODE.FLOOR = PROLOCATION.FLOOR";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
+
+    public ResultSet getProfileNames(){
+        ResultSet resultSet = null;
+        System.out.println(
+                String.format(
+                        "Getting all professional room numbers"));
+        try{
+            String query = "SELECT PROFILE FROM PROFESSIONAL";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
 
 }
