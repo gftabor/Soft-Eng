@@ -2,6 +2,7 @@ package mapManagementNodeInformation;
 
 import DBController.DatabaseController;
 import controllers.Professional;
+import hospitalDirectorySearch.Table;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -43,9 +44,6 @@ public class mmNodeInformationController extends controllers.AbsController {
     private ChoiceBox<String> title_choiceBox;
 
     @FXML
-    private ChoiceBox<String> room_ChoiceBox;
-
-    @FXML
     private ChoiceBox<String> department_ChoiceBox;
 
     @FXML
@@ -64,9 +62,6 @@ public class mmNodeInformationController extends controllers.AbsController {
     private Button submit_Button;
 
     @FXML
-    private TreeView<String> directory_TreeView;
-
-    @FXML
     private ChoiceBox mode_ChoiceBox;
 
     @FXML
@@ -75,6 +70,28 @@ public class mmNodeInformationController extends controllers.AbsController {
     @FXML
     private TextField testTextField;
 
+    /*@FXML
+    private TableView<Table> Table_TableView;
+
+    @FXML
+    private TableColumn<Table, Integer> ID_TableColumn;
+
+    @FXML
+    private TableColumn<Table, String> firstName_TableColumn;
+
+    @FXML
+    private TableColumn<Table, String> lastName_TableColumn;
+
+    @FXML
+    private TableColumn<Table, String> title_TableColumn;
+
+    @FXML
+    private TableColumn<Table, String> department_TableColumn;
+
+    @FXML
+    private TableColumn<Table, String> room_TableColumn; */
+
+
 
     /**
      * Flags for passing different info
@@ -82,25 +99,26 @@ public class mmNodeInformationController extends controllers.AbsController {
     // Flag for current mode chosen (add, edit, remove)
     int c_mode = -1;
 
-    int openDirectory; // opens listings when view reloads
+    //int openDirectory; // opens listings when view reloads
 
-    boolean empty_inputs;
+    //boolean empty_inputs;
 
-    boolean check_space;
 
-    String fn;
-    String ln;
 
 
     //get an instance of database controller
-    DatabaseController databaseController = DatabaseController.getInstance();
+    //DatabaseController databaseController = DatabaseController.getInstance();
 
     public void cancelButton_Clicked() {
         System.out.println("The user has clicked the cancel Button");
 
     }
 
-    public void submitButton_Clicked() {
+    public void submitButton_Clicked(){
+        System.out.println("Hello world");
+    }
+
+   /* public void submitButton_Clicked() {
 
         System.out.println("The user has clicked the submit Button");
         final String tempID = id_TextField.getText();
@@ -185,7 +203,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                 controller.setError("You have entered an invalid input");
             }
         }
-    }
+    } */
 
     //switches to the emergency scene
     public void emergencyButton_Clicked() {
@@ -204,7 +222,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     }
 
     //Creates the directory of the tree view
-    public void createDirectoryTreeView() {
+    /*public void createDirectoryTreeView() {
         TreeItem<String> root, doctors, nurses;
 
         root = new TreeItem<>("Professionals");
@@ -272,10 +290,10 @@ public class mmNodeInformationController extends controllers.AbsController {
                     }
                 });
 
-    }
+    } */
 
     // this is to include id to allow for multiple doctors
-    public void pullProfessional(String fullName) {
+   /* public void pullProfessional(String fullName) {
         ResultSet rset;
         String id = null;
         String firstName;
@@ -308,16 +326,16 @@ public class mmNodeInformationController extends controllers.AbsController {
             Firstname_TextField.setText(firstName);
             lastName_TextField.setText(lastName);
         }
-    }
+    } */
 
 
     //Create branches
-    public TreeItem<String> makeBranch(String title, TreeItem<String> parent) {
+   /* public TreeItem<String> makeBranch(String title, TreeItem<String> parent) {
         TreeItem<String> item = new TreeItem<>(title);
         item.setExpanded(true);
         parent.getChildren().add(item);
         return item;
-    }
+    } */
 
     //set the title choices for the user
     public void setTitleChoices() {
@@ -376,7 +394,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         //Starts the choices for the user
         title_choiceBox.getSelectionModel().select(0);
         department_ChoiceBox.getSelectionModel().select(0);
-        room_ChoiceBox.getSelectionModel().select(0);
+        //room_ChoiceBox.getSelectionModel().select(0);
         id_TextField.setText("");
         Firstname_TextField.setText("");
         lastName_TextField.setText("");
@@ -386,7 +404,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         //Sets the properties
         title_choiceBox.setDisable(false);
         department_ChoiceBox.setDisable(false);
-        room_ChoiceBox.setDisable(false);
+        //room_ChoiceBox.setDisable(false);
         id_TextField.setEditable(false);
         Firstname_TextField.setEditable(true);
         lastName_TextField.setEditable(true);
@@ -400,7 +418,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         //sets the properties
         title_choiceBox.setDisable(true);
         department_ChoiceBox.setDisable(true);
-        room_ChoiceBox.setDisable(true);
+        //room_ChoiceBox.setDisable(true);
         id_TextField.setEditable(false);
         Firstname_TextField.setEditable(false);
         lastName_TextField.setEditable(false);
@@ -416,7 +434,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         //sets the properties
         title_choiceBox.setDisable(false);
         department_ChoiceBox.setDisable(false);
-        room_ChoiceBox.setDisable(false);
+        //room_ChoiceBox.setDisable(false);
         id_TextField.setEditable(false);
         Firstname_TextField.setEditable(true);
         lastName_TextField.setEditable(true);
@@ -433,20 +451,20 @@ public class mmNodeInformationController extends controllers.AbsController {
         currentAdmin_Label.setText(user);
     }
 
-    public void setOpenDirectory(int i) {
+   /* public void setOpenDirectory(int i) {
         System.out.println("LOOK THIS");
         System.out.println(i);
         openDirectory = i;
-    }
+    } */
 
 
-    //Sets the current mode whene refreshing the scene
+    //Sets the current mode when refreshing the scene
     public void setCurrentMode(int i) {
         mode_ChoiceBox.getSelectionModel().select(i);
     }
 
     //sets the choices for the rooms DB
-    public void setRoomChoices() {
+    /*public void setRoomChoices() {
 
 
         ArrayList<String> rooms = new ArrayList<>();
@@ -462,8 +480,10 @@ public class mmNodeInformationController extends controllers.AbsController {
 
         TextFields.bindAutoCompletion(testTextField,rooms);
 
-        room_ChoiceBox.getItems().addAll("AH229", "SH289", "SL123");
-    }
+        //room_ChoiceBox.getItems().addAll("AH229", "SH289", "SL123");
+
+    } */
+
 
     //sets the choices for the department DB
     public void setDepartmentChoices() {

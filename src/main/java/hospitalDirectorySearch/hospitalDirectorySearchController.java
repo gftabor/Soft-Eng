@@ -148,6 +148,7 @@ public class hospitalDirectorySearchController extends controllers.AbsController
                     }else if(flag == 1){
                         to_TextField.setText(Table_TableView.getSelectionModel().getSelectedItem().getrFirstName());
                         search_TextField.setText("");
+                        flag++;
                     }else{
                         flag = 0;
                     }
