@@ -70,7 +70,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     private TextField testTextField;
 
 
-    /*@FXML
+    @FXML
     private TableView<Table> Table_TableView;
 
     @FXML
@@ -89,7 +89,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     private TableColumn<Table, String> department_TableColumn;
 
     @FXML
-    private TableColumn<Table, String> room_TableColumn; */
+    private TableColumn<Table, String> room_TableColumn;
 
     @FXML
     private TextField profile_textField;
@@ -132,8 +132,6 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     }
 
-
-
     //Sets the choices for the mode Add, edit remove
     public void setModeChoices() {
         mode_ChoiceBox.getItems().addAll("Add", "Remove", "Edit");
@@ -161,14 +159,10 @@ public class mmNodeInformationController extends controllers.AbsController {
                 });
 
     }
-
-
-
     //sets the choices for the department DB
     public void setDepartmentChoices() {
         //department_ChoiceBox.getItems().addAll("Accident and emergency (A&E)", "Anaesthetics", "Breast screening");
     }
-
 
      /* public void submitButton_Clicked() {
 

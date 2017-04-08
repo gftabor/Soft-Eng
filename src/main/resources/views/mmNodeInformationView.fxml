@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -285,28 +287,21 @@
             </VBox>
          </left>
          <right>
-
-            <VBox prefHeight="569.0" prefWidth="852.0" BorderPane.alignment="CENTER" />
-            <VBox prefHeight="569.0" prefWidth="523.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="569.0" prefWidth="864.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox>
-                     <children>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Region HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <VBox prefHeight="536.0" prefWidth="550.0">
-                     <children>
-                        <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="536.0" prefWidth="900.0">
-                           <padding>
-                              <Insets right="20.0" />
-                           </padding>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </HBox>
-                     </children>
-                  </VBox>
+                  <TableView fx:id="Table_TableView" fixedCellSize="0.0" nodeOrientation="LEFT_TO_RIGHT" pickOnBounds="false" prefHeight="567.0" prefWidth="864.0" tableMenuButtonVisible="true">
+                     <columns>
+                        <TableColumn fx:id="ID_TableColumn" editable="false" prefWidth="76.73846435546875" resizable="false" text="ID" />
+                        <TableColumn fx:id="firstName_TableColumn" editable="false" prefWidth="164.75283813476562" resizable="false" text="First Name" />
+                        <TableColumn fx:id="lastName_TableColumn" editable="false" prefWidth="178.24713134765625" resizable="false" text="Last Name" />
+                        <TableColumn fx:id="title_TableColumn" editable="false" prefWidth="131.224609375" resizable="false" text="Title" />
+                        <TableColumn fx:id="department_TableColumn" editable="false" minWidth="0.0" prefWidth="147.82012939453125" resizable="false" text="Profile" />
+                        <TableColumn fx:id="room_TableColumn" editable="false" minWidth="0.0" prefWidth="152.48291015625" resizable="false" text="Room" />
+                     </columns>
+                     <opaqueInsets>
+                        <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                     </opaqueInsets>
+                  </TableView>
                </children>
             </VBox>
          </right>
