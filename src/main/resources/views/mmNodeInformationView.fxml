@@ -167,7 +167,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label minWidth="-Infinity" prefWidth="140.0" text="Profile:">
+                        <Label minWidth="-Infinity" prefWidth="140.0" text="Department:">
                            <font>
                               <Font name="System Bold Italic" size="23.0" />
                            </font>
@@ -295,7 +295,7 @@
                         <TableColumn fx:id="firstName_TableColumn" editable="false" prefWidth="164.75283813476562" resizable="false" text="First Name" />
                         <TableColumn fx:id="lastName_TableColumn" editable="false" prefWidth="178.24713134765625" resizable="false" text="Last Name" />
                         <TableColumn fx:id="title_TableColumn" editable="false" prefWidth="131.224609375" resizable="false" text="Title" />
-                        <TableColumn fx:id="department_TableColumn" editable="false" minWidth="0.0" prefWidth="147.82012939453125" resizable="false" text="Profile" />
+                        <TableColumn fx:id="department_TableColumn" editable="false" minWidth="0.0" prefWidth="147.82012939453125" resizable="false" text="Department" />
                         <TableColumn fx:id="room_TableColumn" editable="false" minWidth="0.0" prefWidth="152.48291015625" resizable="false" text="Room" />
                      </columns>
                      <opaqueInsets>
