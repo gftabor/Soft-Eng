@@ -224,6 +224,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         adminMenuStart.adminMenuStartController controller = loader.getController();
         //Set the correct username for the next scene
         controller.setUsername(username_Label.getText());
+        System.out.println(username_Label.getText());
     }
 
     public void setUserString(String user) {

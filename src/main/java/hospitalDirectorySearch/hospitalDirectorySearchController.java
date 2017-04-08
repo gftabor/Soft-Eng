@@ -90,9 +90,9 @@ public class hospitalDirectorySearchController extends controllers.AbsController
     //
     public void mainMenuButton_Clicked(){
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
-        adminMenuStart.adminMenuStartController controller = loader.getController();
+        //patientMenuStart.patientMenuStartController controller = loader.getController();
         //Set the correct username for the next scene
-        controller.setUsername(currentAdmin_Label.getText());
+        //controller.setUsername(currentAdmin_Label.getText());
     }
 
     //
