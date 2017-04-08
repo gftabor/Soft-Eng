@@ -39,19 +39,19 @@ public class Node implements Comparable<Node>{
         this.parentEdge = null; //instantiate reference to null
     }
 
-    //Quick Constructor
-    //  -assume enabled by default
-    public Node(int posX, int posY, boolean hidden, boolean isEnabled, String name, int floor) {
-        this.posX = posX;
-        this.posY = posY;
-        this.isHidden = hidden;
-        this.isEnabled = true;
-        this.name = name;
-        this.floor = floor;
-        this.type = "Doctor's Office";
-        this.costToReach = Integer.MAX_VALUE;
-        this.totalCost = Integer.MAX_VALUE; //costToReach + hueristic
-    }
+//    //Quick Constructor
+//    //  -assume enabled by default
+//    public Node(int posX, int posY, boolean hidden, boolean isEnabled, String name, int floor) {
+//        this.posX = posX;
+//        this.posY = posY;
+//        this.isHidden = hidden;
+//        this.isEnabled = true;
+//        this.name = name;
+//        this.floor = floor;
+//        this.type = "Doctor's Office";
+//        this.costToReach = Integer.MAX_VALUE;
+//        this.totalCost = Integer.MAX_VALUE; //costToReach + hueristic
+//    }
 
     public String toString() {
         String output;
