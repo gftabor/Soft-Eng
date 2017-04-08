@@ -357,21 +357,21 @@ public class DatabaseController {
      *
      ******************************************************************************/
 
-    public boolean newProfessional(String firstName, String lastName, String type, String profile){
+    public boolean newProfessional(String firstName, String lastName, String type, String department){
         System.out.println(
                 String.format(
-                        "Adding professional. firstName: %s, lastName: %s, type: %s, profile: %s",
-                        firstName, lastName, type, profile));
+                        "Adding professional. firstName: %s, lastName: %s, type: %s, department: %s",
+                        firstName, lastName, type, department));
         try{
             // sql statement with "?" to be filled later
-            String query = "INSERT INTO PROFESSIONAL (FIRSTNAME, LASTNAME, TYPE, PROFILE)" +
+            String query = "INSERT INTO PROFESSIONAL (FIRSTNAME, LASTNAME, TYPE, DEPARTMENT)" +
                     " values (?, ?, ?, ?)";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, type);
-            preparedStatement.setString(4, profile);
+            preparedStatement.setString(4, department);
             // execute prepared statement
             
             preparedStatement.execute();
