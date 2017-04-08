@@ -70,7 +70,7 @@ public class adminMenuStartController extends controllers.AbsController{
          controller.setModeChoices();
          controller.setRoomChoices();
          controller.setDepartmentChoices();
-        controller.setUpTreeView();
+         controller.setUpTreeView();
          controller.setUser(username_Label.getText());
 
     }
@@ -83,6 +83,8 @@ public class adminMenuStartController extends controllers.AbsController{
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/mmFloorAndModeView.fxml");
         //Get the controller of the the scene
         mapManagementFloorAndMode.mmFloorAndModeController controller = loader.getController();
+        controller.setUserString(username_Label.getText());
+
         //Set the username label
     }
 
