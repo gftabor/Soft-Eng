@@ -117,6 +117,7 @@ public class DatabaseController {
                 String.format(
                         "Adding node. x: %s, y: %s, hidden: %s, name: %s, floor: %s",
                             x, y, ishidden, name, floor));
+
         try {
             // sql statement with "?" to be filled later
             String query = "INSERT INTO NODE (XPOS, YPOS, FLOOR, ISHIDDEN, ENABLED, TYPE, NAME, ROOMNUM)" +
@@ -201,6 +202,35 @@ public class DatabaseController {
             
             preparedStatement.execute();
             preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    //update node info without FeelsBadMan issues
+    public boolean updateNode(int pk_x, int pk_y, int pk_floor, boolean ishidden, boolean enabled,
+                              String type, String name, String roomnum) {
+        try {
+            // sql statement with "?" to be filled later
+            String query = "UPDATE NODE SET ISHIDDEN = ? , ENABLED = ? , TYPE = ? , NAME = ? , ROOMNUM = ?" +
+                    " WHERE XPOS = ? AND YPOS = ? AND FLOOR = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setBoolean(1, ishidden);
+            preparedStatement.setBoolean(2, enabled);
+            preparedStatement.setString(3, type);
+            preparedStatement.setString(4, name);
+            preparedStatement.setString(5, roomnum);
+
+            preparedStatement.setInt(6, pk_x);
+            preparedStatement.setInt(7, pk_y);
+            preparedStatement.setInt(8, pk_floor);
+            //execute prepared statement
+
+            preparedStatement.execute();
+            preparedStatement.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
