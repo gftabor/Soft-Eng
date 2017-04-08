@@ -111,12 +111,6 @@ public class hospitalDirectorySearchController extends controllers.AbsController
     }
 
 
-   /*ObservableList<Table> data = FXCollections.observableArrayList(
-           new Table(iNumber++, "Wilson", "Wong", "Doctor","Ginecologo", "AS"),
-           new Table (iNumber++, "Augusto", "Rolando", "Nurse","Ginecologo", "AS"),
-           new Table (iNumber++, "Mason", "Handy", "Doctor","Optometrista", "B3")
-
-   ); */
 
     //sets up the tree
     public void setUpTreeView(){
@@ -134,16 +128,17 @@ public class hospitalDirectorySearchController extends controllers.AbsController
         ObservableList<Table> data = FXCollections.observableArrayList();
 
         int id;
-        String firstName, lastName, title, profile, roomNum;
+        String firstName, lastName, title, department, roomNum;
         try {
             while (rset.next()){
                 id = rset.getInt("ID");
                 firstName = rset.getString("FIRSTNAME");
                 lastName = rset.getString("LASTNAME");
-                title = rset.getString("PROFESSIONAL.TYPE");
-                profile = rset.getString("PROFSSIONAL.PROFILE");
+                title = rset.getString("TYPE");
+                department = rset.getString("DEPARTMENT");
                 roomNum = rset.getString("ROOMNUM");
-                data.add(new Table(id, firstName, lastName, title, profile, roomNum));
+                System.out.println("Name: " + firstName + lastName);
+                data.add(new Table(id, firstName, lastName, title, department, roomNum));
             }
         } catch (SQLException e){
             e.printStackTrace();
