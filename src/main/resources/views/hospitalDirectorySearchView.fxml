@@ -65,7 +65,7 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="serach_TextField" alignment="CENTER" prefHeight="30.0" prefWidth="190.0" promptText="search">
+                        <TextField fx:id="search_TextField" alignment="CENTER" prefHeight="30.0" prefWidth="190.0" promptText="search">
                            <HBox.margin>
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </HBox.margin>
@@ -124,7 +124,7 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label text="Error">
+                        <Label fx:id="error_Label" text="Error">
                            <font>
                               <Font size="26.0" />
                            </font>
@@ -157,15 +157,18 @@
          <center>
             <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <TableView fx:id="Table_TableView" tableMenuButtonVisible="true">
+                  <TableView fx:id="Table_TableView" fixedCellSize="0.0" nodeOrientation="LEFT_TO_RIGHT" pickOnBounds="false" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                     <columns>
-                      <TableColumn fx:id="ID_TableColumn" prefWidth="75.0" text="ID" />
-                      <TableColumn fx:id="firstName_TableColumn" prefWidth="190.81964111328125" text="First Name" />
-                        <TableColumn fx:id="lastName_TableColumn" prefWidth="190.80303955078125" text="Last Name" />
-                        <TableColumn fx:id="title_TableColumn" prefWidth="194.7294921875" text="Title" />
-                        <TableColumn fx:id="department_TableColumn" prefWidth="181.27056884765625" text="Department" />
-                        <TableColumn fx:id="room_TableColumn" prefWidth="157.63916015625" text="Room" />
+                      <TableColumn fx:id="ID_TableColumn" editable="false" prefWidth="100.0" resizable="false" text="ID" />
+                      <TableColumn fx:id="firstName_TableColumn" editable="false" prefWidth="170.0" resizable="false" text="First Name" />
+                        <TableColumn fx:id="lastName_TableColumn" editable="false" prefWidth="170.0" resizable="false" text="Last Name" />
+                        <TableColumn fx:id="title_TableColumn" editable="false" prefWidth="170.0" resizable="false" text="Title" />
+                        <TableColumn fx:id="department_TableColumn" editable="false" minWidth="0.0" prefWidth="185.0" resizable="false" text="Profile" />
+                        <TableColumn fx:id="room_TableColumn" editable="false" minWidth="0.0" prefWidth="150.0" resizable="false" text="Room" />
                     </columns>
+                     <opaqueInsets>
+                        <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                     </opaqueInsets>
                   </TableView>
                </children>
             </VBox>
