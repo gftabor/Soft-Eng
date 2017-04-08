@@ -41,6 +41,12 @@ public class Pathfinder {
 
         for(Edge currentEdge:currentNode.getEdgeList()){
             Node neighbor = currentEdge.getNeighbor(currentNode);
+
+            //--node must be enabled
+            if (!neighbor.getEnabled()) {
+                continue;
+            }
+
             //System.out.println("weight" + currentEdge.getWeight());
             double neighbourNewCost = currentNode.getCostToReach() + currentEdge.getWeight();
             //System.out.println(neighbor.getCostToReach() + "   " + neighbourNewCost);
@@ -50,7 +56,7 @@ public class Pathfinder {
                 neighbor.setTotalCost(neighbourNewCost + getHueristic(neighbor, goalNode));
 
                 //if the object is in frontier only edit the object
-                if(!frontier.contains(neighbor)) {
+                if(!frontier.contains(neighbor) && neighbor.getEnabled()) {
                     frontier.add(neighbor);
                     //System.out.println("new frontier");
                 }
@@ -71,13 +77,17 @@ public class Pathfinder {
         alreadyProcessed.clear();
         frontier.clear();
         path.clear();
+        if(!(startNode.getEnabled() && endNode.getEnabled())){
+            System.out.println("selected node not enabled");
+            return -2;
+        }
         startNode.setTotalCost(getHueristic(startNode, endNode));
         startNode.setCostToReach(0);
         frontier.add(startNode);
         boolean finished = false;
         while (!finished && !frontier.isEmpty()) {
             Collections.sort(frontier);
-            Node processing = frontier.get(0);//might be biggest cost currently
+            Node processing = frontier.get(0);
             finished = processing.equals(endNode);//
             if (!alreadyProcessed.contains(processing)) {
                 processNode(processing, endNode);
