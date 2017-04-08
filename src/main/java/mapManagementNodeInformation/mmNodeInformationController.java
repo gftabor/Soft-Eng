@@ -2,6 +2,7 @@ package mapManagementNodeInformation;
 
 import DBController.DatabaseController;
 import controllers.Professional;
+import hospitalDirectorySearch.Table;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -60,7 +61,25 @@ public class mmNodeInformationController extends controllers.AbsController {
     private Button submit_Button;
 
     @FXML
-    private TreeView<String> directory_TreeView;
+    private TableView<Table> Table_TableView;
+
+    @FXML
+    private TableColumn<Table, Integer> ID_TableColumn;
+
+    @FXML
+    private TableColumn<Table, String> firstName_TableColumn;
+
+    @FXML
+    private TableColumn<Table, String> lastName_TableColumn;
+
+    @FXML
+    private TableColumn<Table, String> title_TableColumn;
+
+    @FXML
+    private TableColumn<Table, String> department_TableColumn;
+
+    @FXML
+    private TableColumn<Table, String> room_TableColumn;
 
     @FXML
     private ChoiceBox mode_ChoiceBox;
@@ -261,16 +280,16 @@ public class mmNodeInformationController extends controllers.AbsController {
             nurses.setExpanded(true);
         }
 
-        directory_TreeView.setRoot(root);
-        directory_TreeView.getSelectionModel().selectedItemProperty()
-                .addListener((v, oldValue, newValue) -> {
-                    if (newValue != null) {
-                        System.out.println(newValue.getValue());
-                        if(!(newValue.getValue().equals("Professionals"))) {
-                            pullProfessional(newValue.getValue());
-                        }
-                    }
-                });
+//        directory_TreeView.setRoot(root);
+//        directory_TreeView.getSelectionModel().selectedItemProperty()
+//                .addListener((v, oldValue, newValue) -> {
+//                    if (newValue != null) {
+//                        System.out.println(newValue.getValue());
+//                        if(!(newValue.getValue().equals("Professionals"))) {
+//                            pullProfessional(newValue.getValue());
+//                        }
+//                    }
+//                });
 
     }
 
@@ -376,7 +395,6 @@ public class mmNodeInformationController extends controllers.AbsController {
         //Starts the choices for the user
         title_choiceBox.getSelectionModel().select(0);
         profile_textField.setText("");
-//        room_ChoiceBox.getSelectionModel().select(0);
         id_TextField.setText("");
         Firstname_TextField.setText("");
         lastName_TextField.setText("");
@@ -386,7 +404,6 @@ public class mmNodeInformationController extends controllers.AbsController {
         //Sets the properties
         title_choiceBox.setDisable(false);
         profile_textField.setDisable(false);
-//        room_ChoiceBox.setDisable(false);
         id_TextField.setEditable(false);
         Firstname_TextField.setEditable(true);
         lastName_TextField.setEditable(true);
@@ -467,8 +484,6 @@ public class mmNodeInformationController extends controllers.AbsController {
 
 
         TextFields.bindAutoCompletion(testTextField,rooms);
-
-        //room_ChoiceBox.getItems().addAll("AH229", "SH289", "SL123");
 
         TextFields.bindAutoCompletion(profile_textField, profiles);
     }
