@@ -38,7 +38,7 @@
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <HBox>
+                  <HBox prefHeight="53.0" prefWidth="1231.0">
                      <children>
                         <Label fx:id="currentAdmin_Label" text="Admin:">
                            <HBox.margin>
@@ -57,7 +57,7 @@
                               <Font size="23.0" />
                            </font>
                         </Button>
-                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="40.0" prefWidth="180.0" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="41.0" prefWidth="165.0" text="EMERGENCY">
                            <HBox.margin>
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
@@ -66,6 +66,9 @@
                            </font>
                         </Button>
                      </children>
+                     <VBox.margin>
+                        <Insets right="40.0" />
+                     </VBox.margin>
                   </HBox>
                </children>
             </VBox>
@@ -293,24 +296,36 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label text="Directories">
-                           <font>
-                              <Font name="System Bold Italic" size="26.0" />
-                           </font>
-                        </Label>
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                   <VBox prefHeight="536.0" prefWidth="550.0">
                      <children>
-                        <HBox prefHeight="536.0" prefWidth="559.0">
+                        <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="536.0" prefWidth="900.0">
                            <children>
-                              <TreeView fx:id="directory_TreeView" prefHeight="526.0" prefWidth="538.0">
+                              <TableView fx:id="Table_TableView" fixedCellSize="0.0" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" pickOnBounds="false" prefHeight="531.0" prefWidth="853.0" tableMenuButtonVisible="true">
+                                 <columns>
+                                    <TableColumn fx:id="ID_TableColumn" editable="false" prefWidth="100.0" resizable="false" text="ID" />
+                                    <TableColumn fx:id="firstName_TableColumn" editable="false" prefWidth="170.0" resizable="false" text="First Name" />
+                                    <TableColumn fx:id="lastName_TableColumn" editable="false" prefWidth="170.0" resizable="false" text="Last Name" />
+                                    <TableColumn fx:id="title_TableColumn" editable="false" prefWidth="170.0" resizable="false" text="Title" />
+                                    <TableColumn fx:id="department_TableColumn" editable="false" minWidth="0.0" prefWidth="185.0" resizable="false" text="Profile" />
+                                    <TableColumn fx:id="room_TableColumn" editable="false" minWidth="0.0" prefWidth="150.0" resizable="false" text="Room" />
+                                 </columns>
+                                 <opaqueInsets>
+                                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                                 </opaqueInsets>
                                  <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    <Insets top="5.0" />
                                  </HBox.margin>
-                              </TreeView>
+                              </TableView>
                            </children>
+                           <padding>
+                              <Insets right="20.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
                         </HBox>
                      </children>
                   </VBox>
