@@ -12,15 +12,15 @@ public class Table {
     private final SimpleStringProperty rFirstName;
     private final SimpleStringProperty rLastName;
     private final SimpleStringProperty rTitle;
-    private final SimpleStringProperty rDepartment;
+    private final SimpleStringProperty rType;
     private final SimpleStringProperty rRoom;
 
-    public Table(int sID, String sFirstName, String sLastName, String sTitle, String sDepartment, String sRoom){
+    public Table(int sID, String sFirstName, String sLastName, String sTitle, String sType, String sRoom){
         this.rID = new SimpleIntegerProperty(sID);
         this.rFirstName = new SimpleStringProperty(sFirstName);
         this.rLastName = new SimpleStringProperty(sLastName);
         this.rTitle = new SimpleStringProperty(sTitle);
-        this.rDepartment = new SimpleStringProperty(sDepartment);
+        this.rType = new SimpleStringProperty(sType);
         this.rRoom = new SimpleStringProperty(sRoom);
 
     }
@@ -42,8 +42,8 @@ public class Table {
         return rTitle.get();
     }
 
-    public String getrDepartment() {
-        return rDepartment.get();
+    public String getrType() {
+        return rType.get();
     }
 
     public String getrRoom() {
@@ -68,8 +68,8 @@ public class Table {
         this.rTitle.set(rTitle);
     }
 
-    public void setrDepartment(String rDepartment) {
-        this.rDepartment.set(rDepartment);
+    public void setrType(String rType) {
+        this.rType.set(rType);
     }
 
     public void setrRoom(String rRoom) {
@@ -94,8 +94,8 @@ public class Table {
         return rTitle;
     }
 
-    public SimpleStringProperty rDepartmentProperty() {
-        return rDepartment;
+    public SimpleStringProperty rTypeProperty() {
+        return rType;
     }
 
     public SimpleStringProperty rRoomProperty() {

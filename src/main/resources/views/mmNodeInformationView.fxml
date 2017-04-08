@@ -32,7 +32,7 @@
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <HBox>
+                  <HBox prefHeight="53.0" prefWidth="1231.0">
                      <children>
                         <Label fx:id="currentAdmin_Label" text="Admin:">
                            <HBox.margin>
@@ -51,7 +51,7 @@
                               <Font size="23.0" />
                            </font>
                         </Button>
-                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="40.0" prefWidth="180.0" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="41.0" prefWidth="165.0" text="EMERGENCY">
                            <HBox.margin>
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
@@ -60,6 +60,9 @@
                            </font>
                         </Button>
                      </children>
+                     <VBox.margin>
+                        <Insets right="40.0" />
+                     </VBox.margin>
                   </HBox>
                </children>
             </VBox>
@@ -100,7 +103,7 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <TextField alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="200.0" promptText="search">
+                        <TextField fx:id="search_textField" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="200.0" promptText="search">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -132,7 +135,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <ChoiceBox fx:id="mode_ChoiceBox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="180.0">
+                        <ChoiceBox fx:id="mode_ChoiceBox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0">
                            <HBox.margin>
                               <Insets bottom="1.0" left="40.0" right="1.0" top="1.0" />
                            </HBox.margin>
@@ -150,9 +153,9 @@
                               <Font name="System Bold Italic" size="23.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="title_choiceBox" disable="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="180.0">
+                        <ChoiceBox fx:id="title_choiceBox" disable="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0">
                            <HBox.margin>
-                              <Insets bottom="1.0" left="40.0" right="1.0" top="1.0" />
+                              <Insets bottom="5.0" left="40.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </ChoiceBox>
                      </children>
@@ -162,7 +165,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label minWidth="-Infinity" prefWidth="140.0" text="Department:">
+                        <Label minWidth="-Infinity" prefWidth="140.0" text="Profile:">
                            <font>
                               <Font name="System Bold Italic" size="23.0" />
                            </font>
@@ -170,11 +173,11 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <ChoiceBox fx:id="department_ChoiceBox" disable="true" minHeight="-Infinity" prefHeight="30.0" prefWidth="180.0">
+                        <TextField fx:id="profile_textField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0">
                            <HBox.margin>
                               <Insets bottom="5.0" left="40.0" right="5.0" top="5.0" />
                            </HBox.margin>
-                        </ChoiceBox>
+                        </TextField>
                      </children>
                   </HBox>
                   <HBox>
@@ -187,9 +190,9 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="testTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="180.0" promptText="Room">
+                        <TextField fx:id="testTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="Room">
                            <HBox.margin>
-                              <Insets bottom="1.0" left="40.0" right="1.0" top="1.0" />
+                              <Insets bottom="5.0" left="40.0" right="5.0" top="5.0" />
                            </HBox.margin>
                            <font>
                               <Font size="18.0" />
@@ -207,7 +210,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="id_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="180.0" promptText="ID">
+                        <TextField fx:id="id_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="ID">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -227,7 +230,7 @@
                               <Font name="System Bold Italic" size="23.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="Firstname_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="180.0" promptText="First Name">
+                        <TextField fx:id="Firstname_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="First Name">
                            <HBox.margin>
                               <Insets bottom="5.0" left="40.0" right="5.0" top="5.0" />
                            </HBox.margin>
@@ -247,7 +250,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="lastName_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" onAction="#submitButton_Clicked" prefHeight="30.0" prefWidth="180.0" promptText="Last Name">
+                        <TextField fx:id="lastName_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" onAction="#submitButton_Clicked" prefHeight="40.0" prefWidth="180.0" promptText="Last Name">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -282,7 +285,30 @@
             </VBox>
          </left>
          <right>
+
             <VBox prefHeight="569.0" prefWidth="852.0" BorderPane.alignment="CENTER" />
+            <VBox prefHeight="569.0" prefWidth="523.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <VBox prefHeight="536.0" prefWidth="550.0">
+                     <children>
+                        <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="536.0" prefWidth="900.0">
+                           <padding>
+                              <Insets right="20.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
          </right>
       </BorderPane>
    </children>

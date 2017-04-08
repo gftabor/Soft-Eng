@@ -66,10 +66,11 @@ public class adminMenuStartController extends controllers.AbsController{
          FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/mmNodeInformationView.fxml");
          mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
          // controller.createDirectoryTreeView();
-         controller.setTitleChoices();
-         controller.setModeChoices();
-         controller.setRoomChoices();
-         controller.setDepartmentChoices();
+         //controller.setTitleChoices();
+         //controller.setModeChoices();
+         //controller.setRoomChoices();
+         //controller.setDepartmentChoices();
+         //controller.setUser(username_Label.getText());
          //controller.setUser(username_Label.getText());
 
 
