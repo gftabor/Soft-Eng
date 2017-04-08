@@ -111,26 +111,12 @@ public class hospitalDirectorySearchController extends controllers.AbsController
     }
 
 
-   ObservableList<Table> data = FXCollections.observableArrayList(
+   /*ObservableList<Table> data = FXCollections.observableArrayList(
            new Table(iNumber++, "Wilson", "Wong", "Doctor","Ginecologo", "AS"),
            new Table (iNumber++, "Augusto", "Rolando", "Nurse","Ginecologo", "AS"),
            new Table (iNumber++, "Mason", "Handy", "Doctor","Optometrista", "B3")
 
-
-
-   );
-
-    /*@FXML
-    public void clickItem(MouseEvent event)
-    {
-        if (event.getClickCount() == 2) //Checking double click
-        {
-            System.out.println(Table_TableView.getSelectionModel().getSelectedItem().getrFirstName());
-            System.out.println(Table_TableView.getSelectionModel().getSelectedItem().getrLastName());
-            System.out.println(Table_TableView.getSelectionModel().getSelectedItem().getrID());
-            error_Label.setText(Table_TableView.getSelectionModel().getSelectedItem().getrFirstName());
-        }
-    }*/
+   ); */
 
     //sets up the tree
     public void setUpTreeView(){
