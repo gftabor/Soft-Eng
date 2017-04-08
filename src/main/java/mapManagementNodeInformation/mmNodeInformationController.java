@@ -474,7 +474,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         ArrayList<String> rooms = new ArrayList<>();
         ArrayList<String> profiles = new ArrayList<>();
 
-        ResultSet rset_profiles = databaseController.getProfileNames();
+        ResultSet rset_profiles = databaseController.getDepartmentNames();
         ResultSet rset = databaseController.getRoomNames();
         try {
             while (rset.next()){

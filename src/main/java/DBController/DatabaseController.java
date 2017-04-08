@@ -801,9 +801,9 @@ public class DatabaseController {
                 String.format(
                         "Getting all professional room numbers"));
         try{
-            String query = "SELECT ID, FIRSTNAME, LASTNAME, PROFESSIONAL.TYPE, PROFESSIONAL.PROFILE, ROOMNUM FROM PROFESSIONAL, PROLOCATION, NODE WHERE " +
-                    "PROID = ID AND NODE.XPOS = PROLOCATION.XPOS AND NODE.YPOS = PROLOCATION.YPOS AND " +
-                    "NODE.FLOOR = PROLOCATION.FLOOR";
+            String query = "SELECT P.ID, P.FIRSTNAME, P.LASTNAME, P.TYPE, P.DEPARTMENT, N.ROOMNUM FROM PROFESSIONAL P, PROLOCATION PL, NODE N WHERE " +
+                    "PL.PROID = P.ID AND N.XPOS = PL.XPOS AND N.YPOS = PL.YPOS AND " +
+                    "N.FLOOR = PL.FLOOR";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             // run statement and query
             resultSet = preparedStatement.executeQuery();
@@ -815,13 +815,13 @@ public class DatabaseController {
     }
 
 
-    public ResultSet getProfileNames(){
+    public ResultSet getDepartmentNames(){
         ResultSet resultSet = null;
         System.out.println(
                 String.format(
                         "Getting all professional room numbers"));
         try{
-            String query = "SELECT PROFILE FROM PROFESSIONAL";
+            String query = "SELECT DEPARTMENT FROM PROFESSIONAL";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             // run statement and query
             resultSet = preparedStatement.executeQuery();
