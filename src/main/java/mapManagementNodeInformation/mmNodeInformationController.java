@@ -107,7 +107,7 @@ public class mmNodeInformationController extends controllers.AbsController {
 
 
     //get an instance of database controller
-    //DatabaseController databaseController = DatabaseController.getInstance();
+    DatabaseController databaseController = DatabaseController.getInstance();
 
     public void cancelButton_Clicked() {
         System.out.println("The user has clicked the cancel Button");
@@ -118,7 +118,173 @@ public class mmNodeInformationController extends controllers.AbsController {
         System.out.println("Hello world");
     }
 
-   /* public void submitButton_Clicked() {
+    //switches to the emergency scene
+    public void emergencyButton_Clicked() {
+        switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+    }
+
+    //switches to main menu
+    public void mainMenuButton_Clicked() {
+        System.out.println("The user has clicked the sign out Button");
+
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
+        adminMenuStart.adminMenuStartController controller = loader.getController();
+        //Set the correct username for the next scene
+        controller.setUsername(currentAdmin_Label.getText());
+
+    }
+
+
+
+    //set the title choices for the user
+    public void setTitleChoices() {
+        title_choiceBox.getItems().addAll("Doctor", "Nurse");
+        title_choiceBox.getSelectionModel().selectedIndexProperty()
+                .addListener(new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                        // Do validation
+                        System.out.println(newValue);
+                        if (newValue.intValue() == 0) {
+                            System.out.println("Hello world");
+                            //create_Button();
+                        } else if (newValue.intValue() == 1 || newValue.intValue() == 2) {
+                            //admin_FloorPane.getChildren().remove(btK);
+                        }
+                    }
+                });
+    }
+
+    //Sets the choices for the mode Add, edit remove
+    public void setModeChoices() {
+        mode_ChoiceBox.getItems().addAll("Add", "Remove", "Edit");
+        mode_ChoiceBox.getSelectionModel().selectedIndexProperty()
+                .addListener(new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                        // Do validation
+                        System.out.println(newValue);
+
+                        //Sets the mode to Add
+                        if (newValue.intValue() == 0) {
+                            add_settings();
+
+                            //Sets the mode to remove
+                        } else if (newValue.intValue() == 1) {
+                            remove_settings();
+
+                            //Sets the mode to edit
+                        } else if (newValue.intValue() == 2) {
+                            edit_settings();
+
+                        }
+                    }
+                });
+
+    }
+
+    //The add settings for the user to add a Doctor/nurse
+    public void add_settings() {
+        c_mode = 0;
+        System.out.println("Add settings");
+        error_LabelText.setText("");
+
+
+        //Starts the choices for the user
+        title_choiceBox.getSelectionModel().select(0);
+        department_ChoiceBox.getSelectionModel().select(0);
+        //room_ChoiceBox.getSelectionModel().select(0);
+        id_TextField.setText("");
+        Firstname_TextField.setText("");
+        lastName_TextField.setText("");
+        id_TextField.setPromptText("Automatically Generated ID");
+        Firstname_TextField.setPromptText("First");
+        lastName_TextField.setPromptText("Last");
+        //Sets the properties
+        title_choiceBox.setDisable(false);
+        department_ChoiceBox.setDisable(false);
+        //room_ChoiceBox.setDisable(false);
+        id_TextField.setEditable(false);
+        Firstname_TextField.setEditable(true);
+        lastName_TextField.setEditable(true);
+    }
+
+    //The remove settings for the user to remove a Doctor/nurse
+    public void remove_settings() {
+        c_mode = 1;
+        System.out.println("remove settings");
+        error_LabelText.setText("");
+        //sets the properties
+        title_choiceBox.setDisable(true);
+        department_ChoiceBox.setDisable(true);
+        //room_ChoiceBox.setDisable(true);
+        id_TextField.setEditable(false);
+        Firstname_TextField.setEditable(false);
+        lastName_TextField.setEditable(false);
+
+    }
+
+    //The remove settings for the user to remove a Doctor/nurse
+    public void edit_settings() {
+        c_mode = 2;
+        System.out.println("edit settings");
+        error_LabelText.setText("");
+
+        //sets the properties
+        title_choiceBox.setDisable(false);
+        department_ChoiceBox.setDisable(false);
+        //room_ChoiceBox.setDisable(false);
+        id_TextField.setEditable(false);
+        Firstname_TextField.setEditable(true);
+        lastName_TextField.setEditable(true);
+
+    }
+
+    //Sets the label of an error
+    public void setError(String error) {
+        error_LabelText.setText(error);
+    }
+
+    //Sets the user in the scene
+    public void setUser(String user) {
+        currentAdmin_Label.setText(user);
+    }
+
+
+    //Sets the current mode when refreshing the scene
+    public void setCurrentMode(int i) {
+        mode_ChoiceBox.getSelectionModel().select(i);
+    }
+
+    //sets the choices for the rooms DB
+    public void setRoomChoices() {
+
+
+        ArrayList<String> rooms = new ArrayList<>();
+
+        ResultSet rset = databaseController.getRoomNames();
+        try {
+            while (rset.next()){
+                rooms.add(rset.getString("ROOMNUM"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        TextFields.bindAutoCompletion(testTextField,rooms);
+
+        //room_ChoiceBox.getItems().addAll("AH229", "SH289", "SL123");
+
+    }
+
+
+    //sets the choices for the department DB
+    public void setDepartmentChoices() {
+        department_ChoiceBox.getItems().addAll("Accident and emergency (A&E)", "Anaesthetics", "Breast screening");
+    }
+
+
+     /* public void submitButton_Clicked() {
 
         System.out.println("The user has clicked the submit Button");
         final String tempID = id_TextField.getText();
@@ -204,22 +370,6 @@ public class mmNodeInformationController extends controllers.AbsController {
             }
         }
     } */
-
-    //switches to the emergency scene
-    public void emergencyButton_Clicked() {
-        switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
-    }
-
-    //switches to main menu
-    public void mainMenuButton_Clicked() {
-        System.out.println("The user has clicked the sign out Button");
-
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
-        adminMenuStart.adminMenuStartController controller = loader.getController();
-        //Set the correct username for the next scene
-        controller.setUsername(currentAdmin_Label.getText());
-
-    }
 
     //Creates the directory of the tree view
     /*public void createDirectoryTreeView() {
@@ -337,158 +487,12 @@ public class mmNodeInformationController extends controllers.AbsController {
         return item;
     } */
 
-    //set the title choices for the user
-    public void setTitleChoices() {
-        title_choiceBox.getItems().addAll("Doctor", "Nurse");
-        title_choiceBox.getSelectionModel().selectedIndexProperty()
-                .addListener(new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                        // Do validation
-                        System.out.println(newValue);
-                        if (newValue.intValue() == 0) {
-                            System.out.println("Hello world");
-                            //create_Button();
-                        } else if (newValue.intValue() == 1 || newValue.intValue() == 2) {
-                            //admin_FloorPane.getChildren().remove(btK);
-                        }
-                    }
-                });
-    }
-
-    //Sets the choices for the mode Add, edit remove
-    public void setModeChoices() {
-        mode_ChoiceBox.getItems().addAll("Add", "Remove", "Edit");
-        mode_ChoiceBox.getSelectionModel().selectedIndexProperty()
-                .addListener(new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                        // Do validation
-                        System.out.println(newValue);
-
-                        //Sets the mode to Add
-                        if (newValue.intValue() == 0) {
-                            add_settings();
-
-                            //Sets the mode to remove
-                        } else if (newValue.intValue() == 1) {
-                            remove_settings();
-
-                            //Sets the mode to edit
-                        } else if (newValue.intValue() == 2) {
-                            edit_settings();
-
-                        }
-                    }
-                });
-
-    }
-
-    //The add settings for the user to add a Doctor/nurse
-    public void add_settings() {
-        c_mode = 0;
-        System.out.println("Add settings");
-        error_LabelText.setText("");
-
-
-        //Starts the choices for the user
-        title_choiceBox.getSelectionModel().select(0);
-        department_ChoiceBox.getSelectionModel().select(0);
-        //room_ChoiceBox.getSelectionModel().select(0);
-        id_TextField.setText("");
-        Firstname_TextField.setText("");
-        lastName_TextField.setText("");
-        id_TextField.setPromptText("Automatically Generated ID");
-        Firstname_TextField.setPromptText("First");
-        lastName_TextField.setPromptText("Last");
-        //Sets the properties
-        title_choiceBox.setDisable(false);
-        department_ChoiceBox.setDisable(false);
-        //room_ChoiceBox.setDisable(false);
-        id_TextField.setEditable(false);
-        Firstname_TextField.setEditable(true);
-        lastName_TextField.setEditable(true);
-    }
-
-    //The remove settings for the user to remove a Doctor/nurse
-    public void remove_settings() {
-        c_mode = 1;
-        System.out.println("remove settings");
-        error_LabelText.setText("");
-        //sets the properties
-        title_choiceBox.setDisable(true);
-        department_ChoiceBox.setDisable(true);
-        //room_ChoiceBox.setDisable(true);
-        id_TextField.setEditable(false);
-        Firstname_TextField.setEditable(false);
-        lastName_TextField.setEditable(false);
-
-    }
-
-    //The remove settings for the user to remove a Doctor/nurse
-    public void edit_settings() {
-        c_mode = 2;
-        System.out.println("edit settings");
-        error_LabelText.setText("");
-
-        //sets the properties
-        title_choiceBox.setDisable(false);
-        department_ChoiceBox.setDisable(false);
-        //room_ChoiceBox.setDisable(false);
-        id_TextField.setEditable(false);
-        Firstname_TextField.setEditable(true);
-        lastName_TextField.setEditable(true);
-
-    }
-
-    //Sets the label of an error
-    public void setError(String error) {
-        error_LabelText.setText(error);
-    }
-
-    //Sets the user in the scene
-    public void setUser(String user) {
-        currentAdmin_Label.setText(user);
-    }
-
    /* public void setOpenDirectory(int i) {
         System.out.println("LOOK THIS");
         System.out.println(i);
         openDirectory = i;
     } */
 
-
-    //Sets the current mode when refreshing the scene
-    public void setCurrentMode(int i) {
-        mode_ChoiceBox.getSelectionModel().select(i);
-    }
-
-    //sets the choices for the rooms DB
-    /*public void setRoomChoices() {
-
-
-        ArrayList<String> rooms = new ArrayList<>();
-
-        ResultSet rset = databaseController.getRoomNames();
-        try {
-            while (rset.next()){
-                rooms.add(rset.getString("ROOMNUM"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        TextFields.bindAutoCompletion(testTextField,rooms);
-
-        //room_ChoiceBox.getItems().addAll("AH229", "SH289", "SL123");
-
-    } */
-
-
-    //sets the choices for the department DB
-    public void setDepartmentChoices() {
-        department_ChoiceBox.getItems().addAll("Accident and emergency (A&E)", "Anaesthetics", "Breast screening");
-    }
 
 }
 
