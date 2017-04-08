@@ -102,3 +102,5 @@ gradle-app.setting
 Soft-Eng.iml
 
 src/main/resources/config/config.json
+
+testDB/
