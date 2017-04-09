@@ -58,6 +58,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
     @FXML
     private CheckBox enabled_CheckBox;
 
+    @FXML
+    private ChoiceBox<String> floor_ChoiceBox;
+
     private int nodeEdgeX1;
     private int nodeEdgeY1;
     private int nodeEdgeX2;
@@ -111,24 +114,27 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     public void sceneEvent(int x, int y, Circle c) {
         edgesSelected++;
-        if (edgesSelected == 1 || mode_ChoiceBox.getValue().equals("Edit Node")
-                || mode_ChoiceBox.getValue().equals("Remove Node")) {
-            //display edges already associated witdh selected node
-            nodeEdgeX1 = (int) x;
-            nodeEdgeY1 = (int) y;
-            System.out.println(nodeEdgeX1 + "     " + nodeEdgeY1);
-            firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
-                    .getNode(nodeEdgeX1, nodeEdgeY1, 4);
-            graph.createEdgeLines(firstNode.getEdgeList());
-        } else if (edgesSelected == 2) {
-            //create edge between the two nodes
-            nodeEdgeX2 = (int) x;
-            nodeEdgeY2 = (int) y;
+        if (edgesSelected == 1) {
+            //display edges already associated with selected node
+            if (edgesSelected == 1 || mode_ChoiceBox.getValue().equals("Edit Node")
+                    || mode_ChoiceBox.getValue().equals("Remove Node")) {
+                //display edges already associated witdh selected node
+                nodeEdgeX1 = (int) x;
+                nodeEdgeY1 = (int) y;
+                System.out.println(nodeEdgeX1 + "     " + nodeEdgeY1);
+                firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
+                        .getNode(nodeEdgeX1, nodeEdgeY1, 4);
+                graph.createEdgeLines(firstNode.getEdgeList());
+            } else if (edgesSelected == 2) {
+                //create edge between the two nodes
+                nodeEdgeX2 = (int) x;
+                nodeEdgeY2 = (int) y;
 
-            lastColored = c;
+                lastColored = c;
 
-            c.setStrokeWidth(2.5);
-            c.setStroke(Color.FUCHSIA);
+                c.setStrokeWidth(2.5);
+                c.setStroke(Color.FUCHSIA);
+            }
         }
     }
 
@@ -255,6 +261,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         adminMenuStart.adminMenuStartController controller = loader.getController();
         //Set the correct username for the next scene
         controller.setUsername(username_Label.getText());
+        System.out.println(username_Label.getText());
     }
 
     public void setUserString(String user) {
@@ -277,7 +284,46 @@ public class mmFloorAndModeController extends controllers.mapScene{
         });
     }
 
+    //Sets the map of the desired floor
+    public void setFloorChoices(){
+        floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7");
+        floor_ChoiceBox.getSelectionModel().select(0);
+        floor_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+
+                System.out.println(newValue);
+                //Print the floors accordingly
+                //CODE HERE!!!!!!!
+                if (newValue.intValue() == 0) {
+                    System.out.println("Printing first floor");
+
+                }else if(newValue.intValue() == 1){
+                    System.out.println("Printing second floor");
+
+                }else if(newValue.intValue() == 2){
+                    System.out.println("Printing third floor");
+
+                }else if(newValue.intValue() == 3){
+                    System.out.println("Printing fourth floor");
+
+                }else if(newValue.intValue() == 4){
+                    System.out.println("Printing fifth floor");
+
+                }else if(newValue.intValue() == 5){
+                    System.out.println("Printing sixth floor");
+
+                }else if(newValue.intValue() == 6){
+                    System.out.println("Printing seventh floor");
+
+                }
+            }
+        });
+
+    }
+
     public void setTitleChoices() {
+
         title_ChoiceBox.getItems().addAll("Doctor's Office", "Food Service", "Restroom");
     }
 

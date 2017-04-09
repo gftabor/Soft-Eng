@@ -2,9 +2,12 @@ package pathFindingMenu;
 
 import controllers.MapController;
 import controllers.mapScene;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -38,6 +41,10 @@ public class pathFindingMenuController extends controllers.mapScene{
 
     @FXML
     private Label currentFloor_Label;
+
+    @FXML
+    private ChoiceBox<String> floor_ChoiceBox;
+
 
 
     @FXML
@@ -127,6 +134,44 @@ public class pathFindingMenuController extends controllers.mapScene{
     //Sets the string of the user into the scene
     public void setUserString(String user){
         username_Label.setText(user);
+
+    }
+
+    //Sets the map of the desired floor
+    public void setFloorChoices(){
+        floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7");
+        floor_ChoiceBox.getSelectionModel().select(0);
+        floor_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+
+                System.out.println(newValue);
+                //Print the floors accordingly
+                //CODE HERE!!!!!!!
+                if (newValue.intValue() == 0) {
+                    System.out.println("Showing first floor");
+
+                }else if(newValue.intValue() == 1){
+                    System.out.println("Showing second floor");
+
+                }else if(newValue.intValue() == 2){
+                    System.out.println("Showing third floor");
+
+                }else if(newValue.intValue() == 3){
+                    System.out.println("Showing fourth floor");
+
+                }else if(newValue.intValue() == 4){
+                    System.out.println("Showing fifth floor");
+
+                }else if(newValue.intValue() == 5){
+                    System.out.println("Showing sixth floor");
+
+                }else if(newValue.intValue() == 6){
+                    System.out.println("Showing seventh floor");
+
+                }
+            }
+        });
 
     }
 }
