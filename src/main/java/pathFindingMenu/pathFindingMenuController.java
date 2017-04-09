@@ -68,7 +68,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4),false);
     }
     public void cancelButton_Clicked(){
-        MapController.getInstance().requestMapCopy();
+        //MapController.getInstance().requestMapCopy();
         selectionState = 0;
         //Remove black and red dots from map
 
@@ -89,7 +89,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         }
         selectionState=0;
         System.out.println("The user has clicked the submit Button");
-        MapController.getInstance().requestMapCopy();
+        //MapController.getInstance().requestMapCopy();
     }
 
     public void mainMenuButton_Clicked(){
