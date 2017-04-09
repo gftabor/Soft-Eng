@@ -65,20 +65,23 @@ public class adminLoginMainController extends controllers.AbsController{
     }
 
     public void mainMenuButton_Clicked(){
-
         System.out.println("The user has clicked the main menu Button");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
         patientMenuStart.patientMenuStartController controller = loader.getController();
+        //sets the current language
         controller.setCurrentLanguage(c_language);
+        //set up english labels
         if(c_language == 0){
-            controller.englishLabels();
+            controller.englishButtons_Labels();
 
+        //set up spanish labels
         }else if(c_language == 1){
-            controller.spanishLabels();
+            controller.spanishButtons_Labels();
         }
 
     }
 
+    //sets the current language to the given language
     public void setC_language(int i){
         c_language = i;
     }

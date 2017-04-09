@@ -36,6 +36,12 @@ public class patientMenuStartController extends controllers.AbsController{
     @FXML
     private ChoiceBox<String> languages_ChoiceBox;
 
+    @FXML
+    private Label chooseLanguage_Label;
+
+    @FXML
+    private Label title_Label;
+
     //0 is english 1 is spanish
     int c_language = 0;
 
@@ -51,8 +57,11 @@ public class patientMenuStartController extends controllers.AbsController{
         System.out.println("The log in button was clicked by the user");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminLoginMainView.fxml");
         adminLoginMain.adminLoginMainController controller = loader.getController();
-        //sends the current language the user is in
+        //sends the current language the next screen
         controller.setC_language(c_language);
+        //set up english labels
+
+        //set up spanish labels
 
     }
 
@@ -65,6 +74,11 @@ public class patientMenuStartController extends controllers.AbsController{
         MapController.getInstance().requestMapCopy();
         HashMap<Integer, controllers.Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
         controller.setUserString("");
+        //sends the current language to the next screen
+        //set up english labels
+
+        //set up spanish labels
+
     }
 
 
@@ -72,6 +86,11 @@ public class patientMenuStartController extends controllers.AbsController{
     public void emergencyButton_Clicked() {
         System.out.println("The user has clicked the emergency Button");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+        //sends the current language to the next screen
+        //set up english labels
+
+        //set up spanish labels
+
     }
 
     //switch screen to the directory searching
@@ -80,6 +99,10 @@ public class patientMenuStartController extends controllers.AbsController{
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/hospitalDirectorySearchView.fxml");
         hospitalDirectorySearch.hospitalDirectorySearchController controller = loader.getController();
         controller.setUpTreeView();
+        //sends the current language to the next screen
+        //set up english labels
+
+        //set up spanish labels
     }
 
     //set the choices for the user at the beginning of the scene
@@ -105,43 +128,51 @@ public class patientMenuStartController extends controllers.AbsController{
                             //Checks if the user wants english language
                             if (newValue.intValue() == 0) {
                                 //System.out.println("English");
-                                //Updates the screen and switches the labels to english
+                                //Updates the screen and switches the labels and Buttons to english
                                 FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
                                 patientMenuStart.patientMenuStartController controller = loader.getController();
-                                controller.englishLabels();
+                                controller.englishButtons_Labels();
 
                             //checks if the user wants spanish
                             } else if (newValue.intValue() == 1) {
                                 //System.out.println("Spanish");
-                                //Updates the screen and switches teh labels to spanish
+                                //Updates the screen and switches teh labels and Buttons to spanish
                                 FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
                                 patientMenuStart.patientMenuStartController controller = loader.getController();
-                                controller.spanishLabels();
+                                controller.spanishButtons_Labels();
                             }
                         }
                     }
                 });
     }
 
-    //switches all the labels to english
-    public void englishLabels(){
+    //switches all the labels and Buttons to english
+    public void englishButtons_Labels(){
         //change the current language to english
         c_language = 0;
-        //Change the labels
+        //Change the Buttons
         directory_Button.setText("Directory");
         pathFinding_Button.setText("Map");
         emergency_Button.setText("IN CASE OF EMERGENCY");
+
+        //Change the labels
+        chooseLanguage_Label.setText("Choose your language");
+        title_Label.setText("Welcome to Brigham and Women's Faulkner Hospital");
     }
 
     //switches all teh labels to spanish
-    public void spanishLabels() {
+    public void spanishButtons_Labels() {
         //change the current language to spanish
         c_language = 1;
-        //change the labels
+
+        //change the Buttons
         directory_Button.setText("Directorio");
         pathFinding_Button.setText("Mapa");
         emergency_Button.setText("EN CASO DE EMERGENCIA");
 
+        //change the Labels
+        chooseLanguage_Label.setText("Escoge tu lenguaje");
+        title_Label.setText("Bienvenidos al Hospital Faulkner Brigham and Women ");
 
     }
 
