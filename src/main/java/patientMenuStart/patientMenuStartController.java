@@ -60,8 +60,15 @@ public class patientMenuStartController extends controllers.AbsController{
         //sends the current language the next screen
         controller.setC_language(c_language);
         //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
 
         //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+
+
 
     }
 
@@ -76,8 +83,12 @@ public class patientMenuStartController extends controllers.AbsController{
         controller.setUserString("");
         //sends the current language to the next screen
         //set up english labels
+        if(c_language == 0){
 
-        //set up spanish labels
+            //set up spanish labels
+        }else if(c_language == 1){
+
+        }
 
     }
 
@@ -88,8 +99,12 @@ public class patientMenuStartController extends controllers.AbsController{
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
         //sends the current language to the next screen
         //set up english labels
+        if(c_language == 0){
 
-        //set up spanish labels
+            //set up spanish labels
+        }else if(c_language == 1){
+
+        }
 
     }
 
