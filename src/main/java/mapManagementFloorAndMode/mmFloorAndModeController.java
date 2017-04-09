@@ -111,24 +111,27 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     public void sceneEvent(int x, int y, Circle c) {
         edgesSelected++;
-        if (edgesSelected == 1 || mode_ChoiceBox.getValue().equals("Edit Node")
-                || mode_ChoiceBox.getValue().equals("Remove Node")) {
-            //display edges already associated witdh selected node
-            nodeEdgeX1 = (int) x;
-            nodeEdgeY1 = (int) y;
-            System.out.println(nodeEdgeX1 + "     " + nodeEdgeY1);
-            firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
-                    .getNode(nodeEdgeX1, nodeEdgeY1, 4);
-            graph.createEdgeLines(firstNode.getEdgeList());
-        } else if (edgesSelected == 2) {
-            //create edge between the two nodes
-            nodeEdgeX2 = (int) x;
-            nodeEdgeY2 = (int) y;
+        if (edgesSelected == 1) {
+            //display edges already associated with selected node
+            if (edgesSelected == 1 || mode_ChoiceBox.getValue().equals("Edit Node")
+                    || mode_ChoiceBox.getValue().equals("Remove Node")) {
+                //display edges already associated witdh selected node
+                nodeEdgeX1 = (int) x;
+                nodeEdgeY1 = (int) y;
+                System.out.println(nodeEdgeX1 + "     " + nodeEdgeY1);
+                firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
+                        .getNode(nodeEdgeX1, nodeEdgeY1, 4);
+                graph.createEdgeLines(firstNode.getEdgeList());
+            } else if (edgesSelected == 2) {
+                //create edge between the two nodes
+                nodeEdgeX2 = (int) x;
+                nodeEdgeY2 = (int) y;
 
-            lastColored = c;
+                lastColored = c;
 
-            c.setStrokeWidth(2.5);
-            c.setStroke(Color.FUCHSIA);
+                c.setStrokeWidth(2.5);
+                c.setStroke(Color.FUCHSIA);
+            }
         }
     }
 
@@ -255,6 +258,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         adminMenuStart.adminMenuStartController controller = loader.getController();
         //Set the correct username for the next scene
         controller.setUsername(username_Label.getText());
+        System.out.println(username_Label.getText());
     }
 
     public void setUserString(String user) {

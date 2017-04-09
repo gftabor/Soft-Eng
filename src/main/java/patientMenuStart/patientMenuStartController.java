@@ -34,7 +34,7 @@ public class patientMenuStartController extends controllers.AbsController{
     private Button mapManagement_Button;
 
     @FXML
-    private Label patient_Label;
+    private Button directory_Button;
 
 
     Boolean logInSuccess = true;
@@ -87,6 +87,13 @@ public class patientMenuStartController extends controllers.AbsController{
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
     }
 
+    //switch screen to the directory searching
+    public void directoryButton_Clicked(){
+        System.out.println("The user has clicked the directory button");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/hospitalDirectorySearchView.fxml");
+        hospitalDirectorySearch.hospitalDirectorySearchController controller = loader.getController();
+        controller.setUpTreeView();
+    }
 
 
 }
