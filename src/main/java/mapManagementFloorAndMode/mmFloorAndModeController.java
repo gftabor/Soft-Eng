@@ -320,7 +320,6 @@ public class mmFloorAndModeController extends controllers.mapScene{
             }
         });
 
-
     }
 
     public void setTitleChoices() {

@@ -81,6 +81,7 @@ public class patientMenuStartController extends controllers.AbsController{
         MapController.getInstance().requestMapCopy();
         HashMap<Integer, controllers.Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
         controller.setUserString("");
+        controller.setFloorChoices();
         //sends the current language to the next screen
         //set up english labels
         if(c_language == 0){
