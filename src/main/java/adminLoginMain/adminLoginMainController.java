@@ -30,8 +30,12 @@ public class adminLoginMainController extends controllers.AbsController{
     @FXML
     private Label invalidLogInputs;
 
+    @FXML
+    private Label adminTitle_Label;
+
     int c_language;
 
+    //logs the user in
     public void logInButton_Clicked(){
         AdminLoginManager loginManage = new AdminLoginManager();
         String username = username_TextField.getText();
@@ -64,6 +68,7 @@ public class adminLoginMainController extends controllers.AbsController{
 
     }
 
+    //Switches screen to the patient menu
     public void mainMenuButton_Clicked(){
         System.out.println("The user has clicked the main menu Button");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
@@ -86,6 +91,36 @@ public class adminLoginMainController extends controllers.AbsController{
         c_language = i;
     }
 
+    //Changes the buttons and labels to english
+    public void englishButtons_Labels(){
+        //Buttons
+        logIn_Button.setText("Login");
+
+        //Labels
+        mainMenu_Button.setText("Main Menu");
+        adminTitle_Label.setText("Admin Login");
+
+        //text fields
+        username_TextField.setPromptText("username");
+        password_PasswordField.setPromptText("password");
+
+    }
+
+    //Changes the buttons and labels to spanish
+    public void spanishButtons_Labels(){
+
+        //Buttons
+        logIn_Button.setText("Iniciar Sesión");
+
+        //Labels
+        mainMenu_Button.setText("Menu Principal");
+        adminTitle_Label.setText("Administrador");
+
+        //text fields
+        username_TextField.setPromptText("usuario");
+        password_PasswordField.setPromptText("contraseña");
+
+    }
 
 
 
