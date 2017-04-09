@@ -30,6 +30,8 @@ public class adminLoginMainController extends controllers.AbsController{
     @FXML
     private Label invalidLogInputs;
 
+    int c_language;
+
     public void logInButton_Clicked(){
         AdminLoginManager loginManage = new AdminLoginManager();
         String username = username_TextField.getText();
@@ -65,8 +67,20 @@ public class adminLoginMainController extends controllers.AbsController{
     public void mainMenuButton_Clicked(){
 
         System.out.println("The user has clicked the main menu Button");
-        switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
+        patientMenuStart.patientMenuStartController controller = loader.getController();
+        controller.setCurrentLanguage(c_language);
+        if(c_language == 0){
+            controller.englishLabels();
 
+        }else if(c_language == 1){
+            controller.spanishLabels();
+        }
+
+    }
+
+    public void setC_language(int i){
+        c_language = i;
     }
 
 
