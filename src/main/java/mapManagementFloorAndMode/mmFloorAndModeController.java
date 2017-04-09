@@ -58,6 +58,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
     @FXML
     private CheckBox enabled_CheckBox;
 
+    @FXML
+    private ChoiceBox<String> floor_ChoiceBox;
+
     private int nodeEdgeX1;
     private int nodeEdgeY1;
     private int nodeEdgeX2;
@@ -279,6 +282,45 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
             }
         });
+    }
+
+    //Sets the map of the desired floor
+    public void setFloorChoices(){
+        floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7");
+        floor_ChoiceBox.getSelectionModel().select(0);
+        floor_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+
+                System.out.println(newValue);
+                //Print the floors accordingly
+                //CODE HERE!!!!!!!
+                if (newValue.intValue() == 0) {
+                    System.out.println("Printing first floor");
+
+                }else if(newValue.intValue() == 1){
+                    System.out.println("Printing second floor");
+
+                }else if(newValue.intValue() == 2){
+                    System.out.println("Printing third floor");
+
+                }else if(newValue.intValue() == 3){
+                    System.out.println("Printing fourth floor");
+
+                }else if(newValue.intValue() == 4){
+                    System.out.println("Printing fifth floor");
+
+                }else if(newValue.intValue() == 5){
+                    System.out.println("Printing sixth floor");
+
+                }else if(newValue.intValue() == 6){
+                    System.out.println("Printing seventh floor");
+
+                }
+            }
+        });
+
+
     }
 
     public void setTitleChoices() {
