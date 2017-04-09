@@ -23,6 +23,7 @@ public class testProfessional {
     String type = "TEST";
     String name = "TEST";
     String roomnum = "TEST";
+    String profile = "TEST";
 
     @Before
     public void setUp(){
@@ -33,7 +34,7 @@ public class testProfessional {
     @Test
     public void testAddDelete(){
         //add professional
-        assertTrue(databaseController.newProfessional(firstName, lastName, type));
+        assertTrue(databaseController.newProfessional(firstName, lastName, type, profile));
 
         //make sure it is there
         ResultSet resultSet = databaseController.getProfessional(firstName, lastName, type);
