@@ -11,7 +11,7 @@ import java.sql.Statement;
 /**
  * Created by jasonashton on 4/8/17.
  */
-abstract class testDatabaseAbstract {
+abstract class databaseGeneratorAbstract {
     private Connection conn = null;
     private Statement stmt = null;
 
