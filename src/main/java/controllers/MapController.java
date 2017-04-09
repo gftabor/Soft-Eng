@@ -70,7 +70,7 @@ public class MapController {
             int x, y, floor;
             boolean hidden;
             boolean enabled;
-            String name;
+
             String name, type, roomnum;
             Node node;
             while (nodeRset.next()) {
@@ -80,7 +80,6 @@ public class MapController {
                 enabled = nodeRset.getBoolean("ENABLED");
                 name = nodeRset.getString("NAME");
                 floor = nodeRset.getInt("FLOOR");
-                node = new Node(x, y, hidden,enabled, name, floor);
                 type = nodeRset.getString("TYPE");
                 roomnum = nodeRset.getString("ROOMNUM");
                 node = new Node(x, y, floor, hidden, enabled, type, name, roomnum);
