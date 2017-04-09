@@ -31,6 +31,12 @@ public class MapOverlay {
 
     //takes in a Hashtable when scene is switched and calls setNodes
     public void setMapAndNodes(HashMap<Integer, Node> nodeMap, boolean showHidden) {
+    public void setMapAndNodes(HashMap<Integer, Node> nodeMap, boolean devMode) {
+
+        if (devMode) {
+            System.out.println("DEVMODE active");
+        }
+
         currentNodeMap = nodeMap;
         // Clear circles from the scene
         while (ButtonList.size() > 0) {
@@ -48,13 +54,25 @@ public class MapOverlay {
                 if(current.getIsHidden() == true && showHidden)
                     create_Button(current.getPosX(), current.getPosY(),true);
 
+            //  - node can be disabled and show in dev mode
+            //devs can see everything and interact with everything
+            if (devMode == true) {
+                create_Button(current.getPosX(), current.getPosY(), current.getIsHidden(), current.getEnabled());
+            } else {
+                //if not dev mode:
+                //show only if enabled and not hidden
+                if (current.getIsHidden() == false && current.getEnabled() == true) {
+                    create_Button(current.getPosX(), current.getPosY(), false, true);
+                }
             }
             //else skip displaying the node
+
         }
         wipeEdgeLines();
     }
 
     public void create_Button(double nodeX, double nodeY, boolean hidden){
+    public void create_Button(double nodeX, double nodeY, boolean hidden, boolean enabled){
         //System.out.println("checking button");
         //System.out.println("make button");
         location = new Circle(lableRadius);
@@ -72,7 +90,13 @@ public class MapOverlay {
         location.setLayoutY(nodeY);
         location.toFront();
         if(hidden)
+        //System.out.println("new node req - hidden = " + hidden + ", enabled = " + enabled);
+        if (!enabled) {
+            location.setFill(Color.RED);
+        } else if(hidden) {
             location.setFill(Color.GRAY);
+        }
+
 
         ButtonList.add(location);
     }
@@ -92,6 +116,12 @@ public class MapOverlay {
         wipeEdgeLines();
         for(controllers.Edge thisEdge: edgeList) {
             lne = new Line();
+
+            //config to display properly
+            lne.setFill(Color.RED);
+            lne.setStroke(Color.RED);
+            lne.setStrokeWidth(4.5);
+
             //add to pane
             currentPane.getChildren().add(lne);
             lne.setStartX(thisEdge.getStartNode().getPosX());
