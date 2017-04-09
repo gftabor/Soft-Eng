@@ -30,6 +30,7 @@ public class MapOverlay {
     private ArrayList<Line> lineList = new ArrayList<Line>();
 
     //takes in a Hashtable when scene is switched and calls setNodes
+
     public void setMapAndNodes(HashMap<Integer, Node> nodeMap, boolean devMode) {
 
         if (devMode) {
@@ -43,24 +44,26 @@ public class MapOverlay {
             ButtonList.remove(0);
         }
         // Add all the nodes onto the scene as buttons
-        for(controllers.Node current: nodeMap.values()){
+        for (controllers.Node current : nodeMap.values()) {
 
-            //criteria for node to display:
-            //  - node can be disabled and show in dev mode
-            //devs can see everything and interact with everything
-            if (devMode == true) {
-                create_Button(current.getPosX(), current.getPosY(), current.getIsHidden(), current.getEnabled());
-            } else {
-                //if not dev mode:
-                //show only if enabled and not hidden
-                if (current.getIsHidden() == false && current.getEnabled() == true) {
-                    create_Button(current.getPosX(), current.getPosY(), false, true);
+                //  - node can be disabled and show in dev mode
+                //devs can see everything and interact with everything
+                if (devMode == true) {
+                    create_Button(current.getPosX(), current.getPosY(), current.getIsHidden(), current.getEnabled());
+                } else {
+                    //if not dev mode:
+                    //show only if enabled and not hidden
+                    if (current.getIsHidden() == false && current.getEnabled() == true) {
+                        create_Button(current.getPosX(), current.getPosY(), false, true);
+                    }
                 }
-            }
+                //else skip displaying the node
 
+            }
+            wipeEdgeLines();
         }
-        wipeEdgeLines();
-    }
+
+
 
     public void create_Button(double nodeX, double nodeY, boolean hidden, boolean enabled){
         //System.out.println("checking button");
@@ -79,6 +82,7 @@ public class MapOverlay {
         location.setLayoutX(nodeX);
         location.setLayoutY(nodeY);
         location.toFront();
+        if(hidden)
         //System.out.println("new node req - hidden = " + hidden + ", enabled = " + enabled);
         if (!enabled) {
             location.setFill(Color.RED);

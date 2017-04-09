@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.image.Image?>
@@ -9,23 +10,24 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="patientMenuStart.patientMenuStartController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#setLanguageChoices" prefHeight="710.0" prefWidth="1274.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="patientMenuStart.patientMenuStartController">
    <children>
       <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <VBox prefHeight="179.0" prefWidth="1206.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox>
+                  <HBox prefHeight="168.0" prefWidth="1274.0">
                      <children>
                         <ImageView fitHeight="176.0" fitWidth="186.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/BWH_logo.jpg" />
                            </image>
                         </ImageView>
-                        <Label prefHeight="54.0" prefWidth="1059.0" style="-fx-font-size: 42;" text="Welcome to Brigham and Women's Faulkner Hospital">
+                        <Label fx:id="title_Label" prefHeight="54.0" prefWidth="1059.0" style="-fx-font-size: 42;" text="Welcome to Brigham and Women's Faulkner Hospital">
                            <HBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </HBox.margin>
@@ -37,7 +39,16 @@
                   </HBox>
                   <HBox alignment="TOP_RIGHT">
                      <children>
-                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="41.0" prefWidth="379.0" styleClass="emergency" text="PRESS FOR EMERGENCY">
+                        <Button fx:id="logIn_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefHeight="43.0" prefWidth="198.0" text="Admin Login">
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="30.0" right="10.0" top="10.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Button>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="41.0" prefWidth="379.0" styleClass="emergency" text="IN CASE OF EMERGENCY">
                            <HBox.margin>
                               <Insets bottom="10.0" left="10.0" right="30.0" top="10.0" />
                            </HBox.margin>
@@ -50,47 +61,72 @@
                </children>
             </VBox>
          </top>
-         <left>
-            <VBox prefHeight="333.0" prefWidth="250.0" BorderPane.alignment="CENTER" />
-         </left>
          <bottom>
-            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <VBox BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="hospitalDirectory_Button" disable="true" mnemonicParsing="false" onMouseClicked="#hospitalDirectoryButton_Clicked" prefHeight="80.0" prefWidth="300.0" text="Hospital Directory" visible="false">
-                     <font>
-                        <Font size="26.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="mapManagement_Button" disable="true" mnemonicParsing="false" onMouseClicked="#mapManagementButton_Clicked" prefHeight="80.0" prefWidth="300.0" text="Map Management" visible="false">
-                     <font>
-                        <Font size="26.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="logIn_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefHeight="43.0" prefWidth="198.0" text="Admin Login">
-                     <HBox.margin>
-                        <Insets bottom="6.0" left="6.0" right="30.0" top="6.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Button>
+                  <HBox alignment="TOP_RIGHT">
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="chooseLanguage_Label" text="Choose your language">
+                           <HBox.margin>
+                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                           </HBox.margin>
+                        </Label>
+                        <ChoiceBox fx:id="languages_ChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0">
+                           <HBox.margin>
+                              <Insets bottom="6.0" left="6.0" right="30.0" top="6.0" />
+                           </HBox.margin>
+                        </ChoiceBox>
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label text="©2017 Computer Science 3733 Team E">
+                           <HBox.margin>
+                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
                </children>
-            </HBox>
+            </VBox>
          </bottom>
          <right>
-            <VBox prefHeight="780.0" prefWidth="167.0" BorderPane.alignment="CENTER" />
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" BorderPane.alignment="CENTER" />
          </right>
          <center>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" BorderPane.alignment="CENTER">
+            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="pathFinding_Button" mnemonicParsing="false" onMouseClicked="#pathFindingButton_Clicked" prefHeight="80.0" prefWidth="400.0" text="Click here to view the map" textAlignment="CENTER">
-                     <effect>
-                        <Blend />
-                     </effect>
-                     <font>
-                        <Font size="26.0" />
-                     </font>
-                  </Button>
+                  <HBox>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="pathFinding_Button" mnemonicParsing="false" onMouseClicked="#pathFindingButton_Clicked" prefHeight="80.0" prefWidth="400.0" text="Map" textAlignment="CENTER">
+                           <effect>
+                              <Blend />
+                           </effect>
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Button>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                     <VBox.margin>
+                        <Insets top="40.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="directory_Button" mnemonicParsing="false" onMouseClicked="#directoryButton_Clicked" prefHeight="80.0" prefWidth="400.0" text="Directory" textAlignment="CENTER" />
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox />
                </children>
             </VBox>
          </center>

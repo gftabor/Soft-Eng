@@ -63,12 +63,14 @@ public class MapController {
         //wipes old verson of collection of nodess
         collectionOfNodes = new CollectionOfNodes();
         edgeCollection = new ArrayList<Edge>();
+        System.out.println("new");
         System.out.println("new map copy loading...");
         try {
             //instantiate all node objects and add to collection
             int x, y, floor;
             boolean hidden;
             boolean enabled;
+
             String name, type, roomnum;
             Node node;
             while (nodeRset.next()) {
@@ -89,6 +91,7 @@ public class MapController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
         try {
             //instantiate edges and add to corresponding nodes
