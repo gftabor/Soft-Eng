@@ -11,6 +11,7 @@ import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 /**
@@ -54,6 +55,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
     @FXML
     private Pane admin_FloorPane;
 
+    @FXML
+    private CheckBox enabled_CheckBox;
+
     private int nodeEdgeX1;
     private int nodeEdgeY1;
     private int nodeEdgeX2;
@@ -67,6 +71,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     private Node firstNode;
 
+    private Circle lastColored;
+
     private Circle btK;
 
     public void initialize() {
@@ -77,6 +83,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         graph = new controllers.MapOverlay(admin_FloorPane,(mapScene) this);
         MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4),true);
+
     }
 
 
@@ -94,23 +101,36 @@ public class mmFloorAndModeController extends controllers.mapScene{
         room_TextField.clear();
         graph.wipeEdgeLines();
         edgesSelected = 0;
+
+        //reset last colored stroke to default
+        if (lastColored != null) {
+            lastColored.setStroke(lastColored.getFill());
+            lastColored.setStrokeWidth(1);
+        }
     }
 
     public void sceneEvent(int x, int y, Circle c) {
         edgesSelected++;
         if (edgesSelected == 1) {
             //display edges already associated with selected node
+        if (edgesSelected == 1 || mode_ChoiceBox.getValue().equals("Edit Node")
+                || mode_ChoiceBox.getValue().equals("Remove Node")) {
+            //display edges already associated witdh selected node
             nodeEdgeX1 = (int) x;
             nodeEdgeY1 = (int) y;
             System.out.println(nodeEdgeX1 + "     " + nodeEdgeY1);
             firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
                     .getNode(nodeEdgeX1, nodeEdgeY1, 4);
             graph.createEdgeLines(firstNode.getEdgeList());
-        }
-        if (edgesSelected == 2) {
+        } else if (edgesSelected == 2) {
             //create edge between the two nodes
             nodeEdgeX2 = (int) x;
             nodeEdgeY2 = (int) y;
+
+            lastColored = c;
+
+            c.setStrokeWidth(2.5);
+            c.setStroke(Color.FUCHSIA);
         }
     }
 
@@ -122,7 +142,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
         final int floor = 4;
         final String name = "Mark?";
 
-
+        if (mode_ChoiceBox.getValue() == null) {
+            System.out.println("incoming null ptr exception");
+        }
         switch (mode_ChoiceBox.getValue()) {
             case "---":
                 System.out.println("Mode = default");
@@ -146,9 +168,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
                             break;
                     }
                     Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                            floor, hidden_CheckBox.isSelected(), true, type, tempName, tempRoom);
+                            floor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom);
                     DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                            floor, hidden_CheckBox.isSelected(), true, type, tempName, tempRoom);
+                            floor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom);
                 }
                 mode_ChoiceBox.getSelectionModel().select("---");
 
@@ -158,7 +180,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 System.out.println("Mode = edit node");
                 //get latest touched node
                 boolean newHidden = hidden_CheckBox.isSelected();
-                boolean newEnabled = true;
+                boolean newEnabled = enabled_CheckBox.isSelected();
                 String newType;
                 String newName = name_TextField.getText();
                 String newRoomnum = room_TextField.getText();
@@ -172,12 +194,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
                         break;
                 }
 
-                //delete old node
-                DBController.DatabaseController.getInstance().deleteNode(firstNode.getPosX(), firstNode.getPosY(), 4);
-
-                //add new version
-                DBController.DatabaseController.getInstance().newNode(firstNode.getPosX(), firstNode.getPosY(),
-                        firstNode.getFloor(), newHidden, true, newType, newName, newRoomnum);
+                //update to new version in db
+                DBController.DatabaseController.getInstance().updateNode(firstNode.getPosX(), firstNode.getPosY(),
+                        firstNode.getFloor(), newHidden, newEnabled, newType, newName, newRoomnum);
 
                 break;
             case "Remove Node":
@@ -195,6 +214,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
                     System.out.println("Mode = add edge");
                     DBController.DatabaseController.getInstance().newEdge(nodeEdgeX1,
                             nodeEdgeY1, 4, nodeEdgeX2, nodeEdgeY2, 4);
+
                     System.out.println("added edge");
                 }
                 break;
@@ -214,6 +234,19 @@ public class mmFloorAndModeController extends controllers.mapScene{
         controllers.MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(4),true);
         edgesSelected = 0;
+
+
+        //try to display last touched edge list
+        //requery firstnode to reset edge list
+        if(firstNode != null) {
+            firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
+                    .getNode(firstNode.getPosX(), firstNode.getPosY(), firstNode.getFloor());
+            //don't know if above method is successful
+            //must check again if firstNode is not null
+            if (firstNode != null) {
+                graph.createEdgeLines(firstNode.getEdgeList());
+            }
+        }
 
     }
 

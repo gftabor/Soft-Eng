@@ -64,12 +64,14 @@ public class MapController {
         collectionOfNodes = new CollectionOfNodes();
         edgeCollection = new ArrayList<Edge>();
         System.out.println("new");
+        System.out.println("new map copy loading...");
         try {
             //instantiate all node objects and add to collection
             int x, y, floor;
             boolean hidden;
             boolean enabled;
             String name;
+            String name, type, roomnum;
             Node node;
             while (nodeRset.next()) {
                 x = nodeRset.getInt("XPOS");
@@ -79,6 +81,9 @@ public class MapController {
                 name = nodeRset.getString("NAME");
                 floor = nodeRset.getInt("FLOOR");
                 node = new Node(x, y, hidden,enabled, name, floor);
+                type = nodeRset.getString("TYPE");
+                roomnum = nodeRset.getString("ROOMNUM");
+                node = new Node(x, y, floor, hidden, enabled, type, name, roomnum);
                 collectionOfNodes.addNode(node);
                 //System.out.println("MAPCONTROLLER: requestMapCopy(): Added a node from the rset to collection of nodes");
             }
