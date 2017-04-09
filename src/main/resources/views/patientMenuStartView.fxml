@@ -91,6 +91,7 @@
                         <Font size="26.0" />
                      </font>
                   </Button>
+                  <Button fx:id="directory_Button" mnemonicParsing="false" onMouseClicked="#directoryButton_Clicked" prefHeight="80.0" prefWidth="400.0" text="FUCK BITCHES" textAlignment="CENTER" />
                </children>
             </VBox>
          </center>
