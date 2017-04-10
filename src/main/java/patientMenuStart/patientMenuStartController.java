@@ -118,9 +118,14 @@ public class patientMenuStartController extends controllers.AbsController{
         hospitalDirectorySearch.hospitalDirectorySearchController controller = loader.getController();
         controller.setUpTreeView();
         //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
         //set up english labels
-
-        //set up spanish labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
     }
 
     //set the choices for the user at the beginning of the scene
