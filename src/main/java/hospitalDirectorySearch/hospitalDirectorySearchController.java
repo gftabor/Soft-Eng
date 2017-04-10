@@ -2,6 +2,7 @@ package hospitalDirectorySearch;
 
 
 import DBController.DatabaseController;
+import controllers.CollectionOfNodes;
 import controllers.MapController;
 import controllers.Node;
 import javafx.collections.FXCollections;
@@ -96,6 +97,10 @@ public class hospitalDirectorySearchController extends controllers.AbsController
 
     //get an instance of database controller
     DatabaseController databaseController = DatabaseController.getInstance();
+
+    public void getPathNodes(String from_String, String to_String){
+
+    }
 
     //
     public void mainMenuButton_Clicked(){
