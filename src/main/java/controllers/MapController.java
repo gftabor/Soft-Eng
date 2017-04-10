@@ -21,6 +21,9 @@ public class MapController {
     private int endNodeX;
     private int endNodeY;
 
+    private int floorForNode1;
+    private int floorForNode2;
+
     private MapController() {
         requestMapCopy();
     }
@@ -138,15 +141,17 @@ public class MapController {
     }
 
     //Helper function to set nodes as start or end
-    public int markNode(int x, int y, int type) {
+    public int markNode(int x, int y, int type, int floor) {
         if(type == 1) {
             startNodeX = x;
             startNodeY = y;
+            floorForNode1 = floor;
             return 0;
         }
         else if(type == 2) {
             endNodeX = x;
             endNodeY = y;
+            floorForNode2 = floor;
             return 0;
         }
         else {
@@ -166,14 +171,14 @@ public class MapController {
         }
         //System.out.println("MAPCONTROLLER: requestPath: collectionOfNOdes size: " + collectionOfNodes.toString());
 
-        startNode = collectionOfNodes.getNode(startNodeX, startNodeY, 4);
+        startNode = collectionOfNodes.getNode(startNodeX, startNodeY, floorForNode1);
         if(startNode == null) {
             System.out.println("MAPCONTROLLER: getNode(startNode) returns null!");
             //System.out.println("MAPCONTROLLER: requestPath: collectionOfNOdes size: " + collectionOfNodes.toString());
             return null;
         }
 
-        endNode = collectionOfNodes.getNode(endNodeX, endNodeY, 4);
+        endNode = collectionOfNodes.getNode(endNodeX, endNodeY, floorForNode2);
         if(endNode == null) {
             System.out.println("MAPCONTROLLER: getNode(endNode) returns null!");
             return null;

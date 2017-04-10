@@ -30,7 +30,7 @@ public class Pathfinder {
     private double getHueristic(Node currentNode, Node goalNode){
        double squareX = Math.pow((currentNode.getPosX()-goalNode.getPosX()),2);
        double squareY = Math.pow((currentNode.getPosY()-goalNode.getPosY()),2);
-       return Math.sqrt(squareX + squareY);
+       return Math.sqrt(squareX + squareY) + 1000* Math.abs(currentNode.getFloor() - goalNode.getFloor());
 
     }
 
@@ -72,8 +72,8 @@ public class Pathfinder {
     //  output: the total cost of the shortest path (type=double)
     public double generatePath(Node startNode, Node endNode) {
         System.out.println("PATHFINDER: generating path from node at (" + startNode.getPosX() + ", " +
-                startNode.getPosY() + ") to node at (" + endNode.getPosX() + ", " +
-                endNode.getPosY() + ")");
+                startNode.getPosY() + ", floor: " + startNode.getFloor() + ") to node at (" + endNode.getPosX() + ", " +
+                endNode.getPosY() + ", floor: " + endNode.getFloor() + ")");
         alreadyProcessed.clear();
         frontier.clear();
         path.clear();
