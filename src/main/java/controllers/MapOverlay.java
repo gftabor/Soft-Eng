@@ -82,8 +82,7 @@ public class MapOverlay {
         location.setLayoutX(nodeX);
         location.setLayoutY(nodeY);
         location.toFront();
-        if(hidden)
-        //System.out.println("new node req - hidden = " + hidden + ", enabled = " + enabled);
+        
         if (!enabled) {
             location.setFill(Color.RED);
         } else if(hidden) {
