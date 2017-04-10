@@ -27,7 +27,7 @@
                               <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                            </HBox.margin>
                         </Region>
-                        <Label text="PathFinding" textAlignment="CENTER">
+                        <Label fx:id="title_Label" text="Map" textAlignment="CENTER">
                            <font>
                               <Font name="System Bold" size="50.0" />
                            </font>
@@ -58,7 +58,7 @@
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="mainMenu_Button" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="40.0" prefWidth="170.0" text="Main Menu">
+                        <Button fx:id="mainMenu_Button" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="40.0" prefWidth="190.0" text="Main Menu">
                            <HBox.margin>
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
@@ -86,7 +86,7 @@
                   <Region prefHeight="6.0" prefWidth="503.0" />
                   <HBox>
                      <children>
-                        <Label prefHeight="44.0" prefWidth="270.0" text="Start Point:">
+                        <Label fx:id="start_Label" prefHeight="44.0" prefWidth="270.0" text="Start Point:">
                            <font>
                               <Font name="System Bold Italic" size="36.0" />
                            </font>
@@ -103,7 +103,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefHeight="40.0" prefWidth="260.0" text="End Point:">
+                        <Label fx:id="end_Label" prefHeight="40.0" prefWidth="260.0" text="End Point:">
                            <font>
                               <Font name="System Bold Italic" size="36.0" />
                            </font>

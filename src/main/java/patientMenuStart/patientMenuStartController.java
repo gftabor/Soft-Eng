@@ -82,12 +82,13 @@ public class patientMenuStartController extends controllers.AbsController{
         HashMap<Integer, controllers.Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
         controller.setUserString("");
         //sends the current language to the next screen
+        controller.setC_language(c_language);
         //set up english labels
         if(c_language == 0){
-
+            controller.englishButtons_Labels();
             //set up spanish labels
         }else if(c_language == 1){
-
+            controller.spanishButtons_Labels();
         }
 
     }
