@@ -8,33 +8,39 @@ import static org.junit.Assert.*;
 
 /**
  * Created by jasonashton on 4/3/17.
- * This test is definitely broken
  */
 public class testProfessional {
-    DatabaseController databaseController = DatabaseController.getInstance();
-    int ID;
-    String firstName = "TEST";
-    String lastName = "TEST";
-    int x = 0;
-    int y = 0;
-    int floor = 0;
-    boolean ishidden = false;
-    boolean enabled = true;
-    String type = "TEST";
-    String name = "TEST";
-    String roomnum = "TEST";
-    String profile = "TEST";
+    static DatabaseController databaseController = DatabaseController.getInstance();
+    static int ID;
+    static String firstName = "TEST";
+    static String lastName = "TEST";
+    static int x = 0;
+    static int y = 0;
+    static int floor = 0;
+    static boolean ishidden = false;
+    static boolean enabled = true;
+    static String type = "TEST";
+    static String name = "TEST";
+    static String roomnum = "TEST";
+    static String department = "TEST";
 
-    @Before
-    public void setUp(){
-        //testNull();
+
+    @BeforeClass
+    public static void setUp(){
+        databaseController.setDbName("TestDB");
+        databaseController.startDB();
         assertTrue(databaseController.newNode(x, y, floor, ishidden, enabled, type, name, roomnum));
+    }
+
+    @AfterClass
+    public static void tearDown(){
+        databaseController.closeDB();
     }
 
     @Test
     public void testAddDelete(){
         //add professional
-        assertTrue(databaseController.newProfessional(firstName, lastName, type, profile));
+        assertTrue(databaseController.newProfessional(firstName, lastName, type, department));
 
         //make sure it is there
         ResultSet resultSet = databaseController.getProfessional(firstName, lastName, type);
@@ -58,20 +64,13 @@ public class testProfessional {
     }
 
     @Test
-    public void testNull(){
+    public void testNull() {
         ResultSet resultSet = databaseController.getProfessional(firstName, lastName, type);
-        try{
+        try {
             resultSet.next();
             assertEquals(resultSet.getString("ID"), 0);
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-    @After
-    public void tearDown(){
-        assertTrue(databaseController.deleteNode(x, y, floor));
-        //testNull();
-    }
-
 }
