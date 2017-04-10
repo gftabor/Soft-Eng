@@ -77,6 +77,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         //set current floor
         //we will use floor 1 as default
         currentFloor = 1;
+        currentFloor_Label.setText("1");
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
     }
     public void cancelButton_Clicked(){
@@ -167,6 +168,7 @@ public class pathFindingMenuController extends controllers.mapScene{
                 //CODE HERE!!!!!!!
 
                 currentFloor = newValue.intValue() + 1;
+                currentFloor_Label.setText(Integer.toString(currentFloor));
                 graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
             }
         });
