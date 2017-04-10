@@ -120,27 +120,27 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     public void sceneEvent(int x, int y, Circle c) {
         edgesSelected++;
-        if (edgesSelected == 1) {
-            //display edges already associated with selected node
-            if (edgesSelected == 1 || mode_ChoiceBox.getValue().equals("Edit Node")
-                    || mode_ChoiceBox.getValue().equals("Remove Node")) {
-                //display edges already associated witdh selected node
-                nodeEdgeX1 = (int) x;
-                nodeEdgeY1 = (int) y;
-                System.out.println(nodeEdgeX1 + "     " + nodeEdgeY1);
-                firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
-                        .getNode(nodeEdgeX1, nodeEdgeY1, currentFloor);
-                graph.createEdgeLines(firstNode.getEdgeList());
-            } else if (edgesSelected == 2) {
-                //create edge between the two nodes
-                nodeEdgeX2 = (int) x;
-                nodeEdgeY2 = (int) y;
+        //display edges already associated with selected node
+        if (edgesSelected == 1 || mode_ChoiceBox.getValue().equals("Edit Node")
+                || mode_ChoiceBox.getValue().equals("Remove Node")) {
+            System.out.println("Edge stage 1");
+            //display edges already associated witdh selected node
+            nodeEdgeX1 = (int) x;
+            nodeEdgeY1 = (int) y;
+            System.out.println(nodeEdgeX1 + "     " + nodeEdgeY1);
+            firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
+                    .getNode(nodeEdgeX1, nodeEdgeY1, currentFloor);
+            graph.createEdgeLines(firstNode.getEdgeList());
+        } else if (edgesSelected == 2) {
+            System.out.println("Edge stage 2");
+            //create edge between the two nodes
+            nodeEdgeX2 = (int) x;
+            nodeEdgeY2 = (int) y;
 
-                lastColored = c;
+            lastColored = c;
 
-                c.setStrokeWidth(2.5);
-                c.setStroke(Color.FUCHSIA);
-            }
+            c.setStrokeWidth(2.5);
+            c.setStroke(Color.FUCHSIA);
         }
     }
 

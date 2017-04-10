@@ -84,7 +84,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         selectionState = 0;
         //Remove black and red dots from map
 
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4),false);
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
 
         //wipe line from map
         graph.wipeEdgeLines();
