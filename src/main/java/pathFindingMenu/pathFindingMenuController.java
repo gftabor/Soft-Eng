@@ -165,35 +165,8 @@ public class pathFindingMenuController extends controllers.mapScene{
                 System.out.println(newValue);
                 //Print the floors accordingly
                 //CODE HERE!!!!!!!
-                if (newValue.intValue() == 0) {
-                    System.out.println("Showing first floor");
-                    currentFloor = 1;
 
-                }else if(newValue.intValue() == 1){
-                    System.out.println("Showing second floor");
-                    currentFloor = 2;
-
-                }else if(newValue.intValue() == 2){
-                    System.out.println("Showing third floor");
-                    currentFloor = 3;
-
-                }else if(newValue.intValue() == 3){
-                    System.out.println("Showing fourth floor");
-                    currentFloor = 4;
-
-                }else if(newValue.intValue() == 4){
-                    System.out.println("Showing fifth floor");
-                    currentFloor = 5;
-
-                }else if(newValue.intValue() == 5){
-                    System.out.println("Showing sixth floor");
-                    currentFloor = 6;
-
-                }else if(newValue.intValue() == 6){
-                    System.out.println("Showing seventh floor");
-                    currentFloor = 7;
-
-                }
+                currentFloor = newValue.intValue() + 1;
                 graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
             }
         });
