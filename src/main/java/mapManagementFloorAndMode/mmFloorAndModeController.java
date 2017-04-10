@@ -58,6 +58,28 @@ public class mmFloorAndModeController extends controllers.mapScene{
     @FXML
     private CheckBox enabled_CheckBox;
 
+    @FXML
+    private Label title_Label;
+
+    @FXML
+    private Label subTitile_Label;
+
+    @FXML
+    private Label nodeTitile_Label;
+
+    @FXML
+    private Label name_Label;
+
+    @FXML
+    private Label room_Label;
+
+    @FXML
+    private Label hidden_Label;
+
+    @FXML
+    private Label enabled_Label;
+
+
     private int nodeEdgeX1;
     private int nodeEdgeY1;
     private int nodeEdgeX2;
@@ -274,6 +296,18 @@ public class mmFloorAndModeController extends controllers.mapScene{
         //Set the correct username for the next scene
         controller.setUsername(username_Label.getText());
         System.out.println(username_Label.getText());
+
+        //sets the current language
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        controller.setLanguageChoices();
     }
 
     public void setUserString(String user) {
@@ -319,5 +353,70 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
         admin_FloorPane.getChildren().add(btK);
     }
+
+    //sets the current language given information form other screens
+    public void setC_language(int i){
+        c_language = i;
+    }
+
+    //switches all the labels and Buttons to english
+    public void englishButtons_Labels(){
+        //change the current language to english
+        c_language = 0;
+
+        //Change the Buttons
+        mainMenu_Button.setText("Main Menu");
+        emergency_Button.setText("EMERGENCY");
+        submit_Button.setText("Submit");
+        clear_Button.setText("Clear");
+
+        //Change the labels
+        title_Label.setText("Map Management");
+        subTitile_Label.setText("Information:");
+        nodeTitile_Label.setText("Title:");
+        name_Label.setText("Name:");
+        room_Label.setText("Room:");
+        hidden_Label.setText("Hidden:");
+        enabled_Label.setText("Enabled:");
+
+
+
+        //text fields
+        name_TextField.setPromptText("Name");
+        room_TextField.setPromptText("Room");
+
+
+    }
+
+    //switches all teh labels to spanish
+    public void spanishButtons_Labels() {
+        //change the current language to spanish
+        c_language = 1;
+
+        //Change the Buttons
+        mainMenu_Button.setText("Menú Principal");
+        emergency_Button.setText("EMERGENCIA");
+        submit_Button.setText("Listo");
+        clear_Button.setText("Borrar");
+
+        //Change the labels
+        title_Label.setText("Control de Mapa");
+        subTitile_Label.setText("Información:");
+        nodeTitile_Label.setText("Título:");
+        name_Label.setText("Nombre:");
+        room_Label.setText("Habitacion:");
+        hidden_Label.setText("Oculto:");
+        enabled_Label.setText("Habilitar:");
+
+
+
+        //text fields
+        name_TextField.setPromptText("Name");
+        room_TextField.setPromptText("Room");
+
+
+    }
+
+
 
 }
