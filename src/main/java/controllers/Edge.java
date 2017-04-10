@@ -47,6 +47,7 @@ public class Edge {
     public double calculateWeight(int x1, int y1, int x2, int y2) {
         //implementation of this formula:
         if (floorStart != floorEnd) {
+            System.out.println("Multifloor edge calc executing...");
             //3 types:
             //  -stair
             //  -elevator
