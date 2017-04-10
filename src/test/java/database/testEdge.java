@@ -1,9 +1,9 @@
 package database;
 
 import DBController.DatabaseController;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import DBController.testDatabaseController;
+import org.junit.*;
+
 import java.sql.*;
 
 import static org.junit.Assert.*;
@@ -12,7 +12,8 @@ import static org.junit.Assert.*;
  * Created by jasonashton on 4/3/17.
  */
 public class testEdge {
-    DatabaseController databaseController = DatabaseController.getInstance();
+    //DatabaseController databaseController = DatabaseController.getInstance();
+    testDatabaseController databaseController = testDatabaseController.getInstance();
     int x1 = 0;
     int y1 = 0;
     int floor1 = 0;
@@ -29,11 +30,26 @@ public class testEdge {
     String type2 = "TEST2";
     String name2 = "TEST2";
     String roomnum2 = "TEST2";
-
+    /*
     @Before
     public void setUp() {
         databaseController.newNode(x1, y1, floor1, ishidden1, enabled1, type1, name1, roomnum1);
         databaseController.newNode(x2, y2, floor2, ishidden2, enabled2, type2, name2, roomnum2);
+    }
+    */
+
+    @Before
+    public void setUp(){
+        databaseController.populateDB();
+        databaseController.newNode(x1, y1, floor1, ishidden1, enabled1, type1, name1, roomnum1);
+        databaseController.newNode(x2, y2, floor2, ishidden2, enabled2, type2, name2, roomnum2);
+    }
+
+    @After
+    public void tearDown(){
+        databaseController.deleteNode(x1, y1, floor1);
+        databaseController.deleteNode(x2, y2, floor2);
+        databaseController.clearDB();
     }
 
 
@@ -42,11 +58,12 @@ public class testEdge {
         databaseController.newEdge(x1, y1, floor1, x2, y2, floor2);
         databaseController.deleteEdge(x1, y1, floor1, x2, y2, floor2);
     }
-
+    /*
     @After
     public void tearDown(){
         databaseController.deleteNode(x1, y1, floor1);
         databaseController.deleteNode(x2, y2, floor2);
     }
+    */
 
 }

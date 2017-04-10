@@ -1,9 +1,9 @@
 package database;
 
 import DBController.DatabaseController;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import DBController.testDatabaseController;
+import org.junit.*;
+
 import java.sql.*;
 import controllers.Node;
 
@@ -13,7 +13,8 @@ import static org.junit.Assert.*;
  * Created by jasonashton on 4/3/17.
  */
 public class testNode {
-    DatabaseController databaseController = DatabaseController.getInstance();
+    //DatabaseController databaseController = DatabaseController.getInstance();
+    testDatabaseController databaseController = testDatabaseController.getInstance();
     int x = 0;
     int y = 0;
     int floor = 0;
@@ -23,9 +24,15 @@ public class testNode {
     String name = "TEST";
     String roomnum = "TEST";
 
+
     @Before
     public void setUp(){
-        testNull();
+        databaseController.populateDB();
+    }
+
+    @After
+    public void tearDown(){
+        databaseController.clearDB();
     }
 
     @Test
@@ -67,10 +74,5 @@ public class testNode {
         int keyGotten = exampleNode.getKey();
         System.out.println(keyGotten);
         assertEquals(correctKey, keyGotten);
-    }
-
-    @After
-    public void tearDown(){
-        testNull();
     }
 }

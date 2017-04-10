@@ -1,6 +1,7 @@
 package database;
 
 import DBController.DatabaseController;
+import DBController.testDatabaseController;
 import org.junit.*;
 
 import java.sql.*;
@@ -8,10 +9,9 @@ import static org.junit.Assert.*;
 
 /**
  * Created by jasonashton on 4/3/17.
- * This test is definitely broken
  */
 public class testProfessional {
-    DatabaseController databaseController = DatabaseController.getInstance();
+    testDatabaseController databaseController = testDatabaseController.getInstance();
     int ID;
     String firstName = "TEST";
     String lastName = "TEST";
@@ -26,8 +26,13 @@ public class testProfessional {
 
     @Before
     public void setUp(){
-        //testNull();
+        databaseController.populateDB();
         assertTrue(databaseController.newNode(x, y, floor, ishidden, enabled, type, name, roomnum));
+    }
+
+    @After
+    public void tearDown(){
+        databaseController.clearDB();
     }
 
     @Test
@@ -57,20 +62,13 @@ public class testProfessional {
     }
 
     @Test
-    public void testNull(){
+    public void testNull() {
         ResultSet resultSet = databaseController.getProfessional(firstName, lastName, type);
-        try{
+        try {
             resultSet.next();
             assertEquals(resultSet.getString("ID"), 0);
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-    @After
-    public void tearDown(){
-        assertTrue(databaseController.deleteNode(x, y, floor));
-        //testNull();
-    }
-
 }
