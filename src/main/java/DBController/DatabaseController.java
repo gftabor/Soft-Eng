@@ -2,6 +2,10 @@ package DBController;
 import controllers.MapController;
 import controllers.Node;
 import controllers.Edge;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.sql.*;
 import java.util.ArrayList;
 import org.mindrot.jbcrypt.BCrypt;
@@ -11,14 +15,20 @@ import javax.xml.transform.Result;
 public class DatabaseController {
 
     private static DatabaseController databaseController = new DatabaseController();
-
+    protected String dbName;
+    protected String populateSQLPath = "build/resources/main/database/testDatabaseSetup.sql";
+    protected String cleanSQLPath = "build/resources/main/database/testDatabaseClear.sql";
     Connection conn;
+    Statement stmt;
 
-    private DatabaseController() {}
+    public DatabaseController() {
+        this.dbName = "FaulknerDB";
+    }
 
     public static DatabaseController getInstance() {
         return databaseController;
     }
+
 
     /*******************************************************************************
      * Starting the database, checking drivers
@@ -26,7 +36,6 @@ public class DatabaseController {
      ******************************************************************************/
 
     public boolean startDB() {
-
         //check for database driver
         if(!checkDatabaseDriver()){
             return false;
@@ -54,7 +63,7 @@ public class DatabaseController {
     private Connection getDatabaseConnection(){
         Connection conn;
         try {
-            conn = DriverManager.getConnection("jdbc:derby:FaulknerDB;create=true;");
+            conn = DriverManager.getConnection("jdbc:derby:"+ dbName +";create=true;");
         } catch (SQLException e) {
             System.out.println("Database connection failed.");
             e.printStackTrace();
@@ -85,7 +94,7 @@ public class DatabaseController {
 
         ResultSet resultSet = null;
         try {
-            Statement stmt = conn.createStatement();
+            stmt = conn.createStatement();
             resultSet = stmt.executeQuery(sqlString);
         } catch (SQLException se) {
             se.printStackTrace();
@@ -501,7 +510,7 @@ public class DatabaseController {
                         firstName, lastName, type));
         try{
             String query = "UPDATE PROFESSIONAL SET FIRSTNAME = ?, LASTNAME = ? AND TYPE = ?" +
-                    "WHERE ID = ";
+                    "WHERE ID = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
@@ -699,5 +708,50 @@ public class DatabaseController {
             return false;
         }
         return true;
+    }
+
+    /*******************************************************************************
+     * SQL GENERATION actions
+     *
+     ******************************************************************************/
+
+    public boolean populateDB(){
+        return readSQL(populateSQLPath);
+    }
+
+    public boolean clearDB(){
+        return readSQL(cleanSQLPath);
+    }
+
+    private boolean readSQL(String path){
+        String s = new String();
+        StringBuffer sb = new StringBuffer();
+
+        try {
+            FileReader fr = new FileReader(new File(path));
+
+            BufferedReader br = new BufferedReader(fr);
+
+            while ((s = br.readLine()) != null) {
+                sb.append(s);
+            }
+            br.close();
+
+            String[] inst = sb.toString().split(";");
+
+            Statement stmt = conn.createStatement();
+
+            for (int i = 0; i < inst.length; i++) {
+                if (!inst[i].trim().equals("")) {
+                    stmt.executeUpdate(inst[i]);
+                    System.out.println(">>" + inst[i]);
+                }
+            }
+            stmt.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
