@@ -25,7 +25,7 @@ public class testAuthentication {
     @Test
     public void testAdminLoginCorrect(){
         AdminLoginManager loginManage = new AdminLoginManager();
-        assertEquals(loginManage.verifyCredentials("Jason", "1234"), 1);
+        assertEquals(loginManage.verifyCredentials("Griffin", "1234"), 1);
     }
 
     @Test
