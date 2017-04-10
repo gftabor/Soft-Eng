@@ -59,8 +59,9 @@ public class pathFindingMenuController extends controllers.mapScene{
     private Circle btK;
 
     private int selectionState = 0;
-    private controllers.MapOverlay graph;
+    private int currentFloor;
 
+    private controllers.MapOverlay graph;
     private MapController mapController = MapController.getInstance();
 
 
@@ -72,7 +73,11 @@ public class pathFindingMenuController extends controllers.mapScene{
     public void initialize() {
         graph = new controllers.MapOverlay(node_Plane,(mapScene) this);
         MapController.getInstance().requestMapCopy();
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4),false);
+
+        //set current floor
+        //we will use floor 1 as default
+        currentFloor = 1;
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
     }
     public void cancelButton_Clicked(){
         MapController.getInstance().requestMapCopy();
@@ -150,26 +155,34 @@ public class pathFindingMenuController extends controllers.mapScene{
                 //CODE HERE!!!!!!!
                 if (newValue.intValue() == 0) {
                     System.out.println("Showing first floor");
+                    currentFloor = 1;
 
                 }else if(newValue.intValue() == 1){
                     System.out.println("Showing second floor");
+                    currentFloor = 2;
 
                 }else if(newValue.intValue() == 2){
                     System.out.println("Showing third floor");
+                    currentFloor = 3;
 
                 }else if(newValue.intValue() == 3){
                     System.out.println("Showing fourth floor");
+                    currentFloor = 4;
 
                 }else if(newValue.intValue() == 4){
                     System.out.println("Showing fifth floor");
+                    currentFloor = 5;
 
                 }else if(newValue.intValue() == 5){
                     System.out.println("Showing sixth floor");
+                    currentFloor = 6;
 
                 }else if(newValue.intValue() == 6){
                     System.out.println("Showing seventh floor");
+                    currentFloor = 7;
 
                 }
+                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
             }
         });
 
