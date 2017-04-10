@@ -1,7 +1,6 @@
 package database;
 
 import DBController.DatabaseController;
-import DBController.testDatabaseController;
 import org.junit.*;
 
 import java.sql.*;
@@ -11,28 +10,30 @@ import static org.junit.Assert.*;
  * Created by jasonashton on 4/3/17.
  */
 public class testProfessional {
-    testDatabaseController databaseController = testDatabaseController.getInstance();
-    int ID;
-    String firstName = "TEST";
-    String lastName = "TEST";
-    int x = 0;
-    int y = 0;
-    int floor = 0;
-    boolean ishidden = false;
-    boolean enabled = true;
-    String type = "TEST";
-    String name = "TEST";
-    String roomnum = "TEST";
+    static DatabaseController databaseController = DatabaseController.getInstance();
+    static int ID;
+    static String firstName = "TEST";
+    static String lastName = "TEST";
+    static int x = 0;
+    static int y = 0;
+    static int floor = 0;
+    static boolean ishidden = false;
+    static boolean enabled = true;
+    static String type = "TEST";
+    static String name = "TEST";
+    static String roomnum = "TEST";
 
-    @Before
-    public void setUp(){
-        databaseController.populateDB();
+
+    @BeforeClass
+    public static void setUp(){
+        databaseController.setDbName("TestDB");
+        databaseController.startDB();
         assertTrue(databaseController.newNode(x, y, floor, ishidden, enabled, type, name, roomnum));
     }
 
-    @After
-    public void tearDown(){
-        databaseController.clearDB();
+    @AfterClass
+    public static void tearDown(){
+        databaseController.closeDB();
     }
 
     @Test

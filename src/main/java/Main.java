@@ -29,7 +29,7 @@ public class Main extends Application {
 
 
         DatabaseController databaseController = DatabaseController.getInstance();
-        databaseController.startDB();
+        //databaseController.startDB();
 
     }
 

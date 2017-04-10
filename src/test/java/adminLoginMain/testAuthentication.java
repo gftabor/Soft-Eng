@@ -1,27 +1,31 @@
 package adminLoginMain;
 
 import DBController.DatabaseController;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+
 import static org.junit.Assert.assertEquals;
-import adminLoginMain.AdminLoginManager;
 
 /**
  * Created by jasonashton on 4/1/17.
  */
 public class testAuthentication {
-    DatabaseController databaseController = DatabaseController.getInstance();
+    static DatabaseController databaseController = DatabaseController.getInstance();
 
-    @Before
-    public void setUp(){
+    @BeforeClass
+    public static void setUp(){
+        databaseController.setDbName("TestDB");
         databaseController.startDB();
+    }
+
+    @AfterClass
+    public static void tearDown(){
+        databaseController.closeDB();
     }
 
     @Test
     public void testAdminLoginCorrect(){
         AdminLoginManager loginManage = new AdminLoginManager();
-        assertEquals(loginManage.verifyCredentials("Griffin", "1234"), 1);
+        assertEquals(loginManage.verifyCredentials("Jason", "1234"), 1);
     }
 
     @Test
@@ -34,10 +38,5 @@ public class testAuthentication {
     public void testAdminLoginWrongPassword(){
         AdminLoginManager loginManage = new AdminLoginManager();
         assertEquals(loginManage.verifyCredentials("Griffin", "0000"), 0);
-    }
-
-    @After
-    public void tearDown(){
-        databaseController.closeDB();
     }
 }
