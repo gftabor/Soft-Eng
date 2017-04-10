@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
+import java.lang.Math;
+
 /**
  * Created by griffincecil on 4/1/2017.
  */
@@ -105,6 +107,45 @@ public class Pathfinder {
             return endNode.getTotalCost();
         System.out.println("not possible");
         return -1;
+    }
+
+    //in progress
+    public void getTextDirections(ArrayList<Edge> path) {
+        path = this.path;
+    }
+
+
+    //finds angle between two edges by finding the unit vectors for each
+    //taking the dot product between the unit vectors
+    //and taking the arccos() of the dot product
+    private double getAngle(Edge e1, Edge e2) {
+
+        //find unit vectors
+        ArrayList<Double> e1comp = getUnitVector(e1);
+        ArrayList<Double> e2comp = getUnitVector(e2);
+
+        //find dot product
+        double dot = e1comp.get(0)*e2comp.get(0) + e1comp.get(1)*e2comp.get(1);
+
+        double angle = Math.acos(dot);
+
+        return angle;
+    }
+
+    private ArrayList<Double> getUnitVector(Edge e1) {
+        double xcomp = e1.getEndNode().getPosX() - e1.getStartNode().getPosX();
+        double ycomp = e1.getEndNode().getPosY() - e1.getStartNode().getPosY();
+
+        double magnitude = Math.sqrt(Math.pow(xcomp, 2.0) + Math.pow(ycomp, 2.0));
+
+        //list of components of unit vector
+        ArrayList<Double> unitComponents = new ArrayList<>();
+        unitComponents.add(xcomp/magnitude);
+        unitComponents.add(ycomp/magnitude);
+
+        return unitComponents;
+
+
     }
 
 }
