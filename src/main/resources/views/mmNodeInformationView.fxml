@@ -4,8 +4,9 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -33,7 +34,7 @@
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <HBox>
+                  <HBox prefHeight="53.0" prefWidth="1231.0">
                      <children>
                         <Label fx:id="currentAdmin_Label" text="Admin:">
                            <HBox.margin>
@@ -44,7 +45,7 @@
                            </font>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="mainMenu_Button" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="40.0" prefWidth="170.0" text="Main Menu">
+                        <Button fx:id="mainMenu_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="40.0" prefWidth="170.0" text="Main Menu">
                            <HBox.margin>
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
@@ -52,7 +53,7 @@
                               <Font size="23.0" />
                            </font>
                         </Button>
-                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="40.0" prefWidth="180.0" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="41.0" prefWidth="165.0" text="EMERGENCY">
                            <HBox.margin>
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
@@ -61,6 +62,9 @@
                            </font>
                         </Button>
                      </children>
+                     <VBox.margin>
+                        <Insets right="40.0" />
+                     </VBox.margin>
                   </HBox>
                </children>
             </VBox>
@@ -81,21 +85,31 @@
                </children>
             </HBox>
          </bottom>
-         <right>
-            <VBox prefHeight="547.0" prefWidth="471.0" BorderPane.alignment="CENTER">
+         <left>
+            <VBox prefHeight="544.0" prefWidth="386.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox prefHeight="36.0" prefWidth="471.0">
+                  <HBox>
                      <children>
-                        <Label prefHeight="31.0" prefWidth="115.0" text="Mode:">
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label text="Manage Directory">
                            <font>
-                              <Font name="System Bold Italic" size="26.0" />
+                              <Font name="System Bold Italic" size="36.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="mode_ChoiceBox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="234.0">
-                           <HBox.margin>
-                              <Insets bottom="3.0" left="80.0" right="5.0" top="3.0" />
-                           </HBox.margin>
-                        </ChoiceBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="3.0" right="3.0" top="3.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="search_textField" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="200.0" promptText="search">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
@@ -115,122 +129,182 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label text="Title:">
+                        <Label prefWidth="140.0" text="Mode:">
+                           <font>
+                              <Font name="System Bold Italic" size="23.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
+                           </HBox.margin>
+                        </Label>
+                        <ChoiceBox fx:id="mode_ChoiceBox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0">
+                           <HBox.margin>
+                              <Insets bottom="1.0" left="40.0" right="1.0" top="1.0" />
+                           </HBox.margin>
+                        </ChoiceBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Label prefWidth="140.0" text="Title:">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                            <font>
-                              <Font name="System Bold Italic" size="26.0" />
+                              <Font name="System Bold Italic" size="23.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="title_choiceBox" disable="true" prefHeight="40.0" prefWidth="234.0">
+                        <ChoiceBox fx:id="title_choiceBox" disable="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0">
                            <HBox.margin>
-                              <Insets bottom="5.0" left="127.0" right="5.0" top="5.0" />
+                              <Insets bottom="5.0" left="40.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </ChoiceBox>
                      </children>
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets top="5.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox />
-                  <HBox />
-                  <HBox />
                   <HBox>
                      <children>
-                        <Label prefHeight="42.0" prefWidth="67.0" text="ID:">
+                        <Label minWidth="-Infinity" prefWidth="140.0" text="Department:">
                            <font>
-                              <Font name="System Bold Italic" size="26.0" />
+                              <Font name="System Bold Italic" size="23.0" />
                            </font>
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="id_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="234.0" promptText="ID">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
+                        <TextField fx:id="department_TextField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0">
                            <HBox.margin>
-                              <Insets bottom="5.0" left="125.0" right="5.0" top="5.0" />
+                              <Insets bottom="5.0" left="40.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </TextField>
                      </children>
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefHeight="42.0" prefWidth="151.0" text="First Name:">
+                        <Label prefWidth="140.0" text="Room:">
+                           <font>
+                              <Font name="System Bold Italic" size="23.0" />
+                           </font>
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
-                           <font>
-                              <Font name="System Bold Italic" size="26.0" />
-                           </font>
                         </Label>
-                        <TextField fx:id="Firstname_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="234.0" promptText="First">
+                        <TextField fx:id="room_TextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="Room">
                            <HBox.margin>
-                              <Insets bottom="5.0" left="41.0" right="5.0" top="5.0" />
+                              <Insets bottom="5.0" left="40.0" right="5.0" top="5.0" />
                            </HBox.margin>
                            <font>
-                              <Font size="20.0" />
+                              <Font size="18.0" />
                            </font>
                         </TextField>
                      </children>
                   </HBox>
                   <HBox>
                      <children>
-                        <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="156.0" text="Last Name:">
+                        <Label prefWidth="140.0" text="ID:">
                            <font>
-                              <Font name="System Bold Italic" size="26.0" />
+                              <Font name="System Bold Italic" size="23.0" />
                            </font>
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="lastName_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="234.0" promptText="Last">
+                        <TextField fx:id="id_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="ID">
                            <font>
-                              <Font size="20.0" />
+                              <Font size="18.0" />
                            </font>
                            <HBox.margin>
-                              <Insets bottom="5.0" left="38.0" right="5.0" top="5.0" />
+                              <Insets bottom="5.0" left="40.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </TextField>
                      </children>
                   </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox>
                      <children>
-                        <Button fx:id="cancel_Button" mnemonicParsing="false" onMouseClicked="#cancelButton_Clicked" prefHeight="40.0" prefWidth="120.0" text="Cancel">
+                        <Label minHeight="-Infinity" minWidth="-Infinity" prefWidth="140.0" text="First Name:">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
+                           </HBox.margin>
                            <font>
-                              <Font size="23.0" />
+                              <Font name="System Bold Italic" size="23.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="Firstname_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="First Name">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="40.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="140.0" text="Last Name:">
+                           <font>
+                              <Font name="System Bold Italic" size="23.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="lastName_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" onAction="#submitButton_Clicked" prefHeight="40.0" prefWidth="180.0" promptText="Last Name">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="40.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Button fx:id="cancel_Button" mnemonicParsing="false" onMouseClicked="#cancelButton_Clicked" prefHeight="20.0" prefWidth="100.0" text="Cancel">
+                           <font>
+                              <Font size="16.0" />
                            </font>
                         </Button>
-                        <Region prefHeight="100.0" prefWidth="130.0" HBox.hgrow="ALWAYS" />
-                        <Button fx:id="submit_Button" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" prefHeight="40.0" prefWidth="120.0" text="Submit">
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="submit_Button" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" prefHeight="20.0" prefWidth="100.0" text="Submit">
                            <font>
-                              <Font size="23.0" />
+                              <Font size="16.0" />
                            </font>
                         </Button>
                      </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                     </VBox.margin>
                   </HBox>
                </children>
                <BorderPane.margin>
                   <Insets bottom="5.0" left="5.0" right="10.0" top="20.0" />
                </BorderPane.margin>
             </VBox>
-         </right>
-         <left>
-            <VBox prefHeight="567.0" prefWidth="547.0" BorderPane.alignment="CENTER">
+         </left>
+         <right>
+            <VBox prefHeight="569.0" prefWidth="864.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox prefHeight="583.0" prefWidth="422.0">
-                     <children>
-                        <TreeView fx:id="directory_TreeView" prefHeight="385.0" prefWidth="520.0">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin></TreeView>
-                     </children>
-                  </HBox>
+                  <TableView fx:id="Table_TableView" fixedCellSize="0.0" nodeOrientation="LEFT_TO_RIGHT" pickOnBounds="false" prefHeight="567.0" prefWidth="864.0" tableMenuButtonVisible="true">
+                     <columns>
+                        <TableColumn fx:id="ID_TableColumn" editable="false" prefWidth="76.73846435546875" resizable="false" text="ID" />
+                        <TableColumn fx:id="firstName_TableColumn" editable="false" prefWidth="164.75283813476562" resizable="false" text="First Name" />
+                        <TableColumn fx:id="lastName_TableColumn" editable="false" prefWidth="178.24713134765625" resizable="false" text="Last Name" />
+                        <TableColumn fx:id="title_TableColumn" editable="false" prefWidth="131.224609375" resizable="false" text="Title" />
+                        <TableColumn fx:id="department_TableColumn" editable="false" minWidth="0.0" prefWidth="147.82012939453125" resizable="false" text="Department" />
+                        <TableColumn fx:id="room_TableColumn" editable="false" minWidth="0.0" prefWidth="152.48291015625" resizable="false" text="Room" />
+                     </columns>
+                     <opaqueInsets>
+                        <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                     </opaqueInsets>
+                  </TableView>
                </children>
             </VBox>
-         </left>
+         </right>
       </BorderPane>
    </children>
 </AnchorPane>
