@@ -73,7 +73,7 @@ public class pathFindingMenuController extends controllers.mapScene{
     public void initialize() {
         graph = new controllers.MapOverlay(node_Plane,(mapScene) this);
         MapController.getInstance().requestMapCopy();
-
+        setFloorChoices();
         //set current floor
         //we will use floor 1 as default
         currentFloor = 1;
