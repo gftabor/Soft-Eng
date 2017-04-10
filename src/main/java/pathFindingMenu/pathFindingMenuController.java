@@ -122,21 +122,27 @@ public class pathFindingMenuController extends controllers.mapScene{
             //place the black marker at the starting location
             mapController.markNode(x, y, 1, currentFloor);
             selectionState++;
-            if(start != null)
-                start.setFill(Color.BLACK);
-            if(end != null)
-                end.setFill(Color.BLACK);
+            if(start != null) {
+                start.setStroke(Color.BLACK);
+                start.setStrokeWidth(1);
+            }
+            if(end != null) {
+                end.setStroke(Color.BLACK);
+                end.setStrokeWidth(1);
+            }
             graph.wipeEdgeLines();
             start =c;
             //color
-            c.setFill(Color.MAGENTA);
+            c.setStrokeWidth(2.5);
+            c.setStroke(Color.ORANGERED);
         } else if (selectionState == 1){
             //place the red marker at end location
             mapController.markNode(x, y, 2, currentFloor);
             selectionState++;
             end = c;
             //color
-            c.setFill(Color.BROWN);
+            c.setStrokeWidth(2.5);
+            c.setStroke(Color.FUCHSIA);
         } else {
             //do nothing
         }
