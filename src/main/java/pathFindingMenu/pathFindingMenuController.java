@@ -120,7 +120,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         System.out.println("Node at (" + x + ", " + y + ") selected during state: " + selectionState);
         if (selectionState == 0) {
             //place the black marker at the starting location
-            mapController.markNode(x, y, 1);
+            mapController.markNode(x, y, 1, currentFloor);
             selectionState++;
             if(start != null)
                 start.setFill(Color.BLACK);
@@ -132,7 +132,7 @@ public class pathFindingMenuController extends controllers.mapScene{
             c.setFill(Color.MAGENTA);
         } else if (selectionState == 1){
             //place the red marker at end location
-            mapController.markNode(x, y, 2);
+            mapController.markNode(x, y, 2, currentFloor);
             selectionState++;
             end = c;
             //color
