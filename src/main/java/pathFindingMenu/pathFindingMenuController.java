@@ -83,7 +83,7 @@ public class pathFindingMenuController extends controllers.mapScene{
     public void cancelButton_Clicked(){
         //MapController.getInstance().requestMapCopy();
         selectionState = 0;
-        //Remove black and red dots from map
+        //Remove colored dots from map
 
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
 

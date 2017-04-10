@@ -82,7 +82,7 @@ public class MapOverlay {
         location.setLayoutX(nodeX);
         location.setLayoutY(nodeY);
         location.toFront();
-        
+
         if (!enabled) {
             location.setFill(Color.RED);
         } else if(hidden) {
