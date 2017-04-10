@@ -238,6 +238,23 @@ public class DatabaseController {
         return true;
     }
 
+    // gets node with given room name (room names are unique)
+    public ResultSet getNodeWithName(String roomName){
+        ResultSet resultSet = null;
+        System.out.println("Getting node. room name: " + roomName);
+        try{
+            String query = "SELECT * FROM NODE WHERE ROOMNUM = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, roomName);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
     /*******************************************************************************
      * EDGE actions
      *
