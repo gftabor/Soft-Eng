@@ -32,7 +32,7 @@ public class testService {
     public static void setUp(){
         databaseController.setDbName("TestDB");
         databaseController.startDB();
-        assertTrue(databaseController.newNode(x, y, floor, ishidden, enabled, type, name, roomnum));
+        //
     }
 
     @AfterClass
@@ -44,6 +44,7 @@ public class testService {
 
     @Test
     public void testAddDelete(){
+        assertTrue(databaseController.newNode(x, y, floor, ishidden, enabled, type, name, roomnum));
         //add professional
         assertTrue(databaseController.newService(name, type, x, y, floor));
 
