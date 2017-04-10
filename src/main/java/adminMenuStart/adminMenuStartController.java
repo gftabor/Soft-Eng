@@ -112,6 +112,17 @@ public class adminMenuStartController extends controllers.AbsController{
          controller.setUpTreeView();
          controller.setUser(username_Label.getText());
 
+        //sets the current language
+        controller.setC_language(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+
     }
 
     public void mapManagementButton_Clicked(){
@@ -124,8 +135,6 @@ public class adminMenuStartController extends controllers.AbsController{
         mapManagementFloorAndMode.mmFloorAndModeController controller = loader.getController();
         controller.setUserString(username_Label.getText());
 
-
-        //Set the username label
     }
 
     //Set the username coming from the main login

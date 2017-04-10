@@ -95,6 +95,33 @@ public class mmNodeInformationController extends controllers.AbsController {
     @FXML
     private TextField search_textField;
 
+    @FXML
+    private Label title_Label;
+
+    @FXML
+    private Label subTitle_Label;
+
+    @FXML
+    private Label Mode_Label;
+
+    @FXML
+    private Label docTitle_Label;
+
+    @FXML
+    private Label department_Label;
+
+    @FXML
+    private Label room_Label;
+
+    @FXML
+    private Label firstName_Label;
+
+    @FXML
+    private Label lastName_Label;
+
+
+
+
     int c_title;
 
     int ID;
@@ -111,7 +138,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     // Flag for current mode chosen (add, edit, remove)
     int c_mode = -1;
 
-    //set to english by defualt
+    //set to english by default
     int c_language = 0;
 
 
@@ -389,6 +416,87 @@ public class mmNodeInformationController extends controllers.AbsController {
         TextFields.bindAutoCompletion(room_TextField,rooms);
 
         TextFields.bindAutoCompletion(department_TextField, profiles);
+    }
+
+
+
+    //sets the current language to the given language
+    public void setC_language(int i){
+        c_language = i;
+    }
+
+    //Changes the buttons and labels to english
+    public void englishButtons_Labels(){
+        //Buttons
+        mainMenu_Button.setText("Main Menu");
+        emergency_Button.setText("EMERGENCY");
+        submit_Button.setText("Submit");
+        cancel_Button.setText("Clear");
+
+        //Labels
+        title_Label.setText("Dircetory Management");
+        subTitle_Label.setText("Manage Directory");
+        Mode_Label.setText("Mode:");
+        docTitle_Label.setText("Title:");
+        department_Label.setText("Department:");
+        room_Label.setText("Room:");
+        firstName_Label.setText("First Name");
+        lastName_Label.setText("Last Name");
+
+
+        //text fields
+        search_textField.setPromptText("search");
+        room_TextField.setPromptText("room");
+        Firstname_TextField.setPromptText("First Name");
+        lastName_TextField.setPromptText("Last Name");
+
+        //Table columns
+        firstName_TableColumn.setText("First Name");
+        lastName_TableColumn.setText("Last Name");
+        title_TableColumn.setText("Title");
+        department_TableColumn.setText("Department");
+        room_TableColumn.setText("Room");
+
+
+
+    }
+
+    //Changes the buttons and labels to spanish
+    public void spanishButtons_Labels(){
+
+        //Buttons
+        mainMenu_Button.setText("Menú Principal ");
+        emergency_Button.setText("EMERGENCIA");
+        submit_Button.setText("Listo");
+        cancel_Button.setText("Borrar");
+
+
+        //Labels
+        title_Label.setText("Directorio");
+        subTitle_Label.setText("Control de Directorio");
+        Mode_Label.setText("Modo:");
+        docTitle_Label.setText("Título");
+        department_Label.setText("Departamento:");
+        room_Label.setText("Habitación:");
+        firstName_Label.setText("Nombre");
+        lastName_Label.setText("Appelido");
+
+
+        //text fields
+        search_textField.setPromptText("busca");
+        room_TextField.setPromptText("Habitación");
+        Firstname_TextField.setPromptText("Nombre");
+        lastName_TextField.setPromptText("Apellido");
+
+        //Table columns
+        firstName_TableColumn.setText("Nombre");
+        lastName_TableColumn.setText("Apellido");
+        title_TableColumn.setText("Título");
+        department_TableColumn.setText("Departamento");
+        room_TableColumn.setText("Habitación");
+
+
+
     }
 
 }
