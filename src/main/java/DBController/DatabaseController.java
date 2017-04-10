@@ -20,12 +20,6 @@ public class DatabaseController {
     protected Connection conn;
     Statement stmt;
 
-    /*
-    public DatabaseController() {
-        startDB();
-    }
-    */
-
     public void setDbName(String dbName) {
         this.dbName = dbName;
     }
