@@ -18,7 +18,7 @@
          <center>
             <VBox alignment="CENTER" maxWidth="500.0" prefHeight="324.0" prefWidth="337.0" style="-fx-background-color: #955e83; -fx-background-radius: 5;" BorderPane.alignment="CENTER">
                <children>
-                  <Label text="Admin Login" textFill="WHITE">
+                  <Label fx:id="adminTitle_Label" text="Admin Login" textFill="WHITE">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -44,12 +44,12 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </PasswordField>
-                  <Button fx:id="logIn_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefHeight="26.0" prefWidth="163.0" text="Login">
+                  <Button fx:id="logIn_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefHeight="26.0" prefWidth="300.0" text="Login">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="mainMenu_Button" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="26.0" prefWidth="163.0" text="Main Menu">
+                  <Button fx:id="mainMenu_Button" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="26.0" prefWidth="300.0" text="Main Menu">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
