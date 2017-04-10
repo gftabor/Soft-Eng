@@ -361,7 +361,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     public void setTitleChoices() {
 
-        title_ChoiceBox.getItems().addAll("Doctor's Office", "Food Service", "Restroom");
+        title_ChoiceBox.getItems().addAll("Doctor's Office", "Food Service", "Restroom", "Elevator", "Stair",
+                "Information", "Laboratory", "Waiting Room");
     }
 
     public void create_Button() {
