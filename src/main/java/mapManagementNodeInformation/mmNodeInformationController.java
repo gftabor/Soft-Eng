@@ -111,6 +111,8 @@ public class mmNodeInformationController extends controllers.AbsController {
     // Flag for current mode chosen (add, edit, remove)
     int c_mode = -1;
 
+    //set to english by defualt
+    int c_language = 0;
 
 
     //get an instance of database controller
@@ -127,7 +129,19 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     //switches to the emergency scene
     public void emergencyButton_Clicked() {
-        switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+        emergency.emergencyController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+
     }
 
     //switches to main menu

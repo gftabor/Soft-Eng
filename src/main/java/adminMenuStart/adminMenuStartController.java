@@ -34,6 +34,9 @@ public class adminMenuStartController extends controllers.AbsController{
     @FXML
     private Button mapManagement_Button;
 
+    //Set to english by default
+    int c_language = 0;
+
 
     public void signOutButton_Clicked(){
         System.out.println("The user has clicked the sign out button");
@@ -46,6 +49,17 @@ public class adminMenuStartController extends controllers.AbsController{
     public void emergencyButton_Clicked(){
         System.out.println("The user has clicked the emergency button");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+        emergency.emergencyController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+
 
     }
 

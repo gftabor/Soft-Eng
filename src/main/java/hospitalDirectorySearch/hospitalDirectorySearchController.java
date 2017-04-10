@@ -83,6 +83,9 @@ public class hospitalDirectorySearchController extends controllers.AbsController
     //Flag to check if the user has selected a first and second choice
     int flag = 0;
 
+    //Set to englihs by default
+    int c_language = 0;
+
 
     //get an instance of database controller
     DatabaseController databaseController = DatabaseController.getInstance();
@@ -97,7 +100,19 @@ public class hospitalDirectorySearchController extends controllers.AbsController
 
     //
     public void emergencyButton_Clicked(){
-        switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+        emergency.emergencyController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+
     }
 
     //
