@@ -11,7 +11,7 @@ import static junit.framework.TestCase.*;
  */
 public class testTestDB {
 
-    testDatabaseController testDBController = new testDatabaseController();
+    testDatabaseController testDBController = testDatabaseController.getInstance();
 
     @Before
     public void startDB(){
