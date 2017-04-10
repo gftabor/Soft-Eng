@@ -1,6 +1,5 @@
 package patientMenuStart;
 
-import controllers.MapController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -9,8 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-
-import java.util.HashMap;
 
 
 /**
@@ -77,11 +74,7 @@ public class patientMenuStartController extends controllers.AbsController{
     public void pathFindingButton_Clicked(){
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/pathFindingMenuView.fxml");
         pathFindingMenu.pathFindingMenuController controller = loader.getController();
-        MapController.getInstance().requestFloorMapCopy();
-        MapController.getInstance().requestMapCopy();
-        HashMap<Integer, controllers.Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
         controller.setUserString("");
-        controller.setFloorChoices();
         //sends the current language to the next screen
         //set up english labels
         if(c_language == 0){
