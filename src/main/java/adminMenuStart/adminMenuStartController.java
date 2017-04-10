@@ -142,6 +142,7 @@ public class adminMenuStartController extends controllers.AbsController{
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/mmFloorAndModeView.fxml");
         //Get the controller of the the scene
         mapManagementFloorAndMode.mmFloorAndModeController controller = loader.getController();
+        //Set the username label
         controller.setUserString(username_Label.getText());
         //sets the current language
         controller.setC_language(c_language);
@@ -154,6 +155,8 @@ public class adminMenuStartController extends controllers.AbsController{
             controller.spanishButtons_Labels();
         }
 
+        //Set the floor choices
+        controller.setFloorChoices();
 
     }
 

@@ -2,9 +2,12 @@ package pathFindingMenu;
 
 import controllers.MapController;
 import controllers.mapScene;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -39,6 +42,10 @@ public class pathFindingMenuController extends controllers.mapScene{
     @FXML
     private Label currentFloor_Label;
 
+    @FXML
+    private ChoiceBox<String> floor_ChoiceBox;
+
+
 
     @FXML
     private Label username_Label;
@@ -62,8 +69,9 @@ public class pathFindingMenuController extends controllers.mapScene{
     private Circle btK;
 
     private int selectionState = 0;
-    private controllers.MapOverlay graph;
+    private int currentFloor;
 
+    private controllers.MapOverlay graph;
     private MapController mapController = MapController.getInstance();
 
 
@@ -90,12 +98,23 @@ public class pathFindingMenuController extends controllers.mapScene{
     public void initialize() {
         graph = new controllers.MapOverlay(node_Plane,(mapScene) this);
         MapController.getInstance().requestMapCopy();
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4),false);
+        setFloorChoices();
+        //set current floor
+        //we will use floor 1 as default
+        currentFloor = 1;
+        currentFloor_Label.setText("1");
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
     }
     public void cancelButton_Clicked(){
-        MapController.getInstance().requestMapCopy();
+        //MapController.getInstance().requestMapCopy();
         selectionState = 0;
         //Remove black and red dots from map
+
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+
+        //wipe line from map
+        graph.wipeEdgeLines();
+
     }
 
     public void submitButton_Clicked(){
@@ -108,7 +127,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         }
         selectionState=0;
         System.out.println("The user has clicked the submit Button");
-        cancelButton_Clicked();
+        //MapController.getInstance().requestMapCopy();
     }
 
     public void mainMenuButton_Clicked(){
@@ -151,23 +170,29 @@ public class pathFindingMenuController extends controllers.mapScene{
         System.out.println("Node at (" + x + ", " + y + ") selected during state: " + selectionState);
         if (selectionState == 0) {
             //place the black marker at the starting location
-            mapController.markNode(x, y, 1);
+            mapController.markNode(x, y, 1, currentFloor);
             selectionState++;
-            if(start != null)
-                start.setFill(Color.BLACK);
-            if(end != null)
-                end.setFill(Color.BLACK);
+            if(start != null) {
+                start.setStroke(Color.BLACK);
+                start.setStrokeWidth(1);
+            }
+            if(end != null) {
+                end.setStroke(Color.BLACK);
+                end.setStrokeWidth(1);
+            }
             graph.wipeEdgeLines();
             start =c;
             //color
-            c.setFill(Color.MAGENTA);
+            c.setStrokeWidth(2.5);
+            c.setStroke(Color.ORANGERED);
         } else if (selectionState == 1){
             //place the red marker at end location
-            mapController.markNode(x, y, 2);
+            mapController.markNode(x, y, 2, currentFloor);
             selectionState++;
             end = c;
             //color
-            c.setFill(Color.BROWN);
+            c.setStrokeWidth(2.5);
+            c.setStroke(Color.FUCHSIA);
         } else {
             //do nothing
         }
@@ -200,6 +225,7 @@ public class pathFindingMenuController extends controllers.mapScene{
 
     }
 
+
     //switches all teh labels to spanish
     public void spanishButtons_Labels() {
         //change the current language to spanish
@@ -221,6 +247,27 @@ public class pathFindingMenuController extends controllers.mapScene{
     //sets the current language given information form other screens
     public void setC_language(int i){
         c_language = i;
+    }
+
+
+    //Sets the map of the desired floor
+    public void setFloorChoices(){
+        floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7");
+        floor_ChoiceBox.getSelectionModel().select(0);
+        floor_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+
+                System.out.println(newValue);
+                //Print the floors accordingly
+                //CODE HERE!!!!!!!
+
+                currentFloor = newValue.intValue() + 1;
+                currentFloor_Label.setText(Integer.toString(currentFloor));
+                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+            }
+        });
+
     }
 
 }
