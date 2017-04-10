@@ -2,6 +2,8 @@ package hospitalDirectorySearch;
 
 
 import DBController.DatabaseController;
+import controllers.MapController;
+import controllers.Node;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -19,6 +21,7 @@ import javafx.scene.control.TableColumn;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.function.Predicate;
 
 
@@ -83,6 +86,13 @@ public class hospitalDirectorySearchController extends controllers.AbsController
     //Flag to check if the user has selected a first and second choice
     int flag = 0;
 
+    boolean invalid_input = false;
+
+
+    //Gets the strings To and From that the users wants to create the path to
+    String from_String = "";
+    String to_String = "";
+
 
     //get an instance of database controller
     DatabaseController databaseController = DatabaseController.getInstance();
@@ -108,6 +118,25 @@ public class hospitalDirectorySearchController extends controllers.AbsController
     //
     public void submitButton_Clicked(){
         System.out.println("The user has clicked the submit button");
+
+        invalid_input = to_String.equals("") || to_String == null || from_String.equals("") || from_String == null;
+
+        if(!invalid_input) {
+            FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/pathFindingMenuView.fxml");
+            pathFindingMenu.pathFindingMenuController controller = loader.getController();
+            MapController.getInstance().requestFloorMapCopy();
+            MapController.getInstance().requestMapCopy();
+            HashMap<Integer, Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
+            controller.setUserString("");
+        }else{
+            //There could be information too
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Submitting information");
+            alert.setContentText("Cannot submit empty information");
+            alert.showAndWait();
+
+        }
+
     }
 
 
@@ -150,10 +179,12 @@ public class hospitalDirectorySearchController extends controllers.AbsController
                 if(event.getClickCount() > 1) {
                     if(flag == 0) {
                         from_TextField.setText(Table_TableView.getSelectionModel().getSelectedItem().getrFirstName());
+                        from_String = Table_TableView.getSelectionModel().getSelectedItem().getrRoom();
                         search_TextField.setText("");
                         flag++;
                     }else if(flag == 1){
                         to_TextField.setText(Table_TableView.getSelectionModel().getSelectedItem().getrFirstName());
+                        to_String = Table_TableView.getSelectionModel().getSelectedItem().getrRoom();
                         search_TextField.setText("");
                         flag++;
                     }else{
