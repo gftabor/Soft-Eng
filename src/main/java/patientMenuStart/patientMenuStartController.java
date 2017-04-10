@@ -172,6 +172,7 @@ public class patientMenuStartController extends controllers.AbsController{
         directory_Button.setText("Directory");
         pathFinding_Button.setText("Map");
         emergency_Button.setText("IN CASE OF EMERGENCY");
+        logIn_Button.setText("Administrator");
 
         //Change the labels
         chooseLanguage_Label.setText("Choose your language");
@@ -187,6 +188,7 @@ public class patientMenuStartController extends controllers.AbsController{
         directory_Button.setText("Directorio");
         pathFinding_Button.setText("Mapa");
         emergency_Button.setText("EN CASO DE EMERGENCIA");
+        logIn_Button.setText("Administrador");
 
         //change the Labels
         chooseLanguage_Label.setText("Escoge tu lenguaje");

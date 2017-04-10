@@ -133,6 +133,16 @@ public class pathFindingMenuController extends controllers.mapScene{
             //Get the controller of the scene
             adminMenuStart.adminMenuStartController controller = loader.getController();
             controller.setUsername(username_Label.getText());
+            //sets the current language
+            controller.setCurrentLanguage(c_language);
+            //set up english labels
+            if(c_language == 0){
+                controller.englishButtons_Labels();
+
+                //set up spanish labels
+            }else if(c_language == 1){
+                controller.spanishButtons_Labels();
+            }
         }
     }
 

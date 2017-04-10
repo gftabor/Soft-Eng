@@ -19,7 +19,7 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label styleClass="title" text="Welcome to Faulkner Hospital">
+                        <Label fx:id="title_Label" styleClass="title" text="Welcome to Faulkner Hospital">
                            <font>
                               <Font name="System Bold Italic" size="54.0" />
                            </font>
@@ -38,7 +38,7 @@
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="SignOut_Button" mnemonicParsing="false" onMouseClicked="#signOutButton_Clicked" prefHeight="40.0" text="Sign Out">
+                        <Button fx:id="SignOut_Button" mnemonicParsing="false" onMouseClicked="#signOutButton_Clicked" prefHeight="40.0" prefWidth="120.0" text="Sign Out">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -66,7 +66,7 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="pathFinding_Button" mnemonicParsing="false" onMouseClicked="#pathFindingButton_Clicked" prefHeight="80.0" prefWidth="300.0" text="PathFinding">
+                        <Button fx:id="pathFinding_Button" mnemonicParsing="false" onMouseClicked="#pathFindingButton_Clicked" prefHeight="90.0" prefWidth="350.0" text="Map">
                            <font>
                               <Font size="26.0" />
                            </font>
@@ -80,7 +80,7 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="hospitalDirectory_Button" mnemonicParsing="false" onMouseClicked="#hospitalDirectoryButton_Clicked" prefHeight="80.0" prefWidth="300.0" text="Hospital Directory">
+                        <Button fx:id="hospitalDirectory_Button" mnemonicParsing="false" onMouseClicked="#hospitalDirectoryButton_Clicked" prefHeight="90.0" prefWidth="350.0" text="Directory Management">
                            <font>
                               <Font size="26.0" />
                            </font>
@@ -94,7 +94,7 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="mapManagement_Button" mnemonicParsing="false" onMouseClicked="#mapManagementButton_Clicked" prefHeight="80.0" prefWidth="300.0" text="Map Management">
+                        <Button fx:id="mapManagement_Button" mnemonicParsing="false" onMouseClicked="#mapManagementButton_Clicked" prefHeight="90.0" prefWidth="350.0" text="Map Management">
                            <font>
                               <Font size="26.0" />
                            </font>
