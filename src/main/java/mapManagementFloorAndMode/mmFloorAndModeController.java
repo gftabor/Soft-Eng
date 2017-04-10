@@ -74,11 +74,14 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     private Node firstNode;
 
-    private Circle lastColored;
+    private Circle lastColoredStart;
+    private Circle lastColoredEnd;
 
     private Circle btK;
 
     private int currentFloor;
+    private int floor1;
+    private int floor2;
 
     public void initialize() {
         setUserString(username_Label.getText());
@@ -112,9 +115,14 @@ public class mmFloorAndModeController extends controllers.mapScene{
         edgesSelected = 0;
 
         //reset last colored stroke to default
-        if (lastColored != null) {
-            lastColored.setStroke(lastColored.getFill());
-            lastColored.setStrokeWidth(1);
+        if (lastColoredStart != null) {
+            lastColoredStart.setStroke(lastColoredStart.getFill());
+            lastColoredStart.setStrokeWidth(1);
+        }
+
+        if (lastColoredEnd != null) {
+            lastColoredEnd.setStroke(lastColoredEnd.getFill());
+            lastColoredEnd.setStrokeWidth(1);
         }
     }
 
@@ -131,16 +139,27 @@ public class mmFloorAndModeController extends controllers.mapScene{
             firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
                     .getNode(nodeEdgeX1, nodeEdgeY1, currentFloor);
             graph.createEdgeLines(firstNode.getEdgeList());
+
+            //color the node as well
+            lastColoredStart = c;
+            c.setStrokeWidth(2.5);
+            c.setStroke(Color.ROYALBLUE);
+
+            //log the floor
+            floor1 = currentFloor;
         } else if (edgesSelected == 2) {
             System.out.println("Edge stage 2");
             //create edge between the two nodes
             nodeEdgeX2 = (int) x;
             nodeEdgeY2 = (int) y;
 
-            lastColored = c;
-
+            //color the node
+            lastColoredEnd = c;
             c.setStrokeWidth(2.5);
             c.setStroke(Color.FUCHSIA);
+
+            //log the floor
+            floor2 = currentFloor;
         }
     }
 
@@ -221,7 +240,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 if (edgesSelected == 2) {
                     System.out.println("Mode = add edge");
                     DBController.DatabaseController.getInstance().newEdge(nodeEdgeX1,
-                            nodeEdgeY1, currentFloor, nodeEdgeX2, nodeEdgeY2, currentFloor);
+                            nodeEdgeY1, floor1, nodeEdgeX2, nodeEdgeY2, floor2);
 
                     System.out.println("added edge");
                 }
@@ -230,7 +249,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 if (edgesSelected == 2) {
                     System.out.println("Mode = add edge");
                     DBController.DatabaseController.getInstance().deleteEdge(nodeEdgeX1,
-                            nodeEdgeY1, currentFloor, nodeEdgeX2, nodeEdgeY2, currentFloor);
+                            nodeEdgeY1, floor1, nodeEdgeX2, nodeEdgeY2, floor2);
                     System.out.println("added edge");
                 }
                 System.out.println("Mode = remove edge");
@@ -240,13 +259,17 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 break;
         }
         controllers.MapController.getInstance().requestMapCopy();
-        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true);
+
+        //show edge lines to tell user change has been made
+        //check so edge lines do not show up on wrong floor
+        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true);
         edgesSelected = 0;
 
 
         //try to display last touched edge list
         //requery firstnode to reset edge list
-        if(firstNode != null) {
+        //check so edge lines do not show up on wrong floor
+        if(firstNode != null && floor1 == floor2) {
             firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
                     .getNode(firstNode.getPosX(), firstNode.getPosY(), firstNode.getFloor());
             //don't know if above method is successful
