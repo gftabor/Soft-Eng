@@ -14,6 +14,7 @@ public class testDatabaseSetup {
     //DatabaseController dbControl = new DatabaseController();
     DatabaseController databaseController = DatabaseController.getInstance();
 
+
     @Test
     public void checkSetup(){
         assertTrue(databaseController.startDB());
