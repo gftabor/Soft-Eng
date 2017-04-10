@@ -86,8 +86,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
         setTitleChoices();
 
         //set default floor to start
-        //we will use floor 4 for now
-        currentFloor = 4;
+        //we will use floor 1 for now
+        currentFloor = 1;
 
         graph = new controllers.MapOverlay(admin_FloorPane,(mapScene) this);
         MapController.getInstance().requestMapCopy();
@@ -240,7 +240,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 break;
         }
         controllers.MapController.getInstance().requestMapCopy();
-        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(4),true);
+        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true);
         edgesSelected = 0;
 
 
