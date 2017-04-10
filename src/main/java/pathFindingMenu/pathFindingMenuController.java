@@ -135,6 +135,7 @@ public class pathFindingMenuController extends controllers.mapScene{
             controller.setUsername(username_Label.getText());
             //sets the current language
             controller.setCurrentLanguage(c_language);
+            controller.setLanguageChoices();
             //set up english labels
             if(c_language == 0){
                 controller.englishButtons_Labels();
@@ -206,7 +207,7 @@ public class pathFindingMenuController extends controllers.mapScene{
 
         //change the Buttons
         emergency_Button.setText("EMERGENCIA");
-        mainMenu_Button.setText("Menu Principal");
+        mainMenu_Button.setText("Menú Principal");
         submit_Button.setText("Listo");
         cancel_Button.setText("Borrar");
 

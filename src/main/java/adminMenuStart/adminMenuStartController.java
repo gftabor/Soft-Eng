@@ -1,9 +1,12 @@
 package adminMenuStart;
 import controllers.MapController;
 import controllers.Node;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
@@ -36,6 +39,12 @@ public class adminMenuStartController extends controllers.AbsController{
 
     @FXML
     private Label title_Label;
+
+    @FXML
+    private Label chooseLanguage_Label;
+
+    @FXML
+    private ChoiceBox<String> languages_ChoiceBox;
 
     //Set to english by default
     int c_language = 0;
@@ -134,17 +143,67 @@ public class adminMenuStartController extends controllers.AbsController{
         //Get the controller of the the scene
         mapManagementFloorAndMode.mmFloorAndModeController controller = loader.getController();
         controller.setUserString(username_Label.getText());
+        //sets the current language
+        controller.setC_language(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+
 
     }
 
     //Set the username coming from the main login
     public void setUsername_Admin(String user){
-        username_Label.setText("Admin: " + user);
+        username_Label.setText(user);
     }
 
     //Set the username coming from a scene
     public void setUsername(String user){
         username_Label.setText(user);
+    }
+
+    //set the choices for the user at the beginning of the scene
+    public void setLanguageChoices(){
+        //Makes sure you only set the choices once
+
+        //sets the choices and sets the current language as the top choice
+        languages_ChoiceBox.getItems().addAll("English", "Spanish");
+        languages_ChoiceBox.getSelectionModel().select(c_language);
+        //makes sure to not do this again
+
+        //Checks if the user has decided to change languages
+        languages_ChoiceBox.getSelectionModel().selectedIndexProperty()
+                .addListener(new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                        //make sure you only execute the switching screen once
+                            //System.out.println(newValue);
+                            //Checks if the user wants english language
+                            if (newValue.intValue() == 0) {
+                                //System.out.println("English");
+                                //Updates the screen and switches the labels and Buttons to english
+                                FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
+                                adminMenuStart.adminMenuStartController controller = loader.getController();
+                                controller.englishButtons_Labels();
+                                controller.setUsername_Admin(username_Label.getText());
+                                controller.setLanguageChoices();
+                                //checks if the user wants spanish
+                            } else if (newValue.intValue() == 1) {
+                                //System.out.println("Spanish");
+                                //Updates the screen and switches teh labels and Buttons to spanish
+                                FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
+                                adminMenuStart.adminMenuStartController controller = loader.getController();
+                                controller.spanishButtons_Labels();
+                                controller.setUsername_Admin(username_Label.getText());
+                                controller.setLanguageChoices();
+                            }
+                    }
+                });
     }
 
 
