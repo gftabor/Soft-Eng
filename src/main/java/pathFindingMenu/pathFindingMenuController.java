@@ -74,6 +74,17 @@ public class pathFindingMenuController extends controllers.mapScene{
     public void emergencyButton_Clicked(){
         System.out.println("The user has clicked the emergency Button");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+        emergency.emergencyController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+            System.out.println("");
+        }
     }
     @FXML
     public void initialize() {
@@ -102,7 +113,20 @@ public class pathFindingMenuController extends controllers.mapScene{
 
     public void mainMenuButton_Clicked(){
         if(username_Label.getText().equals("")) {
-            switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
+            FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
+            patientMenuStart.patientMenuStartController controller = loader.getController();
+            //sets the current language
+            controller.setCurrentLanguage(c_language);
+            //set up english labels
+            if(c_language == 0){
+                controller.englishButtons_Labels();
+
+                //set up spanish labels
+            }else if(c_language == 1){
+                controller.spanishButtons_Labels();
+            }
+
+            //admin view
         }else{
             //Get the scene loader
             FXMLLoader loader = switch_screen(backgroundAnchorPane,"/views/adminMenuStartView.fxml");

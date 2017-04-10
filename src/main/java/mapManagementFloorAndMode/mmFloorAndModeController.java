@@ -75,6 +75,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     private Circle btK;
 
+    //Set to english by default
+    int c_language = 0;
+
     public void initialize() {
         setUserString(username_Label.getText());
         setModeChoices();
@@ -88,7 +91,19 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
 
     public void emergencyButton_Clicked() {
-        switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+        emergency.emergencyController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+
     }
 
     public void clearButton_Clicked() {

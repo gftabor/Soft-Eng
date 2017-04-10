@@ -98,13 +98,15 @@ public class patientMenuStartController extends controllers.AbsController{
     public void emergencyButton_Clicked() {
         System.out.println("The user has clicked the emergency Button");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+        emergency.emergencyController controller = loader.getController();
         //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
         //set up english labels
         if(c_language == 0){
-
+            controller.englishButtons_Labels();
             //set up spanish labels
         }else if(c_language == 1){
-
+            controller.spanishButtons_Labels();
         }
 
     }

@@ -27,11 +27,32 @@ public class emergencyController extends controllers.AbsController{
     @FXML
     private Label call_status;
 
+    @FXML
+    private Label start_Label;
+
+    @FXML
+    private Label exit_Label;
+
+    //English by default
+    int c_language = 0;
+
     //Return the the patient main menu
     public void mainMenuButton_Clicked() {
-      System.out.println("The user clicked the main menu Button");
-      //Switch screen
-      FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
+        System.out.println("The user clicked the main menu Button");
+        //Switch screen
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
+        patientMenuStart.patientMenuStartController controller = loader.getController();
+        //sets the current language
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if (c_language == 0) {
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        } else if (c_language == 1) {
+            controller.spanishButtons_Labels();
+        }
+
     }
 
 
@@ -47,6 +68,42 @@ public class emergencyController extends controllers.AbsController{
         } catch (URISyntaxException e){
             e.getReason();
         }
+    }
+
+    //switches all the labels and Buttons to english
+    public void englishButtons_Labels(){
+        //change the current language to english
+        c_language = 0;
+        //Change the Buttons
+        mainMenu_Button.setText("Main Menu");
+        call_authorities.setText("Call Authorities");
+
+        //Change the labels
+        start_Label.setText("You are here");
+        exit_Label.setText("Exits");
+
+
+    }
+
+    //switches all teh labels to spanish
+    public void spanishButtons_Labels() {
+        //change the current language to spanish
+        c_language = 1;
+
+        //change the Buttons
+        mainMenu_Button.setText("Menu Principal");
+        call_authorities.setText("Llamar Autoridades");
+
+        //change the Labels
+        start_Label.setText("Tú estás aquí");
+        exit_Label.setText("Salidas");
+
+
+    }
+
+    //sets the current language given information form other screens
+    public void setCurrentLanguage(int i){
+        c_language = i;
     }
 
 }
