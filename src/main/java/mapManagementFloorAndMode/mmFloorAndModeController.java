@@ -215,13 +215,13 @@ public class mmFloorAndModeController extends controllers.mapScene{
                             thisEdge.getStartNode().getPosY(), thisEdge.getStartNode().getFloor(), thisEdge.getEndNode().getPosX(),
                             thisEdge.getEndNode().getPosY(), thisEdge.getEndNode().getFloor());
                 }
-                DBController.DatabaseController.getInstance().deleteNode(firstNode.getPosX(), firstNode.getPosY(), 4);
+                DBController.DatabaseController.getInstance().deleteNode(firstNode.getPosX(), firstNode.getPosY(), currentFloor);
                 break;
             case "Add Edge":
                 if (edgesSelected == 2) {
                     System.out.println("Mode = add edge");
                     DBController.DatabaseController.getInstance().newEdge(nodeEdgeX1,
-                            nodeEdgeY1, currentFloor, nodeEdgeX2, nodeEdgeY2, 4);
+                            nodeEdgeY1, currentFloor, nodeEdgeX2, nodeEdgeY2, currentFloor);
 
                     System.out.println("added edge");
                 }
@@ -230,7 +230,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 if (edgesSelected == 2) {
                     System.out.println("Mode = add edge");
                     DBController.DatabaseController.getInstance().deleteEdge(nodeEdgeX1,
-                            nodeEdgeY1, currentFloor, nodeEdgeX2, nodeEdgeY2, 4);
+                            nodeEdgeY1, currentFloor, nodeEdgeX2, nodeEdgeY2, currentFloor);
                     System.out.println("added edge");
                 }
                 System.out.println("Mode = remove edge");
