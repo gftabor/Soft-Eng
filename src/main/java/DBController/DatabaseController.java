@@ -387,20 +387,21 @@ public class DatabaseController {
      *
      ******************************************************************************/
 
-    public boolean newProfessional(String firstName, String lastName, String type){
+    public boolean newProfessional(String firstName, String lastName, String type, String department){
         System.out.println(
                 String.format(
-                        "Adding professional. firstName: %s, lastName: %s, type: %s",
-                        firstName, lastName, type));
+                        "Adding professional. firstName: %s, lastName: %s, type: %s, department: %s",
+                        firstName, lastName, type, department));
         try{
             // sql statement with "?" to be filled later
-            String query = "INSERT INTO PROFESSIONAL (FIRSTNAME, LASTNAME, TYPE)" +
-                    " values (?, ?, ?)";
+            String query = "INSERT INTO PROFESSIONAL (FIRSTNAME, LASTNAME, TYPE, DEPARTMENT)" +
+                    " values (?, ?, ?, ?)";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, type);
+            preparedStatement.setString(4, department);
             // execute prepared statement
             
             preparedStatement.execute();
@@ -444,7 +445,7 @@ public class DatabaseController {
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, type);
             // run statement and query
-            
+
             resultSet = preparedStatement.executeQuery();
         } catch (SQLException e){
             e.printStackTrace();
@@ -494,26 +495,44 @@ public class DatabaseController {
         return true;
     }
 
-    public boolean EditProfessional(int ID, String firstName, String lastName, String type){
+    public boolean EditProfessional(int ID, String firstName, String lastName, String type, String profile){
         System.out.println(
                 String.format(
-                        "Editing professional. firstName: %s, lastName: %s, type: %s",
-                        firstName, lastName, type));
+                        "Editing professional. id %d firstName: %s, lastName: %s, type: %s, profile: %s",
+                        ID, firstName, lastName, type, profile));
         try{
-            String query = "UPDATE PROFESSIONAL SET FIRSTNAME = ?, LASTNAME = ? AND TYPE = ?" +
-                    "WHERE ID = ";
+            String query = "UPDATE PROFESSIONAL SET FIRSTNAME = ?, LASTNAME = ?, TYPE = ?, PROFILE = ?" +
+                    "WHERE ID = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, type);
-            preparedStatement.setInt(4, ID);
+            preparedStatement.setString(4, profile);
+            preparedStatement.setInt(5, ID);
             // run statement and query
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
         } catch (SQLException e){
             e.printStackTrace();
             return false;
         }
         return true;
+    }
+
+    public ResultSet getProfessional(int id){
+        System.out.println("Getting professional with ID" + id);
+        ResultSet resultSet = null;
+
+        try{
+            String query = "SELECT * FROM PROFESSIONAL WHERE ID = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return resultSet;
+
     }
     /*******************************************************************************
      * PROFESSIONAL - LOCATION actions
@@ -700,4 +719,147 @@ public class DatabaseController {
         }
         return true;
     }
+
+    /*******************************************************************************
+     * ADMIN actions
+     *
+     ******************************************************************************/
+
+    public boolean newService(String name, String type, int x, int y, int floor){
+        System.out.println(
+                String.format(
+                        "Adding service. name: %s, type: %s, x: %d, y: %d, floor: %d",
+                        name, type, x, y, floor));
+        try{
+            // sql statement with "?" to be filled later
+            String query = "INSERT INTO SERVICE (NAME, TYPE, XPOS, YPOS, FLOOR)" +
+                    " values (?, ?, ?, ?, ?)";
+            // prepare statement by replacing "?" with corresponding variable
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, type);
+            preparedStatement.setInt(3, x);
+            preparedStatement.setInt(4, y);
+            preparedStatement.setInt(5, floor);
+            // execute prepared statement
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public ResultSet getService(String name, String type, int x, int y, int floor){
+        ResultSet resultSet = null;
+        System.out.println(
+                String.format(
+                        "Getting service. name: %s, type: %s, x: %d, y: %d, floor: %d",
+                        name, type, x, y, floor));
+        try{
+            String query = "SELECT * FROM SERVICE WHERE NAME = ? AND TYPE = ? AND XPOS = ?" +
+                    "AND YPOS = ? AND FLOOR = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, type);
+            preparedStatement.setInt(3, x);
+            preparedStatement.setInt(4, y);
+            preparedStatement.setInt(5, floor);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
+    public boolean deleteService(String name, String type, int x, int y, int floor){
+        ResultSet resultSet = null;
+        System.out.println(
+                String.format(
+                        "Deleting service. name: %s, type: %s, x: %s, y: %d, floor: %d",
+                        name, type, x, y, floor));
+        try{
+            String query = "DELETE FROM SERVICE WHERE NAME = ? AND TYPE = ?" +
+                    "AND XPOS = ? AND YPOS = ? AND FLOOR = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, type);
+            preparedStatement.setInt(3, x);
+            preparedStatement.setInt(4, y);
+            preparedStatement.setInt(5, floor);
+            // run statement and query
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
+    public ResultSet getRoomNames(){
+        System.out.println("Getting room names");
+
+        ResultSet resultSet = null;
+        try{
+            String query = "SELECT ROOMNUM FROM NODE";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            //preparedStatement.setString(1, "%"+roomName);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
+
+
+    /*******************************************************************************
+     * Combinations
+     *
+     ******************************************************************************/
+
+    public ResultSet getProRoomNums(){
+        ResultSet resultSet = null;
+        System.out.println(
+                String.format(
+                        "Getting all professional room numbers"));
+        try{
+            String query = "SELECT P.ID, P.FIRSTNAME, P.LASTNAME, P.TYPE, P.DEPARTMENT, N.ROOMNUM FROM PROFESSIONAL P, PROLOCATION PL, NODE N WHERE " +
+                    "PL.PROID = P.ID AND N.XPOS = PL.XPOS AND N.YPOS = PL.YPOS AND " +
+                    "N.FLOOR = PL.FLOOR";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
+
+    public ResultSet getDepartmentNames(){
+        ResultSet resultSet = null;
+        System.out.println(
+                String.format(
+                        "Getting all professional room numbers"));
+        try{
+            String query = "SELECT DEPARTMENT FROM PROFESSIONAL";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
 }
