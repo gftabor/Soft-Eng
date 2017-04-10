@@ -59,8 +59,9 @@ public class pathFindingMenuController extends controllers.mapScene{
     private Circle btK;
 
     private int selectionState = 0;
-    private controllers.MapOverlay graph;
+    private int currentFloor;
 
+    private controllers.MapOverlay graph;
     private MapController mapController = MapController.getInstance();
 
 
@@ -72,14 +73,19 @@ public class pathFindingMenuController extends controllers.mapScene{
     public void initialize() {
         graph = new controllers.MapOverlay(node_Plane,(mapScene) this);
         MapController.getInstance().requestMapCopy();
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4),false);
+        setFloorChoices();
+        //set current floor
+        //we will use floor 1 as default
+        currentFloor = 1;
+        currentFloor_Label.setText("1");
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
     }
     public void cancelButton_Clicked(){
         //MapController.getInstance().requestMapCopy();
         selectionState = 0;
         //Remove black and red dots from map
 
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(4),false);
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
 
         //wipe line from map
         graph.wipeEdgeLines();
@@ -115,23 +121,29 @@ public class pathFindingMenuController extends controllers.mapScene{
         System.out.println("Node at (" + x + ", " + y + ") selected during state: " + selectionState);
         if (selectionState == 0) {
             //place the black marker at the starting location
-            mapController.markNode(x, y, 1);
+            mapController.markNode(x, y, 1, currentFloor);
             selectionState++;
-            if(start != null)
-                start.setFill(Color.BLACK);
-            if(end != null)
-                end.setFill(Color.BLACK);
+            if(start != null) {
+                start.setStroke(Color.BLACK);
+                start.setStrokeWidth(1);
+            }
+            if(end != null) {
+                end.setStroke(Color.BLACK);
+                end.setStrokeWidth(1);
+            }
             graph.wipeEdgeLines();
             start =c;
             //color
-            c.setFill(Color.MAGENTA);
+            c.setStrokeWidth(2.5);
+            c.setStroke(Color.ORANGERED);
         } else if (selectionState == 1){
             //place the red marker at end location
-            mapController.markNode(x, y, 2);
+            mapController.markNode(x, y, 2, currentFloor);
             selectionState++;
             end = c;
             //color
-            c.setFill(Color.BROWN);
+            c.setStrokeWidth(2.5);
+            c.setStroke(Color.FUCHSIA);
         } else {
             //do nothing
         }
@@ -154,28 +166,10 @@ public class pathFindingMenuController extends controllers.mapScene{
                 System.out.println(newValue);
                 //Print the floors accordingly
                 //CODE HERE!!!!!!!
-                if (newValue.intValue() == 0) {
-                    System.out.println("Showing first floor");
 
-                }else if(newValue.intValue() == 1){
-                    System.out.println("Showing second floor");
-
-                }else if(newValue.intValue() == 2){
-                    System.out.println("Showing third floor");
-
-                }else if(newValue.intValue() == 3){
-                    System.out.println("Showing fourth floor");
-
-                }else if(newValue.intValue() == 4){
-                    System.out.println("Showing fifth floor");
-
-                }else if(newValue.intValue() == 5){
-                    System.out.println("Showing sixth floor");
-
-                }else if(newValue.intValue() == 6){
-                    System.out.println("Showing seventh floor");
-
-                }
+                currentFloor = newValue.intValue() + 1;
+                currentFloor_Label.setText(Integer.toString(currentFloor));
+                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
             }
         });
 

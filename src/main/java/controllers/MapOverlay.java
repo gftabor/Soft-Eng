@@ -110,6 +110,12 @@ public class MapOverlay {
         for(controllers.Edge thisEdge: edgeList) {
             lne = new Line();
 
+            //don't draw lines if on different floor
+            if (thisEdge.getStartNode().getFloor() != thisEdge.getEndNode().getFloor()) {
+                continue;
+                //maybe use colors???
+            }
+
             //config to display properly
             lne.setFill(Color.RED);
             lne.setStroke(Color.RED);
