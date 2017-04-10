@@ -30,7 +30,7 @@ public class Pathfinder {
     private double getHueristic(Node currentNode, Node goalNode){
        double squareX = Math.pow((currentNode.getPosX()-goalNode.getPosX()),2);
        double squareY = Math.pow((currentNode.getPosY()-goalNode.getPosY()),2);
-       return Math.sqrt(squareX + squareY);
+       return Math.sqrt(squareX + squareY) + 1000* Math.abs(currentNode.getFloor() - goalNode.getFloor());
 
     }
 
