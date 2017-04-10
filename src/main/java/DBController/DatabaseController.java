@@ -454,6 +454,25 @@ public class DatabaseController {
         return resultSet;
     }
 
+    public boolean deleteProfessional(int id){
+        ResultSet resultSet = null;
+        System.out.println(
+                String.format(
+                        "Deleting professional. id: %d",
+                        id));
+        try{
+            String query = "DELETE FROM PROFESSIONAL WHERE ID = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     public boolean deleteProfessional(String firstName, String lastName, String type){
         ResultSet resultSet = null;
         System.out.println(
@@ -495,19 +514,19 @@ public class DatabaseController {
         return true;
     }
 
-    public boolean EditProfessional(int ID, String firstName, String lastName, String type, String profile){
+    public boolean EditProfessional(int ID, String firstName, String lastName, String type, String department){
         System.out.println(
                 String.format(
                         "Editing professional. id %d firstName: %s, lastName: %s, type: %s, profile: %s",
-                        ID, firstName, lastName, type, profile));
+                        ID, firstName, lastName, type, department));
         try{
-            String query = "UPDATE PROFESSIONAL SET FIRSTNAME = ?, LASTNAME = ?, TYPE = ?, PROFILE = ?" +
+            String query = "UPDATE PROFESSIONAL SET FIRSTNAME = ?, LASTNAME = ?, TYPE = ?, DEPARTMENT = ?" +
                     "WHERE ID = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, type);
-            preparedStatement.setString(4, profile);
+            preparedStatement.setString(4, department);
             preparedStatement.setInt(5, ID);
             // run statement and query
             preparedStatement.executeUpdate();
@@ -609,6 +628,28 @@ public class DatabaseController {
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean EditProfessionalLocation(int PROID, int x, int y, int floor){
+        System.out.println(
+                String.format(
+                        "Editing professional location. id %d x: %d, y: %d, floor: %d",
+                        PROID, x, y, floor));
+        try{
+            String query = "UPDATE PROLOCATION SET XPOS = ?, YPOS = ?, FLOOR = ?" +
+                    "WHERE PROID = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, x);
+            preparedStatement.setInt(2, y);
+            preparedStatement.setInt(3, floor);
+            preparedStatement.setInt(4, PROID);
+            // run statement and query
+            preparedStatement.executeUpdate();
+        } catch (SQLException e){
             e.printStackTrace();
             return false;
         }
@@ -853,6 +894,23 @@ public class DatabaseController {
         try{
             String query = "SELECT DEPARTMENT FROM PROFESSIONAL";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
+    public ResultSet getPosForRoom(String room){
+        ResultSet resultSet = null;
+
+        System.out.println("Getting position for room num: "+ room);
+        try{
+            String query = "SELECT XPOS, YPOS, FLOOR FROM NODE WHERE ROOMNUM = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, room);
             // run statement and query
             resultSet = preparedStatement.executeQuery();
         } catch (SQLException e){

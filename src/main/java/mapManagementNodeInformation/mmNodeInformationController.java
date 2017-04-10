@@ -108,7 +108,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     /**
      * Flags for passing different info
      */
-    // Flag for current mode chosen (add, edit, remove)
+    // Flag for current mode chosen (add = 0, edit = 2, remove = 1)
     int c_mode = -1;
 
 
@@ -121,8 +121,72 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     }
 
+    public void setFieldInfo (String title, String department, String room, String firstName, String lastName){
+
+    }
+
     public void submitButton_Clicked(){
         System.out.println("Hello world");
+        ResultSet rset;
+        int id = 0, xpos = 0, ypos = 0, floor = 0;
+        String firstName, lastName, title, department, room;
+        title = title_choiceBox.getValue();
+        System.out.println("Title: " + title);
+        department = department_TextField.getText();
+        System.out.println("Department: " + department);
+        room = room_TextField.getText();
+        System.out.println("room: " + room);
+        //id = Integer.parseInt(id_TextField.getText());
+        firstName = Firstname_TextField.getText();
+        System.out.println("First Name: " + firstName);
+        lastName = lastName_TextField.getText();
+        System.out.println("Last Name: " + lastName);
+        rset = databaseController.getPosForRoom(room);
+        try{
+            while (rset.next()){
+                xpos = rset.getInt("XPOS");
+                ypos = rset.getInt("YPOS");
+                floor = rset.getInt("FLOOR");
+                System.out.println("Pos: " + xpos + " " + ypos + " " + floor);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+
+        switch (c_mode) {
+            case 0: // adding
+                databaseController.newProfessional(firstName, lastName, title, department);
+                rset = databaseController.getProfessional(firstName, lastName, title);
+                try {
+                    rset.next();
+                    id = rset.getInt("ID");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                databaseController.newProfessionalLocation(id, xpos, ypos, floor);
+            case 1: // removing
+                databaseController.deleteProfessionalLocation(id, xpos, ypos, floor);
+                rset = databaseController.getProfessional(firstName, lastName, title);
+                try {
+                    rset.next();
+                    id = rset.getInt("ID");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                databaseController.deleteProfessional(id);
+            case 2: // editing
+                rset = databaseController.getProfessional(firstName, lastName, title);
+                try {
+                    rset.next();
+                    id = rset.getInt("ID");
+                    System.out.println("ID " + id);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                databaseController.EditProfessional(id, firstName, lastName, title, department);
+                databaseController.EditProfessionalLocation(id, xpos, ypos, floor);
+        }
     }
 
     //switches to the emergency scene
