@@ -109,14 +109,17 @@ public class Pathfinder {
         return -1;
     }
 
-    //in progress
+    //in progress -> prints directions until I can figure out how to get it on the UI
     public void getTextDirections(ArrayList<Edge> path) {
         path = this.path;
 
         for(int i = 0; i < path.size(); i++) {
             if(getAngle(path.get(i), path.get(i+1)) >= 170.0 &&
                     getAngle(path.get(i), path.get(i+1)) <= 110.0) {
-                System.out.println("Continue straight.");
+                if(getAngle(path.get(i-1), path.get(i)) >= 170.0 &&
+                        getAngle(path.get(i-1), path.get(i)) <= 110.0){
+                  System.out.println("Continue");
+                } else { System.out.println("Continue straight."); }
             }
             else if(getAngle(path.get(i), path.get(i+1)) >= 70.0 &&
                     getAngle(path.get(i), path.get(i+1)) <= 110.0) {
