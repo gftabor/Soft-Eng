@@ -1,34 +1,34 @@
 package DBController;
-import controllers.MapController;
-import controllers.Node;
-import controllers.Edge;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.sql.*;
-import java.util.ArrayList;
 import org.mindrot.jbcrypt.BCrypt;
-
-import javax.xml.transform.Result;
 
 public class DatabaseController {
 
     private static DatabaseController databaseController = new DatabaseController();
-    protected String dbName;
-    protected String populateSQLPath = "build/resources/main/database/testDatabaseSetup.sql";
-    protected String cleanSQLPath = "build/resources/main/database/testDatabaseClear.sql";
-    Connection conn;
-    Statement stmt;
-
-    public DatabaseController() {
-        this.dbName = "FaulknerDB";
-    }
-
     public static DatabaseController getInstance() {
         return databaseController;
     }
 
+    protected String dbName;
+    protected String buildTablesPath = "build/resources/main/database/buildTables.sql";
+    protected String populateSQLPath = "build/resources/main/database/mainDatabasePopulate.sql";
+    protected String cleanSQLPath = "build/resources/main/database/dropTables.sql";
+    protected Connection conn;
+    Statement stmt;
+
+    /*
+    public DatabaseController() {
+        startDB();
+    }
+    */
+
+    public void setDbName(String dbName) {
+        this.dbName = dbName;
+    }
 
     /*******************************************************************************
      * Starting the database, checking drivers
@@ -37,16 +37,12 @@ public class DatabaseController {
 
     public boolean startDB() {
         //check for database driver
-        if(!checkDatabaseDriver()){
+        if (!checkDatabaseDriver()) {
             return false;
         }
-        conn = getDatabaseConnection();
-
-        if(conn == null){
-            return false;
-        }
-        return true;
+        return getDatabaseConnection();
     }
+
 
     private boolean checkDatabaseDriver(){
         System.out.println("Registering DB Driver");
@@ -60,16 +56,32 @@ public class DatabaseController {
         }
     }
 
-    private Connection getDatabaseConnection(){
-        Connection conn;
+    public boolean getDatabaseConnection(){
+        File file = new File(dbName);
+
         try {
-            conn = DriverManager.getConnection("jdbc:derby:"+ dbName +";create=true;");
+            if (file.exists()) {
+                System.out.println(dbName + " does exist");
+                conn = DriverManager.getConnection("jdbc:derby:"+ dbName +";");
+            }else{
+                System.out.println(dbName + " does not exist, creating");
+                conn = DriverManager.getConnection("jdbc:derby:"+ dbName +";create=true;");
+                buildTables();
+                if(dbName != "testDB"){
+                    System.out.println("Populating Database");
+                    populateDB();
+                }
+            }
         } catch (SQLException e) {
             System.out.println("Database connection failed.");
             e.printStackTrace();
             conn = null;
         }
-        return conn;
+
+        if(conn == null){
+            System.out.println("THERE IS NO DATABASE CONNECTION");
+        }
+        return true;
     }
 
     public boolean closeDB(){
@@ -81,7 +93,6 @@ public class DatabaseController {
             e.printStackTrace();
             return false;
         }
-
     }
 
     /*******************************************************************************
@@ -714,7 +725,9 @@ public class DatabaseController {
      * SQL GENERATION actions
      *
      ******************************************************************************/
-
+    public boolean buildTables(){
+        return readSQL(buildTablesPath);
+    }
     public boolean populateDB(){
         return readSQL(populateSQLPath);
     }
@@ -739,7 +752,7 @@ public class DatabaseController {
 
             String[] inst = sb.toString().split(";");
 
-            Statement stmt = conn.createStatement();
+            stmt = conn.createStatement();
 
             for (int i = 0; i < inst.length; i++) {
                 if (!inst[i].trim().equals("")) {

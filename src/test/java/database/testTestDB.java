@@ -1,9 +1,6 @@
 package database;
 
-import DBController.testDatabaseController;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import DBController.DatabaseController;
 import org.junit.Test;
 
 import static junit.framework.TestCase.*;
@@ -13,16 +10,14 @@ import static junit.framework.TestCase.*;
  */
 public class testTestDB {
 
-    testDatabaseController testDBController = testDatabaseController.getInstance();
-
-    @Before
-    public void startDB(){
-        assertTrue(testDBController.startDB());
-    }
+    DatabaseController dbController = DatabaseController.getInstance();
 
     @Test
     public void populateThenClearDB(){
-        assertTrue(testDBController.populateDB());
-        assertTrue(testDBController.clearDB());
+        dbController.setDbName("testDB");
+        dbController.startDB();
+        //assertTrue(dbController.clearDB());
+        //assertTrue(dbController.populateDB());
+        dbController.closeDB();
     }
 }
