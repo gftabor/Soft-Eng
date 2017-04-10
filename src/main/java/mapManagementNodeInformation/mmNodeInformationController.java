@@ -121,10 +121,6 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     }
 
-    public void setFieldInfo (String title, String department, String room, String firstName, String lastName){
-
-    }
-
     public void submitButton_Clicked(){
         System.out.println("Hello world");
         ResultSet rset;
@@ -153,9 +149,9 @@ public class mmNodeInformationController extends controllers.AbsController {
             e.printStackTrace();
         }
 
-
         switch (c_mode) {
             case 0: // adding
+                System.out.println("Adding professional mode");
                 databaseController.newProfessional(firstName, lastName, title, department);
                 rset = databaseController.getProfessional(firstName, lastName, title);
                 try {
@@ -165,7 +161,10 @@ public class mmNodeInformationController extends controllers.AbsController {
                     e.printStackTrace();
                 }
                 databaseController.newProfessionalLocation(id, xpos, ypos, floor);
+                System.out.println("Adding professional mode ------------");
+                break;
             case 1: // removing
+                System.out.println("Removing professional mode");
                 databaseController.deleteProfessionalLocation(id, xpos, ypos, floor);
                 rset = databaseController.getProfessional(firstName, lastName, title);
                 try {
@@ -174,8 +173,12 @@ public class mmNodeInformationController extends controllers.AbsController {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                databaseController.deleteProfessionalLocation(id, xpos, ypos, floor);
                 databaseController.deleteProfessional(id);
+                System.out.println("Removing professional mode ------------");
+                break;
             case 2: // editing
+                System.out.println("Editing professional mode");
                 rset = databaseController.getProfessional(firstName, lastName, title);
                 try {
                     rset.next();
@@ -186,7 +189,13 @@ public class mmNodeInformationController extends controllers.AbsController {
                 }
                 databaseController.EditProfessional(id, firstName, lastName, title, department);
                 databaseController.EditProfessionalLocation(id, xpos, ypos, floor);
+                System.out.println("Editing professional mode ------------");
+                break;
+            default:
+                // nothing
         }
+
+           setUpTreeView();
     }
 
     //switches to the emergency scene
@@ -231,6 +240,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                 department = rset.getString("DEPARTMENT");
                 roomNum = rset.getString("ROOMNUM");
                 System.out.println("Name: " + firstName + lastName);
+                //Table table = new Table(id, firstName, lastName, title, department, roomNum);
                 data.add(new Table(id, firstName, lastName, title, department, roomNum));
             }
         } catch (SQLException e){
@@ -363,6 +373,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         //Sets the properties
         title_choiceBox.setDisable(false);
         department_TextField.setDisable(false);
+        room_TextField.setDisable(false);
         id_TextField.setEditable(false);
         Firstname_TextField.setEditable(true);
         lastName_TextField.setEditable(true);
@@ -420,16 +431,26 @@ public class mmNodeInformationController extends controllers.AbsController {
 
 
         ArrayList<String> rooms = new ArrayList<>();
-        ArrayList<String> profiles = new ArrayList<>();
+        ArrayList<String> departments = new ArrayList<>();
 
-        ResultSet rset_profiles = databaseController.getDepartmentNames();
+        String room, department;
+
+        ResultSet rset_departments = databaseController.getDepartmentNames();
         ResultSet rset = databaseController.getRoomNames();
         try {
             while (rset.next()){
-                rooms.add(rset.getString("ROOMNUM"));
+                room = rset.getString("ROOMNUM");
+                if (!rooms.contains(room)){
+                    rooms.add(room);
+                }
+
             }
-            while (rset_profiles.next()){
-                profiles.add(rset_profiles.getString("DEPARTMENT"));
+            while (rset_departments.next()){
+                department = rset_departments.getString("DEPARTMENT");
+                if (!departments.contains(department)){
+                    departments.add(department);
+                }
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -438,7 +459,7 @@ public class mmNodeInformationController extends controllers.AbsController {
 
         TextFields.bindAutoCompletion(room_TextField,rooms);
 
-        TextFields.bindAutoCompletion(department_TextField, profiles);
+        TextFields.bindAutoCompletion(department_TextField, departments);
     }
 
 }
