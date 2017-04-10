@@ -112,6 +112,37 @@ public class Pathfinder {
     //in progress
     public void getTextDirections(ArrayList<Edge> path) {
         path = this.path;
+
+        for(int i = 0; i < path.size(); i++) {
+            if(getAngle(path.get(i), path.get(i+1)) >= 170.0 &&
+                    getAngle(path.get(i), path.get(i+1)) <= 110.0) {
+                System.out.println("Continue straight.");
+            }
+            else if(getAngle(path.get(i), path.get(i+1)) >= 70.0 &&
+                    getAngle(path.get(i), path.get(i+1)) <= 110.0) {
+                System.out.println("Turn right.");
+            }
+            else if(getAngle(path.get(i), path.get(i+1)) >= 250.0 &&
+                    getAngle(path.get(i), path.get(i+1)) <= 290.0) {
+                System.out.println("Turn left.");
+            }
+            else if(getAngle(path.get(i), path.get(i+1)) > 110.0 &&
+                    getAngle(path.get(i), path.get(i+1)) < 170.0) {
+                System.out.println("Make a slight right.");
+            }
+            else if(getAngle(path.get(i), path.get(i+1)) > 190.0 &&
+                    getAngle(path.get(i), path.get(i+1)) < 250.0) {
+                System.out.println("Make a slight left.");
+            }
+            else if(getAngle(path.get(i), path.get(i+1)) >= 10.0 &&
+                    getAngle(path.get(i), path.get(i+1)) < 70.0) {
+                System.out.println("Make a hard right.");
+            }
+            else if(getAngle(path.get(i), path.get(i+1)) > 290.0 &&
+                    getAngle(path.get(i), path.get(i+1)) <= 350.0) {
+                System.out.println("Make a hard left.");
+            }
+        }
     }
 
 
