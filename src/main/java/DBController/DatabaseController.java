@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.sql.*;
+import java.util.ArrayList;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 public class DatabaseController {
@@ -994,9 +996,26 @@ public class DatabaseController {
         ResultSet resultSet = null;
         System.out.println(
                 String.format(
-                        "Getting all professional room numbers"));
+                        "Getting all professional english departments"));
         try{
             String query = "SELECT DEPARTMENT FROM PROFESSIONAL";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
+    public ResultSet getSpanishDepartmentNames(){
+        ResultSet resultSet = null;
+        System.out.println(
+                String.format(
+                        "Getting all professional spanish departments"));
+        try{
+            String query = "SELECT SPDEPARTMENT FROM PROFESSIONAL";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             // run statement and query
             resultSet = preparedStatement.executeQuery();
@@ -1023,4 +1042,59 @@ public class DatabaseController {
         }
         return resultSet;
     }
+
+    public ArrayList<String> getRoomList() {
+        ArrayList<String> rooms = new ArrayList<>();
+        String room;
+        ResultSet rset = databaseController.getRoomNames();
+        try {
+            while (rset.next()) {
+                room = rset.getString("ROOMNUM");
+                if (!rooms.contains(room)) {
+                    rooms.add(room);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rooms;
+    }
+
+    // returns english department list
+    public ArrayList<String> getEnglishDepartmentList(){
+        ArrayList<String> departments = new ArrayList<>();
+        String department;
+        ResultSet rset = databaseController.getDepartmentNames();
+        try {
+            while (rset.next()) {
+                department = rset.getString("DEPARTMENT");
+                if (!departments.contains(department)) {
+                    departments.add(department);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return departments;
+    }
+
+
+    // returns spanish department list
+    public ArrayList<String> getSpanishDepartmentList(){
+        ArrayList<String> departments = new ArrayList<>();
+        String department;
+        ResultSet rset = databaseController.getSpanishDepartmentNames();
+        try {
+            while (rset.next()) {
+                department = rset.getString("SPDEPARTMENT");
+                if (!departments.contains(department)) {
+                    departments.add(department);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return departments;
+    }
+
 }
