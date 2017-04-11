@@ -439,14 +439,20 @@ public class mmNodeInformationController extends controllers.AbsController {
                 });
 
     }
-    //sets the choices for the department DB
-    public void setDepartmentChoices() {
-        //department_ChoiceBox.getItems().addAll("Accident and emergency (A&E)", "Anaesthetics", "Breast screening");
-    }
+
 
     //set the title choices for the user
     public void setTitleChoices() {
-        title_choiceBox.getItems().addAll("Doctor", "Nurse");
+
+        ArrayList<String> professionalTitles = new ArrayList<>();
+        if (c_language == 0) {
+            // language is english
+            professionalTitles = databaseController.getEnglishProfessionalTitleList();
+        } else {
+            professionalTitles = databaseController.getSpanishProfessionalTitleList();
+        }
+
+        title_choiceBox.getItems().addAll(professionalTitles);
         title_choiceBox.getSelectionModel().selectedIndexProperty()
                 .addListener(new ChangeListener<Number>() {
                     @Override
@@ -534,7 +540,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         mode_ChoiceBox.getSelectionModel().select(i);
     }
 
-    //sets the choices for the rooms DB
+    //sets the choices for the rooms and departments
     public void setRoomChoices() {
 
 

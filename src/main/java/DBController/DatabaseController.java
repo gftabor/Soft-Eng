@@ -1097,4 +1097,56 @@ public class DatabaseController {
         return departments;
     }
 
+    public ArrayList<String> getEnglishProfessionalTitleList(){
+        ResultSet resultSet = null;
+        String title;
+        ArrayList<String> titles = new ArrayList<>();
+        System.out.println(
+                String.format(
+                        "Getting all professional english title as a list"));
+        try{
+            String query = "SELECT TYPE FROM PROFESSIONAL";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                title = resultSet.getString("TYPE");
+                if (!titles.contains(title)) {
+                    titles.add(title);
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return titles;
+    }
+
+    public ArrayList<String> getSpanishProfessionalTitleList(){
+        ResultSet resultSet = null;
+        String title;
+        ArrayList<String> titles = new ArrayList<>();
+        System.out.println(
+                String.format(
+                        "Getting all professional spanish title as a list"));
+        try{
+            String query = "SELECT SPTYPE FROM PROFESSIONAL";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                title = resultSet.getString("SPTYPE");
+                if (!titles.contains(title)) {
+                    titles.add(title);
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return titles;
+    }
+
 }
