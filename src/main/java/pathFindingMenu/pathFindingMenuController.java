@@ -86,6 +86,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         //Remove colored dots from map
 
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+        currentFloor_Label.setText(Integer.toString(currentFloor));
 
         //wipe line from map
         graph.wipeEdgeLines();
@@ -97,8 +98,31 @@ public class pathFindingMenuController extends controllers.mapScene{
         if (selectionState == 2) {
             //submit stuff
             //createEdgeLines
-            MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-            graph.createEdgeLines(mapController.requestPath());
+
+            //check for multifloor
+            if (mapController.areDifferentFloors()) {
+                System.out.println("Multi-floor pathfinding detected!");
+
+                //switch floors to original floor's pathfinding view
+                int startfloor = mapController.returnOriginalFloor();
+                currentFloor_Label.setText(Integer.toString(startfloor));
+                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(startfloor),false);
+                currentFloor = startfloor;
+                //reset the choicebox:
+                floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
+
+                //maintain consistency of colors
+                start.setStrokeWidth(2.5);
+                start.setStroke(Color.ORANGERED);
+
+                //reset for next pathfinding session
+                MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
+                graph.createEdgeLines(mapController.requestPath());
+            } else {
+                MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
+                graph.createEdgeLines(mapController.requestPath());
+            }
+
         }
         selectionState=0;
         System.out.println("The user has clicked the submit Button");
@@ -163,7 +187,6 @@ public class pathFindingMenuController extends controllers.mapScene{
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-                System.out.println(newValue);
                 //Print the floors accordingly
                 //CODE HERE!!!!!!!
 
