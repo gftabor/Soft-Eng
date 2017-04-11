@@ -19,6 +19,7 @@ import javafx.scene.layout.AnchorPane;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.controlsfx.control.textfield.TextFields;
@@ -125,11 +126,18 @@ public class mmNodeInformationController extends controllers.AbsController {
     int c_title;
 
     int ID;
+
+    boolean inDataBase = false;
     String First_N;
     String Last_N;
     String Title;
     String Department;
     String Room;
+
+    String department_English = "";
+    String department_Spanish = "";
+    String title_English = "" ;
+    String title_Spanish =  "";
 
 
     /**
@@ -151,14 +159,36 @@ public class mmNodeInformationController extends controllers.AbsController {
     }
 
     public void submitButton_Clicked(){
-        if(true){
-            FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/RequestDepartmentTitleInfoView.fxml");
-            RequestDepartmentTitleInfo.RequestDepartmentTitleInfoController controller = loader.getController();
+        //
 
+        if(c_mode == 0){
+            //FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/RequestDepartmentTitleInfoView.fxml");
+            //RequestDepartmentTitleInfo.RequestDepartmentTitleInfoController controller = loader.getController();
+            //There could be information too
+            TextInputDialog dialog = new TextInputDialog("");
+            dialog.setTitle("Add New Department");
+            dialog.setHeaderText("You have entered an unknown department! Please add Spanish translation.");
+            dialog.setContentText("Department in Spanish:");
+            // The Java 8 way to get the response value (with lambda expression).
+            // Traditional way to get the response value.
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(name -> department_Spanish = name);
 
+        }else if(c_mode == 1){
+            //FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/RequestDepartmentTitleInfoView.fxml");
+            //RequestDepartmentTitleInfo.RequestDepartmentTitleInfoController controller = loader.getController();
+            //There could be information too
+            TextInputDialog dialog = new TextInputDialog("");
+            dialog.setTitle("Agrega un Nuevo Departamento");
+            dialog.setHeaderText("Has ingresado un departamento desconocido! Por favor agrega la versión en Inglés.");
+            dialog.setContentText("Departamento en Español:");
+            // The Java 8 way to get the response value (with lambda expression).
+            // Traditional way to get the response value.
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(name -> department_English = name);
         }
 
-        System.out.println("Hello world");
+
         ResultSet rset;
         int id = 0, xpos = 0, ypos = 0, floor = 0;
         String firstName, lastName, title, department, room;
