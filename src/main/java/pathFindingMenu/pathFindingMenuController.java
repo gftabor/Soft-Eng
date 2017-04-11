@@ -87,15 +87,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         currentFloor = 1;
         currentFloor_Label.setText("1");
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
-        textDescription_TextFArea.setText("Asdcfghjkjshghjksjhbsjksjhbsjs \n " +
-                "ghjkjshvbhjksjhbsjksjnss \n sbhjkankakajbakjbakbakjbakjabkjabakjbakkbjkabjkkenklne \n" +
-                "sjbhsjsbhsbhjsbhshshjshjshjshbjjshbjshbjsbhjsbhjs \n" +
-                "sklskjsnkjsnskjnskjnskjsnkjsnkjsnjknkjnsknsknsknsksn \n" +
-                "sjknsjkskjnskjsnkjsnjksnskjnsksnkjsnsknskn \n" +
-                "ddjndkndkndkdndkndkdnkdjnkdndkjndkjn \n" +
-                "sksjnksjnsknskjnsjskjnskjnskjnjsknsknskjsnkjsnk \n" +
-                "sjsjknskjnsksnkjsnksnsknsnsknsk \n" +
-                "lknsklnsklnslknslnssnsjdkdndkjnddnk \n");
+        
 
 
     }
