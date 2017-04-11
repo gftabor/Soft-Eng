@@ -215,11 +215,7 @@
                         <Region prefHeight="200.0" prefWidth="200.0" />
                         <Pane fx:id="node_Plane" prefHeight="506.0" prefWidth="1006.0">
                            <children>
-                              <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="772.0">
-                                 <image>
-                                    <Image url="@../images/cleaned4.png" />
-                                 </image>
-                              </ImageView>
+                              <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="772.0" />
                            </children>
                         </Pane>
                         <Region prefHeight="200.0" prefWidth="200.0" />

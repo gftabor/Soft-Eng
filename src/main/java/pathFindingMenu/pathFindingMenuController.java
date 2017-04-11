@@ -3,6 +3,8 @@ package pathFindingMenu;
 import controllers.Edge;
 import controllers.MapController;
 import controllers.mapScene;
+import controllers.proxyMap;
+import controllers.mapImage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -10,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -51,8 +54,6 @@ public class pathFindingMenuController extends controllers.mapScene{
 
     @FXML
     private ChoiceBox<String> floor_ChoiceBox;
-
-
 
     @FXML
     private Label username_Label;
@@ -261,6 +262,7 @@ public class pathFindingMenuController extends controllers.mapScene{
     public void setFloorChoices(){
         floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7");
         floor_ChoiceBox.getSelectionModel().select(0);
+        map_viewer.setImage(new Image("/images/cleaned1.png"));
         floor_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -270,6 +272,10 @@ public class pathFindingMenuController extends controllers.mapScene{
                 //CODE HERE!!!!!!!
 
                 currentFloor = newValue.intValue() + 1;
+
+                mapImage newMapImage = new proxyMap(currentFloor);
+                newMapImage.display(map_viewer);
+
                 currentFloor_Label.setText(Integer.toString(currentFloor));
                 graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
             }
