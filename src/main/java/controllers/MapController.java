@@ -190,4 +190,12 @@ public class MapController {
         return pathfinder.getPath();
 
     }
+
+    public boolean areDifferentFloors() {
+        return floorForNode1 != floorForNode2;
+    }
+
+    public int returnOriginalFloor() {
+        return floorForNode1;
+    }
 }
