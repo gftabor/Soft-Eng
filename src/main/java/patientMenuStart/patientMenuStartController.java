@@ -72,6 +72,7 @@ public class patientMenuStartController extends controllers.AbsController{
     //Handling when the pathFinding Button is clicked
     //IMPORTANT
     public void pathFindingButton_Clicked(){
+        System.out.println("CLICKING");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/pathFindingMenuView.fxml");
         pathFindingMenu.pathFindingMenuController controller = loader.getController();
         controller.setUserString("");
