@@ -131,6 +131,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true);
 
+        setFloorChoices();
     }
 
 
