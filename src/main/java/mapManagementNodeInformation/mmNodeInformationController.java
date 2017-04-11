@@ -159,35 +159,43 @@ public class mmNodeInformationController extends controllers.AbsController {
     }
 
     public void submitButton_Clicked(){
-        //
 
-        if(c_mode == 0){
-            //FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/RequestDepartmentTitleInfoView.fxml");
-            //RequestDepartmentTitleInfo.RequestDepartmentTitleInfoController controller = loader.getController();
-            //There could be information too
-            TextInputDialog dialog = new TextInputDialog("");
-            dialog.setTitle("Add New Department");
-            dialog.setHeaderText("You have entered an unknown department! Please add Spanish translation.");
-            dialog.setContentText("Department in Spanish:");
-            // The Java 8 way to get the response value (with lambda expression).
-            // Traditional way to get the response value.
-            Optional<String> result = dialog.showAndWait();
-            result.ifPresent(name -> department_Spanish = name);
+        String c_department = department_TextField.getText();
 
-        }else if(c_mode == 1){
-            //FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/RequestDepartmentTitleInfoView.fxml");
-            //RequestDepartmentTitleInfo.RequestDepartmentTitleInfoController controller = loader.getController();
-            //There could be information too
-            TextInputDialog dialog = new TextInputDialog("");
-            dialog.setTitle("Agrega un Nuevo Departamento");
-            dialog.setHeaderText("Has ingresado un departamento desconocido! Por favor agrega la versión en Inglés.");
-            dialog.setContentText("Departamento en Español:");
-            // The Java 8 way to get the response value (with lambda expression).
-            // Traditional way to get the response value.
-            Optional<String> result = dialog.showAndWait();
-            result.ifPresent(name -> department_English = name);
+        if(c_language == 0){
+            // language is english
+            ArrayList<String> english_departments = databaseController.getEnglishDepartmentList();
+            if (!(english_departments.contains(c_department))) {
+                //FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/RequestDepartmentTitleInfoView.fxml");
+                //RequestDepartmentTitleInfo.RequestDepartmentTitleInfoController controller = loader.getController();
+                //There could be information too
+                TextInputDialog dialog = new TextInputDialog("");
+                dialog.setTitle("Add New Department");
+                dialog.setHeaderText("You have entered an unknown department! Please add Spanish translation.");
+                dialog.setContentText("Department in Spanish:");
+                // The Java 8 way to get the response value (with lambda expression).
+                // Traditional way to get the response value.
+                Optional<String> result = dialog.showAndWait();
+                result.ifPresent(name -> department_Spanish = name);
+            }
+
+        }else if(c_language == 1 ){
+            // language is spanish
+            ArrayList<String> spanish_departments = databaseController.getSpanishDepartmentList();
+            if (!(spanish_departments.contains(c_department))) {
+                //FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/RequestDepartmentTitleInfoView.fxml");
+                //RequestDepartmentTitleInfo.RequestDepartmentTitleInfoController controller = loader.getController();
+                //There could be information too
+                TextInputDialog dialog = new TextInputDialog("");
+                dialog.setTitle("Agrega un Nuevo Departamento");
+                dialog.setHeaderText("Has ingresado un departamento desconocido! Por favor agrega la versión en Inglés.");
+                dialog.setContentText("Departamento en Español:");
+                // The Java 8 way to get the response value (with lambda expression).
+                // Traditional way to get the response value.
+                Optional<String> result = dialog.showAndWait();
+                result.ifPresent(name -> department_English = name);
+            }
         }
-
 
         ResultSet rset;
         int id = 0, xpos = 0, ypos = 0, floor = 0;
@@ -328,8 +336,15 @@ public class mmNodeInformationController extends controllers.AbsController {
                 id = rset.getInt("ID");
                 firstName = rset.getString("FIRSTNAME");
                 lastName = rset.getString("LASTNAME");
-                title = rset.getString("TYPE");
-                department = rset.getString("DEPARTMENT");
+                if (c_language == 0) {
+                    System.out.println("Getting ENGLISH type and department c_language = " + c_language);
+                    title = rset.getString("TYPE");
+                    department = rset.getString("DEPARTMENT");
+                } else {
+                    System.out.println("Getting SPANISH type and department c_language = " + c_language);
+                    title = rset.getString("SPTYPE");
+                    department = rset.getString("SPDEPARTMENT");
+                }
                 roomNum = rset.getString("ROOMNUM");
                 System.out.println("Name: " + firstName + lastName);
                 //Table table = new Table(id, firstName, lastName, title, department, roomNum);
@@ -526,30 +541,17 @@ public class mmNodeInformationController extends controllers.AbsController {
         ArrayList<String> rooms = new ArrayList<>();
         ArrayList<String> departments = new ArrayList<>();
 
-        String room, department;
+        rooms = databaseController.getRoomList();
 
-        ResultSet rset_departments = databaseController.getDepartmentNames();
-        ResultSet rset = databaseController.getRoomNames();
-        try {
-            while (rset.next()){
-                room = rset.getString("ROOMNUM");
-                if (!rooms.contains(room)){
-                    rooms.add(room);
-                }
-
-            }
-            while (rset_departments.next()){
-                department = rset_departments.getString("DEPARTMENT");
-                if (!departments.contains(department)){
-                    departments.add(department);
-                }
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (c_language == 0) {
+            // showing suggestions in english
+            departments = databaseController.getEnglishDepartmentList();
+        } else {
+            // showing suggestions in spanish
+            departments = databaseController.getSpanishDepartmentList();
         }
 
-
+        // rooms not affected by language
         TextFields.bindAutoCompletion(room_TextField,rooms);
 
         TextFields.bindAutoCompletion(department_TextField, departments);
