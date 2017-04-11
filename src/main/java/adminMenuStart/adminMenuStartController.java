@@ -155,9 +155,6 @@ public class adminMenuStartController extends controllers.AbsController{
             controller.spanishButtons_Labels();
         }
 
-        //Set the floor choices
-        controller.setFloorChoices();
-
     }
 
     //Set the username coming from the main login
