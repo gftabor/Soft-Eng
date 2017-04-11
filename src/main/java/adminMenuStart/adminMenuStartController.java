@@ -120,7 +120,6 @@ public class adminMenuStartController extends controllers.AbsController{
          //sets the current language
          controller.setC_language(c_language);
 
-
          controller.setTitleChoices();
          controller.setModeChoices();
          controller.setRoomChoices();
