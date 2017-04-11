@@ -326,37 +326,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 System.out.println(newValue);
                 //Print the floors accordingly
                 //CODE HERE!!!!!!!
-                if (newValue.intValue() == 0) {
-                    System.out.println("Printing first floor");
-                    currentFloor = 1;
+                currentFloor = newValue.intValue() + 1;
 
-                    //LOAD NEXT FLOOR PICTURE HERE
-
-                }else if(newValue.intValue() == 1){
-                    System.out.println("Printing second floor");
-                    currentFloor = 2;
-
-                }else if(newValue.intValue() == 2){
-                    System.out.println("Printing third floor");
-                    currentFloor = 3;
-
-                }else if(newValue.intValue() == 3){
-                    System.out.println("Printing fourth floor");
-                    currentFloor = 4;
-
-                }else if(newValue.intValue() == 4){
-                    System.out.println("Printing fifth floor");
-                    currentFloor = 5;
-
-                }else if(newValue.intValue() == 5){
-                    System.out.println("Printing sixth floor");
-                    currentFloor = 6;
-
-                }else if(newValue.intValue() == 6){
-                    System.out.println("Printing seventh floor");
-                    currentFloor = 7;
-
-                }
                 graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true);
             }
         });
