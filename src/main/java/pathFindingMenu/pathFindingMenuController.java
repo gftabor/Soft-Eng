@@ -1,5 +1,6 @@
 package pathFindingMenu;
 
+import controllers.Edge;
 import controllers.MapController;
 import controllers.mapScene;
 import javafx.beans.value.ChangeListener;
@@ -13,6 +14,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+
+import java.util.ArrayList;
 
 /**
  * Created by AugustoR on 3/30/17.
@@ -270,4 +273,7 @@ public class pathFindingMenuController extends controllers.mapScene{
 
     }
 
+    public void createEdgeLines(ArrayList<Edge> path) {
+        graph.createEdgeLines(path);
+    }
 }
