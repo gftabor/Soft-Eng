@@ -254,6 +254,10 @@ public class MapController {
         return floorForNode1;
     }
 
+    public int returnDestFloor() {
+        return floorForNode2;
+    }
+
     //returns true if the multifloor pathfinding is going up
     //returns false if the pathfinding is going down floors
     public boolean goingUp() {
