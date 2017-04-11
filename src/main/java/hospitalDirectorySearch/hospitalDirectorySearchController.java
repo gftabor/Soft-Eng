@@ -2,23 +2,20 @@ package hospitalDirectorySearch;
 
 
 import DBController.DatabaseController;
-import controllers.CollectionOfNodes;
 import controllers.MapController;
 import controllers.Node;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
-
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import pathFindingMenu.Pathfinder;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -167,7 +164,12 @@ public class hospitalDirectorySearchController extends controllers.AbsController
             MapController.getInstance().requestFloorMapCopy();
             MapController.getInstance().requestMapCopy();
             HashMap<Integer, Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
+            Pathfinder pathfinder = new Pathfinder();
+            Node start = MapController.getInstance().getCollectionOfNodes().getNodeWithName(to_String);
+            Node end = MapController.getInstance().getCollectionOfNodes().getNodeWithName(from_String);
+            pathfinder.generatePath(start,end);
             controller.setUserString("");
+            controller.createEdgeLines(pathfinder.getPath());
         }else{
             //There could be information too
             Alert alert = new Alert(Alert.AlertType.ERROR);
