@@ -95,6 +95,33 @@ public class mmNodeInformationController extends controllers.AbsController {
     @FXML
     private TextField search_textField;
 
+    @FXML
+    private Label title_Label;
+
+    @FXML
+    private Label subTitle_Label;
+
+    @FXML
+    private Label Mode_Label;
+
+    @FXML
+    private Label docTitle_Label;
+
+    @FXML
+    private Label department_Label;
+
+    @FXML
+    private Label room_Label;
+
+    @FXML
+    private Label firstName_Label;
+
+    @FXML
+    private Label lastName_Label;
+
+
+
+
     int c_title;
 
     int ID;
@@ -108,9 +135,11 @@ public class mmNodeInformationController extends controllers.AbsController {
     /**
      * Flags for passing different info
      */
-    // Flag for current mode chosen (add, edit, remove)
+    // Flag for current mode chosen (add = 0, edit = 2, remove = 1)
     int c_mode = -1;
 
+    //set to english by default
+    int c_language = 0;
 
 
     //get an instance of database controller
@@ -123,11 +152,96 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     public void submitButton_Clicked(){
         System.out.println("Hello world");
+        ResultSet rset;
+        int id = 0, xpos = 0, ypos = 0, floor = 0;
+        String firstName, lastName, title, department, room;
+        title = title_choiceBox.getValue();
+        System.out.println("Title: " + title);
+        department = department_TextField.getText();
+        System.out.println("Department: " + department);
+        room = room_TextField.getText();
+        System.out.println("room: " + room);
+        //id = Integer.parseInt(id_TextField.getText());
+        firstName = Firstname_TextField.getText();
+        System.out.println("First Name: " + firstName);
+        lastName = lastName_TextField.getText();
+        System.out.println("Last Name: " + lastName);
+        rset = databaseController.getPosForRoom(room);
+        try{
+            while (rset.next()){
+                xpos = rset.getInt("XPOS");
+                ypos = rset.getInt("YPOS");
+                floor = rset.getInt("FLOOR");
+                System.out.println("Pos: " + xpos + " " + ypos + " " + floor);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        switch (c_mode) {
+            case 0: // adding
+                System.out.println("Adding professional mode");
+                databaseController.newProfessional(firstName, lastName, title, department);
+                rset = databaseController.getProfessional(firstName, lastName, title);
+                try {
+                    rset.next();
+                    id = rset.getInt("ID");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                databaseController.newProfessionalLocation(id, xpos, ypos, floor);
+                System.out.println("Adding professional mode ------------");
+                break;
+            case 1: // removing
+                System.out.println("Removing professional mode");
+                databaseController.deleteProfessionalLocation(id, xpos, ypos, floor);
+                rset = databaseController.getProfessional(firstName, lastName, title);
+                try {
+                    rset.next();
+                    id = rset.getInt("ID");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                databaseController.deleteProfessionalLocation(id, xpos, ypos, floor);
+                databaseController.deleteProfessional(id);
+                System.out.println("Removing professional mode ------------");
+                break;
+            case 2: // editing
+                System.out.println("Editing professional mode");
+                rset = databaseController.getProfessional(firstName, lastName, title);
+                try {
+                    rset.next();
+                    id = rset.getInt("ID");
+                    System.out.println("ID " + id);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                databaseController.EditProfessional(id, firstName, lastName, title, department);
+                databaseController.EditProfessionalLocation(id, xpos, ypos, floor);
+                System.out.println("Editing professional mode ------------");
+                break;
+            default:
+                // nothing
+        }
+
+           setUpTreeView();
     }
 
     //switches to the emergency scene
     public void emergencyButton_Clicked() {
-        switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+        emergency.emergencyController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+
     }
 
     //switches to main menu
@@ -138,6 +252,17 @@ public class mmNodeInformationController extends controllers.AbsController {
         adminMenuStart.adminMenuStartController controller = loader.getController();
         //Set the correct username for the next scene
         controller.setUsername(currentAdmin_Label.getText());
+        //sets the current language
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        controller.setLanguageChoices();
 
     }
 
@@ -167,6 +292,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                 department = rset.getString("DEPARTMENT");
                 roomNum = rset.getString("ROOMNUM");
                 System.out.println("Name: " + firstName + lastName);
+                //Table table = new Table(id, firstName, lastName, title, department, roomNum);
                 data.add(new Table(id, firstName, lastName, title, department, roomNum));
             }
         } catch (SQLException e){
@@ -299,6 +425,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         //Sets the properties
         title_choiceBox.setDisable(false);
         department_TextField.setDisable(false);
+        room_TextField.setDisable(false);
         id_TextField.setEditable(false);
         Firstname_TextField.setEditable(true);
         lastName_TextField.setEditable(true);
@@ -356,16 +483,26 @@ public class mmNodeInformationController extends controllers.AbsController {
 
 
         ArrayList<String> rooms = new ArrayList<>();
-        ArrayList<String> profiles = new ArrayList<>();
+        ArrayList<String> departments = new ArrayList<>();
 
-        ResultSet rset_profiles = databaseController.getDepartmentNames();
+        String room, department;
+
+        ResultSet rset_departments = databaseController.getDepartmentNames();
         ResultSet rset = databaseController.getRoomNames();
         try {
             while (rset.next()){
-                rooms.add(rset.getString("ROOMNUM"));
+                room = rset.getString("ROOMNUM");
+                if (!rooms.contains(room)){
+                    rooms.add(room);
+                }
+
             }
-            while (rset_profiles.next()){
-                profiles.add(rset_profiles.getString("DEPARTMENT"));
+            while (rset_departments.next()){
+                department = rset_departments.getString("DEPARTMENT");
+                if (!departments.contains(department)){
+                    departments.add(department);
+                }
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -374,7 +511,88 @@ public class mmNodeInformationController extends controllers.AbsController {
 
         TextFields.bindAutoCompletion(room_TextField,rooms);
 
-        TextFields.bindAutoCompletion(department_TextField, profiles);
+        TextFields.bindAutoCompletion(department_TextField, departments);
+    }
+
+
+
+    //sets the current language to the given language
+    public void setC_language(int i){
+        c_language = i;
+    }
+
+    //Changes the buttons and labels to english
+    public void englishButtons_Labels(){
+        //Buttons
+        mainMenu_Button.setText("Main Menu");
+        emergency_Button.setText("EMERGENCY");
+        submit_Button.setText("Submit");
+        cancel_Button.setText("Clear");
+
+        //Labels
+        title_Label.setText("Dircetory Management");
+        subTitle_Label.setText("Manage Directory");
+        Mode_Label.setText("Mode:");
+        docTitle_Label.setText("Title:");
+        department_Label.setText("Department:");
+        room_Label.setText("Room:");
+        firstName_Label.setText("First Name");
+        lastName_Label.setText("Last Name");
+
+
+        //text fields
+        search_textField.setPromptText("search");
+        room_TextField.setPromptText("room");
+        Firstname_TextField.setPromptText("First Name");
+        lastName_TextField.setPromptText("Last Name");
+
+        //Table columns
+        firstName_TableColumn.setText("First Name");
+        lastName_TableColumn.setText("Last Name");
+        title_TableColumn.setText("Title");
+        department_TableColumn.setText("Department");
+        room_TableColumn.setText("Room");
+
+
+
+    }
+
+    //Changes the buttons and labels to spanish
+    public void spanishButtons_Labels(){
+
+        //Buttons
+        mainMenu_Button.setText("Menú Principal ");
+        emergency_Button.setText("EMERGENCIA");
+        submit_Button.setText("Listo");
+        cancel_Button.setText("Borrar");
+
+
+        //Labels
+        title_Label.setText("Directorio");
+        subTitle_Label.setText("Control de Directorio");
+        Mode_Label.setText("Modo:");
+        docTitle_Label.setText("Título");
+        department_Label.setText("Departamento:");
+        room_Label.setText("Habitación:");
+        firstName_Label.setText("Nombre");
+        lastName_Label.setText("Apellido");
+
+
+        //text fields
+        search_textField.setPromptText("busca");
+        room_TextField.setPromptText("Habitación");
+        Firstname_TextField.setPromptText("Nombre");
+        lastName_TextField.setPromptText("Apellido");
+
+        //Table columns
+        firstName_TableColumn.setText("Nombre");
+        lastName_TableColumn.setText("Apellido");
+        title_TableColumn.setText("Título");
+        department_TableColumn.setText("Departamento");
+        room_TableColumn.setText("Habitación");
+
+
+
     }
 
 }

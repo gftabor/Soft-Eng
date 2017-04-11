@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -63,6 +64,39 @@ public class mmFloorAndModeController extends controllers.mapScene{
     private CheckBox enabled_CheckBox;
 
     @FXML
+    private Label title_Label;
+
+    @FXML
+    private Label subTitile_Label;
+
+    @FXML
+    private Label nodeTitile_Label;
+
+    @FXML
+    private ImageView map_viewer;
+
+    @FXML
+    private Label name_Label;
+
+    @FXML
+    private Label room_Label;
+
+    @FXML
+    private Label hidden_Label;
+
+    @FXML
+    private Label enabled_Label;
+
+    @FXML
+    private Label floorMap_Label;
+
+    @FXML
+    private Label chooseFloor_Label;
+
+    @FXML
+    private Label mode_Label;
+
+    @FXML
     private ChoiceBox<String> floor_ChoiceBox;
 
     private int nodeEdgeX1;
@@ -83,6 +117,10 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     private Circle btK;
 
+
+    //Set to english by default
+    int c_language = 0;
+
     private int currentFloor;
     private int floor1;
     private int floor2;
@@ -102,11 +140,24 @@ public class mmFloorAndModeController extends controllers.mapScene{
         MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true);
 
+        setFloorChoices();
     }
 
 
     public void emergencyButton_Clicked() {
-        switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+        emergency.emergencyController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+
     }
 
     public void clearButton_Clicked() {
@@ -338,6 +389,18 @@ public class mmFloorAndModeController extends controllers.mapScene{
         //Set the correct username for the next scene
         controller.setUsername(username_Label.getText());
         System.out.println(username_Label.getText());
+
+        //sets the current language
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        controller.setLanguageChoices();
     }
 
     public void setUserString(String user) {
@@ -346,6 +409,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     public void setModeChoices() {
         mode_ChoiceBox.getItems().addAll("---", "Add Node", "Remove Node", "Edit Node", "Add Edge", "Remove Edge");
+        mode_ChoiceBox.getSelectionModel().selectFirst();
         mode_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -368,11 +432,10 @@ public class mmFloorAndModeController extends controllers.mapScene{
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-                System.out.println(newValue);
                 //Print the floors accordingly
                 //CODE HERE!!!!!!!
                 currentFloor = newValue.intValue() + 1;
-
+                System.out.println(currentFloor);
                 graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true);
             }
         });
@@ -403,5 +466,76 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
         admin_FloorPane.getChildren().add(btK);
     }
+
+    //sets the current language given information form other screens
+    public void setC_language(int i){
+        c_language = i;
+    }
+
+    //switches all the labels and Buttons to english
+    public void englishButtons_Labels(){
+        //change the current language to english
+        c_language = 0;
+
+        //Change the Buttons
+        mainMenu_Button.setText("Main Menu");
+        emergency_Button.setText("EMERGENCY");
+        submit_Button.setText("Submit");
+        clear_Button.setText("Clear");
+
+        //Change the labels
+        title_Label.setText("Map Management");
+        subTitile_Label.setText("Information:");
+        nodeTitile_Label.setText("Title:");
+        name_Label.setText("Name:");
+        room_Label.setText("Room:");
+        hidden_Label.setText("Hidden:");
+        enabled_Label.setText("Enabled:");
+        floorMap_Label.setText("Floor Map");
+        chooseFloor_Label.setText("Floor:");
+        mode_Label.setText("Mode:");
+
+
+
+        //text fields
+        name_TextField.setPromptText("Name");
+        room_TextField.setPromptText("Room");
+
+
+    }
+
+    //switches all teh labels to spanish
+    public void spanishButtons_Labels() {
+        //change the current language to spanish
+        c_language = 1;
+
+        //Change the Buttons
+        mainMenu_Button.setText("Menú Principal");
+        emergency_Button.setText("EMERGENCIA");
+        submit_Button.setText("Listo");
+        clear_Button.setText("Borrar");
+
+        //Change the labels
+        title_Label.setText("Control de Mapa");
+        subTitile_Label.setText("Información:");
+        nodeTitile_Label.setText("Título:");
+        name_Label.setText("Nombre:");
+        room_Label.setText("Habitacion:");
+        hidden_Label.setText("Oculto:");
+        enabled_Label.setText("Habilitar:");
+        floorMap_Label.setText("Mapa del Piso");
+        chooseFloor_Label.setText("Piso:");
+        mode_Label.setText("Modo:");
+
+
+
+        //text fields
+        name_TextField.setPromptText("Name");
+        room_TextField.setPromptText("Room");
+
+
+    }
+
+
 
 }
