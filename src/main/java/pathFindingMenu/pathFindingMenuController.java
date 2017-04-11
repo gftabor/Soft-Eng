@@ -61,6 +61,9 @@ public class pathFindingMenuController extends controllers.mapScene{
     private int selectionState = 0;
     private int currentFloor;
 
+    private final double sizeUpRatio = 1.7;
+    private final double strokeRatio = 2.5;
+
     private controllers.MapOverlay graph;
     private MapController mapController = MapController.getInstance();
 
@@ -112,8 +115,9 @@ public class pathFindingMenuController extends controllers.mapScene{
                 floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
 
                 //maintain consistency of colors
-                start.setStrokeWidth(2.5);
+                start.setStrokeWidth(strokeRatio);
                 start.setStroke(Color.ORANGERED);
+                start.setRadius(sizeUpRatio);
 
                 //reset for next pathfinding session
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
@@ -158,22 +162,22 @@ public class pathFindingMenuController extends controllers.mapScene{
             graph.wipeEdgeLines();
             start =c;
             //color
-            c.setStrokeWidth(2.5);
+            c.setStrokeWidth(strokeRatio);
             c.setStroke(Color.ORANGERED);
 
             //size
-            c.setRadius(graph.getLabelRadius() * 1.25);
+            c.setRadius(graph.getLabelRadius() * sizeUpRatio);
         } else if (selectionState == 1){
             //place the red marker at end location
             mapController.markNode(x, y, 2, currentFloor);
             selectionState++;
             end = c;
             //color
-            c.setStrokeWidth(2.5);
+            c.setStrokeWidth(strokeRatio);
             c.setStroke(Color.FUCHSIA);
 
             //size
-            c.setRadius(graph.getLabelRadius() * 1.25);
+            c.setRadius(graph.getLabelRadius() * sizeUpRatio);
         } else {
             //do nothing
         }
