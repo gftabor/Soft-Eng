@@ -444,6 +444,33 @@ public class DatabaseController {
         return true;
     }
 
+    public boolean newProfessionalWithSpanish(String firstName, String lastName, String type, String department){
+        System.out.println(
+                String.format(
+                        "Adding professional with spanish prompt. firstName: %s, lastName: %s, type: %s, department: %s",
+                        firstName, lastName, type, department));
+
+        try{
+            // sql statement with "?" to be filled later
+            String query = "INSERT INTO PROFESSIONAL (FIRSTNAME, LASTNAME, TYPE, DEPARTMENT)" +
+                    " values (?, ?, ?, ?)";
+            // prepare statement by replacing "?" with corresponding variable
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setString(3, type);
+            preparedStatement.setString(4, department);
+            // execute prepared statement
+
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     public ResultSet getProfessional (String firstName, String lastName){
         ResultSet resultSet = null;
         System.out.println(
@@ -793,7 +820,6 @@ public class DatabaseController {
     }
 
     /*******************************************************************************
-<<<<<<< HEAD
      * SQL GENERATION actions
      *
      ******************************************************************************/
@@ -839,7 +865,7 @@ public class DatabaseController {
             return false;
         }
     }
-    /*
+    /*******************************************************************************
      * ADMIN actions
      *
      ******************************************************************************/
