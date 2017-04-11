@@ -155,9 +155,6 @@ public class Node implements Comparable<Node>{
         return this.roomNum;
     }
 
-    public String getType() {
-        return type;
-    }
 
     //Allows sorting list based on totalCost
     @Override
