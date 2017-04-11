@@ -75,7 +75,7 @@ public class pathFindingMenuController extends controllers.mapScene{
     private controllers.MapOverlay graph;
     private MapController mapController = MapController.getInstance();
 
-    private ArrayList<ArrayList<Edge>> globalFragList;
+    private ArrayList<Edge> [] globalFragList;
 
 
     public void emergencyButton_Clicked(){
@@ -94,7 +94,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
 
         //set continue button invisible when not needed
-        //continue_Button.setVisible(false);
+        continue_Button.setVisible(false);
 
     }
     public void cancelButton_Clicked(){
@@ -109,7 +109,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         graph.wipeEdgeLines();
 
         //hide the continue button
-        //continue_Button.setVisible(false);
+        continue_Button.setVisible(false);
 
     }
 
@@ -127,11 +127,13 @@ public class pathFindingMenuController extends controllers.mapScene{
                 globalFragList = null;
 
                 //set continue button visible
-                //continue_Button.setVisible(true);
+                continue_Button.setVisible(true);
 
                 //switch floors to original floor's pathfinding view
                 int startfloor = mapController.returnOriginalFloor();
                 currentFloor_Label.setText(Integer.toString(startfloor));
+                System.out.println("startfloor:");
+                System.out.println(startfloor);
                 graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(startfloor),false);
                 currentFloor = startfloor;
                 //reset the choicebox:
@@ -148,12 +150,15 @@ public class pathFindingMenuController extends controllers.mapScene{
                 //original call below >
                 //graph.createEdgeLines(reqPath);
                 System.out.println("=====================");
-                ArrayList<ArrayList<Edge>> fragPath;
+                ArrayList<Edge> [] fragPath;
                 fragPath = mapController.requestFragmentedPath(reqPath, mapController.returnOriginalFloor());
                 System.out.println("=====================");
 
-                //loop and display the edges per floor
-                graph.createEdgeLines(fragPath.get(currentFloor));
+                System.out.println("printing the fragmented path, floor = " + Integer.toString(startfloor));
+                //loop and display the edges per floor - use the startfloor
+
+
+                graph.createEdgeLines(fragPath[startfloor]);
 
                 //set the global so you can send to the continue button
                 globalFragList = fragPath;
@@ -205,6 +210,9 @@ public class pathFindingMenuController extends controllers.mapScene{
 
             //size
             c.setRadius(graph.getLabelRadius() * sizeUpRatio);
+
+            //hide the continue button if possible
+            continue_Button.setVisible(false);
         } else if (selectionState == 1){
             //place the red marker at end location
             mapController.markNode(x, y, 2, currentFloor);
@@ -248,14 +256,19 @@ public class pathFindingMenuController extends controllers.mapScene{
 
     public void continueButton_Clicked() {
 
+        System.out.println("going up:" );
+        System.out.println(mapController.goingUp());
         if (mapController.goingUp()) {
+
+            System.out.println("going up loop");
+
             //loop until you hit the top of the hospital
             while (currentFloor != 8) {
                 //increment floor
                 currentFloor ++;
 
                 //if there are no edges of interest, do not display them
-                if (globalFragList.get(currentFloor) == null) {
+                if (globalFragList[currentFloor] == null) {
                     continue;
                 }
 
@@ -263,7 +276,7 @@ public class pathFindingMenuController extends controllers.mapScene{
                 graph.wipeEdgeLines();
                 currentFloor_Label.setText(Integer.toString(currentFloor));
                 graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
-                graph.createEdgeLines(globalFragList.get(currentFloor));
+                graph.createEdgeLines(globalFragList[currentFloor]);
 
                 break;
 
@@ -271,19 +284,21 @@ public class pathFindingMenuController extends controllers.mapScene{
         } else {
             //loop until you hit the bottom of the hospital
             while (currentFloor != 0) {
+                System.out.println("going down loop");
                 //decrement floor
                 currentFloor --;
 
                 //if there are no edges of interest, do not display them
-                if (globalFragList.get(currentFloor) == null) {
+                if (globalFragList[currentFloor] == null) {
                     continue;
                 }
 
                 //otherwise, change to the appropriate screen and display edges
                 graph.wipeEdgeLines();
                 currentFloor_Label.setText(Integer.toString(currentFloor));
+
                 graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
-                graph.createEdgeLines(globalFragList.get(currentFloor));
+                graph.createEdgeLines(globalFragList[currentFloor]);
 
                 break;
             }
