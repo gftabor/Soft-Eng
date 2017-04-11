@@ -160,6 +160,9 @@ public class pathFindingMenuController extends controllers.mapScene{
             //color
             c.setStrokeWidth(2.5);
             c.setStroke(Color.ORANGERED);
+
+            //size
+            c.setRadius(graph.getLabelRadius() * 1.25);
         } else if (selectionState == 1){
             //place the red marker at end location
             mapController.markNode(x, y, 2, currentFloor);
@@ -168,6 +171,9 @@ public class pathFindingMenuController extends controllers.mapScene{
             //color
             c.setStrokeWidth(2.5);
             c.setStroke(Color.FUCHSIA);
+
+            //size
+            c.setRadius(graph.getLabelRadius() * 1.25);
         } else {
             //do nothing
         }
