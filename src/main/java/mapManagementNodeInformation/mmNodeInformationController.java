@@ -413,7 +413,11 @@ public class mmNodeInformationController extends controllers.AbsController {
     }
     //Sets the choices for the mode Add, edit remove
     public void setModeChoices() {
-        mode_ChoiceBox.getItems().addAll("Add", "Remove", "Edit");
+        if(c_language == 0) {
+            mode_ChoiceBox.getItems().addAll("Add", "Remove", "Edit");
+        }else{
+            mode_ChoiceBox.getItems().addAll("Agregar", "Borrar", "Editar");
+        }
         mode_ChoiceBox.getSelectionModel().selectedIndexProperty()
                 .addListener(new ChangeListener<Number>() {
                     @Override
