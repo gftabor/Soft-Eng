@@ -1,5 +1,6 @@
 package pathFindingMenu;
 
+import controllers.Edge;
 import controllers.MapController;
 import controllers.mapScene;
 import javafx.beans.value.ChangeListener;
@@ -14,6 +15,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+
+import java.util.ArrayList;
 
 /**
  * Created by AugustoR on 3/30/17.
@@ -87,7 +90,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         currentFloor = 1;
         currentFloor_Label.setText("1");
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
-        
+
 
 
     }
@@ -125,11 +128,20 @@ public class pathFindingMenuController extends controllers.mapScene{
                 //maintain consistency of colors
                 start.setStrokeWidth(strokeRatio);
                 start.setStroke(Color.ORANGERED);
-                start.setRadius(sizeUpRatio);
+                start.setRadius(graph.getLabelRadius());
 
                 //reset for next pathfinding session
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                graph.createEdgeLines(mapController.requestPath());
+                ArrayList<Edge> reqPath = mapController.requestPath();
+                //original call below >
+                //graph.createEdgeLines(reqPath);
+                System.out.println("=====================");
+                ArrayList<ArrayList<Edge>> fragPath;
+                fragPath = mapController.requestFragmentedPath(reqPath, mapController.returnOriginalFloor());
+                System.out.println("=====================");
+
+                //loop and display the edges per floor
+                graph.createEdgeLines(fragPath.get(currentFloor));
             } else {
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
                 graph.createEdgeLines(mapController.requestPath());
@@ -162,10 +174,12 @@ public class pathFindingMenuController extends controllers.mapScene{
             if(start != null) {
                 start.setStroke(Color.BLACK);
                 start.setStrokeWidth(1);
+                start.setRadius(graph.getLabelRadius());
             }
             if(end != null) {
                 end.setStroke(Color.BLACK);
                 end.setStrokeWidth(1);
+                end.setRadius(graph.getLabelRadius());
             }
             graph.wipeEdgeLines();
             start =c;

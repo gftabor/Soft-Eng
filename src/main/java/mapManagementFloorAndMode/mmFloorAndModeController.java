@@ -141,6 +141,10 @@ public class mmFloorAndModeController extends controllers.mapScene{
             graph.createEdgeLines(firstNode.getEdgeList());
 
             //color the node as well
+            if (lastColoredStart !=  null) {
+                lastColoredStart.setStroke(lastColoredStart.getFill());
+                lastColoredStart.setStrokeWidth(1);
+            }
             lastColoredStart = c;
             c.setStrokeWidth(2.5);
             c.setStroke(Color.ROYALBLUE);
