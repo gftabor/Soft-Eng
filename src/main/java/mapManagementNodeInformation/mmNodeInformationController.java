@@ -21,7 +21,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
-import org.controlsfx.control.textfield.TextFields;
+//import org.controlsfx.control.textfield.TextFields;
 
 
 /**
@@ -509,9 +509,9 @@ public class mmNodeInformationController extends controllers.AbsController {
         }
 
 
-        TextFields.bindAutoCompletion(room_TextField,rooms);
+        //TextFields.bindAutoCompletion(room_TextField,rooms);
 
-        TextFields.bindAutoCompletion(department_TextField, departments);
+        //TextFields.bindAutoCompletion(department_TextField, departments);
     }
 
 

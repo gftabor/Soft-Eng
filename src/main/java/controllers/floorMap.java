@@ -1,7 +1,7 @@
 package controllers;
 
 /**
- * Created by Griffin on 4/10/2017.
+ * Created by griffincecil on 4/10/2017.
  */
 //part of the proxy implementation of map images
 
@@ -11,6 +11,10 @@ public class floorMap implements mapImage {
 
     public floorMap(int floorNum) {
         this.mapLevel = floorNum;
+    }
+
+    public void loadMap() {
+
     }
 
     @Override
