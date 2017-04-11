@@ -158,6 +158,7 @@ public class hospitalDirectorySearchController extends controllers.AbsController
 
         invalid_input = to_String.equals("") || to_String == null || from_String.equals("") || from_String == null;
 
+
         if(!invalid_input) {
             FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/pathFindingMenuView.fxml");
             pathFindingMenu.pathFindingMenuController controller = loader.getController();
@@ -251,6 +252,7 @@ public class hospitalDirectorySearchController extends controllers.AbsController
                     }
                     String lowerCaseFilter = newValue.toLowerCase();
                     if(Table.getrFirstName().toLowerCase().contains(lowerCaseFilter)){
+                        System.out.println("Hello World");
                         return true;
 
                     }else if(Table.getrLastName().toLowerCase().contains(lowerCaseFilter)){
@@ -258,6 +260,7 @@ public class hospitalDirectorySearchController extends controllers.AbsController
                     }else if(Table.getrType().toLowerCase().contains(lowerCaseFilter)){
                         return true;
                     }else if(Table.getrTitle().toLowerCase().contains(lowerCaseFilter)){
+                        System.out.println("Hello World");
                         return true;
                     }else if(Table.getrRoom().toLowerCase().contains(lowerCaseFilter)){
                         return true;
