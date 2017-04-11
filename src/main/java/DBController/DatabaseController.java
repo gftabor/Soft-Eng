@@ -12,9 +12,9 @@ public class DatabaseController {
     }
 
     protected String dbName;
-    protected String buildTablesPath = "database/buildTables.sql";
-    protected String populateSQLPath = "database/mainDatabasePopulate.sql";
-    protected String cleanSQLPath = "database/dropTables.sql";
+    protected String buildTablesPath = "/database/buildTables.sql";
+    protected String populateSQLPath = "/database/mainDatabasePopulate.sql";
+    protected String cleanSQLPath = "/database/dropTables.sql";
     protected Connection conn;
     Statement stmt;
 
@@ -811,19 +811,18 @@ public class DatabaseController {
         StringBuffer sb = new StringBuffer();
 
         try {
-            //System.out.println("Reading from: " + new File(path).getAbsolutePath());
-            ClassLoader classLoader = getClass().getClassLoader();
             //FileReader fr = new FileReader(new File(path));
-            FileReader fr = new FileReader(classLoader.getResource(path).getFile());
+            //InputStream fr = DatabaseController.class.getResourceAsStream(path);
+            InputStream file = getClass().getResourceAsStream(path);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(file));
+            //BufferedReader br = new BufferedReader(fr);
 
-                                            //could add .getAbsolutePath?
 
-            BufferedReader br = new BufferedReader(fr);
-
-            while ((s = br.readLine()) != null) {
+            while ((s = reader.readLine()) != null) {
                 sb.append(s);
             }
-            br.close();
+            reader.close();
+            file.close();
 
             String[] inst = sb.toString().split(";");
 
