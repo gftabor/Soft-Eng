@@ -1,11 +1,18 @@
 package controllers;
 
 
-import java.util.*;
+import DBController.DatabaseController;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by dgian on 4/1/2017.
  */
+
+
 //This is the internal representation of the map (grouping of node objects)
 public class CollectionOfNodes {
 
@@ -14,6 +21,8 @@ public class CollectionOfNodes {
     Xpos 4 digits, Ypos 4 digits
     Example: 01500220 --> Xpos = 150, Ypos = 220
     */
+
+    DatabaseController databaseController = DatabaseController.getInstance();
 
     private HashMap<Integer, Node> floor1nodes;
     private HashMap<Integer, Node> floor2nodes;
@@ -164,5 +173,21 @@ public class CollectionOfNodes {
     //  returns: one array list (indexes 0 based - 0 to 6) containing all 7 hash maps of nodes
     public ArrayList<HashMap<Integer, Node>> getAllNodes() {
         return allNodes;
+    }
+
+    // returns a node from a given room name
+    public Node getNodeWithName(String roomName){
+        int i = 0;
+
+        for (Map<Integer, Node> entry : this.allNodes) {
+            for (Node node : entry.values()) {
+                i ++;
+                if (roomName.equals(node.getRoomNum())){
+                    return node;
+                }
+            }
+        }
+        System.out.println("about to return null   " +i);
+        return null;
     }
 }

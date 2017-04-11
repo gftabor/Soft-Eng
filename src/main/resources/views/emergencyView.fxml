@@ -102,7 +102,7 @@
                   <Region prefHeight="6.0" prefWidth="503.0" />
                   <HBox>
                      <children>
-                        <Label prefHeight="44.0" prefWidth="270.0" text="You are Here:">
+                        <Label fx:id="start_Label" prefHeight="44.0" prefWidth="270.0" text="You are Here:">
                            <font>
                               <Font name="System Bold Italic" size="36.0" />
                            </font>
@@ -119,7 +119,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefHeight="40.0" prefWidth="260.0" text="EXITS:">
+                        <Label fx:id="exit_Label" prefHeight="40.0" prefWidth="260.0" text="EXITS:">
                            <font>
                               <Font name="System Bold Italic" size="36.0" />
                            </font>
@@ -140,15 +140,18 @@
                   <Region prefHeight="110.0" prefWidth="210.0" />
                   <HBox alignment="CENTER">
                      <children>
-                        <Button fx:id="mainMenu_Button" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="49.0" prefWidth="180.0" text="CANCEL">
+                        <Button fx:id="mainMenu_Button" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="49.0" prefWidth="190.0" text="Main Menu">
                            <HBox.margin>
-                              <Insets bottom="4.0" right="10.0" top="4.0" />
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                            <font>
-                              <Font size="23.0" />
+                              <Font size="20.0" />
                            </font>
                         </Button>
-                        <Button fx:id="call_authorities" mnemonicParsing="false" onMouseClicked="#callAuthorities" prefHeight="49.0" prefWidth="250.0" style="-fx-background-color: red;" text="CALL AUTHORITIES" />
+                        <Button fx:id="call_authorities" mnemonicParsing="false" onMouseClicked="#callAuthorities" prefHeight="49.0" prefWidth="250.0" style="-fx-background-color: red;" text="Call Authorities">
+                           <font>
+                              <Font size="21.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
