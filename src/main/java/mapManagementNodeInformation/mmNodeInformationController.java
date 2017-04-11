@@ -151,6 +151,13 @@ public class mmNodeInformationController extends controllers.AbsController {
     }
 
     public void submitButton_Clicked(){
+        if(true){
+            FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/RequestDepartmentTitleInfoView.fxml");
+            RequestDepartmentTitleInfo.RequestDepartmentTitleInfoController controller = loader.getController();
+
+
+        }
+
         System.out.println("Hello world");
         ResultSet rset;
         int id = 0, xpos = 0, ypos = 0, floor = 0;
@@ -590,9 +597,12 @@ public class mmNodeInformationController extends controllers.AbsController {
         title_TableColumn.setText("Título");
         department_TableColumn.setText("Departamento");
         room_TableColumn.setText("Habitación");
+    }
 
-
-
+    //Adds the information to the database and adds the professional
+    public void saveToDatabase(String d, String t ){
+        //DB stuff
+        System.out.println("DO DATABASE STUFF PLEASE");
     }
 
 }
