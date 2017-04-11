@@ -88,7 +88,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
     @FXML
     private Label mode_Label;
 
-
+    @FXML
     private ChoiceBox<String> floor_ChoiceBox;
 
     private int nodeEdgeX1;
@@ -357,6 +357,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     public void setModeChoices() {
         mode_ChoiceBox.getItems().addAll("---", "Add Node", "Remove Node", "Edit Node", "Add Edge", "Remove Edge");
+        mode_ChoiceBox.getSelectionModel().selectFirst();
         mode_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
