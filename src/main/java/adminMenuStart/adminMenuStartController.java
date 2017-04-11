@@ -1,13 +1,9 @@
 package adminMenuStart;
-import controllers.MapController;
-import controllers.Node;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-
-import java.util.HashMap;
 
 /**
  * Created by AugustoR on 4/1/17.
@@ -54,10 +50,6 @@ public class adminMenuStartController extends controllers.AbsController{
 
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/pathFindingMenuView.fxml");
         pathFindingMenu.pathFindingMenuController controller = loader.getController();
-        MapController.getInstance().requestFloorMapCopy();
-        MapController.getInstance().requestMapCopy();
-        HashMap<Integer, Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
-        //controller.setMapAndNodes(DBMap);
         controller.setUserString(username_Label.getText());
 
     }
