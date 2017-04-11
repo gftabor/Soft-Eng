@@ -204,58 +204,61 @@ public class MapController {
         String destination;
         ArrayList<String> directions = new ArrayList<>();
 
-        for(int i = 0; i < path.size(); i++) {
-            if(getAngle(path.get(i), path.get(i+1)) >= 70.0 &&
-                    getAngle(path.get(i), path.get(i+1)) <= 110.0) {
-                destination = path.get(i).getEndNode().getName();
-                directions.add("Turn right at" + destination);
+        for(int i = 0; i < path.size()-1; i++) {
+            if(getAngle(path.get(i), path.get(i+1)) > 70.0 &&
+                    getAngle(path.get(i), path.get(i+1)) < 110.0) {
+                destination = path.get(i).getEndNode().getRoomNum();
+                directions.add("Turn right at " + destination);
             }
-            else if(getAngle(path.get(i), path.get(i+1)) >= 250.0 &&
-                    getAngle(path.get(i), path.get(i+1)) <= 290.0) {
-                destination = path.get(i).getEndNode().getName();
-                directions.add("Turn left at" + destination);
-            }
-            else if(getAngle(path.get(i), path.get(i+1)) > 110.0 &&
-                    getAngle(path.get(i), path.get(i+1)) < 170.0) {
-                destination = path.get(i).getEndNode().getName();
-                directions.add("Make a slight right at" + destination);
+            else if(getAngle(path.get(i), path.get(i+1)) > 250.0 &&
+                    getAngle(path.get(i), path.get(i+1)) < 290.0) {
+                destination = path.get(i).getEndNode().getRoomNum();
+                directions.add("Turn left at " + destination);
             }
             else if(getAngle(path.get(i), path.get(i+1)) > 190.0 &&
                     getAngle(path.get(i), path.get(i+1)) < 250.0) {
-                destination = path.get(i).getEndNode().getName();
-                directions.add("Make a slight left at" + destination);
+                destination = path.get(i).getEndNode().getRoomNum();
+                directions.add("Make a slight right at " + destination);
             }
-            else if(getAngle(path.get(i), path.get(i+1)) >= 1.0 &&
-                    getAngle(path.get(i), path.get(i+1)) < 70.0) {
-                destination = path.get(i).getEndNode().getName();
-                directions.add("Make a hard right at" + destination);
-            }
-            else if(getAngle(path.get(i), path.get(i+1)) > 290.0 &&
-                    getAngle(path.get(i), path.get(i+1)) <= 359.0) {
-                destination = path.get(i).getEndNode().getName();
-                directions.add("Make a hard left at" + destination);
-            } else {
+            else if(getAngle(path.get(i), path.get(i+1)) > 0.0 &&
+                    getAngle(path.get(i), path.get(i+1)) < 10.0){
                 directions.add("Continue straight.");
             }
+            else if(getAngle(path.get(i), path.get(i+1)) > 110.0 &&
+                    getAngle(path.get(i), path.get(i+1)) < 170.0) {
+                destination = path.get(i).getEndNode().getRoomNum();
+                directions.add("Make a slight left at " + destination);
+            }
+            else if(getAngle(path.get(i), path.get(i+1)) < 250.0 &&
+                    getAngle(path.get(i), path.get(i+1)) > 360.0) {
+                destination = path.get(i).getEndNode().getRoomNum();
+                directions.add("Make a hard right at " + destination);
+            }
+            else if(getAngle(path.get(i), path.get(i+1)) < 10.0 &&
+                    getAngle(path.get(i), path.get(i+1)) > 70.0) {
+                destination = path.get(i).getEndNode().getRoomNum();
+                directions.add("Make a hard left at " + destination);
+            }
         }
-        cleanDirections(directions);
-        String text = concatenateDirections(directions);
-        return text;
+        directions = cleanDirections(directions);
+        return concatenateDirections(directions);
 
     }
 
-    private void cleanDirections(ArrayList<String> directions) {
-        for(int i = 0; i < directions.size(); i++) {
+    private ArrayList<String> cleanDirections(ArrayList<String> direc) {
+        ArrayList<String> directions = direc;
+        for(int i = 0; i < directions.size()-1; i++) {
             if(directions.get(i).equals(directions.get(i+1))) {
                 directions.remove(directions.get(i));
             }
         }
+        return directions;
     }
 
     private String concatenateDirections(ArrayList<String> directions) {
         String text = "";
         for(String s: directions) {
-            text = text + "\n" + s;
+            text = text + s + "\n";
         }
         return text;
     }
@@ -273,7 +276,8 @@ public class MapController {
         //find dot product
         double dot = e1comp.get(0)*e2comp.get(0) + e1comp.get(1)*e2comp.get(1);
 
-        double angle = Math.acos(dot);
+        double angle = Math.toDegrees(Math.acos(dot));
+        System.out.println(angle);
 
         return angle;
     }

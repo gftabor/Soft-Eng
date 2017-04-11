@@ -147,6 +147,14 @@ public class Node implements Comparable<Node>{
 
     public void setName(String name) { this.name = name; }
 
+    public String getRoomNum() {
+        return roomNum;
+    }
+
+    public void setRoomNum(String roomNum) {
+        this.roomNum = roomNum;
+    }
+
     public String getType() { return type; }
 
     //Allows sorting list based on totalCost

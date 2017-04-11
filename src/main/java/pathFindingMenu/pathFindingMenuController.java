@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import java.util.ArrayList;
 
 /**
  * Created by AugustoR on 3/30/17.
@@ -131,7 +132,7 @@ public class pathFindingMenuController extends controllers.mapScene{
     }
 
     public void submitButton_Clicked(){
-
+        ArrayList<controllers.Edge> path;
         if (selectionState == 2) {
             //submit stuff
             //createEdgeLines
@@ -153,18 +154,19 @@ public class pathFindingMenuController extends controllers.mapScene{
                 start.setStroke(Color.ORANGERED);
                 start.setRadius(sizeUpRatio);
 
+
                 //reset for next pathfinding session
-                MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                graph.createEdgeLines(mapController.requestPath());
-            } else {
-                MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                graph.createEdgeLines(mapController.requestPath());
+
             }
 
+            MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
+            path = mapController.requestPath();
+            graph.createEdgeLines(path);
+            textDescription_TextFArea.setText(mapController.getTextDirections(path));
         }
         selectionState=0;
         System.out.println("The user has clicked the submit Button");
-        textDescription_TextFArea.setText(mapController.getTextDirections(mapController.requestPath()));
+
 
         //MapController.getInstance().requestMapCopy();
     }
