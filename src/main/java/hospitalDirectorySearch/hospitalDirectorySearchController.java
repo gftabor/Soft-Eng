@@ -82,10 +82,21 @@ public class hospitalDirectorySearchController extends controllers.AbsController
     @FXML
     private Label error_Label;
 
+    @FXML
+    private Label to_Label;
+
+    @FXML
+    private Label from_Label;
+
+    @FXML
+    private Label title_Label;
+
+
 
     int iNumber = 1;
     //Flag to check if the user has selected a first and second choice
     int flag = 0;
+
 
     boolean invalid_input = false;
 
@@ -93,6 +104,10 @@ public class hospitalDirectorySearchController extends controllers.AbsController
     //Gets the strings To and From that the users wants to create the path to
     String from_String = "";
     String to_String = "";
+
+    //Set to english by default
+    int c_language = 0;
+
 
 
     //get an instance of database controller
@@ -105,14 +120,34 @@ public class hospitalDirectorySearchController extends controllers.AbsController
     //
     public void mainMenuButton_Clicked(){
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
-        //patientMenuStart.patientMenuStartController controller = loader.getController();
-        //Set the correct username for the next scene
-        //controller.setUsername(currentAdmin_Label.getText());
+        patientMenuStart.patientMenuStartController controller = loader.getController();
+        //sets the current language
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
     }
 
     //
     public void emergencyButton_Clicked(){
-        switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+        emergency.emergencyController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+
     }
 
     //
@@ -191,7 +226,7 @@ public class hospitalDirectorySearchController extends controllers.AbsController
                         to_TextField.setText(Table_TableView.getSelectionModel().getSelectedItem().getrFirstName());
                         to_String = Table_TableView.getSelectionModel().getSelectedItem().getrRoom();
                         search_TextField.setText("");
-                        flag++;
+                        flag--;
                     }else{
                         flag = 0;
                     }
@@ -227,6 +262,71 @@ public class hospitalDirectorySearchController extends controllers.AbsController
         SortedList<Table> sortedData = new SortedList<>(filteredData);
         sortedData.comparatorProperty().bind(Table_TableView.comparatorProperty());
         Table_TableView.setItems(sortedData);
+    }
+
+    //switches all the labels and Buttons to english
+    public void englishButtons_Labels(){
+        //change the current language to english
+        c_language = 0;
+
+        //Change the Buttons
+        mainMenu_Button.setText("Main Menu");
+        emergency_Button.setText("EMERGENCY");
+        submit_Button.setText("Submit");
+        clear_Button.setText("Clear");
+
+
+        //Change the labels
+        from_Label.setText("From:");
+        to_Label.setText("To:");
+        title_Label.setText("Directory");
+
+        //Text Field
+        search_TextField.setPromptText("search");
+
+        //Table columns
+        firstName_TableColumn.setText("First Name");
+        lastName_TableColumn.setText("Last Name");
+        title_TableColumn.setText("Title");
+        department_TableColumn.setText("Department");
+        room_TableColumn.setText("Room");
+
+
+    }
+
+    //switches all teh labels to spanish
+    public void spanishButtons_Labels() {
+        //change the current language to spanish
+        c_language = 1;
+
+        //change the Buttons
+        mainMenu_Button.setText("Menu Principal");
+        emergency_Button.setText("EMERGENCIA");
+        submit_Button.setText("Listo");
+        clear_Button.setText("Borrar");
+
+
+        //Change the labels
+        from_Label.setText("Inicio:");
+        to_Label.setText("Destino:");
+        title_Label.setText("Directorio");
+
+
+        //Text Field
+        search_TextField.setPromptText("busca");
+
+        //Table columns
+        firstName_TableColumn.setText("Nombre");
+        lastName_TableColumn.setText("Apellido");
+        title_TableColumn.setText("Título");
+        department_TableColumn.setText("Departamento");
+        room_TableColumn.setText("Habitación");
+
+    }
+
+    //sets the current language given information form other screens
+    public void setCurrentLanguage(int i){
+        c_language = i;
     }
 
 
