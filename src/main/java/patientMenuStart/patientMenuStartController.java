@@ -47,6 +47,37 @@ public class patientMenuStartController extends controllers.AbsController{
 
     //flag for changing scenes once
     boolean loop_once = false;
+    @FXML
+    public void initialize(){
+        setLanguageChoices(c_language);
+
+    }
+
+    public void setLanguageChoices(int i) {
+        //Makes sure you only set the choices once
+        //sets the choices and sets the current language as the top choice
+        languages_ChoiceBox.getItems().addAll("English", "Spanish");
+        languages_ChoiceBox.getSelectionModel().select(i);
+
+        //Checks if the user has decided to change languages
+        languages_ChoiceBox.getSelectionModel().selectedIndexProperty()
+                .addListener(new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                        //System.out.println(newValue);
+
+                        //Checks if the user wants english language
+                        if (newValue.intValue() == 0) {
+                            englishButtons_Labels();
+
+                            //checks if the user wants spanish
+                        } else if (newValue.intValue() == 1) {
+                            spanishButtons_Labels();
+                        }
+                    }
+
+                });
+    }
 
 
     //Handling when the logIn Button is clicked
@@ -72,16 +103,18 @@ public class patientMenuStartController extends controllers.AbsController{
     //Handling when the pathFinding Button is clicked
     //IMPORTANT
     public void pathFindingButton_Clicked(){
+        System.out.println("CLICKING");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/pathFindingMenuView.fxml");
         pathFindingMenu.pathFindingMenuController controller = loader.getController();
         controller.setUserString("");
         //sends the current language to the next screen
+        controller.setC_language(c_language);
         //set up english labels
         if(c_language == 0){
-
+            controller.englishButtons_Labels();
             //set up spanish labels
         }else if(c_language == 1){
-
+            controller.spanishButtons_Labels();
         }
 
     }
@@ -91,13 +124,15 @@ public class patientMenuStartController extends controllers.AbsController{
     public void emergencyButton_Clicked() {
         System.out.println("The user has clicked the emergency Button");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+        emergency.emergencyController controller = loader.getController();
         //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
         //set up english labels
         if(c_language == 0){
-
+            controller.englishButtons_Labels();
             //set up spanish labels
         }else if(c_language == 1){
-
+            controller.spanishButtons_Labels();
         }
 
     }
@@ -108,10 +143,16 @@ public class patientMenuStartController extends controllers.AbsController{
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/hospitalDirectorySearchView.fxml");
         hospitalDirectorySearch.hospitalDirectorySearchController controller = loader.getController();
         controller.setUpTreeView();
+        controller.setUserString("");
         //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
         //set up english labels
-
-        //set up spanish labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
     }
 
     //set the choices for the user at the beginning of the scene
@@ -153,7 +194,7 @@ public class patientMenuStartController extends controllers.AbsController{
                         }
                     }
                 });
-    }
+    }*/
 
     //switches all the labels and Buttons to english
     public void englishButtons_Labels(){
@@ -163,6 +204,7 @@ public class patientMenuStartController extends controllers.AbsController{
         directory_Button.setText("Directory");
         pathFinding_Button.setText("Map");
         emergency_Button.setText("IN CASE OF EMERGENCY");
+        logIn_Button.setText("Administrator");
 
         //Change the labels
         chooseLanguage_Label.setText("Choose your language");
@@ -178,6 +220,7 @@ public class patientMenuStartController extends controllers.AbsController{
         directory_Button.setText("Directorio");
         pathFinding_Button.setText("Mapa");
         emergency_Button.setText("EN CASO DE EMERGENCIA");
+        logIn_Button.setText("Administrador");
 
         //change the Labels
         chooseLanguage_Label.setText("Escoge tu lenguaje");
