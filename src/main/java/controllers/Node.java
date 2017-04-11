@@ -143,9 +143,15 @@ public class Node implements Comparable<Node>{
         isEnabled = enabled;
     }
 
+<<<<<<< HEAD
     public String getName() { return name; }
 
     public void setName(String name) { this.name = name; }
+=======
+    public String getType() {
+        return type;
+    }
+>>>>>>> 08ff366b119ac4ab3ac9cffbafa2df6cd88d64e4
 
     //Allows sorting list based on totalCost
     @Override

@@ -1,7 +1,7 @@
 package database;
 
 import DBController.DatabaseController;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -10,12 +10,12 @@ import static org.junit.Assert.assertTrue;
  * Created by jasonashton on 4/2/17.
  */
 public class testDatabaseClose {
-    //DatabaseController dbControl = new DatabaseController();
-    DatabaseController databaseController = DatabaseController.getInstance();
+    static DatabaseController databaseController = DatabaseController.getInstance();
 
-    @Before
-    public void checkSetup(){
-        assertTrue(databaseController.startDB());
+    @BeforeClass
+    public static void setUp(){
+        databaseController.setDbName("TestDB");
+        databaseController.startDB();
     }
 
     @Test

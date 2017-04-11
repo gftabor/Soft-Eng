@@ -47,7 +47,20 @@ public class Edge {
     public double calculateWeight(int x1, int y1, int x2, int y2) {
         //implementation of this formula:
         if (floorStart != floorEnd) {
-            System.out.println("CROSS FLOOR NOT IMPLEMENTED YET!!");
+            System.out.println("Multifloor edge calc executing...");
+            //3 types:
+            //  -stair
+            //  -elevator
+            //  -other (default catch-all)
+            //Want to favor elevators over stairs, anything else just pick a default value
+            if(startNode.getType() == "Elevator" && endNode.getType() == "Elevator") {
+                return 10;
+            } else if(startNode.getType() == "Stair" && endNode.getType() == "Stair") {
+                return 20 * (Math.abs(floorEnd - floorStart)); //get worse by floor
+            } else {
+                return 40; //idk just pick something, perhaps revisit later
+            }
+
         }
 
         //differences between coords
