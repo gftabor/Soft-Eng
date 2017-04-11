@@ -25,7 +25,7 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label text="Map Management">
+                        <Label fx:id="title_Label" text="Map Management">
                            <font>
                               <Font name="System Bold Italic" size="50.0" />
                            </font></Label>
@@ -40,7 +40,7 @@
                            </font>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="mainMenu_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="40.0" prefWidth="150.0" text="Main Menu">
+                        <Button fx:id="mainMenu_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="40.0" prefWidth="190.0" text="Main Menu">
                            <font>
                               <Font size="23.0" />
                            </font>
@@ -48,7 +48,7 @@
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="emergency_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="40.0" prefWidth="170.0" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="40.0" prefWidth="180.0" text="EMERGENCY">
                            <HBox.margin>
                               <Insets bottom="6.0" left="6.0" right="30.0" top="6.0" />
                            </HBox.margin>
@@ -83,7 +83,7 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label text="Floor Map">
+                        <Label fx:id="floorMap_Label" text="Floor Map">
                            <font>
                               <Font name="System Bold Italic" size="36.0" />
                            </font>
@@ -118,7 +118,7 @@
                   <Region prefHeight="57.0" prefWidth="503.0" />
                   <HBox>
                      <children>
-                        <Label prefWidth="190.0" text="Choose Floor:">
+                        <Label fx:id="chooseFloor_Label" prefWidth="190.0" text="Floor:">
                            <font>
                               <Font name="System Bold" size="26.0" />
                            </font>
@@ -136,7 +136,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefWidth="190.0" text="Mode:">
+                        <Label fx:id="mode_Label" prefWidth="190.0" text="Mode:">
                            <font>
                               <Font name="System Bold Italic" size="26.0" />
                            </font>
@@ -158,7 +158,7 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label text="Information">
+                        <Label fx:id="subTitile_Label" text="Information">
                            <font>
                               <Font name="System Bold Italic" size="30.0" />
                            </font>
@@ -171,7 +171,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefWidth="120.0" text="Title:">
+                        <Label fx:id="nodeTitile_Label" prefWidth="120.0" text="Title:">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
                            </HBox.margin>
@@ -188,7 +188,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefWidth="120.0" text="Name:">
+                        <Label fx:id="name_Label" prefWidth="120.0" text="Name:">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
                            </HBox.margin>
@@ -208,7 +208,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefWidth="120.0" text="Room:">
+                        <Label fx:id="room_Label" prefWidth="120.0" text="Room:">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
                            </HBox.margin>
@@ -228,7 +228,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefWidth="120.0" text="Hidden:">
+                        <Label fx:id="hidden_Label" prefWidth="120.0" text="Hidden:">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
                            </HBox.margin>
@@ -245,7 +245,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefWidth="120.0" text="Enabled:">
+                        <Label fx:id="enabled_Label" prefWidth="120.0" text="Enabled:">
                            <font>
                               <Font name="System Bold Italic" size="26.0" />
                            </font>
