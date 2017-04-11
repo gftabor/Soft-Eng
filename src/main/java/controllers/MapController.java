@@ -198,4 +198,99 @@ public class MapController {
     public int returnOriginalFloor() {
         return floorForNode1;
     }
+
+    //in progress -> prints directions until I can figure out how to get it on the UI
+    public String getTextDirections(ArrayList<Edge> path) {
+        String destination;
+        ArrayList<String> directions = new ArrayList<>();
+
+        for(int i = 0; i < path.size(); i++) {
+            if(getAngle(path.get(i), path.get(i+1)) >= 70.0 &&
+                    getAngle(path.get(i), path.get(i+1)) <= 110.0) {
+                destination = path.get(i).getEndNode().getName();
+                directions.add("Turn right at" + destination);
+            }
+            else if(getAngle(path.get(i), path.get(i+1)) >= 250.0 &&
+                    getAngle(path.get(i), path.get(i+1)) <= 290.0) {
+                destination = path.get(i).getEndNode().getName();
+                directions.add("Turn left at" + destination);
+            }
+            else if(getAngle(path.get(i), path.get(i+1)) > 110.0 &&
+                    getAngle(path.get(i), path.get(i+1)) < 170.0) {
+                destination = path.get(i).getEndNode().getName();
+                directions.add("Make a slight right at" + destination);
+            }
+            else if(getAngle(path.get(i), path.get(i+1)) > 190.0 &&
+                    getAngle(path.get(i), path.get(i+1)) < 250.0) {
+                destination = path.get(i).getEndNode().getName();
+                directions.add("Make a slight left at" + destination);
+            }
+            else if(getAngle(path.get(i), path.get(i+1)) >= 1.0 &&
+                    getAngle(path.get(i), path.get(i+1)) < 70.0) {
+                destination = path.get(i).getEndNode().getName();
+                directions.add("Make a hard right at" + destination);
+            }
+            else if(getAngle(path.get(i), path.get(i+1)) > 290.0 &&
+                    getAngle(path.get(i), path.get(i+1)) <= 359.0) {
+                destination = path.get(i).getEndNode().getName();
+                directions.add("Make a hard left at" + destination);
+            } else {
+                directions.add("Continue straight.");
+            }
+        }
+        cleanDirections(directions);
+        String text = concatenateDirections(directions);
+        return text;
+
+    }
+
+    private void cleanDirections(ArrayList<String> directions) {
+        for(int i = 0; i < directions.size(); i++) {
+            if(directions.get(i).equals(directions.get(i+1))) {
+                directions.remove(directions.get(i));
+            }
+        }
+    }
+
+    private String concatenateDirections(ArrayList<String> directions) {
+        String text = "";
+        for(String s: directions) {
+            text = text + "\n" + s;
+        }
+        return text;
+    }
+
+
+    //finds angle between two edges by finding the unit vectors for each
+    //taking the dot product between the unit vectors
+    //and taking the arccos() of the dot product
+    private double getAngle(Edge e1, Edge e2) {
+
+        //find unit vectors
+        ArrayList<Double> e1comp = getUnitVector(e1);
+        ArrayList<Double> e2comp = getUnitVector(e2);
+
+        //find dot product
+        double dot = e1comp.get(0)*e2comp.get(0) + e1comp.get(1)*e2comp.get(1);
+
+        double angle = Math.acos(dot);
+
+        return angle;
+    }
+
+    private ArrayList<Double> getUnitVector(Edge e1) {
+        double xcomp = e1.getEndNode().getPosX() - e1.getStartNode().getPosX();
+        double ycomp = e1.getEndNode().getPosY() - e1.getStartNode().getPosY();
+
+        double magnitude = Math.sqrt(Math.pow(xcomp, 2.0) + Math.pow(ycomp, 2.0));
+
+        //list of components of unit vector
+        ArrayList<Double> unitComponents = new ArrayList<>();
+        unitComponents.add(xcomp/magnitude);
+        unitComponents.add(ycomp/magnitude);
+
+        return unitComponents;
+
+
+    }
 }
