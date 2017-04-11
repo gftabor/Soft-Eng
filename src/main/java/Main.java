@@ -21,7 +21,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/views/patientMenuStartView.fxml"));
 
         primaryStage.setTitle("Iteration 1 Minimal Application Correct");
-        //primaryStage.setFullScreen(true);
+        primaryStage.setFullScreen(true);
         //primaryStage.setMaximized(true);
         primaryStage.setScene(new Scene(root, 1274, 710));
         primaryStage.setResizable(false);

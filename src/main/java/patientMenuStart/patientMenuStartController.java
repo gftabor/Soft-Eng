@@ -156,7 +156,7 @@ public class patientMenuStartController extends controllers.AbsController{
     }
 
     //set the choices for the user at the beginning of the scene
-    public void setLanguageChoices(){
+    /*public void setLanguageChoices() {
         //Makes sure you only set the choices once
         if (!choicesSet) {
             //sets the choices and sets the current language as the top choice
