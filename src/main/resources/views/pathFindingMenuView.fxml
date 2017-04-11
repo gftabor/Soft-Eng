@@ -113,7 +113,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefHeight="40.0" prefWidth="150.0" text="Start Point:">
+                        <Label fx:id="start_Label" prefHeight="40.0" prefWidth="150.0" text="Start Point:">
                            <font>
                               <Font name="System Bold Italic" size="23.0" />
                            </font>
@@ -133,7 +133,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefHeight="40.0" prefWidth="150.0" text="End Point:">
+                        <Label fx:id="end_Label" prefHeight="40.0" prefWidth="150.0" text="End Point:">
                            <font>
                               <Font name="System Bold Italic" size="23.0" />
                            </font>
@@ -246,7 +246,7 @@
                            <children>
                               <Circle fx:id="start_Dot" layoutX="735.0" layoutY="35.0" radius="30.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
                               <Circle fx:id="end_Dot" fill="#ff1f1f" radius="30.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
-                              <ImageView fitHeight="489.0" fitWidth="920.0" onMouseClicked="#continueButton_Clicked">
+                              <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="920.0" onMouseClicked="#continueButton_Clicked">
                                  <image>
                                     <Image url="@../images/4.png" />
                                  </image>
