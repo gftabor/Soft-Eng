@@ -199,11 +199,8 @@ public class mmNodeInformationController extends controllers.AbsController {
 
         ResultSet rset;
         int id = 0, xpos = 0, ypos = 0, floor = 0;
-        String firstName, lastName, title, department, room;
-        title = title_choiceBox.getValue();
-        System.out.println("Title: " + title);
-        department = department_TextField.getText();
-        System.out.println("Department: " + department);
+        String firstName, lastName, title = "", department = "", room;
+
         room = room_TextField.getText();
         System.out.println("room: " + room);
         //id = Integer.parseInt(id_TextField.getText());
@@ -221,6 +218,14 @@ public class mmNodeInformationController extends controllers.AbsController {
             }
         } catch (SQLException e){
             e.printStackTrace();
+        }
+
+        switch (c_language){
+            case 0: // english
+                title = title_choiceBox.getValue();
+                System.out.println("Title: " + title);
+                department = department_TextField.getText();
+                System.out.println("Department: " + department);
         }
 
         switch (c_mode) {
@@ -443,14 +448,20 @@ public class mmNodeInformationController extends controllers.AbsController {
                 });
 
     }
-    //sets the choices for the department DB
-    public void setDepartmentChoices() {
-        //department_ChoiceBox.getItems().addAll("Accident and emergency (A&E)", "Anaesthetics", "Breast screening");
-    }
+
 
     //set the title choices for the user
     public void setTitleChoices() {
-        title_choiceBox.getItems().addAll("Doctor", "Nurse");
+
+        ArrayList<String> professionalTitles = new ArrayList<>();
+        if (c_language == 0) {
+            // language is english
+            professionalTitles = databaseController.getEnglishProfessionalTitleList();
+        } else {
+            professionalTitles = databaseController.getSpanishProfessionalTitleList();
+        }
+
+        title_choiceBox.getItems().addAll(professionalTitles);
         title_choiceBox.getSelectionModel().selectedIndexProperty()
                 .addListener(new ChangeListener<Number>() {
                     @Override
@@ -538,7 +549,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         mode_ChoiceBox.getSelectionModel().select(i);
     }
 
-    //sets the choices for the rooms DB
+    //sets the choices for the rooms and departments
     public void setRoomChoices() {
 
 
