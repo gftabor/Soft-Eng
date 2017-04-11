@@ -236,6 +236,8 @@ public class mmNodeInformationController extends controllers.AbsController {
                 }
                 databaseController.newProfessionalLocation(id, xpos, ypos, floor);
                 System.out.println("Adding professional mode ------------");
+                cleaningTextFields(c_mode);
+
                 break;
             case 1: // removing
                 System.out.println("Removing professional mode");
@@ -250,6 +252,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                 databaseController.deleteProfessionalLocation(id, xpos, ypos, floor);
                 databaseController.deleteProfessional(id);
                 System.out.println("Removing professional mode ------------");
+                cleaningTextFields(c_mode);
                 break;
             case 2: // editing
                 System.out.println("Editing professional mode");
@@ -421,6 +424,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                         //Sets the mode to Add
                         if (newValue.intValue() == 0) {
                             add_settings();
+                            id_TextField.setText("");
 
                             //Sets the mode to remove
                         } else if (newValue.intValue() == 1) {
@@ -452,7 +456,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                         if (newValue.intValue() == 0) {
                             System.out.println("Hello world");
                             //create_Button();
-                        } else if (newValue.intValue() == 1 || newValue.intValue() == 2) {
+                        } else if (newValue.intValue() == 1) {
                             //admin_FloorPane.getChildren().remove(btK);
                         }
                     }
@@ -553,7 +557,20 @@ public class mmNodeInformationController extends controllers.AbsController {
         TextFields.bindAutoCompletion(department_TextField, departments);
     }
 
+    //Cleans the text fields
+    public void cleaningTextFields(int mode){
+        department_TextField.setText("");
+        room_TextField.setText("");
+        Firstname_TextField.setText("");
+        lastName_TextField.setText("");
 
+        if (mode == 1){
+            title_choiceBox.getSelectionModel().select(0);
+            id_TextField.setText("");
+        }
+
+
+    }
 
     //sets the current language to the given language
     public void setC_language(int i){
