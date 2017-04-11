@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -45,8 +46,6 @@ public class pathFindingMenuController extends controllers.mapScene{
     @FXML
     private ChoiceBox<String> floor_ChoiceBox;
 
-
-
     @FXML
     private Label username_Label;
 
@@ -54,6 +53,7 @@ public class pathFindingMenuController extends controllers.mapScene{
     private Pane node_Plane;
 
     @FXML
+<<<<<<< HEAD
     private Label title_Label;
 
     @FXML
@@ -62,6 +62,12 @@ public class pathFindingMenuController extends controllers.mapScene{
     @FXML
     private Label start_Label;
 
+=======
+    private Button continue_Button;
+
+    @FXML
+    private TextArea textDescription_TextFArea;
+>>>>>>> a48fa13d9784a8de644b3e477774937e68e171ac
 
     private Circle start;
     private Circle end;
@@ -70,6 +76,9 @@ public class pathFindingMenuController extends controllers.mapScene{
 
     private int selectionState = 0;
     private int currentFloor;
+
+    private final double sizeUpRatio = 1.7;
+    private final double strokeRatio = 2.5;
 
     private controllers.MapOverlay graph;
     private MapController mapController = MapController.getInstance();
@@ -104,13 +113,17 @@ public class pathFindingMenuController extends controllers.mapScene{
         currentFloor = 1;
         currentFloor_Label.setText("1");
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+        
+
+
     }
     public void cancelButton_Clicked(){
         //MapController.getInstance().requestMapCopy();
         selectionState = 0;
-        //Remove black and red dots from map
+        //Remove colored dots from map
 
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+        currentFloor_Label.setText(Integer.toString(currentFloor));
 
         //wipe line from map
         graph.wipeEdgeLines();
@@ -122,8 +135,32 @@ public class pathFindingMenuController extends controllers.mapScene{
         if (selectionState == 2) {
             //submit stuff
             //createEdgeLines
-            MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-            graph.createEdgeLines(mapController.requestPath());
+
+            //check for multifloor
+            if (mapController.areDifferentFloors()) {
+                System.out.println("Multi-floor pathfinding detected!");
+
+                //switch floors to original floor's pathfinding view
+                int startfloor = mapController.returnOriginalFloor();
+                currentFloor_Label.setText(Integer.toString(startfloor));
+                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(startfloor),false);
+                currentFloor = startfloor;
+                //reset the choicebox:
+                floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
+
+                //maintain consistency of colors
+                start.setStrokeWidth(strokeRatio);
+                start.setStroke(Color.ORANGERED);
+                start.setRadius(sizeUpRatio);
+
+                //reset for next pathfinding session
+                MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
+                graph.createEdgeLines(mapController.requestPath());
+            } else {
+                MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
+                graph.createEdgeLines(mapController.requestPath());
+            }
+
         }
         selectionState=0;
         System.out.println("The user has clicked the submit Button");
@@ -183,16 +220,22 @@ public class pathFindingMenuController extends controllers.mapScene{
             graph.wipeEdgeLines();
             start =c;
             //color
-            c.setStrokeWidth(2.5);
+            c.setStrokeWidth(strokeRatio);
             c.setStroke(Color.ORANGERED);
+
+            //size
+            c.setRadius(graph.getLabelRadius() * sizeUpRatio);
         } else if (selectionState == 1){
             //place the red marker at end location
             mapController.markNode(x, y, 2, currentFloor);
             selectionState++;
             end = c;
             //color
-            c.setStrokeWidth(2.5);
+            c.setStrokeWidth(strokeRatio);
             c.setStroke(Color.FUCHSIA);
+
+            //size
+            c.setRadius(graph.getLabelRadius() * sizeUpRatio);
         } else {
             //do nothing
         }
@@ -258,7 +301,6 @@ public class pathFindingMenuController extends controllers.mapScene{
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-                System.out.println(newValue);
                 //Print the floors accordingly
                 //CODE HERE!!!!!!!
 
