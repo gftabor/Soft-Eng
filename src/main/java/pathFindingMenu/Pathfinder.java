@@ -112,38 +112,48 @@ public class Pathfinder {
     //in progress -> prints directions until I can figure out how to get it on the UI
     public void getTextDirections(ArrayList<Edge> path) {
         path = this.path;
+        String destination;
+        ArrayList<String> directions = new ArrayList<>();
 
         for(int i = 0; i < path.size(); i++) {
-            if(getAngle(path.get(i), path.get(i+1)) >= 170.0 &&
+            if(getAngle(path.get(i), path.get(i+1)) >= 70.0 &&
                     getAngle(path.get(i), path.get(i+1)) <= 110.0) {
-                if(getAngle(path.get(i-1), path.get(i)) >= 170.0 &&
-                        getAngle(path.get(i-1), path.get(i)) <= 110.0){
-                  System.out.println("Continue");
-                } else { System.out.println("Continue straight."); }
-            }
-            else if(getAngle(path.get(i), path.get(i+1)) >= 70.0 &&
-                    getAngle(path.get(i), path.get(i+1)) <= 110.0) {
-                System.out.println("Turn right.");
+                destination = path.get(i).getEndNode().getName();
+                directions.add("Turn right at" + destination);
             }
             else if(getAngle(path.get(i), path.get(i+1)) >= 250.0 &&
                     getAngle(path.get(i), path.get(i+1)) <= 290.0) {
-                System.out.println("Turn left.");
+                destination = path.get(i).getEndNode().getName();
+                directions.add("Turn left at" + destination);
             }
             else if(getAngle(path.get(i), path.get(i+1)) > 110.0 &&
                     getAngle(path.get(i), path.get(i+1)) < 170.0) {
-                System.out.println("Make a slight right.");
+                destination = path.get(i).getEndNode().getName();
+                directions.add("Make a slight right at" + destination);
             }
             else if(getAngle(path.get(i), path.get(i+1)) > 190.0 &&
                     getAngle(path.get(i), path.get(i+1)) < 250.0) {
-                System.out.println("Make a slight left.");
+                destination = path.get(i).getEndNode().getName();
+                directions.add("Make a slight left at" + destination);
             }
             else if(getAngle(path.get(i), path.get(i+1)) >= 10.0 &&
                     getAngle(path.get(i), path.get(i+1)) < 70.0) {
-                System.out.println("Make a hard right.");
+                destination = path.get(i).getEndNode().getName();
+                directions.add("Make a hard right at" + destination);
             }
             else if(getAngle(path.get(i), path.get(i+1)) > 290.0 &&
                     getAngle(path.get(i), path.get(i+1)) <= 350.0) {
-                System.out.println("Make a hard left.");
+                destination = path.get(i).getEndNode().getName();
+                directions.add("Make a hard left at" + destination);
+            } else {
+                destination = path.get(i).getEndNode().getName();
+
+                if(getAngle(path.get(i+1), path.get(i+2)) >= 170.0 &&
+                        getAngle(path.get(i+1), path.get(i+2)) <= 190.0) {
+                    destination = path.get(i+1).getEndNode().getName();
+
+                }
+                directions.add("Continue straight to" + destination);
             }
         }
     }
