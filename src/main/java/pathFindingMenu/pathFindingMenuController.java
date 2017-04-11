@@ -91,7 +91,8 @@ public class pathFindingMenuController extends controllers.mapScene{
         currentFloor_Label.setText("1");
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
 
-
+        //set continue button invisible when not needed
+        continue_Button.setVisible(false);
 
     }
     public void cancelButton_Clicked(){
@@ -105,6 +106,9 @@ public class pathFindingMenuController extends controllers.mapScene{
         //wipe line from map
         graph.wipeEdgeLines();
 
+        //hide the continue button
+        continue_Button.setVisible(false);
+
     }
 
     public void submitButton_Clicked(){
@@ -116,6 +120,9 @@ public class pathFindingMenuController extends controllers.mapScene{
             //check for multifloor
             if (mapController.areDifferentFloors()) {
                 System.out.println("Multi-floor pathfinding detected!");
+
+                //set continue button visible
+                continue_Button.setVisible(true);
 
                 //switch floors to original floor's pathfinding view
                 int startfloor = mapController.returnOriginalFloor();
@@ -142,6 +149,7 @@ public class pathFindingMenuController extends controllers.mapScene{
 
                 //loop and display the edges per floor
                 graph.createEdgeLines(fragPath.get(currentFloor));
+
             } else {
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
                 graph.createEdgeLines(mapController.requestPath());
@@ -228,5 +236,9 @@ public class pathFindingMenuController extends controllers.mapScene{
             }
         });
 
+    }
+
+    public void continueButton_Clicked() {
+        System.out.println("fuck");
     }
 }
