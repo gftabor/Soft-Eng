@@ -94,7 +94,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
 
         //set continue button invisible when not needed
-        continue_Button.setVisible(false);
+        //continue_Button.setVisible(false);
 
     }
     public void cancelButton_Clicked(){
@@ -109,7 +109,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         graph.wipeEdgeLines();
 
         //hide the continue button
-        continue_Button.setVisible(false);
+        //continue_Button.setVisible(false);
 
     }
 
@@ -127,7 +127,7 @@ public class pathFindingMenuController extends controllers.mapScene{
                 globalFragList = null;
 
                 //set continue button visible
-                continue_Button.setVisible(true);
+                //continue_Button.setVisible(true);
 
                 //switch floors to original floor's pathfinding view
                 int startfloor = mapController.returnOriginalFloor();
