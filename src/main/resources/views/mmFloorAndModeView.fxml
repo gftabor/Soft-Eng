@@ -83,7 +83,7 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label text="Floor Map">
+                        <Label fx:id="floorMap_Label" text="Floor Map">
                            <font>
                               <Font name="System Bold Italic" size="36.0" />
                            </font>
@@ -118,7 +118,7 @@
                   <Region prefHeight="57.0" prefWidth="503.0" />
                   <HBox>
                      <children>
-                        <Label prefWidth="190.0" text="Choose Floor:">
+                        <Label fx:id="chooseFloor_Label" prefWidth="190.0" text="Floor:">
                            <font>
                               <Font name="System Bold" size="26.0" />
                            </font>
@@ -136,7 +136,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label prefWidth="190.0" text="Mode:">
+                        <Label fx:id="mode_Label" prefWidth="190.0" text="Mode:">
                            <font>
                               <Font name="System Bold Italic" size="26.0" />
                            </font>

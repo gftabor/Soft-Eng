@@ -490,7 +490,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         department_Label.setText("Departamento:");
         room_Label.setText("Habitación:");
         firstName_Label.setText("Nombre");
-        lastName_Label.setText("Appelido");
+        lastName_Label.setText("Apellido");
 
 
         //text fields

@@ -79,6 +79,16 @@ public class mmFloorAndModeController extends controllers.mapScene{
     @FXML
     private Label enabled_Label;
 
+    @FXML
+    private Label floorMap_Label;
+
+    @FXML
+    private Label chooseFloor_Label;
+
+    @FXML
+    private Label mode_Label;
+
+
     private ChoiceBox<String> floor_ChoiceBox;
 
     private int nodeEdgeX1;
@@ -457,6 +467,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
         room_Label.setText("Room:");
         hidden_Label.setText("Hidden:");
         enabled_Label.setText("Enabled:");
+        floorMap_Label.setText("Floor Map");
+        chooseFloor_Label.setText("Floor:");
+        mode_Label.setText("Mode:");
 
 
 
@@ -486,6 +499,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
         room_Label.setText("Habitacion:");
         hidden_Label.setText("Oculto:");
         enabled_Label.setText("Habilitar:");
+        floorMap_Label.setText("Mapa del Piso");
+        chooseFloor_Label.setText("Piso:");
+        mode_Label.setText("Modo:");
 
 
 
