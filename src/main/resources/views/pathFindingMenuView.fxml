@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -16,7 +23,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pathFindingMenu.pathFindingMenuController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pathFindingMenu.pathFindingMenuController">
    <children>
       <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -197,7 +204,7 @@
                      </font>
                   </Label>
                   <Region HBox.hgrow="ALWAYS" />
-                  <Button fx:id="continue_Button" mnemonicParsing="false" text="Continue">
+                  <Button fx:id="continue_Button" mnemonicParsing="false" onMouseClicked="#O" text="Continue">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -239,7 +246,7 @@
                            <children>
                               <Circle fx:id="start_Dot" layoutX="735.0" layoutY="35.0" radius="30.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
                               <Circle fx:id="end_Dot" fill="#ff1f1f" radius="30.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
-                              <ImageView fitHeight="489.0" fitWidth="920.0">
+                              <ImageView fitHeight="489.0" fitWidth="920.0" onMouseClicked="#continueButton_Clicked">
                                  <image>
                                     <Image url="@../images/4.png" />
                                  </image>
