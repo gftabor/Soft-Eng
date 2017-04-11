@@ -3,9 +3,10 @@ package controllers;
 
 import DBController.DatabaseController;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by dgian on 4/1/2017.
@@ -180,12 +181,13 @@ public class CollectionOfNodes {
 
         for (Map<Integer, Node> entry : this.allNodes) {
             for (Node node : entry.values()) {
-                Node node1 = entry.get(node);
-                if (roomName.equals(roomName)){
-                    return node1;
+                i ++;
+                if (roomName.equals(node.getRoomNum())){
+                    return node;
                 }
             }
         }
+        System.out.println("about to return null   " +i);
         return null;
     }
 }
