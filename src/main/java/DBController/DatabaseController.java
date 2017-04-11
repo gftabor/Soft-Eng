@@ -744,7 +744,8 @@ public class DatabaseController {
         try {
             while (rset.next()) {
                 department = rset.getString("SPDEPARTMENT");
-                if (!departments.contains(department)) {
+                System.out.println("In the database -- getting spanish department: "+ department);
+                if (!departments.contains(department) && department != null) {
                     departments.add(department);
                 }
             }
