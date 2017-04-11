@@ -454,7 +454,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                         // Do validation
                         System.out.println(newValue);
                         if (newValue.intValue() == 0) {
-                            System.out.println("Hello world");
+                            //System.out.println("Hello world");
                             //create_Button();
                         } else if (newValue.intValue() == 1) {
                             //admin_FloorPane.getChildren().remove(btK);
