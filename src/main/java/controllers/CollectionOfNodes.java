@@ -1,11 +1,17 @@
 package controllers;
 
 
+import DBController.DatabaseController;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
  * Created by dgian on 4/1/2017.
  */
+
+
 //This is the internal representation of the map (grouping of node objects)
 public class CollectionOfNodes {
 
@@ -14,6 +20,8 @@ public class CollectionOfNodes {
     Xpos 4 digits, Ypos 4 digits
     Example: 01500220 --> Xpos = 150, Ypos = 220
     */
+
+    DatabaseController databaseController = DatabaseController.getInstance();
 
     private HashMap<Integer, Node> floor1nodes;
     private HashMap<Integer, Node> floor2nodes;
@@ -164,5 +172,20 @@ public class CollectionOfNodes {
     //  returns: one array list (indexes 0 based - 0 to 6) containing all 7 hash maps of nodes
     public ArrayList<HashMap<Integer, Node>> getAllNodes() {
         return allNodes;
+    }
+
+    // returns a node from a given room name
+    public Node getNodeWithName(String roomName){
+        int i = 0;
+
+        for (Map<Integer, Node> entry : this.allNodes) {
+            for (Node node : entry.values()) {
+                Node node1 = entry.get(node);
+                if (roomName.equals(roomName)){
+                    return node1;
+                }
+            }
+        }
+        return null;
     }
 }
