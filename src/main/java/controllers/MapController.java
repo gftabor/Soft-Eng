@@ -6,6 +6,7 @@ import pathFindingMenu.Pathfinder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 //import main.java.controllers.CollectionOfNodes;
 
@@ -189,6 +190,50 @@ public class MapController {
         pathfinder.generatePath(startNode, endNode);
         return pathfinder.getPath();
 
+    }
+
+    //used for multifloor pathfinding output
+    //utilizes requestPath() to get pathfinding path from start to end
+    //breaks up into individual path for each edge
+    public ArrayList<ArrayList<Edge>> requestFragmentedPath(ArrayList<Edge> fullList, int startingFloor) {
+        //fullList is given specifically from requestPath()
+        //path is in reverse order!!!
+        Collections.reverse(fullList);
+
+        //initialize fragmented list
+        ArrayList<ArrayList<Edge>> fragmentedList = new ArrayList<>();
+        //put null references to avoid index out of bounds errors
+        for (int i = 0; i <= 8; i++) {
+            fragmentedList.add(i,null);
+        }
+
+        int currentFloor = startingFloor;
+        ArrayList<Edge> currentlist = new ArrayList<>();
+
+        for (Edge e: fullList) {
+            System.out.println("Edge (floor) from " + e.getStartNode().getFloor()+ " to" + e.getEndNode().getFloor());
+
+
+            //if change in floor, close off this list of edges
+            if (e.getEndNode().getFloor() != e.getStartNode().getFloor()) {
+                //add old list to the fragList - if it is not empty
+                if (!currentlist.isEmpty()) {
+                    fragmentedList.add(currentFloor,currentlist);
+                }
+
+                //instantiate new version of currentlist
+                currentlist = new ArrayList<>();
+
+                //set new currentfloor
+                currentFloor = e.getEndNode().getFloor();
+            }
+            currentlist.add(e);
+        }
+
+        //add the final list to the fraglist
+        fragmentedList.add(currentFloor,currentlist);
+
+        return fragmentedList;
     }
 
     public boolean areDifferentFloors() {
