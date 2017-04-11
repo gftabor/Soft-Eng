@@ -90,14 +90,16 @@ public class adminMenuStartController extends controllers.AbsController{
 
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/pathFindingMenuView.fxml");
         pathFindingMenu.pathFindingMenuController controller = loader.getController();
+
+        //sends the current language to the next screen
+        controller.setC_language(c_language);
         MapController.getInstance().requestFloorMapCopy();
         MapController.getInstance().requestMapCopy();
         HashMap<Integer, Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
         //controller.setMapAndNodes(DBMap);
         controller.setUserString(username_Label.getText());
 
-        //sends the current language to the next screen
-        controller.setC_language(c_language);
+
         //set up english labels
         if(c_language == 0){
             controller.englishButtons_Labels();
@@ -114,6 +116,9 @@ public class adminMenuStartController extends controllers.AbsController{
          FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/mmNodeInformationView.fxml");
          mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
 
+         //sets the current language
+         controller.setC_language(c_language);
+
          controller.setTitleChoices();
          controller.setModeChoices();
          controller.setRoomChoices();
@@ -121,8 +126,6 @@ public class adminMenuStartController extends controllers.AbsController{
          controller.setUpTreeView();
          controller.setUser(username_Label.getText());
 
-        //sets the current language
-        controller.setC_language(c_language);
         //set up english labels
         if(c_language == 0){
             controller.englishButtons_Labels();
@@ -144,6 +147,7 @@ public class adminMenuStartController extends controllers.AbsController{
         mapManagementFloorAndMode.mmFloorAndModeController controller = loader.getController();
         //Set the username label
         controller.setUserString(username_Label.getText());
+
         //sets the current language
         controller.setC_language(c_language);
         //set up english labels
