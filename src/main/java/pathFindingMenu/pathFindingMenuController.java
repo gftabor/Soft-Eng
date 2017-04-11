@@ -75,6 +75,8 @@ public class pathFindingMenuController extends controllers.mapScene{
     private controllers.MapOverlay graph;
     private MapController mapController = MapController.getInstance();
 
+    private ArrayList<ArrayList<Edge>> globalFragList;
+
 
     public void emergencyButton_Clicked(){
         System.out.println("The user has clicked the emergency Button");
@@ -121,6 +123,9 @@ public class pathFindingMenuController extends controllers.mapScene{
             if (mapController.areDifferentFloors()) {
                 System.out.println("Multi-floor pathfinding detected!");
 
+                //initialize reference of the global frag list to null (set up)
+                globalFragList = null;
+
                 //set continue button visible
                 continue_Button.setVisible(true);
 
@@ -149,6 +154,9 @@ public class pathFindingMenuController extends controllers.mapScene{
 
                 //loop and display the edges per floor
                 graph.createEdgeLines(fragPath.get(currentFloor));
+
+                //set the global so you can send to the continue button
+                globalFragList = fragPath;
 
             } else {
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
@@ -239,6 +247,47 @@ public class pathFindingMenuController extends controllers.mapScene{
     }
 
     public void continueButton_Clicked() {
-        System.out.println("fuck");
+
+        if (mapController.goingUp()) {
+            //loop until you hit the top of the hospital
+            while (currentFloor != 8) {
+                //increment floor
+                currentFloor ++;
+
+                //if there are no edges of interest, do not display them
+                if (globalFragList.get(currentFloor) == null) {
+                    continue;
+                }
+
+                //otherwise, change to the appropriate screen and display edges
+                graph.wipeEdgeLines();
+                currentFloor_Label.setText(Integer.toString(currentFloor));
+                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+                graph.createEdgeLines(globalFragList.get(currentFloor));
+
+                break;
+
+            }
+        } else {
+            //loop until you hit the bottom of the hospital
+            while (currentFloor != 0) {
+                //decrement floor
+                currentFloor --;
+
+                //if there are no edges of interest, do not display them
+                if (globalFragList.get(currentFloor) == null) {
+                    continue;
+                }
+
+                //otherwise, change to the appropriate screen and display edges
+                graph.wipeEdgeLines();
+                currentFloor_Label.setText(Integer.toString(currentFloor));
+                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+                graph.createEdgeLines(globalFragList.get(currentFloor));
+
+                break;
+            }
+
+        }
     }
 }
