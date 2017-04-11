@@ -436,7 +436,11 @@ public class mmNodeInformationController extends controllers.AbsController {
     }
     //Sets the choices for the mode Add, edit remove
     public void setModeChoices() {
-        mode_ChoiceBox.getItems().addAll("Add", "Remove", "Edit");
+        if(c_language == 0) {
+            mode_ChoiceBox.getItems().addAll("Add", "Remove", "Edit");
+        }else{
+            mode_ChoiceBox.getItems().addAll("Agregar", "Borrar", "Editar");
+        }
         mode_ChoiceBox.getSelectionModel().selectedIndexProperty()
                 .addListener(new ChangeListener<Number>() {
                     @Override
@@ -483,7 +487,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                         // Do validation
                         System.out.println(newValue);
                         if (newValue.intValue() == 0) {
-                            System.out.println("Hello world");
+                            //System.out.println("Hello world");
                             //create_Button();
                         } else if (newValue.intValue() == 1) {
                             //admin_FloorPane.getChildren().remove(btK);
