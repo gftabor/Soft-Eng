@@ -1,5 +1,7 @@
 package controllers;
 
+import javafx.scene.image.ImageView;
+
 /**
  * Created by griffincecil on 4/10/2017.
  */
@@ -14,13 +16,11 @@ public class proxyMap implements mapImage {
         this.mapLevel = floorNum;
     }
 
-
-
     @Override
-    public void display(){
+    public void display(ImageView pane){
         if (newFloorMap == null) {
             newFloorMap = new floorMap(mapLevel);
         }
-        newFloorMap.display();
+        newFloorMap.display(pane);
     }
 }

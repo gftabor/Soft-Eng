@@ -3,6 +3,8 @@ package mapManagementFloorAndMode;
 import controllers.MapController;
 import controllers.Node;
 import controllers.mapScene;
+import controllers.proxyMap;
+import controllers.mapImage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -92,7 +94,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
     @FXML
     private Label mode_Label;
 
-
+    @FXML
     private ChoiceBox<String> floor_ChoiceBox;
 
     private int nodeEdgeX1;
@@ -384,39 +386,11 @@ public class mmFloorAndModeController extends controllers.mapScene{
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
                 System.out.println(newValue);
-                //Print the floors accordingly
-                //CODE HERE!!!!!!!
-                if (newValue.intValue() == 0) {
-                    System.out.println("Printing first floor");
-                    currentFloor = 1;
+                currentFloor = newValue.intValue() + 1;
 
-                    //LOAD NEXT FLOOR PICTURE HERE
+                mapImage newMapImage = new proxyMap(currentFloor);
+                newMapImage.display(map_viewer);
 
-                }else if(newValue.intValue() == 1){
-                    System.out.println("Printing second floor");
-                    currentFloor = 2;
-
-                }else if(newValue.intValue() == 2){
-                    System.out.println("Printing third floor");
-                    currentFloor = 3;
-
-                }else if(newValue.intValue() == 3){
-                    System.out.println("Printing fourth floor");
-                    currentFloor = 4;
-
-                }else if(newValue.intValue() == 4){
-                    System.out.println("Printing fifth floor");
-                    currentFloor = 5;
-
-                }else if(newValue.intValue() == 5){
-                    System.out.println("Printing sixth floor");
-                    currentFloor = 6;
-
-                }else if(newValue.intValue() == 6){
-                    System.out.println("Printing seventh floor");
-                    currentFloor = 7;
-
-                }
                 graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true);
             }
         });
@@ -516,7 +490,6 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
 
     }
-
 
 
 }
