@@ -29,7 +29,7 @@ public class testEdge {
 
     @BeforeClass
     public static void setUp(){
-        databaseController.setDbName("TestDB");
+        databaseController.setDbName("./TestDb");
         databaseController.startDB();
         databaseController.newNode(x1, y1, floor1, ishidden1, enabled1, type1, name1, roomnum1);
         databaseController.newNode(x2, y2, floor2, ishidden2, enabled2, type2, name2, roomnum2);

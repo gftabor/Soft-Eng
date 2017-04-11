@@ -14,7 +14,7 @@ public class testTestDB {
 
     @Test
     public void populateThenClearDB(){
-        dbController.setDbName("testDB");
+        dbController.setDbName("./TestDb");
         dbController.startDB();
         //assertTrue(dbController.clearDB());
         //assertTrue(dbController.populateDB());
