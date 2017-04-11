@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -45,13 +46,17 @@ public class pathFindingMenuController extends controllers.mapScene{
     @FXML
     private ChoiceBox<String> floor_ChoiceBox;
 
-
-
     @FXML
     private Label username_Label;
 
     @FXML
     private Pane node_Plane;
+
+    @FXML
+    private Button continue_Button;
+
+    @FXML
+    private TextArea textDescription_TextFArea;
 
     private Circle start;
     private Circle end;
@@ -79,6 +84,17 @@ public class pathFindingMenuController extends controllers.mapScene{
         currentFloor = 1;
         currentFloor_Label.setText("1");
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+        textDescription_TextFArea.setText("Asdcfghjkjshghjksjhbsjksjhbsjs \n " +
+                "ghjkjshvbhjksjhbsjksjnss \n sbhjkankakajbakjbakbakjbakjabkjabakjbakkbjkabjkkenklne \n" +
+                "sjbhsjsbhsbhjsbhshshjshjshjshbjjshbjshbjsbhjsbhjs \n" +
+                "sklskjsnkjsnskjnskjnskjsnkjsnkjsnjknkjnsknsknsknsksn \n" +
+                "sjknsjkskjnskjsnkjsnjksnskjnsksnkjsnsknskn \n" +
+                "ddjndkndkndkdndkndkdnkdjnkdndkjndkjn \n" +
+                "sksjnksjnsknskjnsjskjnskjnskjnjsknsknskjsnkjsnk \n" +
+                "sjsjknskjnsksnkjsnksnsknsnsknsk \n" +
+                "lknsklnsklnslknslnssnsjdkdndkjnddnk \n");
+
+
     }
     public void cancelButton_Clicked(){
         //MapController.getInstance().requestMapCopy();
