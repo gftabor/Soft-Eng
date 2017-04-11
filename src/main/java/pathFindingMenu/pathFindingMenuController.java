@@ -64,6 +64,10 @@ public class pathFindingMenuController extends controllers.mapScene{
     private Circle start;
     private Circle end;
 
+//    private double startX;
+//    private double startY;
+
+
     private Circle btK;
 
     private int selectionState = 0;
@@ -76,6 +80,7 @@ public class pathFindingMenuController extends controllers.mapScene{
     private MapController mapController = MapController.getInstance();
 
     private ArrayList<Edge> [] globalFragList;
+
 
 
     public void emergencyButton_Clicked(){
@@ -132,17 +137,16 @@ public class pathFindingMenuController extends controllers.mapScene{
                 //switch floors to original floor's pathfinding view
                 int startfloor = mapController.returnOriginalFloor();
                 currentFloor_Label.setText(Integer.toString(startfloor));
-                System.out.println("startfloor:");
-                System.out.println(startfloor);
-                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(startfloor),false);
-                currentFloor = startfloor;
-                //reset the choicebox:
-                floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
+                System.out.println("startfloor: " + Integer.toString(startfloor));
 
-                //maintain consistency of colors
-                start.setStrokeWidth(strokeRatio);
-                start.setStroke(Color.ORANGERED);
-                start.setRadius(graph.getLabelRadius());
+                //switch back to the original floor using the choicebox selection
+                floor_ChoiceBox.getSelectionModel().select(startfloor - 1);
+                System.out.println("Current floor: " + Integer.toString(currentFloor) + " :)");
+
+                //maintain consistency of colors - doesn't work - references go missing
+//                start.setStrokeWidth(strokeRatio);
+//                start.setStroke(Color.ORANGERED);
+//                start.setRadius(graph.getLabelRadius());
 
                 //reset for next pathfinding session
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
@@ -158,7 +162,19 @@ public class pathFindingMenuController extends controllers.mapScene{
                 //loop and display the edges per floor - use the startfloor
 
 
-                graph.createEdgeLines(fragPath[startfloor]);
+                if (fragPath[startfloor] == null) {
+                    //only occurs if the first transition is a null
+                    //instead just highlight the first thing
+                    System.out.println("var: start = ");
+                    if (start != null) {
+                        System.out.println("fuck");
+                    } else  {
+                        System.out.println("fuck");
+                    }
+
+                } else {
+                    graph.createEdgeLines(fragPath[startfloor]);
+                }
 
                 //set the global so you can send to the continue button
                 globalFragList = fragPath;
@@ -207,6 +223,9 @@ public class pathFindingMenuController extends controllers.mapScene{
             //color
             c.setStrokeWidth(strokeRatio);
             c.setStroke(Color.ORANGERED);
+
+//            startX = c.getCenterX();
+//            startY = c.getCenterY();
 
             //size
             c.setRadius(graph.getLabelRadius() * sizeUpRatio);
@@ -274,8 +293,9 @@ public class pathFindingMenuController extends controllers.mapScene{
 
                 //otherwise, change to the appropriate screen and display edges
                 graph.wipeEdgeLines();
-                currentFloor_Label.setText(Integer.toString(currentFloor));
-                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+                floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
+//                currentFloor_Label.setText(Integer.toString(currentFloor));
+//                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
                 graph.createEdgeLines(globalFragList[currentFloor]);
 
                 break;
@@ -295,14 +315,20 @@ public class pathFindingMenuController extends controllers.mapScene{
 
                 //otherwise, change to the appropriate screen and display edges
                 graph.wipeEdgeLines();
-                currentFloor_Label.setText(Integer.toString(currentFloor));
-
-                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+                floor_ChoiceBox.getSelectionModel().select(0);
+//                currentFloor_Label.setText(Integer.toString(currentFloor));
+//                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
                 graph.createEdgeLines(globalFragList[currentFloor]);
 
                 break;
             }
 
+        }
+
+        //disable the continue button if you reach the end
+        int destFloor = mapController.returnDestFloor();
+        if (currentFloor == destFloor) {
+            continue_Button.setVisible(false);
         }
     }
 }
