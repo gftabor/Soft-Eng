@@ -291,5 +291,10 @@ public class hospitalDirectorySearchController extends controllers.AbsController
         c_language = i;
     }
 
+    //Sets the string of the user into the scene
+    public void setUserString(String user){
+        currentAdmin_Label.setText(user);
+    }
+
 
 }
