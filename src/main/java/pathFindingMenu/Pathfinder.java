@@ -149,6 +149,8 @@ public class Pathfinder {
             }
         }
         cleanDirections(directions);
+        concatenateDirections(directions);
+        
     }
 
     private void cleanDirections(ArrayList<String> directions) {
@@ -157,6 +159,14 @@ public class Pathfinder {
                 directions.remove(directions.get(i));
             }
         }
+    }
+
+    private String concatenateDirections(ArrayList<String> directions) {
+        String text = "";
+        for(String s: directions) {
+            text = text + "\n" + s;
+        }
+        return text;
     }
 
 
