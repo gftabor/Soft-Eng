@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -66,6 +67,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     @FXML
     private Label nodeTitile_Label;
+
+    @FXML
+    private ImageView map_viewer;
 
     @FXML
     private Label name_Label;

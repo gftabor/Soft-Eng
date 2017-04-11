@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -29,6 +30,9 @@ public class pathFindingMenuController extends controllers.mapScene{
 
     @FXML
     private Circle redCircle_Circle;
+
+    @FXML
+    private ImageView map_viewer;
 
     @FXML
     private Button emergency_Button;
