@@ -195,16 +195,16 @@ public class MapController {
     //used for multifloor pathfinding output
     //utilizes requestPath() to get pathfinding path from start to end
     //breaks up into individual path for each edge
-    public ArrayList<ArrayList<Edge>> requestFragmentedPath(ArrayList<Edge> fullList, int startingFloor) {
+    public ArrayList<Edge>[] requestFragmentedPath(ArrayList<Edge> fullList, int startingFloor) {
         //fullList is given specifically from requestPath()
         //path is in reverse order!!!
         Collections.reverse(fullList);
 
         //initialize fragmented list
-        ArrayList<ArrayList<Edge>> fragmentedList = new ArrayList<>();
+        ArrayList<Edge> [] fragmentedList = new ArrayList [10];
         //put null references to avoid index out of bounds errors
         for (int i = 0; i <= 8; i++) {
-            fragmentedList.add(i,null);
+            fragmentedList[i] = null;
         }
 
         int currentFloor = startingFloor;
@@ -218,20 +218,28 @@ public class MapController {
             if (e.getEndNode().getFloor() != e.getStartNode().getFloor()) {
                 //add old list to the fragList - if it is not empty
                 if (!currentlist.isEmpty()) {
-                    fragmentedList.add(currentFloor,currentlist);
+                    System.out.println("created frag path on floor: " + Integer.toString(currentFloor));
+                    fragmentedList[currentFloor] = currentlist;
+
                 }
 
                 //instantiate new version of currentlist
                 currentlist = new ArrayList<>();
 
                 //set new currentfloor
-                currentFloor = e.getEndNode().getFloor();
+                if (e.getStartNode().getFloor() == currentFloor) {
+                    currentFloor = e.getEndNode().getFloor();
+                } else {
+                    currentFloor = e.getStartNode().getFloor();
+                }
+                System.out.println("currentfloor updated to: " + Integer.toString(currentFloor));
             }
             currentlist.add(e);
         }
 
         //add the final list to the fraglist
-        fragmentedList.add(currentFloor,currentlist);
+        System.out.println("finished loop created frag path on floor: " + Integer.toString(currentFloor));
+        fragmentedList[currentFloor] = currentlist;
 
         return fragmentedList;
     }
