@@ -111,7 +111,6 @@ public class Pathfinder {
 
     //in progress -> prints directions until I can figure out how to get it on the UI
     public void getTextDirections(ArrayList<Edge> path) {
-        path = this.path;
         String destination;
         ArrayList<String> directions = new ArrayList<>();
 
@@ -136,24 +135,26 @@ public class Pathfinder {
                 destination = path.get(i).getEndNode().getName();
                 directions.add("Make a slight left at" + destination);
             }
-            else if(getAngle(path.get(i), path.get(i+1)) >= 10.0 &&
+            else if(getAngle(path.get(i), path.get(i+1)) >= 1.0 &&
                     getAngle(path.get(i), path.get(i+1)) < 70.0) {
                 destination = path.get(i).getEndNode().getName();
                 directions.add("Make a hard right at" + destination);
             }
             else if(getAngle(path.get(i), path.get(i+1)) > 290.0 &&
-                    getAngle(path.get(i), path.get(i+1)) <= 350.0) {
+                    getAngle(path.get(i), path.get(i+1)) <= 359.0) {
                 destination = path.get(i).getEndNode().getName();
                 directions.add("Make a hard left at" + destination);
             } else {
-                destination = path.get(i).getEndNode().getName();
+                directions.add("Continue straight.");
+            }
+        }
+        cleanDirections(directions);
+    }
 
-                if(getAngle(path.get(i+1), path.get(i+2)) >= 170.0 &&
-                        getAngle(path.get(i+1), path.get(i+2)) <= 190.0) {
-                    destination = path.get(i+1).getEndNode().getName();
-
-                }
-                directions.add("Continue straight to" + destination);
+    private void cleanDirections(ArrayList<String> directions) {
+        for(int i = 0; i < directions.size(); i++) {
+            if(directions.get(i).equals(directions.get(i+1))) {
+                directions.remove(directions.get(i));
             }
         }
     }
