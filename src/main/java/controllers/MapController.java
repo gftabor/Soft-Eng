@@ -236,11 +236,19 @@ public class MapController {
         return fragmentedList;
     }
 
+    //returns true if the floors of the two nodes in the pathfinding are different
     public boolean areDifferentFloors() {
         return floorForNode1 != floorForNode2;
     }
 
+    //returns the floor of the node at the start of the pathfinding
     public int returnOriginalFloor() {
         return floorForNode1;
+    }
+
+    //returns true if the multifloor pathfinding is going up
+    //returns false if the pathfinding is going down floors
+    public boolean goingUp() {
+        return floorForNode2 > floorForNode1;
     }
 }
