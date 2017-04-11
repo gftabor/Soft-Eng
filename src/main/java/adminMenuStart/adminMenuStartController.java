@@ -111,8 +111,12 @@ public class adminMenuStartController extends controllers.AbsController{
     }
 
     public void hospitalDirectoryButton_Clicked(){
+
          FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/mmNodeInformationView.fxml");
          mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
+
+        //sets the current language
+        controller.setC_language(c_language);
 
          controller.setTitleChoices();
          controller.setModeChoices();
@@ -121,8 +125,7 @@ public class adminMenuStartController extends controllers.AbsController{
          controller.setUpTreeView();
          controller.setUser(username_Label.getText());
 
-        //sets the current language
-        controller.setC_language(c_language);
+
         //set up english labels
         if(c_language == 0){
             controller.englishButtons_Labels();
