@@ -205,8 +205,13 @@ public class hospitalDirectorySearchController extends controllers.AbsController
                 id = rset.getInt("ID");
                 firstName = rset.getString("FIRSTNAME");
                 lastName = rset.getString("LASTNAME");
-                title = rset.getString("TYPE");
-                department = rset.getString("DEPARTMENT");
+                if (c_language == 0) {
+                    title = rset.getString("TYPE");
+                    department = rset.getString("DEPARTMENT");
+                } else {
+                    title = rset.getString("SPTYPE");
+                    department = rset.getString("SPDEPARTMENT");
+                }
                 roomNum = rset.getString("ROOMNUM");
                 System.out.println("Name: " + firstName + lastName);
                 data.add(new Table(id, firstName, lastName, title, department, roomNum));

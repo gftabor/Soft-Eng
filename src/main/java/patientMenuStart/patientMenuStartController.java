@@ -111,9 +111,9 @@ public class patientMenuStartController extends controllers.AbsController{
         System.out.println("The user has clicked the directory button");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/hospitalDirectorySearchView.fxml");
         hospitalDirectorySearch.hospitalDirectorySearchController controller = loader.getController();
-        controller.setUpTreeView();
         //sends the current language to the next screen
         controller.setCurrentLanguage(c_language);
+        controller.setUpTreeView();
         //set up english labels
         if(c_language == 0){
             controller.englishButtons_Labels();

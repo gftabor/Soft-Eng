@@ -44,7 +44,7 @@ public class testService {
 
     @Test
     public void testAddDelete(){
-        assertTrue(databaseController.newNode(1341, 234, 7, ishidden, enabled, type, name, "TEST555"));
+        assertTrue(databaseController.newNode(134, 2345, 7, ishidden, enabled, type, name, "TEST555"));
         //add professional
         assertTrue(databaseController.newService(name, type, x, y, floor));
 

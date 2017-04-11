@@ -950,7 +950,7 @@ public class DatabaseController {
                 String.format(
                         "Getting all professional room numbers"));
         try{
-            String query = "SELECT P.ID, P.FIRSTNAME, P.LASTNAME, P.TYPE, P.DEPARTMENT, N.ROOMNUM FROM PROFESSIONAL P, PROLOCATION PL, NODE N WHERE " +
+            String query = "SELECT P.ID, P.FIRSTNAME, P.LASTNAME, P.TYPE, P.SPTYPE, P.SPDEPARTMENT, P.DEPARTMENT, N.ROOMNUM FROM PROFESSIONAL P, PROLOCATION PL, NODE N WHERE " +
                     "PL.PROID = P.ID AND N.XPOS = PL.XPOS AND N.YPOS = PL.YPOS AND " +
                     "N.FLOOR = PL.FLOOR";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
