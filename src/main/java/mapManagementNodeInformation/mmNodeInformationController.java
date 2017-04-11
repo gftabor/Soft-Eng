@@ -199,11 +199,8 @@ public class mmNodeInformationController extends controllers.AbsController {
 
         ResultSet rset;
         int id = 0, xpos = 0, ypos = 0, floor = 0;
-        String firstName, lastName, title, department, room;
-        title = title_choiceBox.getValue();
-        System.out.println("Title: " + title);
-        department = department_TextField.getText();
-        System.out.println("Department: " + department);
+        String firstName, lastName, title = "", department = "", room;
+
         room = room_TextField.getText();
         System.out.println("room: " + room);
         //id = Integer.parseInt(id_TextField.getText());
@@ -221,6 +218,14 @@ public class mmNodeInformationController extends controllers.AbsController {
             }
         } catch (SQLException e){
             e.printStackTrace();
+        }
+
+        switch (c_language){
+            case 0: // english
+                title = title_choiceBox.getValue();
+                System.out.println("Title: " + title);
+                department = department_TextField.getText();
+                System.out.println("Department: " + department);
         }
 
         switch (c_mode) {
