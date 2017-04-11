@@ -18,21 +18,21 @@ public class testService {
     static int ID;
     static String firstName = "TEST";
     static String lastName = "TEST";
-    static int x = 20;
-    static int y = 20;
+    static int x = 0;
+    static int y = 0;
     static int floor = 0;
     static boolean ishidden = false;
     static boolean enabled = true;
     static String type = "TEST";
     static String name = "TEST";
-    static String roomnum = "TEST";
+    static String roomnum = "TEST2";
 
 
     @BeforeClass
     public static void setUp(){
         databaseController.setDbName("TestDB");
         databaseController.startDB();
-        assertTrue(databaseController.newNode(x, y, floor, ishidden, enabled, type, name, roomnum));
+        //
     }
 
     @AfterClass
@@ -44,6 +44,7 @@ public class testService {
 
     @Test
     public void testAddDelete(){
+        assertTrue(databaseController.newNode(1341, 234, 7, ishidden, enabled, type, name, "TEST555"));
         //add professional
         assertTrue(databaseController.newService(name, type, x, y, floor));
 

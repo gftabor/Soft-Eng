@@ -1,5 +1,6 @@
 package pathFindingMenu;
 
+import controllers.Edge;
 import controllers.MapController;
 import controllers.mapScene;
 import javafx.beans.value.ChangeListener;
@@ -13,6 +14,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+
+import java.util.ArrayList;
 
 /**
  * Created by AugustoR on 3/30/17.
@@ -53,6 +56,16 @@ public class pathFindingMenuController extends controllers.mapScene{
     @FXML
     private Pane node_Plane;
 
+    @FXML
+    private Label title_Label;
+
+    @FXML
+    private Label end_Label;
+
+    @FXML
+    private Label start_Label;
+
+
     private Circle start;
     private Circle end;
 
@@ -65,9 +78,24 @@ public class pathFindingMenuController extends controllers.mapScene{
     private MapController mapController = MapController.getInstance();
 
 
+    //flags for the english/spanish feature
+    int c_language = 0;
+
+
     public void emergencyButton_Clicked(){
         System.out.println("The user has clicked the emergency Button");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+        emergency.emergencyController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+            System.out.println("");
+        }
     }
     @FXML
     public void initialize() {
@@ -107,13 +135,37 @@ public class pathFindingMenuController extends controllers.mapScene{
 
     public void mainMenuButton_Clicked(){
         if(username_Label.getText().equals("")) {
-            switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
+            FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
+            patientMenuStart.patientMenuStartController controller = loader.getController();
+            //sets the current language
+            controller.setCurrentLanguage(c_language);
+            //set up english labels
+            if(c_language == 0){
+                controller.englishButtons_Labels();
+
+                //set up spanish labels
+            }else if(c_language == 1){
+                controller.spanishButtons_Labels();
+            }
+
+            //admin view
         }else{
             //Get the scene loader
             FXMLLoader loader = switch_screen(backgroundAnchorPane,"/views/adminMenuStartView.fxml");
             //Get the controller of the scene
             adminMenuStart.adminMenuStartController controller = loader.getController();
             controller.setUsername(username_Label.getText());
+            //sets the current language
+            controller.setCurrentLanguage(c_language);
+            controller.setLanguageChoices();
+            //set up english labels
+            if(c_language == 0){
+                controller.englishButtons_Labels();
+
+                //set up spanish labels
+            }else if(c_language == 1){
+                controller.spanishButtons_Labels();
+            }
         }
     }
 
@@ -152,8 +204,54 @@ public class pathFindingMenuController extends controllers.mapScene{
     //Sets the string of the user into the scene
     public void setUserString(String user){
         username_Label.setText(user);
+    }
+
+    //switches all the labels and Buttons to english
+    public void englishButtons_Labels(){
+        //change the current language to english
+        c_language = 0;
+
+        //Change the Buttons
+        emergency_Button.setText("EMERGENCY");
+        mainMenu_Button.setText("Main Menu");
+        submit_Button.setText("Submit");
+        cancel_Button.setText("Cancel");
+
+
+        //Change the labels
+        start_Label.setText("Start Point");
+        end_Label.setText("End Point");
+        title_Label.setText("Map");
+
+
+
 
     }
+
+
+    //switches all teh labels to spanish
+    public void spanishButtons_Labels() {
+        //change the current language to spanish
+        c_language = 1;
+
+        //change the Buttons
+        emergency_Button.setText("EMERGENCIA");
+        mainMenu_Button.setText("Menú Principal");
+        submit_Button.setText("Listo");
+        cancel_Button.setText("Borrar");
+
+        //change the Labels
+        start_Label.setText("Inicio: ");
+        end_Label.setText("Destino: ");
+        title_Label.setText("Mapa");
+
+    }
+
+    //sets the current language given information form other screens
+    public void setC_language(int i){
+        c_language = i;
+    }
+
 
     //Sets the map of the desired floor
     public void setFloorChoices(){
@@ -173,5 +271,9 @@ public class pathFindingMenuController extends controllers.mapScene{
             }
         });
 
+    }
+
+    public void createEdgeLines(ArrayList<Edge> path) {
+        graph.createEdgeLines(path);
     }
 }
