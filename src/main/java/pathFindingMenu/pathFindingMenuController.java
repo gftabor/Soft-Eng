@@ -53,7 +53,7 @@ public class pathFindingMenuController extends controllers.mapScene{
     private Pane node_Plane;
 
     @FXML
-<<<<<<< HEAD
+
     private Label title_Label;
 
     @FXML
@@ -62,12 +62,12 @@ public class pathFindingMenuController extends controllers.mapScene{
     @FXML
     private Label start_Label;
 
-=======
+
     private Button continue_Button;
 
     @FXML
     private TextArea textDescription_TextFArea;
->>>>>>> a48fa13d9784a8de644b3e477774937e68e171ac
+
 
     private Circle start;
     private Circle end;
@@ -164,6 +164,8 @@ public class pathFindingMenuController extends controllers.mapScene{
         }
         selectionState=0;
         System.out.println("The user has clicked the submit Button");
+        textDescription_TextFArea.setText(mapController.getTextDirections(mapController.requestPath()));
+
         //MapController.getInstance().requestMapCopy();
     }
 
