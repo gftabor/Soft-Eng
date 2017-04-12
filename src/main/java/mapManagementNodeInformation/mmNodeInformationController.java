@@ -270,7 +270,11 @@ public class mmNodeInformationController extends controllers.AbsController {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                databaseController.newProfessionalLocation(id, xpos, ypos, floor);
+
+                if (!("".equals(room_TextField.getText()))) {
+                    databaseController.newProfessionalLocation(id, xpos, ypos, floor);
+                    System.out.println("Adding without location");
+                }
                 System.out.println("Adding professional mode ------------");
                 cleaningTextFields(c_mode);
 
@@ -357,8 +361,10 @@ public class mmNodeInformationController extends controllers.AbsController {
         room_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rRoom"));
 
 
-        ResultSet rset;
+        ResultSet rset, rset2;
         rset = databaseController.getProRoomNums();
+        rset2 = databaseController.getProsWithoutRooms();
+        ArrayList<Integer> ids = new ArrayList<>();
 
         ObservableList<Table> data = FXCollections.observableArrayList();
 
@@ -367,6 +373,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         try {
             while (rset.next()){
                 id = rset.getInt("ID");
+                ids.add(id);
                 firstName = rset.getString("FIRSTNAME");
                 lastName = rset.getString("LASTNAME");
                 if (c_language == 0) {
@@ -385,9 +392,37 @@ public class mmNodeInformationController extends controllers.AbsController {
                 //Table table = new Table(id, firstName, lastName, title, department, roomNum);
                 data.add(new Table(id, firstName, lastName, title, department, roomNum));
             }
+            rset.close();
         } catch (SQLException e){
             e.printStackTrace();
         }
+        try {
+            while (rset2.next()){
+                id = rset2.getInt("ID");
+                firstName = rset2.getString("FIRSTNAME");
+                lastName = rset2.getString("LASTNAME");
+                if (c_language == 0) {
+                    System.out.println("Getting ENGLISH type and department c_language = " + c_language);
+                    title = rset2.getString("TYPE");
+                    department = rset2.getString("DEPARTMENT");
+                } else {
+                    System.out.println("Getting SPANISH type and department c_language = " + c_language);
+                    title = rset2.getString("SPTYPE");
+                    System.out.println("getting title " + title);
+                    department = rset2.getString("SPDEPARTMENT");
+                    System.out.println("getting department " + department);
+                }
+                System.out.println("Name: " + firstName + lastName);
+                if (!ids.contains(id)) {
+                    Table table = new Table(id, firstName, lastName, title, department, roomNum = "");
+                    data.add(table);
+                }
+            }
+            rset2.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
 
         Table_TableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
