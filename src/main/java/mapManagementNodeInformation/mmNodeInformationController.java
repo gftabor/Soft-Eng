@@ -644,6 +644,8 @@ public class mmNodeInformationController extends controllers.AbsController {
         room_TextField.setPromptText("room");
         Firstname_TextField.setPromptText("First Name");
         lastName_TextField.setPromptText("Last Name");
+        department_TextField.setPromptText("Department");
+        id_TextField.setPromptText("ID");
 
         //Table columns
         firstName_TableColumn.setText("First Name");
@@ -682,6 +684,8 @@ public class mmNodeInformationController extends controllers.AbsController {
         room_TextField.setPromptText("Habitación");
         Firstname_TextField.setPromptText("Nombre");
         lastName_TextField.setPromptText("Apellido");
+        department_TextField.setPromptText("Departamento");
+        id_TextField.setPromptText("ID");
 
         //Table columns
         firstName_TableColumn.setText("Nombre");
