@@ -1,10 +1,6 @@
 package pathFindingMenu;
 
-import controllers.Edge;
-import controllers.MapController;
-import controllers.mapScene;
-import controllers.proxyMap;
-import controllers.mapImage;
+import controllers.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -12,9 +8,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -69,14 +65,10 @@ public class pathFindingMenuController extends controllers.mapScene{
     private TextArea textDescription_TextFArea;
 
     @FXML
-    private Label title_Label;
-
-    @FXML
     private Label end_Label;
 
     @FXML
     private Label start_Label;
-
 
     private Circle start;
     private Circle end;
@@ -149,7 +141,7 @@ public class pathFindingMenuController extends controllers.mapScene{
     }
 
     public void submitButton_Clicked(){
-
+        ArrayList<controllers.Edge> path;
         if (selectionState == 2) {
             //submit stuff
             //createEdgeLines
@@ -165,9 +157,15 @@ public class pathFindingMenuController extends controllers.mapScene{
                 graph.createEdgeLines(mapController.requestPath());
             }
 
+            MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
+            path = mapController.requestPath();
+            graph.createEdgeLines(path);
+            textDescription_TextFArea.setText(mapController.getTextDirections(path));
         }
         selectionState=0;
         System.out.println("The user has clicked the submit Button");
+
+
         //MapController.getInstance().requestMapCopy();
     }
 
@@ -324,7 +322,6 @@ public class pathFindingMenuController extends controllers.mapScene{
         //Change the labels
         start_Label.setText("Start Point");
         end_Label.setText("End Point");
-        title_Label.setText("Map");
 
 
 
@@ -346,8 +343,6 @@ public class pathFindingMenuController extends controllers.mapScene{
         //change the Labels
         start_Label.setText("Inicio: ");
         end_Label.setText("Destino: ");
-        title_Label.setText("Mapa");
-
     }
 
     //sets the current language given information form other screens
