@@ -199,7 +199,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         //graph.createEdgeLines(reqPath);
         System.out.println("=====================");
         ArrayList<Edge> [] fragPath;
-        fragPath = mapController.requestFragmentedPath(reqPath, mapController.returnOriginalFloor());
+        fragPath = mapController.requestFragmentedPath(reqPath, mapController.returnOriginalFloor(), mapController.returnDestFloor());
         System.out.println("=====================");
 
         System.out.println("printing the fragmented path, floor = " + Integer.toString(startfloor));
