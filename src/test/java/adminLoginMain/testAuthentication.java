@@ -13,7 +13,7 @@ public class testAuthentication {
 
     @BeforeClass
     public static void setUp(){
-        databaseController.setDbName("TestDB");
+        databaseController.setDbName("./TestDb");
         databaseController.startDB();
     }
 
