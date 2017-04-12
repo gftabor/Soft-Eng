@@ -390,60 +390,63 @@ public class pathFindingMenuController extends controllers.mapScene{
 
     public void continueButton_Clicked() {
 
-        System.out.println("going up:" );
-        System.out.println(mapController.goingUp());
-        if (mapController.goingUp()) {
+        if (continue_Button.isVisible() == true) {
+            System.out.println("going up:" );
+            System.out.println(mapController.goingUp());
+            if (mapController.goingUp()) {
 
-            System.out.println("going up loop");
+                System.out.println("going up loop");
 
-            //loop until you hit the top of the hospital
-            while (currentFloor != 8) {
-                //increment floor
-                currentFloor ++;
+                //loop until you hit the top of the hospital
+                while (currentFloor != 8) {
+                    //increment floor
+                    currentFloor ++;
 
-                //if there are no edges of interest, do not display them
-                if (globalFragList[currentFloor] == null) {
-                    continue;
-                }
+                    //if there are no edges of interest, do not display them
+                    if (globalFragList[currentFloor] == null) {
+                        continue;
+                    }
 
-                //otherwise, change to the appropriate screen and display edges
-                graph.wipeEdgeLines();
-                floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
+                    //otherwise, change to the appropriate screen and display edges
+                    graph.wipeEdgeLines();
+                    floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
 //                currentFloor_Label.setText(Integer.toString(currentFloor));
 //                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
-                graph.createEdgeLines(globalFragList[currentFloor]);
+                    graph.createEdgeLines(globalFragList[currentFloor]);
 
-                break;
+                    break;
 
-            }
-        } else {
-            //loop until you hit the bottom of the hospital
-            while (currentFloor != 0) {
-                System.out.println("going down loop");
-                //decrement floor
-                currentFloor --;
-
-                //if there are no edges of interest, do not display them
-                if (globalFragList[currentFloor] == null) {
-                    continue;
                 }
+            } else {
+                //loop until you hit the bottom of the hospital
+                while (currentFloor != 0) {
+                    System.out.println("going down loop");
+                    //decrement floor
+                    currentFloor --;
 
-                //otherwise, change to the appropriate screen and display edges
-                graph.wipeEdgeLines();
-                floor_ChoiceBox.getSelectionModel().select(0);
+                    //if there are no edges of interest, do not display them
+                    if (globalFragList[currentFloor] == null) {
+                        continue;
+                    }
+
+                    //otherwise, change to the appropriate screen and display edges
+                    graph.wipeEdgeLines();
+                    floor_ChoiceBox.getSelectionModel().select(0);
 //                currentFloor_Label.setText(Integer.toString(currentFloor));
 //                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
-                graph.createEdgeLines(globalFragList[currentFloor]);
+                    graph.createEdgeLines(globalFragList[currentFloor]);
 
-                break;
+                    break;
+                }
+
             }
 
-        }
-
-        //disable the continue button if you reach the end
-        int destFloor = mapController.returnDestFloor();
-        if (currentFloor == destFloor) {
-            continue_Button.setVisible(false);
+            //disable the continue button if you reach the end
+            int destFloor = mapController.returnDestFloor();
+            if (currentFloor == destFloor) {
+                continue_Button.setVisible(false);
+            }
         }
     }
+    
 }
