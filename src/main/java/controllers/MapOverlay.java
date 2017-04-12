@@ -22,7 +22,7 @@ public class MapOverlay {
     private HashMap<Integer, controllers.Node> currentNodeMap;
     private Line lne;
     private Circle location;
-    private static final double lableRadius = 8.5;
+    private static final double labelRadius = 8.5;
     mapScene sceneController;
 
     private ArrayList<Circle> ButtonList = new ArrayList<Circle>();
@@ -68,7 +68,7 @@ public class MapOverlay {
     public void create_Button(double nodeX, double nodeY, boolean hidden, boolean enabled){
         //System.out.println("checking button");
         //System.out.println("make button");
-        location = new Circle(lableRadius);
+        location = new Circle(labelRadius);
         location.setOnMouseClicked(e -> {
 
             Object o = e.getSource();
@@ -82,8 +82,7 @@ public class MapOverlay {
         location.setLayoutX(nodeX);
         location.setLayoutY(nodeY);
         location.toFront();
-        if(hidden)
-        //System.out.println("new node req - hidden = " + hidden + ", enabled = " + enabled);
+
         if (!enabled) {
             location.setFill(Color.RED);
         } else if(hidden) {
@@ -132,5 +131,10 @@ public class MapOverlay {
             //add to list
             lineList.add(lne);
         }
+    }
+
+    //get method for labelRadius
+    public double getLabelRadius() {
+        return labelRadius;
     }
 }

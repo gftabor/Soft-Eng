@@ -6,6 +6,7 @@ import pathFindingMenu.Pathfinder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 //import main.java.controllers.CollectionOfNodes;
 
@@ -191,5 +192,186 @@ public class MapController {
 
     }
 
+    //used for multifloor pathfinding output
+    //utilizes requestPath() to get pathfinding path from start to end
+    //breaks up into individual path for each edge
+    public ArrayList<Edge>[] requestFragmentedPath(ArrayList<Edge> fullList, int startingFloor, int endingFloor) {
+        //fullList is given specifically from requestPath()
+        //path is in reverse order!!!
+        Collections.reverse(fullList);
 
+        //initialize fragmented list
+        ArrayList<Edge> [] fragmentedList = new ArrayList [10];
+        //put null references to avoid index out of bounds errors
+        for (int i = 0; i <= 8; i++) {
+            fragmentedList[i] = null;
+        }
+
+        int currentFloor = startingFloor;
+        ArrayList<Edge> currentlist = new ArrayList<>();
+
+        for (Edge e: fullList) {
+            System.out.println("Edge (floor) from " + e.getStartNode().getFloor()+ " to" + e.getEndNode().getFloor());
+
+
+            //if change in floor, close off this list of edges
+            if (e.getEndNode().getFloor() != e.getStartNode().getFloor()) {
+                //add old list to the fragList - if it is not empty
+                if (!currentlist.isEmpty()) {
+
+                    System.out.println("created frag path on floor: " + Integer.toString(currentFloor));
+                    fragmentedList[currentFloor] = currentlist;
+
+                }
+
+                //instantiate new version of currentlist
+                currentlist = new ArrayList<>();
+
+                //set new currentfloor
+                if (e.getStartNode().getFloor() == currentFloor) {
+                    currentFloor = e.getEndNode().getFloor();
+                } else {
+                    currentFloor = e.getStartNode().getFloor();
+                }
+                System.out.println("currentfloor updated to: " + Integer.toString(currentFloor));
+
+                //don't add a transition edge unless you are on the currentfloor or the ending floor
+                if (currentFloor != startingFloor && currentFloor != endingFloor) {
+                    continue;
+                }
+            }
+
+            //add the edge to the currentlist
+            currentlist.add(e);
+        }
+
+        //add the final list to the fraglist
+        System.out.println("finished loop created frag path on floor: " + Integer.toString(currentFloor));
+        fragmentedList[currentFloor] = currentlist;
+
+        return fragmentedList;
+    }
+
+    //returns true if the floors of the two nodes in the pathfinding are different
+    public boolean areDifferentFloors() {
+        return floorForNode1 != floorForNode2;
+    }
+
+    //returns the floor of the node at the start of the pathfinding
+    public int returnOriginalFloor() {
+        return floorForNode1;
+    }
+
+    public int returnDestFloor() {
+        return floorForNode2;
+    }
+
+    //returns true if the multifloor pathfinding is going up
+    //returns false if the pathfinding is going down floors
+    public boolean goingUp() {
+        return floorForNode2 > floorForNode1;
+    }
+
+    //in progress -> prints directions until I can figure out how to get it on the UI
+    public String getTextDirections(ArrayList<Edge> path) {
+        String destination;
+        ArrayList<String> directions = new ArrayList<>();
+        if(path.isEmpty())
+            return null;
+        for(int i = path.size()-1; i > 0; i--) {
+            double angle = getAngle(path.get(i), path.get(i-1));
+            if(path.get(i).getStartNode().getFloor() != path.get(i).getEndNode().getFloor() ||
+                    path.get(i-1).getStartNode().getFloor() != path.get(i-1).getEndNode().getFloor()) {
+                directions.add("Change Floors ");
+                continue;
+            }
+            if(angle > -135.0 && angle <= -45.0) {
+                destination = path.get(i).getEndNode().getRoomNum();
+                directions.add("Turn left at " + destination);
+            }
+            else if(angle >= 45.0 && angle < 135.0) {
+                destination = path.get(i).getEndNode().getRoomNum();
+                directions.add("Turn right at " + destination);
+            }
+            else if(angle > 10.0 && angle < 45.0) {
+                destination = path.get(i).getEndNode().getRoomNum();
+                directions.add("Make a slight right at " + destination);
+            }
+            else if(angle >= -10.0 && angle <= 10.0){
+                directions.add("Continue straight.");
+            }
+            else if(angle > -45.0 && angle < -10.0) {
+                destination = path.get(i).getEndNode().getRoomNum();
+                directions.add("Make a slight left at " + destination);
+            }
+            else if(angle > 135.0 && angle < 180.0) {
+                destination = path.get(i).getEndNode().getRoomNum();
+                directions.add("Make a hard right at " + destination);
+            }
+            else if(angle > -180.0 && angle < -135.0) {
+                destination = path.get(i).getEndNode().getRoomNum();
+                directions.add("Make a hard left at " + destination);
+            }else{
+                directions.add("nothing");
+            }
+
+
+        }
+        if(path.get(0).getStartNode().getFloor() != path.get(0).getEndNode().getFloor())
+            directions.add("Change Floors ");
+        directions.add("Reached Destination");
+        directions = cleanDirections(directions);
+        return concatenateDirections(directions);
+
+    }
+
+    private ArrayList<String> cleanDirections(ArrayList<String> direc) {
+        ArrayList<String> directions = direc;
+        for(int i = directions.size()-1; i > 0; i--) {
+            if("Continue straight.".equals(directions.get(i)) && directions.get(i).equals(directions.get(i-1))) {
+                directions.remove(directions.get(i));
+            }
+            if("Change Floors ".equals(directions.get(i)) && directions.get(i).equals(directions.get(i-1))) {
+                directions.remove(directions.get(i));
+            }
+        }
+        return directions;
+    }
+
+    private String concatenateDirections(ArrayList<String> directions) {
+        String text = "";
+        for(String s: directions) {
+            text = text + s + "\n";
+        }
+        return text;
+    }
+
+    private double getAngle(Edge e1, Edge e2) {
+        Node middle;
+        double e1X = 0.0;
+        double e1Y = 0.0;
+        double e2X = 0.0;
+        double e2Y = 0.0;
+        if(e1.getEndNode() == e2.getStartNode()) {
+            middle = e1.getEndNode();
+
+        } else if(e1.getEndNode() == e2.getEndNode()) {
+            middle = e1.getEndNode();
+
+        } else if(e1.getStartNode() == e2.getEndNode()) {
+            middle = e1.getStartNode();
+
+        } else {
+            middle = e1.getStartNode();
+        }
+        e1X = middle.getPosX() - e1.getNeighbor(middle).getPosX();
+        e1Y = middle.getPosY() - e1.getNeighbor(middle).getPosY();
+
+        e2X =  e2.getNeighbor(middle).getPosX() - middle.getPosX();
+        e2Y =  e2.getNeighbor(middle).getPosY() - middle.getPosY();
+
+        double angle = Math.toDegrees(Math.atan2(e1X*e2Y - e1Y*e2X, e1X*e2X + e1Y*e2Y));
+        System.out.println(angle);
+        return angle;
+    }
 }

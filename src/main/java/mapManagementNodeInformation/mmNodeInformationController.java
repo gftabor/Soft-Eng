@@ -15,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import org.controlsfx.control.textfield.TextFields;
+//import org.controlsfx.control.textfield.TextFields;
 
 
 /**
@@ -640,6 +641,7 @@ public class mmNodeInformationController extends controllers.AbsController {
             System.out.println("showing suggestions in spanish");
             departments = databaseController.getSpanishDepartmentList();
         }
+
 
         // rooms not affected by language
         TextFields.bindAutoCompletion(room_TextField,rooms);

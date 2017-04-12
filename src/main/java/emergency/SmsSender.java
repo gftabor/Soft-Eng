@@ -31,4 +31,17 @@ public class SmsSender {
         System.out.println("Message Status: " + message.getStatus());
         return message.getStatus().toString();
     }
+
+    public String sendSMSDirections(String directions, String sendTo) throws URISyntaxException {
+        Twilio.init(config.getTwilioAuth(), config.getTwilioPW());
+
+        Message message = Message
+                .creator(new PhoneNumber(sendTo),  // to
+                        new PhoneNumber(config.getTwilioSendFrom()),  // from
+                        directions)
+                .create();
+        System.out.println("Message SID: " + message.getSid());
+        System.out.println("Message Status: " + message.getStatus());
+        return message.getStatus().toString();
+    }
 }

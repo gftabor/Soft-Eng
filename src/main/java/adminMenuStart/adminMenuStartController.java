@@ -97,6 +97,7 @@ public class adminMenuStartController extends controllers.AbsController{
         MapController.getInstance().requestMapCopy();
         HashMap<Integer, Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
         //controller.setMapAndNodes(DBMap);
+
         controller.setUserString(username_Label.getText());
 
 
@@ -159,9 +160,6 @@ public class adminMenuStartController extends controllers.AbsController{
         }else if(c_language == 1){
             controller.spanishButtons_Labels();
         }
-
-        //Set the floor choices
-        controller.setFloorChoices();
 
     }
 

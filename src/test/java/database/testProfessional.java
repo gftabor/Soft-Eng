@@ -27,7 +27,7 @@ public class testProfessional {
 
     @BeforeClass
     public static void setUp(){
-        databaseController.setDbName("TestDB");
+        databaseController.setDbName("./TestDb");
         databaseController.startDB();
         assertTrue(databaseController.newNode(x, y, floor, ishidden, enabled, type, name, roomnum));
     }
