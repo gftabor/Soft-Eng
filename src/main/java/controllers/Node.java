@@ -139,6 +139,10 @@ public class Node implements Comparable<Node>{
         return isEnabled;
     }
 
+    public String getName(){
+        return name;
+    }
+
     public String getType(){
         return type;
     }
@@ -147,17 +151,10 @@ public class Node implements Comparable<Node>{
         isEnabled = enabled;
     }
 
-    public String getName() { return name; }
-
-    public void setName(String name) { this.name = name; }
-
     public String getRoomNum() {
-        return roomNum;
+        return this.roomNum;
     }
 
-    public void setRoomNum(String roomNum) {
-        this.roomNum = roomNum;
-    }
 
     //Allows sorting list based on totalCost
     @Override

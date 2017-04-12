@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.lang.Math;
 
 //import main.java.controllers.CollectionOfNodes;
 
@@ -272,95 +271,4 @@ public class MapController {
     public boolean goingUp() {
         return floorForNode2 > floorForNode1;
     }
-
-    //in progress -> prints directions until I can figure out how to get it on the UI
-    public String getTextDirections(ArrayList<Edge> path) {
-        String destination;
-        ArrayList<String> directions = new ArrayList<>();
-
-        for(int i = path.size()-1; i > 0; i--) {
-            double angle = getAngle(path.get(i), path.get(i-1));
-            if(angle > -135.0 && angle <= -45.0) {
-                destination = path.get(i).getEndNode().getRoomNum();
-                directions.add("Turn left at " + destination);
-            }
-            else if(angle >= 45.0 && angle < 135.0) {
-                destination = path.get(i).getEndNode().getRoomNum();
-                directions.add("Turn right at " + destination);
-            }
-            else if(angle > 10.0 && angle < 45.0) {
-                destination = path.get(i).getEndNode().getRoomNum();
-                directions.add("Make a slight right at " + destination);
-            }
-            else if(angle >= -10.0 && angle <= 10.0){
-                directions.add("Continue straight.");
-            }
-            else if(angle > -45.0 && angle < -10.0) {
-                destination = path.get(i).getEndNode().getRoomNum();
-                directions.add("Make a slight left at " + destination);
-            }
-            else if(angle > 135.0 && angle < 180.0) {
-                destination = path.get(i).getEndNode().getRoomNum();
-                directions.add("Make a hard right at " + destination);
-            }
-            else if(angle > -180.0 && angle < -135.0) {
-                destination = path.get(i).getEndNode().getRoomNum();
-                directions.add("Make a hard left at " + destination);
-            }else{
-                directions.add("nothing");
-            }
-
-        }
-        directions = cleanDirections(directions);
-        return concatenateDirections(directions);
-
-    }
-
-    private ArrayList<String> cleanDirections(ArrayList<String> direc) {
-        ArrayList<String> directions = direc;
-        for(int i = directions.size()-1; i > 0; i--) {
-            if("Continue straight.".equals(directions.get(i)) && directions.get(i).equals(directions.get(i-1))) {
-                directions.remove(directions.get(i));
-            }
-        }
-        return directions;
-    }
-
-    private String concatenateDirections(ArrayList<String> directions) {
-        String text = "";
-        for(String s: directions) {
-            text = text + s + "\n";
-        }
-        return text;
-    }
-
-    private double getAngle(Edge e1, Edge e2) {
-        Node middle;
-        double e1X = 0.0;
-        double e1Y = 0.0;
-        double e2X = 0.0;
-        double e2Y = 0.0;
-        if(e1.getEndNode() == e2.getStartNode()) {
-            middle = e1.getEndNode();
-
-        } else if(e1.getEndNode() == e2.getEndNode()) {
-            middle = e1.getEndNode();
-
-        } else if(e1.getStartNode() == e2.getEndNode()) {
-            middle = e1.getStartNode();
-
-        } else {
-            middle = e1.getStartNode();
-        }
-        e1X = middle.getPosX() - e1.getNeighbor(middle).getPosX();
-        e1Y = middle.getPosY() - e1.getNeighbor(middle).getPosY();
-
-        e2X =  e2.getNeighbor(middle).getPosX() - middle.getPosX();
-        e2Y =  e2.getNeighbor(middle).getPosY() - middle.getPosY();
-
-        double angle = Math.toDegrees(Math.atan2(e1X*e2Y - e1Y*e2X, e1X*e2X + e1Y*e2Y));
-        System.out.println(angle);
-        return angle;
-    }
-
 }
