@@ -425,45 +425,25 @@ public class DatabaseController {
                 String.format(
                         "Adding professional. firstName: %s, lastName: %s, type: %s, department: %s",
                         firstName, lastName, type, department));
+        String spType = getSpanish(type);
+        System.out.println("Spanish type while adding professional: " + spType);
+
+        String spDepartment = getSpanish(department);
+        System.out.println("Spanish department while adding professional: " + spDepartment);
         try{
             // sql statement with "?" to be filled later
-            String query = "INSERT INTO PROFESSIONAL (FIRSTNAME, LASTNAME, TYPE, DEPARTMENT)" +
-                    " values (?, ?, ?, ?)";
+            String query = "INSERT INTO PROFESSIONAL (FIRSTNAME, LASTNAME, TYPE, SPTYPE, DEPARTMENT, SPDEPARTMENT)" +
+                    " values (?, ?, ?, ?, ?, ?)";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, type);
-            preparedStatement.setString(4, department);
+            preparedStatement.setString(4, spType);
+            preparedStatement.setString(5, department);
+            preparedStatement.setString(6, spDepartment);
             // execute prepared statement
             
-            preparedStatement.execute();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    public boolean newProfessionalWithSpanish(String firstName, String lastName, String type, String department){
-        System.out.println(
-                String.format(
-                        "Adding professional with spanish prompt. firstName: %s, lastName: %s, type: %s, department: %s",
-                        firstName, lastName, type, department));
-
-        try{
-            // sql statement with "?" to be filled later
-            String query = "INSERT INTO PROFESSIONAL (FIRSTNAME, LASTNAME, TYPE, DEPARTMENT)" +
-                    " values (?, ?, ?, ?)";
-            // prepare statement by replacing "?" with corresponding variable
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setString(1, firstName);
-            preparedStatement.setString(2, lastName);
-            preparedStatement.setString(3, type);
-            preparedStatement.setString(4, department);
-            // execute prepared statement
-
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -636,7 +616,6 @@ public class DatabaseController {
             preparedStatement.setInt(3, y);
             preparedStatement.setInt(4, floor);
             // execute prepared statement
-
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -1104,6 +1083,29 @@ public class DatabaseController {
         }
 
         return english;
+    }
+
+    public boolean addInTranslation(String english, String spanish){
+        System.out.println(
+                String.format(
+                        "Adding translation. english: %s, spanish: %s",
+                        english, spanish));
+        try{
+            // sql statement with "?" to be filled later
+            String query = "INSERT INTO DECODELANGUAGE (ENGLISH, SPANISH)" +
+                    " values (?, ?)";
+            // prepare statement by replacing "?" with corresponding variable
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, english);
+            preparedStatement.setString(2, spanish);
+            // execute prepared statement
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     /*******************************************************************************
