@@ -292,7 +292,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                 break;
             case 2: // editing
                 System.out.println("Editing professional mode");
-                rset = databaseController.getProfessional(firstName, lastName, title);
+                rset = databaseController.getProfessional(Integer.parseInt(id_TextField.getText()));
                 try {
                     rset.next();
                     id = rset.getInt("ID");
