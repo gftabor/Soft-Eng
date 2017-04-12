@@ -3,9 +3,16 @@ package controllers;
 import DBController.DatabaseController;
 import pathFindingMenu.Pathfinder;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 //import main.java.controllers.CollectionOfNodes;
 
@@ -187,9 +194,53 @@ public class MapController {
         //creates and runs a pathfinder
         Pathfinder pathfinder = new Pathfinder();
         pathfinder.generatePath(startNode, endNode);
+
+        edgeListToText(pathfinder.getPath());
+        try {
+            Runtime.getRuntime().exec(new String[] { "testFloor5.exe"});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return pathfinder.getPath();
 
     }
 
 
+    public boolean edgeListToText(ArrayList<Edge> edges) {
+
+        try {
+            List<String> lines = new ArrayList();
+
+            for(Edge edge : edges) {
+                String line = "";
+                line += edge.getStartNode().getPosX();
+                line += ",";
+                line += edge.getStartNode().getPosY();
+                line += ",";
+                line += edge.getStartNode().getFloor();
+
+                lines.add(line);
+            }
+
+            String line = "";
+            Edge finalEdge = edges.get(edges.size()-1);
+            line += finalEdge.getEndNode().getPosX();
+            line += ",";
+            line += finalEdge.getEndNode().getPosY();
+            line += ",";
+            line += finalEdge.getEndNode().getFloor();
+
+            lines.add(line);
+
+            Path file = Paths.get("testFloor5.txt");
+            Files.write(file, lines, Charset.forName("UTF-8"));
+            //Files.write(file, lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
 }
