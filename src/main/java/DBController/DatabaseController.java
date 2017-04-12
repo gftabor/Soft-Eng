@@ -595,6 +595,23 @@ public class DatabaseController {
 
     }
 
+    public ResultSet getProsWithoutRooms(){
+        ResultSet resultSet = null;
+        System.out.println(
+                String.format(
+                        "Getting all professionals"));
+        try{
+            String query = "SELECT ID, FIRSTNAME, LASTNAME, TYPE, SPTYPE, SPDEPARTMENT, DEPARTMENT FROM PROFESSIONAL";
+            PreparedStatement preparedStatement2 = conn.prepareStatement(query);
+            // run statement and query
+            resultSet = preparedStatement2.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
     /*******************************************************************************
      * PROFESSIONAL - LOCATION actions
      *
