@@ -9,7 +9,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -180,7 +179,10 @@ public class pathFindingMenuController extends controllers.mapScene{
                 multiFloorPathfind();
             } else {
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                graph.createEdgeLines(mapController.requestPath());
+                ArrayList<Edge> path = mapController.requestPath();
+                graph.createEdgeLines(path);
+                textDescription_TextFArea.setText(mapController.getTextDirections(path));
+
             }
 
         }
@@ -213,6 +215,8 @@ public class pathFindingMenuController extends controllers.mapScene{
         //reset for next pathfinding session
         MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
         ArrayList<Edge> reqPath = mapController.requestPath();
+        textDescription_TextFArea.setText(mapController.getTextDirections(reqPath));
+
         //original call below >
         //graph.createEdgeLines(reqPath);
         System.out.println("=====================");
