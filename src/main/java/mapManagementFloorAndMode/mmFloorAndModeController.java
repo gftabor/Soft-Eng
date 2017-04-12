@@ -374,7 +374,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         //try to display last touched edge list
         //requery firstnode to reset edge list
         //check so edge lines do not show up on wrong floor
-        if(firstNode != null && floor1 == floor2) {
+        if(firstNode != null && floor1 == floor2 && (mode_ChoiceBox.getValue().equals("Add Edge") || mode_ChoiceBox.getValue().equals("Remove Edge"))) {
             firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
                     .getNode(firstNode.getPosX(), firstNode.getPosY(), firstNode.getFloor());
             //don't know if above method is successful

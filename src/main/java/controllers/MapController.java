@@ -195,7 +195,7 @@ public class MapController {
     //used for multifloor pathfinding output
     //utilizes requestPath() to get pathfinding path from start to end
     //breaks up into individual path for each edge
-    public ArrayList<Edge>[] requestFragmentedPath(ArrayList<Edge> fullList, int startingFloor) {
+    public ArrayList<Edge>[] requestFragmentedPath(ArrayList<Edge> fullList, int startingFloor, int endingFloor) {
         //fullList is given specifically from requestPath()
         //path is in reverse order!!!
         Collections.reverse(fullList);
@@ -218,6 +218,7 @@ public class MapController {
             if (e.getEndNode().getFloor() != e.getStartNode().getFloor()) {
                 //add old list to the fragList - if it is not empty
                 if (!currentlist.isEmpty()) {
+
                     System.out.println("created frag path on floor: " + Integer.toString(currentFloor));
                     fragmentedList[currentFloor] = currentlist;
 
@@ -233,7 +234,14 @@ public class MapController {
                     currentFloor = e.getStartNode().getFloor();
                 }
                 System.out.println("currentfloor updated to: " + Integer.toString(currentFloor));
+
+                //don't add a transition edge unless you are on the currentfloor or the ending floor
+                if (currentFloor != startingFloor && currentFloor != endingFloor) {
+                    continue;
+                }
             }
+
+            //add the edge to the currentlist
             currentlist.add(e);
         }
 
