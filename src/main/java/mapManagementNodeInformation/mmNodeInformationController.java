@@ -159,7 +159,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         department_TextField.setText("");
         room_TextField.setText("");
         id_TextField.setText("");
-        firstName_Label.setText("");
+        Firstname_TextField.setText("");
         lastName_TextField.setText("");
         title_choiceBox.getSelectionModel().select(0);
         mode_ChoiceBox.getSelectionModel().select(0);
