@@ -191,6 +191,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                 result.ifPresent(name -> department_Spanish = name);
                 department = c_department;
                 databaseController.addInTranslation(c_department, department_Spanish);
+                title = title_choiceBox.getValue();
             }
         } else if(c_language == 1) {
             // language is spanish
@@ -201,13 +202,14 @@ public class mmNodeInformationController extends controllers.AbsController {
                 TextInputDialog dialog = new TextInputDialog("");
                 dialog.setTitle("Agrega un Nuevo Departamento");
                 dialog.setHeaderText("Has ingresado un departamento desconocido! Por favor agrega la versión en Inglés.");
-                dialog.setContentText("Departamento en Español:");
+                dialog.setContentText("Departamento en Ingles:");
                 // The Java 8 way to get the response value (with lambda expression).
                 // Traditional way to get the response value.
                 Optional<String> result = dialog.showAndWait();
                 result.ifPresent(name -> department_English = name);
                 databaseController.addInTranslation(department_English, c_department);
                 department = department_English;
+                title = databaseController.getEnglish(title_choiceBox.getValue());
             }
         }
 
