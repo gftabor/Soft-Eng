@@ -451,7 +451,7 @@ public class pathFindingMenuController extends controllers.mapScene{
 
                     //otherwise, change to the appropriate screen and display edges
                     graph.wipeEdgeLines();
-                    floor_ChoiceBox.getSelectionModel().select(0);
+                    floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
 //                currentFloor_Label.setText(Integer.toString(currentFloor));
 //                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
                     graph.createEdgeLines(globalFragList[currentFloor]);
