@@ -400,11 +400,20 @@ public class mmNodeInformationController extends controllers.AbsController {
                     Department = Table_TableView.getSelectionModel().getSelectedItem().getrType();
                     Room = Table_TableView.getSelectionModel().getSelectedItem().getrRoom();
 
-                    if(Title.equals("Doctor")){
-                        c_title = 0;
-                    }else if(Title.equals("Nurse")){
-                        c_title = 1;
+                    if(c_language == 0) {
+                        if (Title.equals("Doctor")) {
+                            c_title = 0;
+                        } else if (Title.equals("Nurse")) {
+                            c_title = 1;
+                        }
+                    } else if(c_language == 1){
+                        if(Title.equals("Doctor/a")){
+                            c_title = 0;
+                        }else if(Title.equals("Enfermero/a")){
+                            c_title = 1;
+                        }
                     }
+                    
                     title_choiceBox.getSelectionModel().select(c_title);
                     department_TextField.setText(Department);
                     room_TextField.setText(Room);
