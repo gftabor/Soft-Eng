@@ -1,18 +1,26 @@
 package mapManagementFloorAndMode;
 
+import DBController.DatabaseController;
 import controllers.MapController;
 import controllers.Node;
 import controllers.mapScene;
+import controllers.proxyMap;
+import controllers.mapImage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Created by AugustoR on 3/31/17.
@@ -68,6 +76,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
     private Label nodeTitile_Label;
 
     @FXML
+    private ImageView map_viewer;
+
+    @FXML
     private Label name_Label;
 
     @FXML
@@ -88,7 +99,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
     @FXML
     private Label mode_Label;
 
-
+    @FXML
     private ChoiceBox<String> floor_ChoiceBox;
 
     private int nodeEdgeX1;
@@ -117,6 +128,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
     private int floor1;
     private int floor2;
 
+    DatabaseController databaseController = DatabaseController.getInstance();
 
     public void initialize() {
         setUserString(username_Label.getText());
@@ -131,6 +143,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true);
 
+        setFloorChoices();
     }
 
 
@@ -188,6 +201,10 @@ public class mmFloorAndModeController extends controllers.mapScene{
             graph.createEdgeLines(firstNode.getEdgeList());
 
             //color the node as well
+            if (lastColoredStart !=  null) {
+                lastColoredStart.setStroke(lastColoredStart.getFill());
+                lastColoredStart.setStrokeWidth(1);
+            }
             lastColoredStart = c;
             c.setStrokeWidth(2.5);
             c.setStroke(Color.ROYALBLUE);
@@ -208,6 +225,42 @@ public class mmFloorAndModeController extends controllers.mapScene{
             //log the floor
             floor2 = currentFloor;
         }
+        String type = "", name = "", room = "";
+        boolean hidden = false, enabled = false;
+        ResultSet rset = databaseController.getNode(x, y, currentFloor);
+        try {
+            while (rset.next()){
+                type = rset.getString("TYPE");
+                name = rset.getString("NAME");
+                room = rset.getString("ROOMNUM");
+                hidden = rset.getBoolean("ISHIDDEN");
+                enabled = rset.getBoolean("ENABLED");
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        switch(type){
+        case "Doctor's Office":
+            title_ChoiceBox.getSelectionModel().select(0);
+        case "Food Service":
+            title_ChoiceBox.getSelectionModel().select(1);
+        case "Restroom":
+            title_ChoiceBox.getSelectionModel().select(2);
+        case "Information":
+            title_ChoiceBox.getSelectionModel().select(3);
+        case "Laboratory":
+            title_ChoiceBox.getSelectionModel().select(4);
+        case "Waiting Room":
+            title_ChoiceBox.getSelectionModel().select(5);
+        }
+
+        name_TextField.setText(name);
+        room_TextField.setText(room);
+        hidden_CheckBox.setSelected(hidden);
+        enabled_CheckBox.setSelected(enabled);
+
+
     }
 
     //submit button is clicked
@@ -215,6 +268,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
     public void submitButton_Clicked() {
         final String tempName = name_TextField.getText();
         final String tempRoom = room_TextField.getText();
+        //String type = title_ChoiceBox.getValue();
 
         if (mode_ChoiceBox.getValue() == null) {
             System.out.println("incoming null ptr exception");
@@ -241,6 +295,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
                             type = title_ChoiceBox.getValue();
                             break;
                     }
+
+
                     Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
                             currentFloor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom);
                     DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
@@ -267,6 +323,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
                         newType = title_ChoiceBox.getValue();
                         break;
                 }
+
+
 
                 //update to new version in db
                 DBController.DatabaseController.getInstance().updateNode(firstNode.getPosX(), firstNode.getPosY(),
@@ -316,7 +374,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         //try to display last touched edge list
         //requery firstnode to reset edge list
         //check so edge lines do not show up on wrong floor
-        if(firstNode != null && floor1 == floor2) {
+        if(firstNode != null && floor1 == floor2 && (mode_ChoiceBox.getValue().equals("Add Edge") || mode_ChoiceBox.getValue().equals("Remove Edge"))) {
             firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
                     .getNode(firstNode.getPosX(), firstNode.getPosY(), firstNode.getFloor());
             //don't know if above method is successful
@@ -356,6 +414,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     public void setModeChoices() {
         mode_ChoiceBox.getItems().addAll("---", "Add Node", "Remove Node", "Edit Node", "Add Edge", "Remove Edge");
+        mode_ChoiceBox.getSelectionModel().selectFirst();
         mode_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -374,44 +433,17 @@ public class mmFloorAndModeController extends controllers.mapScene{
     public void setFloorChoices(){
         floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7");
         floor_ChoiceBox.getSelectionModel().select(0);
+        map_viewer.setImage(new Image("/images/cleaned1.png"));
         floor_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
                 System.out.println(newValue);
-                //Print the floors accordingly
-                //CODE HERE!!!!!!!
-                if (newValue.intValue() == 0) {
-                    System.out.println("Printing first floor");
-                    currentFloor = 1;
+                currentFloor = newValue.intValue() + 1;
 
-                    //LOAD NEXT FLOOR PICTURE HERE
+                mapImage newMapImage = new proxyMap(currentFloor);
+                newMapImage.display(map_viewer);
 
-                }else if(newValue.intValue() == 1){
-                    System.out.println("Printing second floor");
-                    currentFloor = 2;
-
-                }else if(newValue.intValue() == 2){
-                    System.out.println("Printing third floor");
-                    currentFloor = 3;
-
-                }else if(newValue.intValue() == 3){
-                    System.out.println("Printing fourth floor");
-                    currentFloor = 4;
-
-                }else if(newValue.intValue() == 4){
-                    System.out.println("Printing fifth floor");
-                    currentFloor = 5;
-
-                }else if(newValue.intValue() == 5){
-                    System.out.println("Printing sixth floor");
-                    currentFloor = 6;
-
-                }else if(newValue.intValue() == 6){
-                    System.out.println("Printing seventh floor");
-                    currentFloor = 7;
-
-                }
                 graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true);
             }
         });
@@ -511,7 +543,6 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
 
     }
-
 
 
 }
