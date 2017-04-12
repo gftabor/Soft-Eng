@@ -4,12 +4,15 @@ import DBController.DatabaseController;
 import controllers.MapController;
 import controllers.Node;
 import controllers.mapScene;
+import controllers.proxyMap;
+import controllers.mapImage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -428,14 +431,17 @@ public class mmFloorAndModeController extends controllers.mapScene{
     public void setFloorChoices(){
         floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7");
         floor_ChoiceBox.getSelectionModel().select(0);
+        map_viewer.setImage(new Image("/images/cleaned1.png"));
         floor_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-                //Print the floors accordingly
-                //CODE HERE!!!!!!!
+                System.out.println(newValue);
                 currentFloor = newValue.intValue() + 1;
-                System.out.println(currentFloor);
+
+                mapImage newMapImage = new proxyMap(currentFloor);
+                newMapImage.display(map_viewer);
+
                 graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true);
             }
         });
@@ -535,7 +541,6 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
 
     }
-
 
 
 }
