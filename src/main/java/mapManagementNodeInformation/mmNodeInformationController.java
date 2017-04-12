@@ -153,11 +153,21 @@ public class mmNodeInformationController extends controllers.AbsController {
     //get an instance of database controller
     DatabaseController databaseController = DatabaseController.getInstance();
 
+    //handle the clear button
     public void cancelButton_Clicked() {
         System.out.println("The user has clicked the cancel Button");
+        department_TextField.setText("");
+        room_TextField.setText("");
+        id_TextField.setText("");
+        firstName_Label.setText("");
+        lastName_TextField.setText("");
+        title_choiceBox.getSelectionModel().select(0);
+        mode_ChoiceBox.getSelectionModel().select(0);
+
 
     }
 
+    //Handle the submiut button clicked
     public void submitButton_Clicked(){
 
         String c_department = department_TextField.getText();

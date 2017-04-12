@@ -149,7 +149,11 @@ public class hospitalDirectorySearchController extends controllers.AbsController
 
     //
     public void clearButton_Clicked(){
+
         System.out.println("The user has clicked the clear button");
+        from_TextField.setText("");
+        to_TextField.setText("");
+        flag = 0;
     }
 
     //
