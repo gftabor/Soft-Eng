@@ -155,57 +155,8 @@ public class pathFindingMenuController extends controllers.mapScene{
             if (mapController.areDifferentFloors()) {
                 System.out.println("Multi-floor pathfinding detected!");
 
-                //initialize reference of the global frag list to null (set up)
-                globalFragList = null;
-
-                //set continue button visible
-                continue_Button.setVisible(true);
-
-                //switch floors to original floor's pathfinding view
-                int startfloor = mapController.returnOriginalFloor();
-                currentFloor_Label.setText(Integer.toString(startfloor));
-                System.out.println("startfloor: " + Integer.toString(startfloor));
-
-                //switch back to the original floor using the choicebox selection
-                floor_ChoiceBox.getSelectionModel().select(startfloor - 1);
-                System.out.println("Current floor: " + Integer.toString(currentFloor) + " :)");
-
-                //maintain consistency of colors - doesn't work - references go missing
-//                start.setStrokeWidth(strokeRatio);
-//                start.setStroke(Color.ORANGERED);
-//                start.setRadius(graph.getLabelRadius());
-
-                //reset for next pathfinding session
-                MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                ArrayList<Edge> reqPath = mapController.requestPath();
-                //original call below >
-                //graph.createEdgeLines(reqPath);
-                System.out.println("=====================");
-                ArrayList<Edge> [] fragPath;
-                fragPath = mapController.requestFragmentedPath(reqPath, mapController.returnOriginalFloor());
-                System.out.println("=====================");
-
-                System.out.println("printing the fragmented path, floor = " + Integer.toString(startfloor));
-                //loop and display the edges per floor - use the startfloor
-
-
-                if (fragPath[startfloor] == null) {
-                    //only occurs if the first transition is a null
-                    //instead just highlight the first thing
-                    System.out.println("var: start = ");
-                    if (start != null) {
-                        System.out.println("fuck");
-                    } else  {
-                        System.out.println("fuck");
-                    }
-
-                } else {
-                    graph.createEdgeLines(fragPath[startfloor]);
-                }
-
-                //set the global so you can send to the continue button
-                globalFragList = fragPath;
-
+                //use the multifloor pathfinding function
+                multiFloorPathfind();
             } else {
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
                 graph.createEdgeLines(mapController.requestPath());
@@ -215,6 +166,57 @@ public class pathFindingMenuController extends controllers.mapScene{
         selectionState=0;
         System.out.println("The user has clicked the submit Button");
         //MapController.getInstance().requestMapCopy();
+    }
+
+    public void multiFloorPathfind() {
+        //initialize reference of the global frag list to null (set up)
+        globalFragList = null;
+
+        //set continue button visible
+        continue_Button.setVisible(true);
+
+        //switch floors to original floor's pathfinding view
+        int startfloor = mapController.returnOriginalFloor();
+        currentFloor_Label.setText(Integer.toString(startfloor));
+        System.out.println("startfloor: " + Integer.toString(startfloor));
+
+        //switch back to the original floor using the choicebox selection
+        floor_ChoiceBox.getSelectionModel().select(startfloor - 1);
+        System.out.println("Current floor: " + Integer.toString(currentFloor) + " :)");
+
+        //maintain consistency of colors - doesn't work - references go missing
+//                start.setStrokeWidth(strokeRatio);
+//                start.setStroke(Color.ORANGERED);
+//                start.setRadius(graph.getLabelRadius());
+
+        //reset for next pathfinding session
+        MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
+        ArrayList<Edge> reqPath = mapController.requestPath();
+        //original call below >
+        //graph.createEdgeLines(reqPath);
+        System.out.println("=====================");
+        ArrayList<Edge> [] fragPath;
+        fragPath = mapController.requestFragmentedPath(reqPath, mapController.returnOriginalFloor());
+        System.out.println("=====================");
+
+        System.out.println("printing the fragmented path, floor = " + Integer.toString(startfloor));
+        //loop and display the edges per floor - use the startfloor
+
+
+        if (fragPath[startfloor] == null) {
+            //only occurs if the first transition is a null
+            //instead just highlight the first thing
+
+            //to do -> highlight
+
+        } else {
+            graph.createEdgeLines(fragPath[startfloor]);
+        }
+
+        //set the global so you can send to the continue button
+        globalFragList = fragPath;
+
+
     }
 
     public void mainMenuButton_Clicked(){
@@ -368,6 +370,10 @@ public class pathFindingMenuController extends controllers.mapScene{
             }
         });
 
+    }
+
+    public void setFloorChoiceRemote(int floor) {
+        floor_ChoiceBox.getSelectionModel().select(floor - 1);
     }
 
     public void createEdgeLines(ArrayList<Edge> path) {

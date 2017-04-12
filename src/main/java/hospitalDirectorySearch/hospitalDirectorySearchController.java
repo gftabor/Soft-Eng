@@ -163,13 +163,30 @@ public class hospitalDirectorySearchController extends controllers.AbsController
             pathFindingMenu.pathFindingMenuController controller = loader.getController();
             MapController.getInstance().requestFloorMapCopy();
             MapController.getInstance().requestMapCopy();
-            HashMap<Integer, Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
+            //stop hardcoding floor 4!!
+            //HashMap<Integer, Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
             Pathfinder pathfinder = new Pathfinder();
             Node start = MapController.getInstance().getCollectionOfNodes().getNodeWithName(to_String);
             Node end = MapController.getInstance().getCollectionOfNodes().getNodeWithName(from_String);
-            pathfinder.generatePath(start,end);
-            controller.setUserString("");
-            controller.createEdgeLines(pathfinder.getPath());
+
+            //set to the correct start floor
+            int currentFloor;
+            currentFloor = start.getFloor();
+
+            //set the start floor
+            controller.setFloorChoiceRemote(currentFloor);
+
+            //detect multiflooring
+            if (start.getFloor() != end.getFloor()) {
+                //multifloor pathfinding detected
+                System.out.println("directory -> multifloor pathfinding");
+                controller.multiFloorPathfind();
+            } else {
+                //no multifloor pathfinding (simple)
+                pathfinder.generatePath(start, end);
+                controller.setUserString("");
+                controller.createEdgeLines(pathfinder.getPath());
+            }
         }else{
             //There could be information too
             Alert alert = new Alert(Alert.AlertType.ERROR);
