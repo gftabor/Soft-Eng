@@ -175,10 +175,13 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="department_TextField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0">
+                        <TextField fx:id="department_TextField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="Department">
                            <HBox.margin>
                               <Insets bottom="5.0" left="25.0" right="5.0" top="1.0" />
                            </HBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
                         </TextField>
                      </children>
                   </HBox>

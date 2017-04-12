@@ -120,7 +120,7 @@
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
                         </Label>
-                        <ChoiceBox fx:id="languages_ChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0">
+                        <ChoiceBox fx:id="languages_ChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="200.0">
                            <HBox.margin>
                               <Insets bottom="6.0" left="6.0" right="30.0" top="6.0" />
                            </HBox.margin>
