@@ -81,8 +81,8 @@ public class pathFindingMenuController extends controllers.mapScene{
     private Circle start;
     private Circle end;
 
-//    private double startX;
-//    private double startY;
+    private double startX;
+    private double startY;
 
 
     private Circle btK;
@@ -188,9 +188,9 @@ public class pathFindingMenuController extends controllers.mapScene{
         System.out.println("Current floor: " + Integer.toString(currentFloor) + " :)");
 
         //maintain consistency of colors - doesn't work - references go missing
-//                start.setStrokeWidth(strokeRatio);
-//                start.setStroke(Color.ORANGERED);
-//                start.setRadius(graph.getLabelRadius());
+        start.setStrokeWidth(strokeRatio);
+        start.setStroke(Color.ORANGERED);
+        start.setRadius(graph.getLabelRadius());
 
         //reset for next pathfinding session
         MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
@@ -280,8 +280,8 @@ public class pathFindingMenuController extends controllers.mapScene{
             c.setStrokeWidth(strokeRatio);
             c.setStroke(Color.ORANGERED);
 
-//            startX = c.getCenterX();
-//            startY = c.getCenterY();
+            startX = c.getCenterX();
+            startY = c.getCenterY();
 
             //size
             c.setRadius(graph.getLabelRadius() * sizeUpRatio);
@@ -448,5 +448,5 @@ public class pathFindingMenuController extends controllers.mapScene{
             }
         }
     }
-    
+
 }
