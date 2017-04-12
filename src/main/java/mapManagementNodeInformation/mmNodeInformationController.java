@@ -155,13 +155,14 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     public void cancelButton_Clicked() {
         System.out.println("The user has clicked the cancel Button");
-
     }
 
     public void submitButton_Clicked(){
 
         String c_department = department_TextField.getText();
         boolean UnknownDepartment = false;
+        String firstName, lastName, title = "", department = "", room;
+        String spTitle = "", spDepartment = "";
 
         if(c_language == 0){
             // language is english
@@ -177,6 +178,8 @@ public class mmNodeInformationController extends controllers.AbsController {
                 // Traditional way to get the response value.
                 Optional<String> result = dialog.showAndWait();
                 result.ifPresent(name -> department_Spanish = name);
+                department = c_department;
+                databaseController.addInTranslation(c_department, department_Spanish);
             }
         } else if(c_language == 1) {
             // language is spanish
@@ -192,13 +195,13 @@ public class mmNodeInformationController extends controllers.AbsController {
                 // Traditional way to get the response value.
                 Optional<String> result = dialog.showAndWait();
                 result.ifPresent(name -> department_English = name);
+                databaseController.addInTranslation(department_English, c_department);
+                department = department_English;
             }
         }
 
         ResultSet rset;
         int id = 0, xpos = 0, ypos = 0, floor = 0;
-        String firstName, lastName, title = "", department = "", room;
-        String spTitle = "", spDepartment = "";
 
         room = room_TextField.getText();
         System.out.println("room: " + room);
@@ -237,9 +240,10 @@ public class mmNodeInformationController extends controllers.AbsController {
                     title = databaseController.getEnglish(spTitle);
                     System.out.println("English Title: " + title);
                     System.out.println("Spanish Title: " + spTitle);
-                    spDepartment = databaseController.getEnglish(spDepartment);
+                    department = databaseController.getEnglish(spDepartment);
                     System.out.println("English Department: " + department);
                     System.out.println("Spanish Department: " + spDepartment);
+
                     break;
             }
         }
@@ -292,7 +296,6 @@ public class mmNodeInformationController extends controllers.AbsController {
             default:
                 // nothing
         }
-
            setUpTreeView();
     }
 
@@ -310,7 +313,6 @@ public class mmNodeInformationController extends controllers.AbsController {
         }else if(c_language == 1){
             controller.spanishButtons_Labels();
         }
-
     }
 
     //switches to main menu
@@ -332,7 +334,6 @@ public class mmNodeInformationController extends controllers.AbsController {
             controller.spanishButtons_Labels();
         }
         controller.setLanguageChoices();
-
     }
 
     //sets up the tree
@@ -570,7 +571,6 @@ public class mmNodeInformationController extends controllers.AbsController {
     //sets the choices for the rooms and departments
     public void setRoomChoices() {
 
-
         ArrayList<String> rooms = new ArrayList<>();
         ArrayList<String> departments = new ArrayList<>();
 
@@ -601,8 +601,6 @@ public class mmNodeInformationController extends controllers.AbsController {
             title_choiceBox.getSelectionModel().select(0);
             id_TextField.setText("");
         }
-
-
     }
 
     //sets the current language to the given language
@@ -628,7 +626,6 @@ public class mmNodeInformationController extends controllers.AbsController {
         firstName_Label.setText("First Name");
         lastName_Label.setText("Last Name");
 
-
         //text fields
         search_textField.setPromptText("search");
         room_TextField.setPromptText("room");
@@ -641,8 +638,6 @@ public class mmNodeInformationController extends controllers.AbsController {
         title_TableColumn.setText("Title");
         department_TableColumn.setText("Department");
         room_TableColumn.setText("Room");
-
-
 
     }
 
