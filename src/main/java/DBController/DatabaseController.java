@@ -931,11 +931,8 @@ public class DatabaseController {
         StringBuffer sb = new StringBuffer();
 
         try {
-            //FileReader fr = new FileReader(new File(path));
-            //InputStream fr = DatabaseController.class.getResourceAsStream(path);
             InputStream file = getClass().getResourceAsStream(path);
             BufferedReader reader = new BufferedReader(new InputStreamReader(file));
-            //BufferedReader br = new BufferedReader(fr);
 
 
             while ((s = reader.readLine()) != null) {
