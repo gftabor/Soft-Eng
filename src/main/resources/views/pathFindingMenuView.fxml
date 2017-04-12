@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -23,7 +17,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pathFindingMenu.pathFindingMenuController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pathFindingMenu.pathFindingMenuController">
    <children>
       <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -187,7 +181,19 @@
                         <Insets top="20.0" />
                      </VBox.margin>
                   </HBox>
-                  <TextArea fx:id="textDescription_TextFArea" prefHeight="313.0" prefWidth="345.0" />
+                  <TextArea fx:id="textDescription_TextFArea" prefHeight="171.0" prefWidth="340.0" />
+                  <Label prefHeight="119.0" prefWidth="300.0" text="Enter your phone number to have directions sent" wrapText="true">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="phoneInsert" prefHeight="24.0" prefWidth="156.0" promptText="1231231234" />
+                        <Button fx:id="phoneSend" mnemonicParsing="false" onMouseClicked="#textDirections" stylesheets="@../css/styles.css" text="Send" />
+                     </children>
+                  </HBox>
+                  <Label fx:id="phoneStatus" />
                </children>
             </VBox>
          </left>
