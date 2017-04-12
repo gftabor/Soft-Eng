@@ -1,14 +1,12 @@
 package pathFindingMenu;
 
 import controllers.*;
+import emergency.SmsSender;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -16,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 /**
@@ -70,6 +69,15 @@ public class pathFindingMenuController extends controllers.mapScene{
     @FXML
     private Label start_Label;
 
+    @FXML
+    private TextField phoneInsert;
+
+    @FXML
+    private Button phoneSend;
+
+    @FXML
+    private Label phoneStatus;
+
     private Circle start;
     private Circle end;
 
@@ -109,6 +117,20 @@ public class pathFindingMenuController extends controllers.mapScene{
             System.out.println("");
         }
     }
+
+    public void textDirections(){
+        SmsSender mySMS = new SmsSender();
+        try {
+            if(mySMS.sendSMSDirections(textDescription_TextFArea.getText(), phoneInsert.getText()).equals("queued")){
+                phoneStatus.setText("Directions Sent.");
+            }else{
+                phoneStatus.setText("Failed to Send.");
+            }
+        } catch (URISyntaxException e){
+            e.getReason();
+        }
+    }
+
     @FXML
     public void initialize() {
         graph = new controllers.MapOverlay(node_Plane,(mapScene) this);

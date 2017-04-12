@@ -1,5 +1,6 @@
 package patientMenuStart;
 
+import emergency.SmsSender;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -7,7 +8,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+
+import java.net.URISyntaxException;
 
 
 /**
@@ -38,6 +42,8 @@ public class patientMenuStartController extends controllers.AbsController{
 
     @FXML
     private Label title_Label;
+
+
 
     //0 is english 1 is spanish
     int c_language = 0;
