@@ -295,6 +295,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
                             type = title_ChoiceBox.getValue();
                             break;
                     }
+
+
                     Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
                             currentFloor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom);
                     DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
