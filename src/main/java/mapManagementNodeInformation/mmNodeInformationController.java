@@ -153,10 +153,21 @@ public class mmNodeInformationController extends controllers.AbsController {
     //get an instance of database controller
     DatabaseController databaseController = DatabaseController.getInstance();
 
+    //handle the clear button
     public void cancelButton_Clicked() {
         System.out.println("The user has clicked the cancel Button");
+
+        department_TextField.setText("");
+        room_TextField.setText("");
+        id_TextField.setText("");
+        Firstname_TextField.setText("");
+        lastName_TextField.setText("");
+        title_choiceBox.getSelectionModel().select(0);
+        mode_ChoiceBox.getSelectionModel().select(0);
+
     }
 
+    //Handle the submiut button clicked
     public void submitButton_Clicked(){
 
         String c_department = department_TextField.getText();
@@ -631,6 +642,8 @@ public class mmNodeInformationController extends controllers.AbsController {
         room_TextField.setPromptText("room");
         Firstname_TextField.setPromptText("First Name");
         lastName_TextField.setPromptText("Last Name");
+        department_TextField.setPromptText("Department");
+        id_TextField.setPromptText("ID");
 
         //Table columns
         firstName_TableColumn.setText("First Name");
@@ -667,6 +680,8 @@ public class mmNodeInformationController extends controllers.AbsController {
         room_TextField.setPromptText("Habitación");
         Firstname_TextField.setPromptText("Nombre");
         lastName_TextField.setPromptText("Apellido");
+        department_TextField.setPromptText("Departamento");
+        id_TextField.setPromptText("ID");
 
         //Table columns
         firstName_TableColumn.setText("Nombre");
