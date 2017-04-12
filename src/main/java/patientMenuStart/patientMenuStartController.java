@@ -47,6 +47,37 @@ public class patientMenuStartController extends controllers.AbsController{
 
     //flag for changing scenes once
     boolean loop_once = false;
+    @FXML
+    public void initialize(){
+        setLanguageChoices(c_language);
+
+    }
+
+    public void setLanguageChoices(int i) {
+        //Makes sure you only set the choices once
+        //sets the choices and sets the current language as the top choice
+        languages_ChoiceBox.getItems().addAll("English", "Spanish");
+        languages_ChoiceBox.getSelectionModel().select(i);
+
+        //Checks if the user has decided to change languages
+        languages_ChoiceBox.getSelectionModel().selectedIndexProperty()
+                .addListener(new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                        //System.out.println(newValue);
+
+                        //Checks if the user wants english language
+                        if (newValue.intValue() == 0) {
+                            englishButtons_Labels();
+
+                            //checks if the user wants spanish
+                        } else if (newValue.intValue() == 1) {
+                            spanishButtons_Labels();
+                        }
+                    }
+
+                });
+    }
 
 
     //Handling when the logIn Button is clicked
@@ -112,6 +143,7 @@ public class patientMenuStartController extends controllers.AbsController{
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/hospitalDirectorySearchView.fxml");
         hospitalDirectorySearch.hospitalDirectorySearchController controller = loader.getController();
         controller.setUpTreeView();
+        controller.setUserString("");
         //sends the current language to the next screen
         controller.setCurrentLanguage(c_language);
         //set up english labels
@@ -124,7 +156,7 @@ public class patientMenuStartController extends controllers.AbsController{
     }
 
     //set the choices for the user at the beginning of the scene
-    public void setLanguageChoices(){
+    /*public void setLanguageChoices() {
         //Makes sure you only set the choices once
         if (!choicesSet) {
             //sets the choices and sets the current language as the top choice
@@ -162,7 +194,7 @@ public class patientMenuStartController extends controllers.AbsController{
                         }
                     }
                 });
-    }
+    }*/
 
     //switches all the labels and Buttons to english
     public void englishButtons_Labels(){

@@ -11,7 +11,7 @@ public class Node implements Comparable<Node>{
 
     private boolean isHidden;
     private boolean isEnabled; //if isEnabled is true, node is valid for pathfinding. If false, it's looked over in pathfinding
-    private String name; //room number, general location, etc. ex: "Room 123" or "Cafeteria"
+    private String name; //room number, general location, etc. ex: "Room 123"
     private int floor;
     private String type; //type indicates if node belongs to doctor's office, food service, restroom, etc.
     private String roomNum;
@@ -137,6 +137,14 @@ public class Node implements Comparable<Node>{
 
     public boolean getEnabled() {
         return isEnabled;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public String getType(){
+        return type;
     }
 
     public void setEnabled(boolean enabled) {

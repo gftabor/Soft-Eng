@@ -10,8 +10,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
-import java.util.HashMap;
-
 /**
  * Created by AugustoR on 4/1/17.
  */
@@ -90,10 +88,6 @@ public class adminMenuStartController extends controllers.AbsController{
 
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/pathFindingMenuView.fxml");
         pathFindingMenu.pathFindingMenuController controller = loader.getController();
-        MapController.getInstance().requestFloorMapCopy();
-        MapController.getInstance().requestMapCopy();
-        HashMap<Integer, Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
-        //controller.setMapAndNodes(DBMap);
         controller.setUserString(username_Label.getText());
 
         //sends the current language to the next screen
@@ -154,9 +148,6 @@ public class adminMenuStartController extends controllers.AbsController{
         }else if(c_language == 1){
             controller.spanishButtons_Labels();
         }
-
-        //Set the floor choices
-        controller.setFloorChoices();
 
     }
 
