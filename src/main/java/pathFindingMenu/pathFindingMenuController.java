@@ -403,9 +403,10 @@ public class pathFindingMenuController extends controllers.mapScene{
                     currentFloor ++;
 
                     //if there are no edges of interest, do not display them
-                    if (globalFragList[currentFloor] == null) {
+                    if (globalFragList[currentFloor] == null || globalFragList[currentFloor].isEmpty()) {
                         continue;
                     }
+                    System.out.println(currentFloor + "   " + globalFragList[currentFloor].size());
 
                     //otherwise, change to the appropriate screen and display edges
                     graph.wipeEdgeLines();
@@ -425,9 +426,10 @@ public class pathFindingMenuController extends controllers.mapScene{
                     currentFloor --;
 
                     //if there are no edges of interest, do not display them
-                    if (globalFragList[currentFloor] == null) {
+                    if (globalFragList[currentFloor] == null || globalFragList[currentFloor].isEmpty()) {
                         continue;
                     }
+                    System.out.println(currentFloor + "   " + globalFragList[currentFloor].size());
 
                     //otherwise, change to the appropriate screen and display edges
                     graph.wipeEdgeLines();
