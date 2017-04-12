@@ -1,8 +1,6 @@
 package DBController;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.sql.*;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -14,9 +12,9 @@ public class DatabaseController {
     }
 
     protected String dbName;
-    protected String buildTablesPath = "build/resources/main/database/buildTables.sql";
-    protected String populateSQLPath = "build/resources/main/database/mainDatabasePopulate.sql";
-    protected String cleanSQLPath = "build/resources/main/database/dropTables.sql";
+    protected String buildTablesPath = "/database/buildTables.sql";
+    protected String populateSQLPath = "/database/mainDatabasePopulate.sql";
+    protected String cleanSQLPath = "/database/dropTables.sql";
     protected Connection conn;
     Statement stmt;
 
@@ -88,6 +86,7 @@ public class DatabaseController {
             return false;
         }
     }
+
 
     /*******************************************************************************
      * getting tables, closing result sets
@@ -793,7 +792,6 @@ public class DatabaseController {
     }
 
     /*******************************************************************************
-<<<<<<< HEAD
      * SQL GENERATION actions
      *
      ******************************************************************************/
@@ -813,14 +811,18 @@ public class DatabaseController {
         StringBuffer sb = new StringBuffer();
 
         try {
-            FileReader fr = new FileReader(new File(path));
+            //FileReader fr = new FileReader(new File(path));
+            //InputStream fr = DatabaseController.class.getResourceAsStream(path);
+            InputStream file = getClass().getResourceAsStream(path);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(file));
+            //BufferedReader br = new BufferedReader(fr);
 
-            BufferedReader br = new BufferedReader(fr);
 
-            while ((s = br.readLine()) != null) {
+            while ((s = reader.readLine()) != null) {
                 sb.append(s);
             }
-            br.close();
+            reader.close();
+            file.close();
 
             String[] inst = sb.toString().split(";");
 
@@ -839,7 +841,7 @@ public class DatabaseController {
             return false;
         }
     }
-    /*
+    /*******************************************************************************
      * ADMIN actions
      *
      ******************************************************************************/
