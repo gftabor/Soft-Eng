@@ -6,6 +6,7 @@ import pathFindingMenu.Pathfinder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.lang.Math;
 
 //import main.java.controllers.CollectionOfNodes;
 
@@ -204,41 +205,38 @@ public class MapController {
         String destination;
         ArrayList<String> directions = new ArrayList<>();
 
-        for(int i = 0; i < path.size()-1; i++) {
-            if(getAngle(path.get(i), path.get(i+1)) > 70.0 &&
-                    getAngle(path.get(i), path.get(i+1)) < 110.0) {
-                destination = path.get(i).getEndNode().getRoomNum();
-                directions.add("Turn right at " + destination);
-            }
-            else if(getAngle(path.get(i), path.get(i+1)) > 250.0 &&
-                    getAngle(path.get(i), path.get(i+1)) < 290.0) {
+        for(int i = path.size()-1; i > 0; i--) {
+            double angle = getAngle(path.get(i), path.get(i-1));
+            if(angle > -135.0 && angle <= -45.0) {
                 destination = path.get(i).getEndNode().getRoomNum();
                 directions.add("Turn left at " + destination);
             }
-            else if(getAngle(path.get(i), path.get(i+1)) > 190.0 &&
-                    getAngle(path.get(i), path.get(i+1)) < 250.0) {
+            else if(angle >= 45.0 && angle < 135.0) {
+                destination = path.get(i).getEndNode().getRoomNum();
+                directions.add("Turn right at " + destination);
+            }
+            else if(angle > 10.0 && angle < 45.0) {
                 destination = path.get(i).getEndNode().getRoomNum();
                 directions.add("Make a slight right at " + destination);
             }
-            else if(getAngle(path.get(i), path.get(i+1)) > 0.0 &&
-                    getAngle(path.get(i), path.get(i+1)) < 10.0){
+            else if(angle >= -10.0 && angle <= 10.0){
                 directions.add("Continue straight.");
             }
-            else if(getAngle(path.get(i), path.get(i+1)) > 110.0 &&
-                    getAngle(path.get(i), path.get(i+1)) < 170.0) {
+            else if(angle > -45.0 && angle < -10.0) {
                 destination = path.get(i).getEndNode().getRoomNum();
                 directions.add("Make a slight left at " + destination);
             }
-            else if(getAngle(path.get(i), path.get(i+1)) < 250.0 &&
-                    getAngle(path.get(i), path.get(i+1)) > 360.0) {
+            else if(angle > 135.0 && angle < 180.0) {
                 destination = path.get(i).getEndNode().getRoomNum();
                 directions.add("Make a hard right at " + destination);
             }
-            else if(getAngle(path.get(i), path.get(i+1)) < 10.0 &&
-                    getAngle(path.get(i), path.get(i+1)) > 70.0) {
+            else if(angle > -180.0 && angle < -135.0) {
                 destination = path.get(i).getEndNode().getRoomNum();
                 directions.add("Make a hard left at " + destination);
+            }else{
+                directions.add("nothing");
             }
+
         }
         directions = cleanDirections(directions);
         return concatenateDirections(directions);
@@ -247,8 +245,8 @@ public class MapController {
 
     private ArrayList<String> cleanDirections(ArrayList<String> direc) {
         ArrayList<String> directions = direc;
-        for(int i = 0; i < directions.size()-1; i++) {
-            if(directions.get(i).equals(directions.get(i+1))) {
+        for(int i = directions.size()-1; i > 0; i--) {
+            if("Continue straight.".equals(directions.get(i)) && directions.get(i).equals(directions.get(i-1))) {
                 directions.remove(directions.get(i));
             }
         }
@@ -263,38 +261,33 @@ public class MapController {
         return text;
     }
 
-
-    //finds angle between two edges by finding the unit vectors for each
-    //taking the dot product between the unit vectors
-    //and taking the arccos() of the dot product
     private double getAngle(Edge e1, Edge e2) {
+        Node middle;
+        double e1X = 0.0;
+        double e1Y = 0.0;
+        double e2X = 0.0;
+        double e2Y = 0.0;
+        if(e1.getEndNode() == e2.getStartNode()) {
+            middle = e1.getEndNode();
 
-        //find unit vectors
-        ArrayList<Double> e1comp = getUnitVector(e1);
-        ArrayList<Double> e2comp = getUnitVector(e2);
+        } else if(e1.getEndNode() == e2.getEndNode()) {
+            middle = e1.getEndNode();
 
-        //find dot product
-        double dot = e1comp.get(0)*e2comp.get(0) + e1comp.get(1)*e2comp.get(1);
+        } else if(e1.getStartNode() == e2.getEndNode()) {
+            middle = e1.getStartNode();
 
-        double angle = Math.toDegrees(Math.acos(dot));
+        } else {
+            middle = e1.getStartNode();
+        }
+        e1X = middle.getPosX() - e1.getNeighbor(middle).getPosX();
+        e1Y = middle.getPosY() - e1.getNeighbor(middle).getPosY();
+
+        e2X =  e2.getNeighbor(middle).getPosX() - middle.getPosX();
+        e2Y =  e2.getNeighbor(middle).getPosY() - middle.getPosY();
+
+        double angle = Math.toDegrees(Math.atan2(e1X*e2Y - e1Y*e2X, e1X*e2X + e1Y*e2Y));
         System.out.println(angle);
-
         return angle;
     }
 
-    private ArrayList<Double> getUnitVector(Edge e1) {
-        double xcomp = e1.getEndNode().getPosX() - e1.getStartNode().getPosX();
-        double ycomp = e1.getEndNode().getPosY() - e1.getStartNode().getPosY();
-
-        double magnitude = Math.sqrt(Math.pow(xcomp, 2.0) + Math.pow(ycomp, 2.0));
-
-        //list of components of unit vector
-        ArrayList<Double> unitComponents = new ArrayList<>();
-        unitComponents.add(xcomp/magnitude);
-        unitComponents.add(ycomp/magnitude);
-
-        return unitComponents;
-
-
-    }
 }
