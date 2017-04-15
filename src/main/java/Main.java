@@ -18,7 +18,7 @@ public class Main extends Application {
 
     public void start(Stage primaryStage) throws Exception {
         //Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("/views/patientMenuStartView.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("/views/patientMenuStartView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/views/patientMainView.fxml"));
 
         primaryStage.setTitle("Iteration 2 Expanded Application");
         //primaryStage.setFullScreen(true);
