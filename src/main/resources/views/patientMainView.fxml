@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TreeTableColumn?>
@@ -34,6 +35,11 @@
                   </HBox>
                   <HBox>
                      <children>
+                        <ChoiceBox fx:id="language_ChoiceBox" prefHeight="30.0" prefWidth="175.0">
+                           <HBox.margin>
+                              <Insets bottom="3.0" left="30.0" right="3.0" top="3.0" />
+                           </HBox.margin>
+                        </ChoiceBox>
                         <Region HBox.hgrow="ALWAYS" />
                         <Region prefWidth="200.0" />
                         <Button fx:id="admin_Button" mnemonicParsing="false" prefHeight="30.0" prefWidth="160.0" text="Administrator">
@@ -44,9 +50,9 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="emergency_Button" mnemonicParsing="false" prefHeight="30.0" prefWidth="160.0" text="Emergency">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" prefHeight="30.0" prefWidth="190.0" text="EMERGENCY">
                            <font>
-                              <Font size="21.0" />
+                              <Font name="System Bold Italic" size="21.0" />
                            </font>
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -65,7 +71,7 @@
                <children>
                   <HBox>
                      <children>
-                        <Label fx:id="start_Label" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" text="Start">
+                        <Label fx:id="start_Label" minHeight="-Infinity" minWidth="-Infinity" prefWidth="90.0" text="Start">
                            <font>
                               <Font name="System Bold" size="22.0" />
                            </font>
@@ -75,7 +81,7 @@
                         </Label>
                         <TextField fx:id="start_textField" prefHeight="30.0" prefWidth="175.0" promptText="Starting position">
                            <HBox.margin>
-                              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                              <Insets bottom="3.0" right="3.0" top="3.0" />
                            </HBox.margin>
                            <font>
                               <Font size="16.0" />
@@ -86,7 +92,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label fx:id="end_Label" prefWidth="80.0" text="End">
+                        <Label fx:id="end_Label" prefWidth="90.0" text="End">
                            <font>
                               <Font name="System Bold" size="22.0" />
                            </font>
@@ -96,7 +102,7 @@
                         </Label>
                         <TextField fx:id="end_TextField" prefHeight="30.0" prefWidth="175.0" promptText="Ending position">
                            <HBox.margin>
-                              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                              <Insets bottom="3.0" right="3.0" top="3.0" />
                            </HBox.margin>
                            <font>
                               <Font size="16.0" />
@@ -142,6 +148,16 @@
                      </children>
                      <VBox.margin>
                         <Insets bottom="5.0" top="15.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <ComboBox fx:id="filter_comboBox" prefHeight="30.0" prefWidth="180.0" />
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
                      </VBox.margin>
                   </HBox>
                   <TreeTableView fx:id="allInformation_TableView" tableMenuButtonVisible="true">
