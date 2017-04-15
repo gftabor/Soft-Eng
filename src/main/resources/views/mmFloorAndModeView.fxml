@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
@@ -16,7 +22,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapManagementFloorAndMode.mmFloorAndModeController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapManagementFloorAndMode.mmFloorAndModeController">
    <children>
       <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -78,7 +84,7 @@
             </HBox>
          </bottom>
          <right>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="771.0" BorderPane.alignment="CENTER">
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="921.0" BorderPane.alignment="CENTER">
                <children>
                   <HBox>
                      <children>
@@ -94,16 +100,12 @@
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <HBox prefHeight="560.0" prefWidth="771.0">
+                  <HBox prefHeight="505.0" prefWidth="809.0">
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Pane fx:id="admin_FloorPane" prefHeight="506.0" prefWidth="1006.0">
+                        <Pane fx:id="admin_FloorPane" prefHeight="505.0" prefWidth="1338.0">
                            <children>
-                              <ImageView fitHeight="489.0" fitWidth="772.0">
-                                 <image>
-                                    <Image url="@../images/4.png" />
-                                 </image>
-                              </ImageView>
+                              <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="920.0" layoutX="3.0" />
                            </children>
                         </Pane>
                         <Region HBox.hgrow="ALWAYS" />
@@ -113,12 +115,12 @@
             </VBox>
          </right>
          <center>
-            <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="548.0" prefWidth="503.0" BorderPane.alignment="CENTER">
+            <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="0.0" BorderPane.alignment="CENTER">
                <children>
                   <Region prefHeight="57.0" prefWidth="503.0" />
-                  <HBox>
+                  <HBox prefHeight="48.0" prefWidth="467.0">
                      <children>
-                        <Label fx:id="chooseFloor_Label" prefWidth="190.0" text="Floor:">
+                        <Label fx:id="chooseFloor_Label" prefHeight="38.0" prefWidth="105.0" text="Floor:">
                            <font>
                               <Font name="System Bold" size="26.0" />
                            </font>
@@ -136,7 +138,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label fx:id="mode_Label" prefWidth="190.0" text="Mode:">
+                        <Label fx:id="mode_Label" prefHeight="38.0" prefWidth="105.0" text="Mode:">
                            <font>
                               <Font name="System Bold Italic" size="26.0" />
                            </font>
@@ -155,23 +157,22 @@
                         <Insets />
                      </VBox.margin>
                   </HBox>
-                  <HBox>
+                  <HBox prefHeight="45.0" prefWidth="422.0">
                      <children>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Label fx:id="subTitile_Label" text="Information">
+                        <Region prefHeight="45.0" prefWidth="102.0" />
+                        <Label fx:id="subTitile_Label" prefHeight="45.0" prefWidth="177.0" text="Information">
                            <font>
                               <Font name="System Bold Italic" size="30.0" />
                            </font>
                         </Label>
-                        <Region HBox.hgrow="ALWAYS" />
                      </children>
                      <VBox.margin>
                         <Insets top="30.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox>
+                  <HBox prefHeight="53.0" prefWidth="359.0">
                      <children>
-                        <Label fx:id="nodeTitile_Label" prefWidth="120.0" text="Title:">
+                        <Label fx:id="nodeTitile_Label" prefHeight="38.0" prefWidth="70.0" text="Title:">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
                            </HBox.margin>
@@ -179,16 +180,16 @@
                               <Font name="System Bold Italic" size="26.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="title_ChoiceBox" prefHeight="39.0" prefWidth="250.0">
+                        <ChoiceBox fx:id="title_ChoiceBox" prefHeight="46.0" prefWidth="205.0">
                            <HBox.margin>
                               <Insets left="60.0" />
                            </HBox.margin>
                         </ChoiceBox>
                      </children>
                   </HBox>
-                  <HBox>
+                  <HBox prefHeight="59.0" prefWidth="398.0">
                      <children>
-                        <Label fx:id="name_Label" prefWidth="120.0" text="Name:">
+                        <Label fx:id="name_Label" prefHeight="38.0" prefWidth="159.0" text="Name:">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
                            </HBox.margin>
@@ -196,7 +197,7 @@
                               <Font name="System Bold Italic" size="26.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="name_TextField" promptText="Name">
+                        <TextField fx:id="name_TextField" prefHeight="44.0" prefWidth="273.0" promptText="Name">
                            <HBox.margin>
                               <Insets bottom="5.0" left="60.0" right="5.0" top="10.0" />
                            </HBox.margin>
@@ -208,7 +209,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label fx:id="room_Label" prefWidth="120.0" text="Room:">
+                        <Label fx:id="room_Label" prefHeight="38.0" prefWidth="135.0" text="Room:">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
                            </HBox.margin>

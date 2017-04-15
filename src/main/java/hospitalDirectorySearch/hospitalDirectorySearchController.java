@@ -149,7 +149,11 @@ public class hospitalDirectorySearchController extends controllers.AbsController
 
     //
     public void clearButton_Clicked(){
+
         System.out.println("The user has clicked the clear button");
+        from_TextField.setText("");
+        to_TextField.setText("");
+        flag = 0;
     }
 
     //
@@ -158,18 +162,36 @@ public class hospitalDirectorySearchController extends controllers.AbsController
 
         invalid_input = to_String.equals("") || to_String == null || from_String.equals("") || from_String == null;
 
+
         if(!invalid_input) {
             FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/pathFindingMenuView.fxml");
             pathFindingMenu.pathFindingMenuController controller = loader.getController();
             MapController.getInstance().requestFloorMapCopy();
             MapController.getInstance().requestMapCopy();
-            HashMap<Integer, Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
+            //stop hardcoding floor 4!!
+            //HashMap<Integer, Node> DBMap = MapController.getInstance().getCollectionOfNodes().getMap(4);
             Pathfinder pathfinder = new Pathfinder();
             Node start = MapController.getInstance().getCollectionOfNodes().getNodeWithName(to_String);
             Node end = MapController.getInstance().getCollectionOfNodes().getNodeWithName(from_String);
-            pathfinder.generatePath(start,end);
-            controller.setUserString("");
-            controller.createEdgeLines(pathfinder.getPath());
+
+            //set to the correct start floor
+            int currentFloor;
+            currentFloor = start.getFloor();
+
+            //set the start floor
+            controller.setFloorChoiceRemote(currentFloor);
+
+            //detect multiflooring
+            if (start.getFloor() != end.getFloor()) {
+                //multifloor pathfinding detected
+                System.out.println("directory -> multifloor pathfinding");
+                controller.multiFloorPathfind();
+            } else {
+                //no multifloor pathfinding (simple)
+                pathfinder.generatePath(start, end);
+                controller.setUserString("");
+                controller.createEdgeLines(pathfinder.getPath());
+            }
         }else{
             //There could be information too
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -205,8 +227,13 @@ public class hospitalDirectorySearchController extends controllers.AbsController
                 id = rset.getInt("ID");
                 firstName = rset.getString("FIRSTNAME");
                 lastName = rset.getString("LASTNAME");
-                title = rset.getString("TYPE");
-                department = rset.getString("DEPARTMENT");
+                if (c_language == 0) {
+                    title = rset.getString("TYPE");
+                    department = rset.getString("DEPARTMENT");
+                } else {
+                    title = rset.getString("SPTYPE");
+                    department = rset.getString("SPDEPARTMENT");
+                }
                 roomNum = rset.getString("ROOMNUM");
                 System.out.println("Name: " + firstName + lastName);
                 data.add(new Table(id, firstName, lastName, title, department, roomNum));
@@ -246,6 +273,7 @@ public class hospitalDirectorySearchController extends controllers.AbsController
                     }
                     String lowerCaseFilter = newValue.toLowerCase();
                     if(Table.getrFirstName().toLowerCase().contains(lowerCaseFilter)){
+                        System.out.println("Hello World");
                         return true;
 
                     }else if(Table.getrLastName().toLowerCase().contains(lowerCaseFilter)){
@@ -253,6 +281,7 @@ public class hospitalDirectorySearchController extends controllers.AbsController
                     }else if(Table.getrType().toLowerCase().contains(lowerCaseFilter)){
                         return true;
                     }else if(Table.getrTitle().toLowerCase().contains(lowerCaseFilter)){
+                        System.out.println("Hello World");
                         return true;
                     }else if(Table.getrRoom().toLowerCase().contains(lowerCaseFilter)){
                         return true;
