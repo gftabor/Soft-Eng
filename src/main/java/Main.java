@@ -17,6 +17,11 @@ public class Main extends Application {
     @Override
 
     public void start(Stage primaryStage) throws Exception {
+
+        DatabaseController databaseController = DatabaseController.getInstance();
+        databaseController.setDbName("./FaulknerDB");
+        databaseController.startDB();
+
         //Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("/views/patientMenuStartView.fxml"));
         Parent root = FXMLLoader.load(getClass().getResource("/views/patientMainView.fxml"));
 
@@ -28,9 +33,7 @@ public class Main extends Application {
         primaryStage.show();
 
 
-        DatabaseController databaseController = DatabaseController.getInstance();
-        databaseController.setDbName("./FaulknerDB");
-        databaseController.startDB();
+
 
     }
 

@@ -804,6 +804,41 @@ public class DatabaseController {
         return titles;
     }
 
+    public ArrayList<String> getProfessionalList(){
+
+        System.out.println("Getting all professionals, appending title and department, roomnum");
+
+        ResultSet resultSet = null;
+        ArrayList<String> professionals = new ArrayList<>();
+        String professional = "";
+
+        try{
+            String query = "SELECT P.FIRSTNAME, P.LASTNAME, P.DEPARTMENT, N.ROOMNUM " +
+                    "FROM PROFESSIONAL P, NODE N, PROLOCATION PL " +
+                    "WHERE P.ID = PL.PROID AND PL.XPOS = N.XPOS AND PL.YPOS = N.YPOS AND " +
+                    "PL.FLOOR = N.FLOOR";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                professional = resultSet.getString("FIRSTNAME") + " " +
+                        resultSet.getString("LASTNAME") + ", " +
+                        resultSet.getString("DEPARTMENT") + ", " +
+                        resultSet.getString("ROOMNUM");
+                System.out.println("Entire professional string: " + professional);
+                if (!professionals.contains(professional)) {
+                    professionals.add(professional);
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return professionals;
+
+    }
+
 
     /*******************************************************************************
      * ADMIN actions

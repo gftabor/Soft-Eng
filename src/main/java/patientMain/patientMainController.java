@@ -3,6 +3,7 @@ package patientMain;
 /**
  * Created by AugustoR on 4/15/17.
  */
+import DBController.DatabaseController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -12,6 +13,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.layout.AnchorPane;
+import org.controlsfx.control.textfield.TextFields;
+
+import java.util.ArrayList;
 
 public class patientMainController extends controllers.AbsController{
 
@@ -66,8 +70,12 @@ public class patientMainController extends controllers.AbsController{
     public void initialize(){
         //setLanguageChoices(c_language);
         setFloorChoices();
+        setStartEndChoices();
 
     }
+
+    //get an instance of database controller
+    DatabaseController databaseController = DatabaseController.getInstance();
 
     public void setFloorChoices() {
         //Makes sure you only set the choices once
@@ -109,6 +117,25 @@ public class patientMainController extends controllers.AbsController{
 
                 });
     }
+
+    public void setStartEndChoices(){
+
+        ArrayList<String> roomNums = new ArrayList<>();
+        ArrayList<String> professionals = new ArrayList<>();
+        ArrayList<String> all = new ArrayList<>();
+
+        roomNums = databaseController.getRoomList();
+        professionals = databaseController.getProfessionalList();
+        all.addAll(roomNums);
+        all.addAll(professionals);
+
+
+        TextFields.bindAutoCompletion(start_textField, all);
+
+
+    }
+
+
 
 
 
