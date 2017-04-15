@@ -54,7 +54,7 @@ public class adminMenuStartController extends controllers.AbsController{
         System.out.println("The user has clicked the sign out button");
 
         //Change to patient menu
-        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
+        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
         patientMenuStart.patientMenuStartController controller = loader.getController();
         //sends the current language to the next screen
         controller.setCurrentLanguage(c_language);
