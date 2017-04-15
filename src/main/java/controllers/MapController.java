@@ -207,14 +207,6 @@ public class MapController {
 
     }
 
-    //used for multifloor pathfinding output
-    //utilizes requestPath() to get pathfinding path from start to end
-    //breaks up into individual path for each edge
-    public ArrayList<Edge>[] requestFragmentedPath(ArrayList<Edge> fullList, int startingFloor, int endingFloor) {
-        //fullList is given specifically from requestPath()
-        //path is in reverse order!!!
-        Collections.reverse(fullList);
-
     public boolean edgeListToText(ArrayList<Edge> edges) {
 
         try {
@@ -251,6 +243,16 @@ public class MapController {
         }
 
     }
+
+    //used for multifloor pathfinding output
+    //utilizes requestPath() to get pathfinding path from start to end
+    //breaks up into individual path for each edge
+    public ArrayList<Edge>[] requestFragmentedPath(ArrayList<Edge> fullList, int startingFloor, int endingFloor) {
+        //fullList is given specifically from requestPath()
+        //path is in reverse order!!!
+        Collections.reverse(fullList);
+
+
         //initialize fragmented list
         ArrayList<Edge> [] fragmentedList = new ArrayList [10];
         //put null references to avoid index out of bounds errors
