@@ -36,21 +36,34 @@ public class loadConfig {
     }
 
     public Reader startReader(){
-        Reader reader = null;
-        if(Files.exists(Paths.get("build/resources/main/config/config.json"))){
+        BufferedReader reader = null;
+
+
+
+        try{
+            InputStream file = getClass().getResourceAsStream("/config/config.json");
+            reader = new BufferedReader(new InputStreamReader(file));
+        } catch (Exception e){
+            e.printStackTrace();
+            System.out.println("CONFIGURE CONFIG.JSON");
+        }
+        /*
+
+        if(Files.exists(Paths.get("/config/config.json"))){
             try {
-                reader = new FileReader("build/resources/main/config/config.json");
+                reader = new FileReader("/config/config.json");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-        }else if(Files.exists(Paths.get("build/resources/main/config/example-config.json"))){
+        }else if(Files.exists(Paths.get("/config/example-config.json"))){
             try {
-                reader = new FileReader("build/resources/main/config/example-config.json");
+                reader = new FileReader("/main/config/example-config.json");
                 System.out.println("PLEASE CONFIGURE CONFIG.JSON");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
+        */
 
         return reader;
     }
