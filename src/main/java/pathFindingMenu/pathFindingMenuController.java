@@ -208,9 +208,9 @@ public class pathFindingMenuController extends controllers.mapScene{
         System.out.println("Current floor: " + Integer.toString(currentFloor) + " :)");
 
         //maintain consistency of colors - doesn't work - references go missing
-        start.setStrokeWidth(strokeRatio);
-        start.setStroke(Color.ORANGERED);
-        start.setRadius(graph.getLabelRadius());
+        // start.setStrokeWidth(strokeRatio);
+        // start.setStroke(Color.ORANGERED);
+        //start.setRadius(graph.getLabelRadius());
 
         //reset for next pathfinding session
         MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
