@@ -360,7 +360,7 @@ public class patientMainController extends controllers.AbsController{
         //change the Labels
         start_Label.setText("Inicio");
         end_Label.setText("Destino");
-        language_Label.setText("Languaje");
+        language_Label.setText("Idioma");
         mainTitle_Label.setText("Bienvenidos al Hospital Faulkner Brigham and Women");
         floor_Label.setText("Piso");
 
