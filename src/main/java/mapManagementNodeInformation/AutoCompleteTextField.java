@@ -52,7 +52,7 @@ public class AutoCompleteTextField extends TextField
                         populatePopup(searchResult);
                         if (!entriesPopup.isShowing())
                         {
-                            entriesPopup.show(AutoCompleteTextField.this, Side.BOTTOM, 0, 0);
+                            entriesPopup.show(AutoCompleteTextField.this, Side.BOTTOM, 80, 0);
                         }
                     } else
                     {
@@ -89,13 +89,13 @@ public class AutoCompleteTextField extends TextField
         for (int i = 0; i < count; i++)
         {
             final String result = searchResult.get(i);
-            Label entryLabel = new Label(result);
+            Label entryLabel = new Label("FUCK BITCHES");
             CustomMenuItem item = new CustomMenuItem(entryLabel, true);
             item.setOnAction(new EventHandler<ActionEvent>()
             {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    setText(result);
+                    setText("HELLO WORLD");
                     entriesPopup.hide();
                 }
             });
