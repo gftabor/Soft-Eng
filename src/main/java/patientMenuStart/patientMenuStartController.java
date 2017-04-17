@@ -88,7 +88,7 @@ public class patientMenuStartController extends controllers.AbsController{
 
 
     //Handling when the logIn Button is clicked
-    public void logInButton_Clicked() {
+    /*public void logInButton_Clicked() {
         System.out.println("The log in button was clicked by the user");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminLoginMainView.fxml");
         adminLoginMain.adminLoginMainController controller = loader.getController();
@@ -105,7 +105,7 @@ public class patientMenuStartController extends controllers.AbsController{
 
 
 
-    }
+    } */
 
     //Handling when the pathFinding Button is clicked
     //IMPORTANT
@@ -128,7 +128,7 @@ public class patientMenuStartController extends controllers.AbsController{
 
 
     //Switch screen to emergency scene
-    public void emergencyButton_Clicked() {
+    /*public void emergencyButton_Clicked() {
         System.out.println("The user has clicked the emergency Button");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
         emergency.emergencyController controller = loader.getController();
@@ -142,7 +142,7 @@ public class patientMenuStartController extends controllers.AbsController{
             controller.spanishButtons_Labels();
         }
 
-    }
+    }*/
 
     //switch screen to the directory searching
     public void directoryButton_Clicked(){
