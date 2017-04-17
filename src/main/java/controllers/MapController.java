@@ -196,9 +196,11 @@ public class MapController {
         Pathfinder pathfinder = new Pathfinder();
         pathfinder.generatePath(startNode, endNode);
 
-        edgeListToText(pathfinder.getPath());
+
+        //edgeListToText(pathfinder.getPath());
+        nodeListToText(pathfinder.getNodePath());
         try {
-            Runtime.getRuntime().exec(new String[] { "testFloor5.exe"});
+            Runtime.getRuntime().exec(new String[] { "testFloor4.exe"});
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -206,6 +208,7 @@ public class MapController {
         return pathfinder.getPath();
 
     }
+
 
     public boolean edgeListToText(ArrayList<Edge> edges) {
 
@@ -233,7 +236,59 @@ public class MapController {
 
             lines.add(line);
 
-            Path file = Paths.get("testFloor5.txt");
+            Path file = Paths.get("path.txt");
+            Files.write(file, lines, Charset.forName("UTF-8"));
+            //Files.write(file, lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public boolean nodeListToText(ArrayList<Node> nodes) {
+
+        try {
+            List<String> lines = new ArrayList();
+
+            /*
+            for(Node node : nodes) {
+                String line = "";
+                line += node.getPosX();
+                line += ",";
+                line += node.getPosY();
+                line += ",";
+                line += node.getFloor();
+
+                lines.add(line);
+            }
+            */
+
+            for(int i = nodes.size()-1; i >= 0; i--) {String line = "";
+                line += nodes.get(i).getPosX();
+                line += ",";
+                line += nodes.get(i).getPosY();
+                line += ",";
+                line += nodes.get(i).getFloor();
+
+                lines.add(line);
+            }
+            
+
+            /*
+            String line = "";
+            Node finalNode = nodes.get(nodes.size()-1);
+            line += finalNode.getPosX();
+            line += ",";
+            line += finalNode.getPosY();
+            line += ",";
+            line += finalNode.getFloor();
+
+            lines.add(line);
+             */
+
+            Path file = Paths.get("path.txt");
             Files.write(file, lines, Charset.forName("UTF-8"));
             //Files.write(file, lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
             return true;

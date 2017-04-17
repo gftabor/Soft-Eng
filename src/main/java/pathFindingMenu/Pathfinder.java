@@ -15,10 +15,14 @@ public class Pathfinder {
     private HashSet<Node> alreadyProcessed = new HashSet<Node>();;
 
     private ArrayList<Edge> path = new ArrayList<Edge>();
+    private ArrayList<Node> nodePath = new ArrayList<Node>();
 
 
     public ArrayList<Edge> getPath() {
         return path;
+    }
+    public ArrayList<Node> getNodePath() {
+        return nodePath;
     }
 
     //double heuristic function for A* pathfinding
@@ -77,6 +81,7 @@ public class Pathfinder {
         alreadyProcessed.clear();
         frontier.clear();
         path.clear();
+        nodePath.clear();
         if(!(startNode.getEnabled() && endNode.getEnabled())){
             System.out.println("selected node not enabled");
             return -2;
@@ -98,8 +103,10 @@ public class Pathfinder {
         Node viewingNode = endNode;
         while(!viewingNode.equals(startNode) && finished){
             path.add(viewingNode.getParentEdge());
+            nodePath.add(viewingNode);
             viewingNode = viewingNode.getParentEdge().getNeighbor(viewingNode);
         }
+        nodePath.add(startNode);
 
         if (finished)
             return endNode.getTotalCost();
