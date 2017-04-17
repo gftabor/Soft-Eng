@@ -23,6 +23,12 @@ public class patientMainController extends controllers.AbsController{
     private Label mainTitle_Label;
 
     @FXML
+    private ChoiceBox<String> language_ChoiceBox;
+
+    @FXML
+    private Button about_Button;
+
+    @FXML
     private Button admin_Button;
 
     @FXML
@@ -50,7 +56,19 @@ public class patientMainController extends controllers.AbsController{
     private ChoiceBox<String> filter_ChoiceBox;
 
     @FXML
-    private TreeTableView<?> allInformation_TableView;
+    private Label textD_Label;
+
+    @FXML
+    private TextArea textDescription_TextFArea;
+
+    @FXML
+    private Label phoneInfo_Label;
+
+    @FXML
+    private TextField phoneInsert;
+
+    @FXML
+    private Button phoneSend;
 
     @FXML
     private ChoiceBox<String> floor_ChoiceBox;
@@ -60,10 +78,6 @@ public class patientMainController extends controllers.AbsController{
 
     @FXML
     private Label c_Floor_Label;
-
-
-    @FXML
-    private ChoiceBox<String> language_ChoiceBox;
 
     @FXML
     private ComboBox<String> filter_comboBox;
@@ -341,12 +355,16 @@ public class patientMainController extends controllers.AbsController{
         emergency_Button.setText("EMERGENCY");
         clear_Button.setText("Clear");
         submit_Button.setText("Submit");
+        phoneSend.setText("Send");
+        about_Button.setText("About");
+
 
         //Change the labels
         start_Label.setText("Start");
         end_Label.setText("End");
         mainTitle_Label.setText("Welcome to Brigham and Women's Faulkner Hospital");
         floor_Label.setText("Floor");
+        textD_Label.setText("Text Description");
 
         //Change the textFields
         start_textField.setPromptText("Starting position");
@@ -368,12 +386,15 @@ public class patientMainController extends controllers.AbsController{
         emergency_Button.setText("EMERGENCIA");
         clear_Button.setText("Borrar");
         submit_Button.setText("Listo");
+        phoneSend.setText("Enviar");
+        about_Button.setText("Acerca");
 
         //change the Labels
         start_Label.setText("Inicio");
         end_Label.setText("Destino");
         mainTitle_Label.setText("Bienvenidos al Hospital Faulkner Brigham and Women");
         floor_Label.setText("Piso");
+        textD_Label.setText("Descripciones Escritas");
 
         //Change the textFields
         start_textField.setPromptText("Nombre de inicio");
