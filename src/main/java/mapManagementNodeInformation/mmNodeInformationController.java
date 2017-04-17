@@ -43,9 +43,6 @@ public class mmNodeInformationController extends controllers.AbsController {
     private Button emergency_Button;
 
     @FXML
-    private ChoiceBox<String> title_choiceBox;
-
-    @FXML
     private TextField lastName_TextField;
 
     @FXML
@@ -68,7 +65,6 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     @FXML
     private TextField room_TextField;
-
 
     @FXML
     private TableView<Table> Table_TableView;
@@ -98,6 +94,9 @@ public class mmNodeInformationController extends controllers.AbsController {
     private TextField search_textField;
 
     @FXML
+    private TextField title_TextField;
+
+    @FXML
     private Label title_Label;
 
     @FXML
@@ -122,10 +121,6 @@ public class mmNodeInformationController extends controllers.AbsController {
     private Label lastName_Label;
 
 
-
-
-    int c_title;
-
     int ID;
 
     boolean inDataBase = false;
@@ -135,10 +130,10 @@ public class mmNodeInformationController extends controllers.AbsController {
     String Department;
     String Room;
 
-    String department_English = "";
-    String department_Spanish = "";
-    String title_English = "" ;
-    String title_Spanish =  "";
+    String spTitle = "", spDepartment = "";
+    String enTitle = "", enDepartment = "";
+    String title, department;
+
 
 
     /**
@@ -147,7 +142,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     // Flag for current mode chosen (add = 0, edit = 2, remove = 1)
     int c_mode = -1;
 
-    //set to english by default
+    //set to english by default (english = 0, spanish = 1)
     int c_language = 0;
 
 
@@ -163,7 +158,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         id_TextField.setText("");
         Firstname_TextField.setText("");
         lastName_TextField.setText("");
-        title_choiceBox.getSelectionModel().select(0);
+        title_TextField.setText("");
         mode_ChoiceBox.getSelectionModel().select(0);
 
     }
@@ -171,58 +166,90 @@ public class mmNodeInformationController extends controllers.AbsController {
     //Handle the submiut button clicked
     public void submitButton_Clicked(){
 
-        String c_department = department_TextField.getText();
-        boolean UnknownDepartment = false;
-        String firstName, lastName, title = "", department = "", room;
-        String spTitle = "", spDepartment = "";
+        String cTitle = title_TextField.getText();
+        String cDepartment = department_TextField.getText();
+
+        // Get user input for fields that don't care about language
+        String room = room_TextField.getText();
+        String firstName = Firstname_TextField.getText();
+        String lastName = lastName_TextField.getText();
+        String title = title_TextField.getText();
 
         if(c_language == 0){
             // language is english
             ArrayList<String> english_departments = databaseController.getEnglishDepartmentList();
-            if (!(english_departments.contains(c_department))) {
-                UnknownDepartment = true;
+            if (!(english_departments.contains(cDepartment))) {
+                // if current english department not in the list of available english departments
+                // pop up window should get the new department in spanish (since we don't know the
+                // translation)
                 //Get spanish translation of unknown department
-                TextInputDialog dialog = new TextInputDialog("");
-                dialog.setTitle("Add New Department");
-                dialog.setHeaderText("You have entered an unknown department! Please add Spanish translation.");
-                dialog.setContentText("Department in Spanish:");
+                TextInputDialog dialogDepartment = new TextInputDialog("");
+                dialogDepartment.setTitle("Add New Department");
+                dialogDepartment.setHeaderText("You have entered an unknown department! Please provide Spanish translation.");
+                dialogDepartment.setContentText("Department in Spanish:");
                 // The Java 8 way to get the response value (with lambda expression).
                 // Traditional way to get the response value.
-                Optional<String> result = dialog.showAndWait();
-                result.ifPresent(name -> department_Spanish = name);
-                department = c_department;
-                databaseController.addInTranslation(c_department, department_Spanish);
-                title = title_choiceBox.getValue();
+                Optional<String> result = dialogDepartment.showAndWait();
+                result.ifPresent(name -> spDepartment = name);
+                department = cDepartment; // department to be added in the database later is current department
+                databaseController.addInTranslation(cDepartment, spDepartment);
             }
+            //department = databaseController.getSpanish(cDepartment);
+            ArrayList<String> english_titles = databaseController.getEnglishTitleList();
+            if (!(english_titles.contains(cTitle))){
+                // if current english title not in the list of available english titles
+                // pop up window should get the new title in spanish (since we don't know the
+                // translation)
+                //Get spanish translation of new title
+                TextInputDialog dialogTitle = new TextInputDialog("");
+                dialogTitle.setTitle("Add new Title");
+                dialogTitle.setHeaderText("You have entered an unknown title! Please provide Spanish translation.");
+                dialogTitle.setContentText("Title in Spanish:");
+                Optional<String> result = dialogTitle.showAndWait();
+                result.ifPresent(name -> spTitle = name);
+                title = cTitle;
+                databaseController.addInTranslation(cTitle, spTitle);
+            }
+            //title = databaseController.getSpanish(cTitle);
         } else if(c_language == 1) {
             // language is spanish
             ArrayList<String> spanish_departments = databaseController.getSpanishDepartmentList();
-            if (!(spanish_departments.contains(c_department))) {
-                //
-                UnknownDepartment = true;
+            if (!(spanish_departments.contains(cDepartment))) {
                 TextInputDialog dialog = new TextInputDialog("");
                 dialog.setTitle("Agrega un Nuevo Departamento");
                 dialog.setHeaderText("Has ingresado un departamento desconocido! Por favor agrega la versión en Inglés.");
-                dialog.setContentText("Departamento en Ingles:");
+                dialog.setContentText("Departamento en Inglés:");
                 // The Java 8 way to get the response value (with lambda expression).
                 // Traditional way to get the response value.
                 Optional<String> result = dialog.showAndWait();
-                result.ifPresent(name -> department_English = name);
-                databaseController.addInTranslation(department_English, c_department);
-                department = department_English;
-                title = databaseController.getEnglish(title_choiceBox.getValue());
+                result.ifPresent(name -> enDepartment = name);
+                department = enDepartment;
+                databaseController.addInTranslation(enDepartment, cDepartment);
             }
+            //department = databaseController.getEnglish(cDepartment);
+            ArrayList<String> spanish_titles = databaseController.getSpanishTitleList();
+            if (!(spanish_titles.contains(cTitle))){
+                // if current spanish title not in the list of available spanish titles
+                // pop up window should get the new title in english (since we don't know the
+                // translation)
+                //Get englsih translation of new title
+                TextInputDialog dialogTitle = new TextInputDialog("");
+                dialogTitle.setTitle("Agrega un Nuevo Título");
+                dialogTitle.setHeaderText("Has ingresado un título desconocido! Por favor agrega la versión en Inglés.");
+                dialogTitle.setContentText("Título en Inglés:");
+                Optional<String> result = dialogTitle.showAndWait();
+                result.ifPresent(name -> enTitle = name);
+                title = enTitle;
+                databaseController.addInTranslation(enTitle, cTitle);
+            }
+           title = databaseController.getEnglish(cTitle);
         }
 
         ResultSet rset;
         int id = 0, xpos = 0, ypos = 0, floor = 0;
 
-        room = room_TextField.getText();
         System.out.println("room: " + room);
-        //id = Integer.parseInt(id_TextField.getText());
-        firstName = Firstname_TextField.getText();
         System.out.println("First Name: " + firstName);
-        lastName = lastName_TextField.getText();
         System.out.println("Last Name: " + lastName);
         rset = databaseController.getPosForRoom(room);
         try{
@@ -234,32 +261,6 @@ public class mmNodeInformationController extends controllers.AbsController {
             }
         } catch (SQLException e){
             e.printStackTrace();
-        }
-
-        if (!UnknownDepartment) {
-            switch (c_language) {
-                case 0: // english
-                    title = title_choiceBox.getValue();
-                    department = department_TextField.getText();
-                    spTitle = databaseController.getSpanish(title);
-                    System.out.println("English Title: " + title);
-                    System.out.println("Spanish Title: " + spTitle);
-                    spDepartment = databaseController.getSpanish(department);
-                    System.out.println("English Department: " + department);
-                    System.out.println("Spanish Department: " + spDepartment);
-                    break;
-                case 1:
-                    spTitle = title_choiceBox.getValue();
-                    spDepartment = department_TextField.getText();
-                    title = databaseController.getEnglish(spTitle);
-                    System.out.println("English Title: " + title);
-                    System.out.println("Spanish Title: " + spTitle);
-                    department = databaseController.getEnglish(spDepartment);
-                    System.out.println("English Department: " + department);
-                    System.out.println("Spanish Department: " + spDepartment);
-
-                    break;
-            }
         }
 
         switch (c_mode) {
@@ -280,7 +281,6 @@ public class mmNodeInformationController extends controllers.AbsController {
                 }
                 System.out.println("Adding professional mode ------------");
                 cleaningTextFields(c_mode);
-
                 break;
             case 1: // removing
                 System.out.println("Removing professional mode");
@@ -437,30 +437,14 @@ public class mmNodeInformationController extends controllers.AbsController {
                     Title = Table_TableView.getSelectionModel().getSelectedItem().getrTitle();
                     Department = Table_TableView.getSelectionModel().getSelectedItem().getrType();
                     Room = Table_TableView.getSelectionModel().getSelectedItem().getrRoom();
-
-                    if(c_language == 0) {
-                        if (Title.equals("Doctor")) {
-                            c_title = 0;
-                        } else if (Title.equals("Nurse")) {
-                            c_title = 1;
-                        }
-                    } else if(c_language == 1){
-                        if(Title.equals("Doctor/a")){
-                            c_title = 0;
-                        }else if(Title.equals("Enfermero/a")){
-                            c_title = 1;
-                        }
-                    }
-                    
-                    title_choiceBox.getSelectionModel().select(c_title);
                     department_TextField.setText(Department);
                     room_TextField.setText(Room);
                     //
+                    title_TextField.setText(Title);
 
                     id_TextField.setText(Integer.toString(ID));
                     Firstname_TextField.setText(First_N);
                     lastName_TextField.setText(Last_N);
-
 
                 }
             }
@@ -526,35 +510,6 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     }
 
-
-    //set the title choices for the user
-    public void setTitleChoices() {
-
-        ArrayList<String> professionalTitles = new ArrayList<>();
-        if (c_language == 0) {
-            // language is english
-            professionalTitles = databaseController.getEnglishProfessionalTitleList();
-        } else {
-            professionalTitles = databaseController.getSpanishProfessionalTitleList();
-        }
-
-        title_choiceBox.getItems().addAll(professionalTitles);
-        title_choiceBox.getSelectionModel().selectedIndexProperty()
-                .addListener(new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                        // Do validation
-                        System.out.println(newValue);
-                        if (newValue.intValue() == 0) {
-                            //System.out.println("Hello world");
-                            //create_Button();
-                        } else if (newValue.intValue() == 1) {
-                            //admin_FloorPane.getChildren().remove(btK);
-                        }
-                    }
-                });
-    }
-
     //The add settings for the user to add a Doctor/nurse
     public void add_settings() {
         c_mode = 0;
@@ -562,7 +517,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         error_LabelText.setText("");
 
         //Starts the choices for the user
-        title_choiceBox.getSelectionModel().select(0);
+        title_TextField.setText("");
         department_TextField.setText("");
         id_TextField.setText("");
         Firstname_TextField.setText("");
@@ -571,7 +526,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         Firstname_TextField.setPromptText("First");
         lastName_TextField.setPromptText("Last");
         //Sets the properties
-        title_choiceBox.setDisable(false);
+        title_TextField.setDisable(false);
         department_TextField.setDisable(false);
         room_TextField.setDisable(false);
         id_TextField.setEditable(false);
@@ -585,7 +540,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         System.out.println("remove settings");
         error_LabelText.setText("");
         //sets the properties
-        title_choiceBox.setDisable(true);
+        title_TextField.setDisable(true);
         department_TextField.setDisable(true);
         room_TextField.setDisable(true);
         id_TextField.setEditable(false);
@@ -601,7 +556,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         error_LabelText.setText("");
 
         //sets the properties
-        title_choiceBox.setDisable(false);
+        title_TextField.setDisable(false);
         department_TextField.setDisable(false);
         room_TextField.setDisable(false);
         id_TextField.setEditable(false);
@@ -631,22 +586,26 @@ public class mmNodeInformationController extends controllers.AbsController {
 
         ArrayList<String> rooms = new ArrayList<>();
         ArrayList<String> departments = new ArrayList<>();
+        ArrayList<String> titles = new ArrayList<>();
 
         rooms = databaseController.getRoomList();
 
         if (c_language == 0) {
             System.out.println("showing suggestions in english");
             departments = databaseController.getEnglishDepartmentList();
+            titles = databaseController.getEnglishTitleList();
         } else {
             System.out.println("showing suggestions in spanish");
             departments = databaseController.getSpanishDepartmentList();
+            titles = databaseController.getSpanishTitleList();
         }
-
 
         // rooms not affected by language
         TextFields.bindAutoCompletion(room_TextField,rooms);
 
         TextFields.bindAutoCompletion(department_TextField, departments);
+
+        TextFields.bindAutoCompletion(title_TextField, titles);
     }
 
     //Cleans the text fields
@@ -657,7 +616,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         lastName_TextField.setText("");
 
         if (mode == 1){
-            title_choiceBox.getSelectionModel().select(0);
+            title_TextField.setText("");
             id_TextField.setText("");
         }
     }
@@ -676,7 +635,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         cancel_Button.setText("Clear");
 
         //Labels
-        title_Label.setText("Dircetory Management");
+        title_Label.setText("Directory Management");
         subTitle_Label.setText("Manage Directory");
         Mode_Label.setText("Mode:");
         docTitle_Label.setText("Title:");
@@ -746,7 +705,4 @@ public class mmNodeInformationController extends controllers.AbsController {
     }
 
 }
-
-
-
 
