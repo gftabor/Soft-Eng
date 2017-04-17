@@ -168,7 +168,7 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     }
 
-    //Handle the submiut button clicked
+    //Handle the submit button clicked
     public void submitButton_Clicked(){
 
         String c_department = department_TextField.getText();
@@ -181,6 +181,7 @@ public class mmNodeInformationController extends controllers.AbsController {
             ArrayList<String> english_departments = databaseController.getEnglishDepartmentList();
             if (!(english_departments.contains(c_department))) {
                 UnknownDepartment = true;
+
                 //Get spanish translation of unknown department
                 TextInputDialog dialog = new TextInputDialog("");
                 dialog.setTitle("Add New Department");
@@ -198,6 +199,7 @@ public class mmNodeInformationController extends controllers.AbsController {
             // language is spanish
             ArrayList<String> spanish_departments = databaseController.getSpanishDepartmentList();
             if (!(spanish_departments.contains(c_department))) {
+
                 //
                 UnknownDepartment = true;
                 TextInputDialog dialog = new TextInputDialog("");
