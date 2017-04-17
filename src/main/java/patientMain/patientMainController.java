@@ -61,8 +61,6 @@ public class patientMainController extends controllers.AbsController{
     @FXML
     private Label c_Floor_Label;
 
-    @FXML
-    private Label language_Label;
 
     @FXML
     private ChoiceBox<String> language_ChoiceBox;
@@ -74,12 +72,16 @@ public class patientMainController extends controllers.AbsController{
 
     int first_Time = 0;
 
+    boolean second = false;
+
     @FXML
     public void initialize(){
         //setLanguageChoices(c_language);
         setFloorChoices();
         setStartEndChoices();
         setLanguage_ChoiceBox();
+        setFilterChoices();
+        second = true;
 
     }
 
@@ -173,18 +175,29 @@ public class patientMainController extends controllers.AbsController{
         //Makes sure you only set the choices once
         //sets the choices and sets the current language as the top choice
         if(c_language == 0) {
-            filter_ChoiceBox.getSelectionModel().clearSelection();
-            filter_ChoiceBox.getItems().clear();
-            filter_ChoiceBox.getItems().addAll("All", "Employees", "Services", "Frequently Searched", "Miscellaneous");
-            filter_ChoiceBox.getSelectionModel().select(0);
+            if(second) {
+                filter_ChoiceBox.getItems().remove(0,5);
+                filter_ChoiceBox.getItems().addAll("All", "Employees", "Services", "Frequently Searched", "Miscellaneous");
+                filter_ChoiceBox.getSelectionModel().select(0);
+            }else{
+                filter_ChoiceBox.getItems().addAll("All", "Employees", "Services", "Frequently Searched", "Miscellaneous");
+                filter_ChoiceBox.getSelectionModel().select(0);
+            }
         }else if(c_language == 1){
-            filter_ChoiceBox.getSelectionModel().clearSelection();
-            filter_ChoiceBox.getItems().clear();
-            filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios", "Buscados Frequentemente", "Varios");
-            filter_ChoiceBox.getSelectionModel().select(0);
+            if(second) {
+                filter_ChoiceBox.getItems().remove(0,5);
+                filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios", "Buscados Frequentemente", "Varios");
+                filter_ChoiceBox.getSelectionModel().select(0);
+            }else{
+                filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios", "Buscados Frequentemente", "Varios");
+                filter_ChoiceBox.getSelectionModel().select(0);
+            }
 
         }
 
+        //filter_ChoiceBox.getItems().removeAll();
+        //filter_ChoiceBox.getItems().remove(filter_ChoiceBox);
+        //filter_ChoiceBox.setValue("X");
         //Checks if the user has decided to change languages
         filter_ChoiceBox.getSelectionModel().selectedIndexProperty()
                 .addListener(new ChangeListener<Number>() {
@@ -332,7 +345,6 @@ public class patientMainController extends controllers.AbsController{
         //Change the labels
         start_Label.setText("Start");
         end_Label.setText("End");
-        language_Label.setText("Language");
         mainTitle_Label.setText("Welcome to Brigham and Women's Faulkner Hospital");
         floor_Label.setText("Floor");
 
@@ -360,7 +372,6 @@ public class patientMainController extends controllers.AbsController{
         //change the Labels
         start_Label.setText("Inicio");
         end_Label.setText("Destino");
-        language_Label.setText("Idioma");
         mainTitle_Label.setText("Bienvenidos al Hospital Faulkner Brigham and Women");
         floor_Label.setText("Piso");
 
