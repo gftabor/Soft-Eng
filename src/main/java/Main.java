@@ -12,14 +12,16 @@ public class Main extends Application {
 
     CollectionOfNodes collectionOfNodes;
 
-
-
-
     @Override
 
     public void start(Stage primaryStage) throws Exception {
+
+        DatabaseController databaseController = DatabaseController.getInstance();
+        databaseController.setDbName("./FaulknerDB");
+        databaseController.startDB();
+
         //Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("/views/patientMenuStartView.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("/views/patientMenuStartView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/views/patientMainView.fxml"));
 
         primaryStage.setTitle("Iteration 2 Expanded Application");
         //primaryStage.setFullScreen(true);
@@ -30,13 +32,7 @@ public class Main extends Application {
         primaryStage.show();
         FlatterFX.style();
 
-
-        DatabaseController databaseController = DatabaseController.getInstance();
-        databaseController.setDbName("./FaulknerDB");
-        databaseController.startDB();
-
         root.getStylesheets().add("/css/styles.css");
-
     }
 
     public static void main(String[] args) throws SQLException{
