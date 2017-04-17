@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.sql.SQLException;
+import com.guigarage.flatterfx.FlatterFX;
 
 public class Main extends Application {
 
@@ -24,13 +25,17 @@ public class Main extends Application {
         //primaryStage.setFullScreen(true);
         //primaryStage.setMaximized(true);
         primaryStage.setScene(new Scene(root, 1274, 710));
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
+
         primaryStage.show();
+        FlatterFX.style();
 
 
         DatabaseController databaseController = DatabaseController.getInstance();
         databaseController.setDbName("./FaulknerDB");
         databaseController.startDB();
+
+        root.getStylesheets().add("/css/styles.css");
 
     }
 
