@@ -413,14 +413,15 @@ public class pathFindingMenuController extends controllers.mapScene{
     public void continueButton_Clicked() {
 
         if (continue_Button.isVisible() == true) {
+            System.out.println("continue button clicked");
             System.out.println("going up:" );
             System.out.println(mapController.goingUp());
             if (mapController.goingUp()) {
 
-                System.out.println("going up loop");
-
                 //loop until you hit the top of the hospital
                 while (currentFloor != 8) {
+                    System.out.println("going up loop");
+
                     //increment floor
                     currentFloor ++;
 
@@ -428,14 +429,7 @@ public class pathFindingMenuController extends controllers.mapScene{
                     if (globalFragList[currentFloor] == null || globalFragList[currentFloor].isEmpty()) {
                         continue;
                     }
-                    System.out.println(currentFloor + "   " + globalFragList[currentFloor].size());
-
-                    //otherwise, change to the appropriate screen and display edges
-                    graph.wipeEdgeLines();
-                    floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
-//                currentFloor_Label.setText(Integer.toString(currentFloor));
-//                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
-                    graph.createEdgeLines(globalFragList[currentFloor]);
+                    multifloorUpdate();
 
                     break;
 
@@ -451,14 +445,7 @@ public class pathFindingMenuController extends controllers.mapScene{
                     if (globalFragList[currentFloor] == null || globalFragList[currentFloor].isEmpty()) {
                         continue;
                     }
-                    System.out.println(currentFloor + "   " + globalFragList[currentFloor].size());
-
-                    //otherwise, change to the appropriate screen and display edges
-                    graph.wipeEdgeLines();
-                    floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
-//                currentFloor_Label.setText(Integer.toString(currentFloor));
-//                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
-                    graph.createEdgeLines(globalFragList[currentFloor]);
+                    multifloorUpdate();
 
                     break;
                 }
@@ -469,6 +456,69 @@ public class pathFindingMenuController extends controllers.mapScene{
             int destFloor = mapController.returnDestFloor();
             if (currentFloor == destFloor) {
                 continue_Button.setVisible(false);
+            }
+        }
+    }
+
+    //abstracted floor refresh for multifloor pathfinding
+    public void multifloorUpdate() {
+        System.out.println(currentFloor + "   " + globalFragList[currentFloor].size());
+
+        //otherwise, change to the appropriate screen and display edges
+        graph.wipeEdgeLines();
+        floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
+        graph.createEdgeLines(globalFragList[currentFloor]);
+    }
+
+    public void previousButton_Clicked() {
+
+        //todo: fix continue button check later
+        if (continue_Button.isVisible() == true) {
+            System.out.println(".previous. button clicked");
+            System.out.println("going up:" );
+            System.out.println(mapController.goingUp());
+            if (mapController.goingUp()) {
+
+                //loop until you hit the top of the hospital
+                while (currentFloor != 0) {
+                    System.out.println("Prev: going down loop");
+
+                    //increment floor
+                    currentFloor --;
+
+                    //if there are no edges of interest, do not display them
+                    if (globalFragList[currentFloor] == null || globalFragList[currentFloor].isEmpty()) {
+                        continue;
+                    }
+                    multifloorUpdate();
+
+                    break;
+
+                }
+            } else {
+                //loop until you hit the bottom of the hospital
+                while (currentFloor != 8) {
+
+                    System.out.println("Prev: going up loop");
+                    //decrement floor
+                    currentFloor ++;
+
+                    //if there are no edges of interest, do not display them
+                    if (globalFragList[currentFloor] == null || globalFragList[currentFloor].isEmpty()) {
+                        continue;
+                    }
+                    multifloorUpdate();
+
+                    break;
+                }
+
+            }
+
+            //disable the continue button if you reach the end
+            int startFloor = mapController.returnOriginalFloor();
+            if (currentFloor == startFloor) {
+                //todo fix later - set to prev button
+//                continue_Button.setVisible(false);
             }
         }
     }

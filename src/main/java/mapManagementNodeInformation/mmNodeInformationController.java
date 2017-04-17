@@ -670,7 +670,6 @@ public class mmNodeInformationController extends controllers.AbsController {
         submit_Button.setText("Listo");
         cancel_Button.setText("Borrar");
 
-
         //Labels
         title_Label.setText("Directorio");
         subTitle_Label.setText("Control de Directorio");
@@ -680,7 +679,6 @@ public class mmNodeInformationController extends controllers.AbsController {
         room_Label.setText("Habitación:");
         firstName_Label.setText("Nombre");
         lastName_Label.setText("Apellido");
-
 
         //text fields
         search_textField.setPromptText("busca");
