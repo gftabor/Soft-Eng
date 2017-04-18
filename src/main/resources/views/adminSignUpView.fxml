@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adminSignUp.adminSignUpController">
+   <children>
+      <BorderPane layoutX="421.0" layoutY="160.0" prefHeight="391.0" prefWidth="433.0" AnchorPane.leftAnchor="421.0" AnchorPane.topAnchor="160.0">
+         <center>
+            <VBox alignment="CENTER" maxWidth="500.0" prefHeight="324.0" prefWidth="337.0" style="-fx-background-color: #955e83; -fx-background-radius: 5;" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="adminTitle_Label" text="Admin Sign Up" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="55.0" prefWidth="423.0">
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="invalidLogInputs" styleClass="small">
+                           <HBox.margin>
+                              <Insets top="20.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <TextField fx:id="username_TextField" promptText="username">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <PasswordField fx:id="password_PasswordField" promptText="password">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </PasswordField>
+                  <Button fx:id="addNAdmin_Button" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" text="Add New Admin">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="MainMenu_Button" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" text="Main Menu" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

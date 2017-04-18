@@ -46,6 +46,9 @@ public class adminMenuStartController extends controllers.AbsController{
     @FXML
     private ChoiceBox<String> languages_ChoiceBox;
 
+    @FXML
+    private Button addAdmin_Button;
+
     //Set to english by default
     int c_language = 0;
 
@@ -68,6 +71,22 @@ public class adminMenuStartController extends controllers.AbsController{
 
     }
 
+    public void addAdmin(){
+        //Change to patient menu
+        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/adminSignUpView.fxml");
+        patientMenuStart.patientMenuStartController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+
+
+    }
     public void emergencyButton_Clicked(){
         System.out.println("The user has clicked the emergency button");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
