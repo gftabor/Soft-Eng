@@ -11,7 +11,10 @@ import java.util.Collections;
 public class AStar extends Search {
 
     private ArrayList<Node> frontier = new ArrayList<Node>();
+    public String toString(){
 
+        return "A *";
+    }
     public void addNode(Node newNode){
         if(!frontier.contains(newNode) && newNode.getEnabled()) {
             frontier.add(newNode);

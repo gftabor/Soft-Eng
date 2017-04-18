@@ -31,6 +31,14 @@ public class Pathfinder {
        return Math.sqrt(squareX + squareY) + 1000* Math.abs(currentNode.getFloor() - goalNode.getFloor());
 
     }
+    public void algorithmSwitch(int choice){
+        switch(choice){
+            case 0: algorithm = new AStar(); break;
+            case 1: algorithm = new Breadth(); break;
+            case 2: algorithm = new Depth(); break;
+            default: algorithm = new AStar(); break;
+        }
+    }
 
     //if process node is end node return true, otherwise process and return false
     private boolean processNode(Node currentNode, Node goalNode){
@@ -97,12 +105,12 @@ public class Pathfinder {
             }
             tries ++;
         }
-        System.out.println("had to search  " + tries);
         Node viewingNode = endNode;
         while(!viewingNode.equals(startNode) && finished){
             path.add(viewingNode.getParentEdge());
             viewingNode = viewingNode.getParentEdge().getNeighbor(viewingNode);
         }
+        System.out.println(algorithm + " had to search  " + tries +  " and path contains " + path.size() + " edges");
 
         if (finished)
             return endNode.getTotalCost();

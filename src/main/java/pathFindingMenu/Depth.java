@@ -10,7 +10,10 @@ import java.util.LinkedList;
 public class Depth extends Search{
 
     private LinkedList<Node> frontier = new LinkedList<Node>();
+    public String toString(){
 
+        return "Depth";
+    }
 
     //append to end of list
     public void addNode(Node newNode){

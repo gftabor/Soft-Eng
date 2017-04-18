@@ -18,6 +18,10 @@ public class Breadth extends Search{
             frontier.add(newNode);
         }
     }
+    public String toString(){
+
+        return "Breadth";
+    }
     //get beginning of list
     public Node getNode() {
         if(frontier.size() > 0) {
