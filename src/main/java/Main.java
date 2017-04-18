@@ -6,13 +6,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.sql.SQLException;
+import com.guigarage.flatterfx.FlatterFX;
 
 public class Main extends Application {
 
     CollectionOfNodes collectionOfNodes;
-
-
-
 
     @Override
 
@@ -29,10 +27,12 @@ public class Main extends Application {
         //primaryStage.setFullScreen(true);
         //primaryStage.setMaximized(true);
         primaryStage.setScene(new Scene(root, 1274, 710));
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
+
         primaryStage.show();
+        FlatterFX.style();
 
-
+        root.getStylesheets().add("/css/styles.css");
     }
 
     public static void main(String[] args) throws SQLException{
