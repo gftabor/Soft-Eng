@@ -40,11 +40,14 @@
                               <Insets />
                            </HBox.margin>
                         </ChoiceBox>
-                        <Region prefHeight="76.0" prefWidth="384.0" />
-                        <Button fx:id="directory_Button" mnemonicParsing="false" onMouseClicked="#directoryClicked" prefHeight="58.0" prefWidth="158.0" text="Directory Search">
+                        <Region prefHeight="76.0" prefWidth="301.0" />
+                        <Button fx:id="directory_Button" mnemonicParsing="false" onMouseClicked="#directoryClicked" prefHeight="57.0" prefWidth="218.0" text="Directory Search">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
+                           <font>
+                              <Font size="20.0" />
+                           </font>
                         </Button>
                         <Button fx:id="about_Button" mnemonicParsing="false" onMouseClicked="#aboutButton_clicked" prefHeight="57.0" prefWidth="170.0" text="About">
                            <HBox.margin>
