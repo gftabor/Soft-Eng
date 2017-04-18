@@ -90,6 +90,7 @@ public class adminMenuStartController extends controllers.AbsController{
         }
 
         controller.setUpTreeView();
+        controller.setModeChoices();
 
 
     }

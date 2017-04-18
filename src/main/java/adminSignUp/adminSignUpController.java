@@ -2,6 +2,8 @@ package adminSignUp;
 import DBController.DatabaseController;
 import adminSignUp.adminTable;
 import hospitalDirectorySearch.Table;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -110,6 +112,7 @@ public class adminSignUpController extends controllers.AbsController{
     private Button submit_Button;
 
     int c_language = 0; //English by default
+    int c_mode = 0; //
 
     DatabaseController databaseController = DatabaseController.getInstance();
 
@@ -124,8 +127,64 @@ public class adminSignUpController extends controllers.AbsController{
     //Deal with the submit button clicked
     public void submitButton_Clicked(){
 
+
     }
 
+
+    //Sets the choices for the mode Add, edit remove
+    public void setModeChoices() {
+        if(c_language == 0) {
+            mode_ChoiceBox.getItems().addAll("Add", "Remove", "Edit");
+        }else{
+            mode_ChoiceBox.getItems().addAll("Agregar", "Borrar", "Editar");
+        }
+        mode_ChoiceBox.getSelectionModel().selectedIndexProperty()
+                .addListener(new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                        // Do validation
+                        System.out.println(newValue);
+
+                        //Sets the mode to Add
+                        if (newValue.intValue() == 0) {
+                            add_settings();
+                            //id_TextField.setText("");
+
+                            //Sets the mode to remove
+                        } else if (newValue.intValue() == 1) {
+                            remove_settings();
+
+                            //Sets the mode to edit
+                        } else if (newValue.intValue() == 2) {
+                            edit_settings();
+
+                        }
+                    }
+                });
+
+    }
+
+    //The add settings for the user to add a Doctor/nurse
+    public void add_settings() {
+        c_mode = 0;
+
+    }
+
+    //The remove settings for the user to remove a Doctor/nurse
+    public void remove_settings() {
+        c_mode = 1;
+
+    }
+
+    //The remove settings for the user to remove a Doctor/nurse
+    public void edit_settings() {
+        c_mode = 2;
+
+
+        //sets the properties
+
+
+    }
 
 
     //Sends the admin back to the main menu
