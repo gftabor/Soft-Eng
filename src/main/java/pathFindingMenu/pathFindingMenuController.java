@@ -197,8 +197,13 @@ public class pathFindingMenuController extends controllers.mapScene{
             } else {
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
                 ArrayList<Edge> path = mapController.requestPath();
-                graph.createEdgeLines(path, true);
-                textDescription_TextFArea.setText(mapController.getTextDirections(path));
+                if (path == null) { //can't find path, reset
+                    System.out.println("Could not pathfind. Resetting now...");
+                    cancelButton_Clicked();
+                } else {
+                    graph.createEdgeLines(path, true);
+                    textDescription_TextFArea.setText(mapController.getTextDirections(path));
+                }
 
             }
 
@@ -241,47 +246,52 @@ public class pathFindingMenuController extends controllers.mapScene{
         //reset for next pathfinding session
         MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
         ArrayList<Edge> reqPath = mapController.requestPath();
-        textDescription_TextFArea.setText(mapController.getTextDirections(reqPath));
-
-        System.out.println("=====================");
-        ArrayList<ArrayList<Edge>> fragPath;
-        fragPath = mapController.requestFragmentedPath(reqPath, mapController.returnOriginalFloor(), mapController.returnDestFloor());
-
-        System.out.println("frag path info:");
-        System.out.println("---");
-        System.out.println("size: " + fragPath.size());
-        System.out.println("---");
-        for (int i = 0; i < fragPath.size(); i++) {
-            System.out.println(fragPath.get(i).size());
-        }
-        System.out.println("-----");
-        System.out.println("=====================");
-
-        System.out.println("printing the fragmented path for (startfloor) floor = " + Integer.toString(startfloor));
-        //loop and display the edges per floor - use the startfloor
-
-
-        if (fragPath.get(0).size() == 0) {
-            //only occurs if the first transition is a null
-            //instead just highlight the first thing
-
-            //todo -> highlight
-
+        if (reqPath == null) { //can't find path, reset
+            System.out.println("Could not pathfind. Resetting now...");
+            cancelButton_Clicked();
         } else {
-            graph.createEdgeLines(fragPath.get(0), true);
-        }
+            textDescription_TextFArea.setText(mapController.getTextDirections(reqPath));
 
-        //set the globals so you can send to the continue button
-        globalFragList = fragPath;
-        globalFloorSequence = mapController.getFloorSequence();
+            System.out.println("=====================");
+            ArrayList<ArrayList<Edge>> fragPath;
+            fragPath = mapController.requestFragmentedPath(reqPath, mapController.returnOriginalFloor(), mapController.returnDestFloor());
 
-        //print floor sequence (testing)
-        System.out.println("_____");
-        System.out.println("floor sequence: ");
-        for (int i = 0; i < globalFloorSequence.size(); i++) {
-            System.out.println(globalFloorSequence.get(i));
+            System.out.println("frag path info:");
+            System.out.println("---");
+            System.out.println("size: " + fragPath.size());
+            System.out.println("---");
+            for (int i = 0; i < fragPath.size(); i++) {
+                System.out.println(fragPath.get(i).size());
+            }
+            System.out.println("-----");
+            System.out.println("=====================");
+
+            System.out.println("printing the fragmented path for (startfloor) floor = " + Integer.toString(startfloor));
+            //loop and display the edges per floor - use the startfloor
+
+
+            if (fragPath.get(0).size() == 0) {
+                //only occurs if the first transition is a null
+                //instead just highlight the first thing
+
+                //todo -> highlight
+
+            } else {
+                graph.createEdgeLines(fragPath.get(0), true);
+            }
+
+            //set the globals so you can send to the continue button
+            globalFragList = fragPath;
+            globalFloorSequence = mapController.getFloorSequence();
+
+            //print floor sequence (testing)
+            System.out.println("_____");
+            System.out.println("floor sequence: ");
+            for (int i = 0; i < globalFloorSequence.size(); i++) {
+                System.out.println(globalFloorSequence.get(i));
+            }
+            System.out.println("_____");
         }
-        System.out.println("_____");
 
 
     }

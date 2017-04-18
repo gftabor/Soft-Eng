@@ -287,11 +287,13 @@ public class MapController {
     public String getTextDirections(ArrayList<Edge> path) {
         String destination;
         ArrayList<String> directions = new ArrayList<>();
-        if(path.isEmpty())
+        if(path.isEmpty()) {
             return null;
+        }
+
         for(int i = path.size()-1; i > 0; i--) {
             double angle = getAngle(path.get(i), path.get(i-1));
-            
+
             if(path.get(i).getStartNode().getFloor() != path.get(i).getEndNode().getFloor() ||
                     path.get(i-1).getStartNode().getFloor() != path.get(i-1).getEndNode().getFloor()) {
                 directions.add("Change Floors ");
