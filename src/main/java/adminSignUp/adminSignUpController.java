@@ -1,12 +1,11 @@
 package adminSignUp;
+import DBController.DatabaseController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import controllers.AbsController;
 
 /**
  * Created by AugustoR on 4/17/17.
@@ -16,27 +15,39 @@ public class adminSignUpController extends controllers.AbsController{
     private AnchorPane backgroundAnchorPane;
 
     @FXML
-    private Label adminTitle_Label;
-
-    @FXML
     private Label currentAdmin_Label;
 
     @FXML
-    private Label invalidLogInputs;
+    private Label queryStatus;
 
     @FXML
-    private TextField username_TextField;
+    private Button addAdminButton;
 
     @FXML
-    private PasswordField password_PasswordField;
+    private Button updateAdminButton;
 
     @FXML
-    private Button addNAdmin_Button;
+    private Button deleteAdminButton;
+
+    @FXML
+    private TextField userName_TextField;
+
+    @FXML
+    private TextField firstName_TextField;
+
+    @FXML
+    private TextField lastName_TextField;
+
+    @FXML
+    private TextField newPassword_TextField;
+
 
     @FXML
     private Button MainMenu_Button;
 
     int c_language = 0; //English by default
+
+    DatabaseController databaseController = DatabaseController.getInstance();
 
 
     //Sends the admin back to the main menu
@@ -66,17 +77,63 @@ public class adminSignUpController extends controllers.AbsController{
 
     //adds the admin into the database
     public void addAdminButton_Clicked(){
-
+        try {
+            if (databaseController.newAdmin(firstName_TextField.getText(), lastName_TextField.getText(),
+                    userName_TextField.getText(), newPassword_TextField.getText())) {
+                queryStatus.setText("Admin Added");
+            } else {
+                queryStatus.setText("Error Adding Admin");
+            }
+        }
+        catch(Exception e){
+            queryStatus.setText("ERROR: Exception");
+            e.printStackTrace();
+        }
     }
 
+    //edits admin
+    //FIXME: GET THE ID FROM THE CHART SELECTION
+
+
+    public void editAdminButton_Clicked(){
+        try {
+            if (databaseController.editAdmin(999, firstName_TextField.getText(), lastName_TextField.getText(),
+                    userName_TextField.getText(), newPassword_TextField.getText())) {
+                queryStatus.setText("Admin Edited");
+            } else {
+                queryStatus.setText("Error Edit Admin");
+            }
+        }
+        catch(Exception e){
+            queryStatus.setText("ERROR: Exception");
+            e.printStackTrace();
+        }
+    }
+
+    //deletes admin from database
+    //FIXME: GET THE ID FROM THE CHART SELECTION
+    public void deleteAdminButton_Clicked(){
+        try {
+            if (databaseController.deleteAdmin(999)){
+                queryStatus.setText("Admin Deleted");
+            } else {
+                queryStatus.setText("Error Deleting Admin");
+            }
+        }
+        catch(Exception e){
+            queryStatus.setText("ERROR: Exception");
+            e.printStackTrace();
+
+         }
+    }
+
+
+    /*
     //Sets the english labels
     public void englishButtons_Labels(){
         //Buttons
         addNAdmin_Button.setText("Add Administrator");
         MainMenu_Button.setText("Main Menu");
-
-        //Labels
-        adminTitle_Label.setText("Admin Sign Up By:");
 
 
         //TextField
@@ -91,15 +148,13 @@ public class adminSignUpController extends controllers.AbsController{
         addNAdmin_Button.setText("Agregar Administrador");
         MainMenu_Button.setText("Menu Principal");
 
-        //Labels
-        adminTitle_Label.setText("Registrando Administrador");
-
 
         //TextField
         username_TextField.setPromptText("usuario");
         password_PasswordField.setPromptText("contrasena");
 
     }
+    */
 
     //sets the current language given information form other screens
     public void setCurrentLanguage(int i){
