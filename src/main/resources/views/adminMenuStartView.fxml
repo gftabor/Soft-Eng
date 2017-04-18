@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adminMenuStart.adminMenuStartController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adminMenuStart.adminMenuStartController">
    <children>
       <BorderPane layoutX="104.0" layoutY="104.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -39,12 +40,15 @@
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="addAdmin_Button" mnemonicParsing="false" onMouseClicked="#addAdmin" prefHeight="40.0" prefWidth="120.0" text="Add">
+                        <Button fx:id="addAdmin_Button" layoutX="966.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#signOutButton_Clicked" prefHeight="58.0" prefWidth="152.0" text="Add Admin">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
                            <HBox.margin>
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="SignOut_Button" mnemonicParsing="false" onMouseClicked="#signOutButton_Clicked" prefHeight="40.0" prefWidth="120.0" text="Sign Out">
+                        <Button fx:id="SignOut_Button" mnemonicParsing="false" onMouseClicked="#signOutButton_Clicked" prefHeight="58.0" prefWidth="121.0" text="Sign Out">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -150,4 +154,8 @@
          </bottom>
       </BorderPane>
    </children>
+   <stylesheets>
+      <URL value="@../css/flatterfx_test.css" />
+      <URL value="@../css/styles.css" />
+   </stylesheets>
 </AnchorPane>
