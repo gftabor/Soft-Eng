@@ -210,27 +210,6 @@
                </padding>
             </VBox>
          </left>
-         <bottom>
-            <HBox alignment="CENTER" prefHeight="47.0" prefWidth="1274.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Region prefHeight="37.0" prefWidth="343.0" />
-                  <Button fx:id="continue_Button" mnemonicParsing="false" onMouseClicked="#continueButton_Clicked" text="Continue">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Button>
-                  <Region prefHeight="37.0" prefWidth="408.0" />
-                  <Label text="©2017 Computer Science 3733 Team E" textAlignment="CENTER">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-         </bottom>
          <center>
             <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="539.0" prefWidth="932.0" BorderPane.alignment="CENTER">
                <children>
@@ -283,6 +262,19 @@
                </children>
             </VBox>
          </center>
+         <bottom>
+            <VBox prefHeight="28.0" prefWidth="1274.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label text="©2017 Computer Science 3733 Team E" />
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </bottom>
       </BorderPane>
    </children>
    <stylesheets>
