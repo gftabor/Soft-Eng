@@ -303,7 +303,8 @@ public class patientMainController extends controllers.mapScene {
 
     //Sets the map of the desired floor
     public void setFloorChoices(){
-        floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7");
+        floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Outside",
+                "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4");
         floor_ChoiceBox.getSelectionModel().select(0);
         map_viewer.setImage(new Image("/images/cleaned1.png"));
         floor_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
@@ -314,6 +315,16 @@ public class patientMainController extends controllers.mapScene {
                 //CODE HERE!!!!!!!
 
                 currentFloor = newValue.intValue() + 1;
+
+                if (currentFloor == 8) {
+                    //outside
+                    currentFloor = 0;
+
+                } else if (currentFloor > 8) {
+                    //belkin
+                    currentFloor = currentFloor + 2;
+
+                }
 
                 mapImage newMapImage = new proxyMap(currentFloor);
                 newMapImage.display(map_viewer);
