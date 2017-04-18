@@ -99,6 +99,9 @@ public class patientMainController extends controllers.mapScene {
     @FXML
     private Label phoneStatus;
 
+    @FXML
+    private Button directory_Button;
+
     int c_language = 0;
 
     int first_Time = 0;
@@ -601,6 +604,11 @@ public class patientMainController extends controllers.mapScene {
         } catch (URISyntaxException e){
             e.getReason();
         }
+    }
+
+    @FXML
+    void directoryClicked() {
+
     }
 
 }
