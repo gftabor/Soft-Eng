@@ -6,13 +6,16 @@
     -actually-red: #E53A40;
 }
 
-.emergency{
-    -fx-background-color: -actually-red;
-}
+
 .toggle-button:hover, .button:hover{
     -fx-background-color: derive(-flatter-red, 80%);
 }
-
+.emergency{
+    -fx-background-color: -actually-red;
+}
+.emergency:hover{
+    -fx-background-color: derive(-actually-red, 80%);
+}
 .cancel{
     -fx-background-color: -actually-red;
 }
