@@ -209,6 +209,7 @@ public class patientMainController extends controllers.mapScene {
 
     //previoys Button clicked
     public void previousButton_Clicked(){
+        System.out.println("prev button clicked");
 
     }
 
