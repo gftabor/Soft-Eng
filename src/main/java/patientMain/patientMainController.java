@@ -94,9 +94,6 @@ public class patientMainController extends controllers.mapScene {
     private ImageView map_viewer;
 
     @FXML
-    private Button continue_Button;
-
-    @FXML
     private Label phoneStatus;
 
     @FXML
@@ -162,7 +159,7 @@ public class patientMainController extends controllers.mapScene {
 
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
         //set continue button invisible when not needed
-//        continue_Button.setVisible(false);
+        continueNew_Button.setVisible(false);
 
         //draw edges
         //graph.drawFloorEdges(currentFloor);
@@ -173,7 +170,7 @@ public class patientMainController extends controllers.mapScene {
 
     //Continue New Button Clicked
     public void continueNewButton_Clicked(){
-        if (continue_Button.isVisible() == true) {
+        if (continueNew_Button.isVisible() == true) {
             System.out.println("continue button clicked");
 
             //increment b/c continue button
@@ -189,7 +186,7 @@ public class patientMainController extends controllers.mapScene {
             //disable the continue button if you reach the end
             //also update the color
             if (fragPathPos == globalFragList.size() - 1) {
-                continue_Button.setVisible(false);
+                continueNew_Button.setVisible(false);
 
                 //set the end goal color
                 ArrayList<Circle> circleList;
@@ -434,7 +431,7 @@ public class patientMainController extends controllers.mapScene {
         fragPathPos = 0;
 
         //set continue button visible
-        continue_Button.setVisible(true);
+        continueNew_Button.setVisible(true);
 
         //switch floors to original floor's pathfinding view
         int startfloor = mapController.returnOriginalFloor();
@@ -540,7 +537,7 @@ public class patientMainController extends controllers.mapScene {
         graph.wipeEdgeLines();
 
         //hide the continue button
-        continue_Button.setVisible(false);
+        continueNew_Button.setVisible(false);
 
         start_textField.setText("");
         end_TextField.setText("");
@@ -642,7 +639,7 @@ public class patientMainController extends controllers.mapScene {
             c.setRadius(graph.getLabelRadius() * sizeUpRatio);
 
             //hide the continue button if possible
-            continue_Button.setVisible(false);
+            continueNew_Button.setVisible(false);
         } else if (selectionState == 1){
             //place the red marker at end location
             mapController.markNode(x, y, 2, currentFloor);
@@ -656,42 +653,6 @@ public class patientMainController extends controllers.mapScene {
             c.setRadius(graph.getLabelRadius() * sizeUpRatio);
         } else {
             //do nothing
-        }
-    }
-
-    @FXML
-    public void continueButton_Clicked() {
-        if (continue_Button.isVisible() == true) {
-            System.out.println("continue button clicked");
-
-            //increment b/c continue button
-            fragPathPos++; //continue...
-
-            //update currentfloor
-            currentFloor = globalFloorSequence.get(fragPathPos);
-
-            System.out.println("current floor displayed: " + currentFloor);
-            System.out.println("frag path pos updated to: " + fragPathPos);
-            multifloorUpdate();
-
-            //disable the continue button if you reach the end
-            //also update the color
-            if (fragPathPos == globalFragList.size() - 1) {
-                continue_Button.setVisible(false);
-
-                //set the end goal color
-                ArrayList<Circle> circleList;
-                circleList = graph.getButtonList();
-
-                for (Circle c: circleList) {
-                    if(c.getLayoutX() == endX && c.getLayoutY() == endY) {
-                        c.setStrokeWidth(strokeRatio);
-                        c.setRadius(graph.getLabelRadius()*sizeUpRatio);
-                        c.setStroke(endColor);
-                        break;
-                    }
-                }
-            }
         }
     }
 

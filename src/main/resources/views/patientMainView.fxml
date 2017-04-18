@@ -24,7 +24,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="patientMain.patientMainController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="patientMain.patientMainController">
    <children>
       <BorderPane layoutX="96.0" layoutY="187.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -287,7 +287,7 @@
                   </HBox>
                   <Pane fx:id="node_Plane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1199.0">
                      <children>
-                        <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="920.0" onMouseClicked="#continueButton_Clicked">
+                        <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="920.0">
                            <image>
                               <Image url="@../images/4.png" />
                            </image>
