@@ -21,6 +21,7 @@ import javafx.scene.shape.Circle;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 
 /**
  * Created by AugustoR on 3/31/17.
@@ -198,7 +199,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
             System.out.println(nodeEdgeX1 + "     " + nodeEdgeY1);
             firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
                     .getNode(nodeEdgeX1, nodeEdgeY1, currentFloor);
-            graph.createEdgeLines(firstNode.getEdgeList());
+            graph.createEdgeLines(firstNode.getEdgeList(), true);
 
             //color the node as well
             if (lastColoredStart !=  null) {
@@ -380,7 +381,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
             //don't know if above method is successful
             //must check again if firstNode is not null
             if (firstNode != null) {
-                graph.createEdgeLines(firstNode.getEdgeList());
+                graph.createEdgeLines(firstNode.getEdgeList(), true);
             }
         }
 
@@ -445,6 +446,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 newMapImage.display(map_viewer);
 
                 graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true);
+
+                //draw edges
+                graph.drawFloorEdges(currentFloor);
             }
         });
 
