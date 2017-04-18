@@ -1,13 +1,6 @@
 package contollers;
 
-import DBController.DatabaseController;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import java.sql.*;
-import controllers.MapController;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by Jackson on 4/4/2017.
