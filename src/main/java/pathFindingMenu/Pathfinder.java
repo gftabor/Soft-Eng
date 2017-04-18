@@ -4,18 +4,16 @@ import controllers.Edge;
 import controllers.Node;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 
 /**
  * Created by griffincecil on 4/1/2017.
  */
 public class Pathfinder {
-    private ArrayList<Node> frontier = new ArrayList<Node>();
     private HashSet<Node> alreadyProcessed = new HashSet<Node>();;
 
     private ArrayList<Edge> path = new ArrayList<Edge>();
-
+    public Search algorithm = new AStar();
 
     public ArrayList<Edge> getPath() {
         return path;
@@ -54,12 +52,9 @@ public class Pathfinder {
                 neighbor.setParentEdge(currentEdge);
                 neighbor.setCostToReach(neighbourNewCost);
                 neighbor.setTotalCost(neighbourNewCost + getHueristic(neighbor, goalNode));
-
+                algorithm.addNode(neighbor);
                 //if the object is in frontier only edit the object
-                if(!frontier.contains(neighbor) && neighbor.getEnabled()) {
-                    frontier.add(neighbor);
-                    //System.out.println("new frontier");
-                }
+
             }
 
         }
@@ -75,25 +70,26 @@ public class Pathfinder {
                 startNode.getPosY() + ", floor: " + startNode.getFloor() + ") to node at (" + endNode.getPosX() + ", " +
                 endNode.getPosY() + ", floor: " + endNode.getFloor() + ")");
         alreadyProcessed.clear();
-        frontier.clear();
         path.clear();
+        algorithm.resetNodes();
         if(!(startNode.getEnabled() && endNode.getEnabled())){
             System.out.println("selected node not enabled");
             return -2;
         }
+
         startNode.setTotalCost(getHueristic(startNode, endNode));
         startNode.setCostToReach(0);
-        frontier.add(startNode);
+        algorithm.addNode(startNode);
         boolean finished = false;
-        while (!finished && !frontier.isEmpty()) {
-            Collections.sort(frontier);
-            Node processing = frontier.get(0);
+        while (!finished) {
+            Node processing = algorithm.getNode();
+            if(processing == null)
+                break;
             finished = processing.equals(endNode);//
             if (!alreadyProcessed.contains(processing)) {
                 processNode(processing, endNode);
                 alreadyProcessed.add(processing);
             }
-            frontier.remove(0);
         }
         Node viewingNode = endNode;
         while(!viewingNode.equals(startNode) && finished){
