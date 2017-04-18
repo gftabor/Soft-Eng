@@ -102,6 +102,13 @@ public class patientMainController extends controllers.mapScene {
     @FXML
     private Button directory_Button;
 
+    @FXML
+    private Button previous_Button;
+
+    @FXML
+    private Button continueNew_Button;
+
+
     int c_language = 0;
 
     int first_Time = 0;
@@ -161,6 +168,15 @@ public class patientMainController extends controllers.mapScene {
     //get an instance of database controller
     DatabaseController databaseController = DatabaseController.getInstance();
 
+    //Continue New Button Clicked
+    public void continueNewButton_Clicked(){
+
+    }
+
+    //previoys Button clicked
+    public void previousButton_Clicked(){
+
+    }
 
     //Sets the choices for the language
     public void setLanguage_ChoiceBox(){
