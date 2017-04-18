@@ -39,7 +39,12 @@
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="SignOut_Button" mnemonicParsing="false" onMouseClicked="#signOutButton_Clicked" prefHeight="52.0" prefWidth="120.0" text="Sign Out">
+                        <Button fx:id="addAdmin_Button" mnemonicParsing="false" onMouseClicked="#addAdmin" prefHeight="40.0" prefWidth="120.0" text="Add">
+                           <HBox.margin>
+                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="SignOut_Button" mnemonicParsing="false" onMouseClicked="#signOutButton_Clicked" prefHeight="40.0" prefWidth="120.0" text="Sign Out">
                            <font>
                               <Font size="20.0" />
                            </font>
