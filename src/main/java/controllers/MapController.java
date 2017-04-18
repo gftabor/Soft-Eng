@@ -294,8 +294,9 @@ public class MapController {
         for(int i = path.size()-1; i > 0; i--) {
             double angle = getAngle(path.get(i), path.get(i-1));
 
-            if(path.get(i).getStartNode().getFloor() != path.get(i).getEndNode().getFloor() ||
-                    path.get(i-1).getStartNode().getFloor() != path.get(i-1).getEndNode().getFloor()) {
+            if(path.get(i).getStartNode().getFloor() != path.get(i).getEndNode().getFloor()
+                    || path.get(i-1).getStartNode().getFloor() != path.get(i-1).getEndNode().getFloor()) {
+                   // ) {
                 directions.add("Change Floors ");
                 continue;
             }
@@ -336,15 +337,15 @@ public class MapController {
     }
 
     private ArrayList<String> cleanDirections(ArrayList<String> direc) {
-        ArrayList<String> directions = direc;
-        for(int i = directions.size()-1; i > 0; i--) {
-            if("Continue straight.".equals(directions.get(i)) && directions.get(i).equals(directions.get(i-1))) {
-                directions.remove(directions.get(i));
-            }
-            if("Change Floors ".equals(directions.get(i)) && directions.get(i).equals(directions.get(i-1))) {
-                directions.remove(directions.get(i));
+        ArrayList<String> directions = new ArrayList<>();
+        String current = "";
+        for (String s: direc) {
+            if (s != current) {
+                current = s;
+                directions.add(s);
             }
         }
+
         return directions;
     }
 
