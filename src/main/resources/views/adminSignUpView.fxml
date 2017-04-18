@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adminSignUp.adminSignUpController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adminSignUp.adminSignUpController">
    <children>
       <BorderPane layoutX="1.0" layoutY="1.0" prefHeight="709.0" prefWidth="1274.0" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="1.0">
          <top>
@@ -52,7 +52,7 @@
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="updateAdminButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="83.0" style="-fx-background-color: orange;" styleClass="small-text" text="Update">
+                        <Button fx:id="updateAdminButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#editAdminButton_Clicked" prefHeight="50.0" prefWidth="83.0" style="-fx-background-color: orange;" styleClass="small-text" text="Update">
                            <HBox.margin>
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
