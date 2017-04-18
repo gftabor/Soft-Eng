@@ -1,5 +1,6 @@
 package adminSignUp;
 import DBController.DatabaseController;
+import adminSignUp.adminTable;
 import hospitalDirectorySearch.Table;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,6 +23,7 @@ import javafx.scene.layout.HBox;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.function.Predicate;
 
 /**
@@ -44,19 +46,19 @@ public class adminSignUpController extends controllers.AbsController{
     private TableView<?> Table_TableView;
 
     @FXML
-    private TableColumn<Table, String> ID_TableColumn;
+    private TableColumn<adminTable, String> ID_TableColumn;
 
     @FXML
-    private TableColumn<Table, String> username_TableColumn;
+    private TableColumn<adminTable, String> username_TableColumn;
 
     @FXML
-    private TableColumn<Table, String> firstName_TableColumn;
+    private TableColumn<adminTable, String> firstName_TableColumn;
 
     @FXML
-    private TableColumn<Table, String> lastName_TableColumn;
+    private TableColumn<adminTable, String> lastName_TableColumn;
 
     @FXML
-    private TableColumn<Table, String> password_TableColumn;
+    private TableColumn<adminTable, String> password_TableColumn;
 
     @FXML
     private Label queryStatus;
@@ -190,6 +192,132 @@ public class adminSignUpController extends controllers.AbsController{
 
          }
     }
+
+    //sets up the tree
+    /*public void setUpTreeView(){
+        ID_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, Integer>("rID"));
+        firstName_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rFirstName"));
+        lastName_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rLastName"));
+        //title_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rTitle"));
+        //department_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rType"));
+        //room_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rRoom"));
+
+
+        ResultSet rset, rset2;
+        rset = databaseController.getProRoomNums();
+        rset2 = databaseController.getProsWithoutRooms();
+        ArrayList<Integer> ids = new ArrayList<>();
+
+        ObservableList<Table> data = FXCollections.observableArrayList();
+
+        int id;
+        String firstName, lastName, title, department, roomNum;
+        try {
+            while (rset.next()){
+                id = rset.getInt("ID");
+                ids.add(id);
+                firstName = rset.getString("FIRSTNAME");
+                lastName = rset.getString("LASTNAME");
+                if (c_language == 0) {
+                    System.out.println("Getting ENGLISH type and department c_language NOW = " + c_language);
+                    title = rset.getString("TYPE");
+                    department = rset.getString("DEPARTMENT");
+                } else {
+                    System.out.println("Getting SPANISH type and department c_language NOW = " + c_language);
+                    title = rset.getString("SPTYPE");
+                    System.out.println("getting title " + title);
+                    department = rset.getString("SPDEPARTMENT");
+                    System.out.println("getting department " + department);
+                }
+                roomNum = rset.getString("ROOMNUM");
+                System.out.println("Name: " + firstName + lastName);
+                //Table table = new Table(id, firstName, lastName, title, department, roomNum);
+                data.add(new Table(id, firstName, lastName, title, department, roomNum));
+            }
+            rset.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        try {
+            while (rset2.next()){
+                id = rset2.getInt("ID");
+                firstName = rset2.getString("FIRSTNAME");
+                lastName = rset2.getString("LASTNAME");
+                if (c_language == 0) {
+                    System.out.println("Getting ENGLISH type and department c_language = " + c_language);
+                    title = rset2.getString("TYPE");
+                    department = rset2.getString("DEPARTMENT");
+                } else {
+                    System.out.println("Getting SPANISH type and department c_language = " + c_language);
+                    title = rset2.getString("SPTYPE");
+                    System.out.println("getting title " + title);
+                    department = rset2.getString("SPDEPARTMENT");
+                    System.out.println("getting department " + department);
+                }
+                System.out.println("Name: " + firstName + lastName);
+                if (!ids.contains(id)) {
+                    //Something bad happened
+                    roomNum= "empty";
+                    Table table = new Table(id, firstName, lastName, title, department, roomNum);
+                    data.add(table);
+                }
+            }
+            rset2.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        Table_TableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.getClickCount() > 1) {
+                    ID = Table_TableView.getSelectionModel().getSelectedItem().getrID();
+                    First_N = Table_TableView.getSelectionModel().getSelectedItem().getrFirstName();
+                    Last_N = Table_TableView.getSelectionModel().getSelectedItem().getrLastName();
+                    Title = Table_TableView.getSelectionModel().getSelectedItem().getrTitle();
+                    Department = Table_TableView.getSelectionModel().getSelectedItem().getrType();
+                    Room = Table_TableView.getSelectionModel().getSelectedItem().getrRoom();
+                    department_TextField.setText(Department);
+                    room_TextField.setText(Room);
+                    //
+                    title_TextField.setText(Title);
+
+                    id_TextField.setText(Integer.toString(ID));
+                    Firstname_TextField.setText(First_N);
+                    lastName_TextField.setText(Last_N);
+
+                }
+            }
+        });
+        FilteredList<Table> filteredData = new FilteredList<>(data, e-> true);
+        search_textField.setOnKeyReleased(e -> {
+            search_textField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredData.setPredicate((Predicate<? super Table>) Table ->{
+                    if(newValue == null || newValue.isEmpty()){
+                        return true;
+                    }
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    if(Table.getrFirstName().toLowerCase().contains(lowerCaseFilter)){
+                        return true;
+
+                    }else if(Table.getrLastName().toLowerCase().contains(lowerCaseFilter)){
+                        return true;
+                    }else if(Table.getrType().toLowerCase().contains(lowerCaseFilter)){
+                        return true;
+                    }else if(Table.getrTitle().toLowerCase().contains(lowerCaseFilter)){
+                        return true;
+                    }else if(Table.getrRoom().toLowerCase().contains(lowerCaseFilter)){
+                        return true;
+                    }
+                    return false;
+                });
+            });
+        });
+        SortedList<Table> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(Table_TableView.comparatorProperty());
+        Table_TableView.setItems(sortedData);
+    }
+    */
 
 
 
