@@ -4,17 +4,25 @@ package patientMain;
  * Created by AugustoR on 4/15/17.
  */
 import DBController.DatabaseController;
+import controllers.*;
+import emergency.SmsSender;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import org.controlsfx.control.textfield.TextFields;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-public class patientMainController extends controllers.AbsController{
+public class patientMainController extends controllers.mapScene {
 
     @FXML
     private AnchorPane backgroundAnchorPane;
@@ -47,13 +55,10 @@ public class patientMainController extends controllers.AbsController{
     private TextField end_TextField;
 
     @FXML
-    private Button clear_Button;
+    private Button cancel_Button;
 
     @FXML
     private Button submit_Button;
-
-    @FXML
-    private ChoiceBox<String> filter_ChoiceBox;
 
     @FXML
     private Label textD_Label;
@@ -80,7 +85,22 @@ public class patientMainController extends controllers.AbsController{
     private Label c_Floor_Label;
 
     @FXML
-    private ComboBox<String> filter_comboBox;
+    private ChoiceBox<String> filter_ChoiceBox;
+
+    @FXML
+    private Pane node_Plane;
+
+    @FXML
+    private ImageView map_viewer;
+
+    @FXML
+    private Button continue_Button;
+
+    @FXML
+    private Label phoneStatus;
+
+    @FXML
+    private Button directory_Button;
 
     int c_language = 0;
 
@@ -88,15 +108,54 @@ public class patientMainController extends controllers.AbsController{
 
     boolean second = false;
 
+    private int currentFloor;
+
+    private double startX;
+    private double startY;
+    private double endX;
+    private double endY;
+
+    private Circle btK;
+
+    private controllers.MapOverlay graph;
+
+    private int selectionState = 0;
+
+    private MapController mapController = MapController.getInstance();
+
+    private Circle start;
+    private Circle end;
+
+    private final double sizeUpRatio = 1.7;
+    private final double strokeRatio = 2.5;
+
+    private ArrayList<ArrayList<Edge>> globalFragList;
+    private int fragPathPos; //position on the global frag list
+    private ArrayList<Integer> globalFloorSequence;
+
+    private final Color startColor = Color.RED;
+    private final Color endColor = Color.GREEN;
+
     @FXML
     public void initialize(){
+        graph = new controllers.MapOverlay(node_Plane,(mapScene) this);
+        MapController.getInstance().requestMapCopy();
+
         //setLanguageChoices(c_language);
         setFloorChoices();
         setStartEndChoices();
         setLanguage_ChoiceBox();
+        setComboBox();
         setFilterChoices();
         second = true;
+        //set current floor
+        //we will use floor 1 as default
+        currentFloor = 1;
+        c_Floor_Label.setText("1");
 
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+        //set continue button invisible when not needed
+        continue_Button.setVisible(false);
     }
 
     //get an instance of database controller
@@ -139,22 +198,22 @@ public class patientMainController extends controllers.AbsController{
         //Makes sure you only set the choices once
         //sets the choices and sets the current language as the top choice
         if(c_language == 0) {
-            filter_comboBox.getSelectionModel().clearSelection();
-            filter_comboBox.getItems().clear();
-            filter_comboBox.getItems().addAll("All", "Employees", "Services", "Frequently Searched", "Miscellaneous");
-            filter_comboBox.getSelectionModel().select(0);
+            filter_ChoiceBox.getSelectionModel().clearSelection();
+            filter_ChoiceBox.getItems().clear();
+            filter_ChoiceBox.getItems().addAll("All", "Employees", "Services", "Frequently Searched", "Miscellaneous");
+            filter_ChoiceBox.getSelectionModel().select(0);
         }else if(c_language == 1){
-            filter_comboBox.getSelectionModel().clearSelection();
-            filter_comboBox.getItems().clear();
-            filter_comboBox.getItems().addAll("Todo", "Empleados", "Servicios", "Buscados Frequentemente", "Varios");
-            filter_comboBox.getSelectionModel().select(0);
+            filter_ChoiceBox.getSelectionModel().clearSelection();
+            filter_ChoiceBox.getItems().clear();
+            filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios", "Buscados Frequentemente", "Varios");
+            filter_ChoiceBox.getSelectionModel().select(0);
 
         }
 
 
 
         //Checks if the user has decided to change languages
-        filter_comboBox.getSelectionModel().selectedIndexProperty()
+        filter_ChoiceBox.getSelectionModel().selectedIndexProperty()
                 .addListener(new ChangeListener<Number>() {
                     @Override
                     public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -242,45 +301,28 @@ public class patientMainController extends controllers.AbsController{
 
 
 
-    public void setFloorChoices() {
-        //Makes sure you only set the choices once
-        //sets the choices and sets the current language as the top choice
-        floor_ChoiceBox.getItems().addAll("1", "2", "3","4","5","6","7");
+    //Sets the map of the desired floor
+    public void setFloorChoices(){
+        floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7");
         floor_ChoiceBox.getSelectionModel().select(0);
+        map_viewer.setImage(new Image("/images/cleaned1.png"));
+        floor_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-        //Checks if the user has decided to change languages
-        floor_ChoiceBox.getSelectionModel().selectedIndexProperty()
-                .addListener(new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                        //System.out.println(newValue);
+                //Print the floors accordingly
+                //CODE HERE!!!!!!!
 
-                        //Checks if the user wants english language
-                        if (newValue.intValue() == 0) {
-                            //Load floor 1
+                currentFloor = newValue.intValue() + 1;
 
-                        } else if (newValue.intValue() == 1) {
-                            //Load floor 2
+                mapImage newMapImage = new proxyMap(currentFloor);
+                newMapImage.display(map_viewer);
 
-                        }else if (newValue.intValue() == 2) {
-                            //Load floor 3
+                c_Floor_Label.setText(Integer.toString(currentFloor));
+                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+            }
+        });
 
-                        }else if (newValue.intValue() == 3) {
-                            //Load floor 4
-
-                        }else if (newValue.intValue() == 4) {
-                            //Load floor 5
-
-                        }else if (newValue.intValue() == 5) {
-                            //Load floor 6
-
-                        }else if (newValue.intValue() == 6) {
-                            //Load floor 7
-
-                        }
-                    }
-
-                });
     }
 
     public void setStartEndChoices(){
@@ -300,9 +342,105 @@ public class patientMainController extends controllers.AbsController{
 
     }
 
+    public void aboutButton_clicked() {
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/aboutPageView.fxml");
+        aboutPage.aboutPageController controller = loader.getController();
+        //controller.setC_language(c_language);
+
+    }
+
 
     //Handles the action when the submit button is clicked
     public void submitButton_Clicked(){
+
+        if (selectionState == 2) {
+            //submit stuff
+            //createEdgeLines
+
+            //check for multifloor
+            if (mapController.areDifferentFloors()) {
+                System.out.println("Multi-floor pathfinding detected!");
+
+                //use the multifloor pathfinding function
+                multiFloorPathfind();
+            } else {
+                MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
+                ArrayList<Edge> path = mapController.requestPath();
+                graph.createEdgeLines(path, true);
+                textDescription_TextFArea.setText(mapController.getTextDirections(path));
+
+            }
+
+        }
+        selectionState=0;
+        System.out.println("The user has clicked the submit Button");
+        //MapController.getInstance().requestMapCopy();
+    }
+
+    public void multiFloorPathfind() {
+        //initialize reference of the global frag list to null (set up)
+        globalFragList = null;
+        globalFloorSequence = null;
+        fragPathPos = 0;
+
+        //set continue button visible
+        continue_Button.setVisible(true);
+
+        //switch floors to original floor's pathfinding view
+        int startfloor = mapController.returnOriginalFloor();
+        floor_Label.setText(Integer.toString(startfloor));
+
+        //switch back to the original floor using the choicebox selection
+        floor_ChoiceBox.getSelectionModel().select(startfloor - 1);
+
+        //maintain consistency of colors
+        ArrayList<Circle> tempCircleList;
+        tempCircleList = graph.getButtonList();
+        for (Circle c: tempCircleList) {
+            if(c.getLayoutX() == startX && c.getLayoutY() == startY) {
+                c.setStrokeWidth(strokeRatio);
+                c.setRadius(graph.getLabelRadius()*sizeUpRatio);
+                c.setStroke(startColor);
+                break;
+            }
+        }
+
+
+        //reset for next pathfinding session
+        MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
+        ArrayList<Edge> reqPath = mapController.requestPath();
+        if (reqPath == null) { //can't find path, reset
+            System.out.println("Could not pathfind. Resetting now...");
+            cancelButton_Clicked();
+        } else {
+            textDescription_TextFArea.setText(mapController.getTextDirections(reqPath));
+
+            ArrayList<ArrayList<Edge>> fragPath;
+            fragPath = mapController.requestFragmentedPath(reqPath, mapController.returnOriginalFloor(), mapController.returnDestFloor());
+
+            //loop and display the edges per floor - use the startfloor
+
+
+            if (fragPath.get(0).size() == 0) {
+                //only occurs if the first transition is a null
+                //instead just highlight the first thing
+
+                //todo -> highlight
+
+            } else {
+                graph.createEdgeLines(fragPath.get(0), true);
+            }
+
+            //set the globals so you can send to the continue button
+            globalFragList = fragPath;
+            globalFloorSequence = mapController.getFloorSequence();
+
+            //print floor sequence (testing)
+            for (int i = 0; i < globalFloorSequence.size(); i++) {
+                System.out.println(globalFloorSequence.get(i));
+            }
+        }
+
 
     }
 
@@ -340,7 +478,20 @@ public class patientMainController extends controllers.AbsController{
     }
 
     //Handles the action when the clear button is clicked
-    public void clearButton_Clicked(){
+    public void cancelButton_Clicked(){
+        //MapController.getInstance().requestMapCopy();
+        selectionState = 0;
+        //Remove colored dots from map
+
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+        c_Floor_Label.setText(Integer.toString(currentFloor));
+
+        //wipe line from map
+        graph.wipeEdgeLines();
+
+        //hide the continue button
+        continue_Button.setVisible(false);
+
         start_textField.setText("");
         end_TextField.setText("");
     }
@@ -353,7 +504,7 @@ public class patientMainController extends controllers.AbsController{
         //Change the Buttons
         admin_Button.setText("Administrator");
         emergency_Button.setText("EMERGENCY");
-        clear_Button.setText("Clear");
+        cancel_Button.setText("Clear");
         submit_Button.setText("Submit");
         phoneSend.setText("Send");
         about_Button.setText("About");
@@ -384,7 +535,7 @@ public class patientMainController extends controllers.AbsController{
         //change the Buttons
         admin_Button.setText("Administrador");
         emergency_Button.setText("EMERGENCIA");
-        clear_Button.setText("Borrar");
+        cancel_Button.setText("Borrar");
         submit_Button.setText("Listo");
         phoneSend.setText("Enviar");
         about_Button.setText("Acerca");
@@ -412,5 +563,114 @@ public class patientMainController extends controllers.AbsController{
     }
 
 
+    public void sceneEvent(int x, int y, Circle c){
+        System.out.println("Node at (" + x + ", " + y + ") selected during state: " + selectionState);
+        if (selectionState == 0) {
+            //place the black marker at the starting location
+            mapController.markNode(x, y, 1, currentFloor);
+            selectionState++;
+            if(start != null) {
+                start.setStroke(Color.BLACK);
+                start.setStrokeWidth(1);
+                start.setRadius(graph.getLabelRadius());
+            }
+            if(end != null) {
+                end.setStroke(Color.BLACK);
+                end.setStrokeWidth(1);
+                end.setRadius(graph.getLabelRadius());
+            }
+            graph.wipeEdgeLines();
+            start =c;
+            //color
+            c.setStrokeWidth(strokeRatio);
+            c.setStroke(Color.ORANGERED);
 
+            startX = c.getCenterX();
+            startY = c.getCenterY();
+
+            //size
+            c.setRadius(graph.getLabelRadius() * sizeUpRatio);
+
+            //hide the continue button if possible
+            continue_Button.setVisible(false);
+        } else if (selectionState == 1){
+            //place the red marker at end location
+            mapController.markNode(x, y, 2, currentFloor);
+            selectionState++;
+            end = c;
+            //color
+            c.setStrokeWidth(strokeRatio);
+            c.setStroke(Color.FUCHSIA);
+
+            //size
+            c.setRadius(graph.getLabelRadius() * sizeUpRatio);
+        } else {
+            //do nothing
+        }
+    }
+
+    @FXML
+    public void continueButton_Clicked() {
+        if (continue_Button.isVisible() == true) {
+            System.out.println("continue button clicked");
+
+            //increment b/c continue button
+            fragPathPos++; //continue...
+
+            //update currentfloor
+            currentFloor = globalFloorSequence.get(fragPathPos);
+
+            System.out.println("current floor displayed: " + currentFloor);
+            System.out.println("frag path pos updated to: " + fragPathPos);
+            multifloorUpdate();
+
+            //disable the continue button if you reach the end
+            //also update the color
+            if (fragPathPos == globalFragList.size() - 1) {
+                continue_Button.setVisible(false);
+
+                //set the end goal color
+                ArrayList<Circle> circleList;
+                circleList = graph.getButtonList();
+
+                for (Circle c: circleList) {
+                    if(c.getLayoutX() == endX && c.getLayoutY() == endY) {
+                        c.setStrokeWidth(strokeRatio);
+                        c.setRadius(graph.getLabelRadius()*sizeUpRatio);
+                        c.setStroke(endColor);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public void textDirections(){
+        SmsSender mySMS = new SmsSender();
+        try {
+            if(mySMS.sendSMSDirections(textDescription_TextFArea.getText(), phoneInsert.getText()).equals("queued")){
+                phoneStatus.setText("Directions Sent.");
+            }else{
+                phoneStatus.setText("Failed to Send.");
+            }
+        } catch (URISyntaxException e){
+            e.getReason();
+        }
+    }
+
+    @FXML
+    void directoryClicked() {
+
+    }
+
+    //abstracted floor refresh for multifloor pathfinding
+    public void multifloorUpdate() {
+        System.out.println("cf: " + currentFloor + "   size: " + globalFragList.get(fragPathPos).size());
+
+        //otherwise, change to the appropriate screen and display edges
+        graph.wipeEdgeLines();
+        floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
+        System.out.println("creating edge lines for fp pos: " + fragPathPos);
+        graph.createEdgeLines(globalFragList.get(fragPathPos), true);
+    }
 }
