@@ -154,6 +154,10 @@ public class pathFindingMenuController extends controllers.mapScene{
         //set continue button invisible when not needed
         continue_Button.setVisible(false);
 
+        //draw edges
+        graph.drawFloorEdges(currentFloor);
+
+
     }
     public void cancelButton_Clicked(){
         //MapController.getInstance().requestMapCopy();
@@ -193,7 +197,7 @@ public class pathFindingMenuController extends controllers.mapScene{
             } else {
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
                 ArrayList<Edge> path = mapController.requestPath();
-                graph.createEdgeLines(path);
+                graph.createEdgeLines(path, true);
                 textDescription_TextFArea.setText(mapController.getTextDirections(path));
 
             }
@@ -264,7 +268,7 @@ public class pathFindingMenuController extends controllers.mapScene{
             //todo -> highlight
 
         } else {
-            graph.createEdgeLines(fragPath.get(0));
+            graph.createEdgeLines(fragPath.get(0), true);
         }
 
         //set the globals so you can send to the continue button
@@ -442,6 +446,9 @@ public class pathFindingMenuController extends controllers.mapScene{
 
                 currentFloor_Label.setText(Integer.toString(currentFloor));
                 graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+
+                //draw edges
+                graph.drawFloorEdges(currentFloor);
             }
         });
 
@@ -452,7 +459,7 @@ public class pathFindingMenuController extends controllers.mapScene{
     }
 
     public void createEdgeLines(ArrayList<Edge> path) {
-        graph.createEdgeLines(path);
+        graph.createEdgeLines(path, true);
     }
 
     public void continueButton_Clicked() {
@@ -479,18 +486,14 @@ public class pathFindingMenuController extends controllers.mapScene{
                 ArrayList<Circle> circleList;
                 circleList = graph.getButtonList();
 
-                System.out.println("+++++++++++++++++++++");
-                System.out.println("Trying to find coords: " + endX + ", " + endY);
                 for (Circle c: circleList) {
                     if(c.getLayoutX() == endX && c.getLayoutY() == endY) {
-                        System.out.println("Found!!!");
                         c.setStrokeWidth(strokeRatio);
                         c.setRadius(graph.getLabelRadius()*sizeUpRatio);
                         c.setStroke(endColor);
                         break;
                     }
                 }
-                System.out.println("+++++++++++++++++++++");
             }
         }
     }
@@ -503,7 +506,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         graph.wipeEdgeLines();
         floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
         System.out.println("creating edge lines for fp pos: " + fragPathPos);
-        graph.createEdgeLines(globalFragList.get(fragPathPos));
+        graph.createEdgeLines(globalFragList.get(fragPathPos), true);
     }
 
 //    public void previousButton_Clicked() {

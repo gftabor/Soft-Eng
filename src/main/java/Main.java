@@ -24,8 +24,8 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/views/patientMainView.fxml"));
 
         primaryStage.setTitle("Iteration 3 Professional Prototype");
-        primaryStage.setFullScreen(true);
-        primaryStage.setMaximized(true);
+        //primaryStage.setFullScreen(true);
+        //primaryStage.setMaximized(true);
         primaryStage.setScene(new Scene(root, 1274, 710));
         primaryStage.setResizable(true);
 

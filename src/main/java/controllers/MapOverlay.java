@@ -103,7 +103,7 @@ public class MapOverlay {
     //creates visual representations of the edges of nodes on the pane
     //  input: any arraylist of Edge objects
     //NOTE: caller is responsible for not sending duplicate edges
-    public void createEdgeLines(ArrayList<controllers.Edge> edgeList) {
+    public void createEdgeLines(ArrayList<controllers.Edge> edgeList, boolean highlighted) {
         //for-each loop through arraylist
         wipeEdgeLines();
         for(controllers.Edge thisEdge: edgeList) {
@@ -116,9 +116,14 @@ public class MapOverlay {
             }
 
             //config to display properly
-            lne.setFill(Color.RED);
-            lne.setStroke(Color.RED);
-            lne.setStrokeWidth(4.5);
+            if(highlighted) {
+                lne.setFill(Color.RED);
+                lne.setStroke(Color.RED);
+                lne.setStrokeWidth(4.5);
+            } else {
+                lne.setStroke(Color.BLACK);
+                lne.setStrokeWidth(0.7);
+            }
 
             //add to pane
             currentPane.getChildren().add(lne);
@@ -141,5 +146,19 @@ public class MapOverlay {
     //get method for the circle list (buttonList)
     public ArrayList<Circle> getButtonList() {
         return ButtonList;
+    }
+
+    //draw each floor's edge lines
+    public void drawFloorEdges(int floor) {
+        ArrayList<Edge> currentFloorEdges = new ArrayList<>();
+
+        //get all edges for this floor in that one.
+        for (Edge e: MapController.getInstance().getEdgeCollection()) {
+            if (e.getStartNode().getFloor() == floor && e.getEndNode().getFloor() == floor) {
+                currentFloorEdges.add(e);
+            }
+        }
+
+        createEdgeLines(currentFloorEdges, false);
     }
 }
