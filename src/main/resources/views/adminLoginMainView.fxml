@@ -1,39 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adminLoginMain.adminLoginMainController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adminLoginMain.adminLoginMainController">
    <children>
       <BorderPane layoutX="421.0" layoutY="160.0" prefHeight="391.0" prefWidth="433.0" AnchorPane.leftAnchor="421.0" AnchorPane.topAnchor="160.0">
          <center>
-            <VBox alignment="CENTER" maxWidth="500.0" prefHeight="324.0" prefWidth="337.0" style="-fx-background-color: #955e83; -fx-background-radius: 5;" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER" maxWidth="500.0" prefHeight="324.0" prefWidth="337.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label fx:id="adminTitle_Label" text="Admin Login" textFill="WHITE">
+                  <Label fx:id="adminTitle_Label" alignment="TOP_CENTER" text="Admin Login" textFill="WHITE">
                      <font>
-                        <Font size="24.0" />
+                        <Font size="36.0" />
                      </font>
                   </Label>
-                  <HBox prefHeight="55.0" prefWidth="423.0">
-                     <children>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Label fx:id="invalidLogInputs" styleClass="small">
-                           <HBox.margin>
-                              <Insets top="20.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Region HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
+                  <Separator opacity="0.5" prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Separator>
                   <TextField fx:id="username_TextField" promptText="username">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -44,16 +39,21 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </PasswordField>
-                  <Button fx:id="logIn_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefHeight="26.0" prefWidth="300.0" text="Login">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="mainMenu_Button" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="26.0" prefWidth="300.0" text="Main Menu">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </VBox.margin>
-                  </Button>
+                  <Label fx:id="invalidLogInputs" wrapText="true" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="logIn_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefHeight="26.0" prefWidth="300.0" text="Login">
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="mainMenu_Button" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="26.0" prefWidth="300.0" styleClass="cancel" text="Return">
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -62,4 +62,8 @@
          </center>
       </BorderPane>
    </children>
+   <stylesheets>
+      <URL value="@../css/flatterfx_test.css" />
+      <URL value="@../css/styles.css" />
+   </stylesheets>
 </AnchorPane>
