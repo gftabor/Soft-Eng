@@ -16,22 +16,32 @@ public class adminSignUpController extends controllers.AbsController{
     private AnchorPane backgroundAnchorPane;
 
     @FXML
-    private Label adminTitle_Label;
-
-    @FXML
     private Label currentAdmin_Label;
 
     @FXML
-    private Label invalidLogInputs;
+    private Label queryStatus;
 
     @FXML
-    private TextField username_TextField;
+    private Button addAdminButton;
 
     @FXML
-    private PasswordField password_PasswordField;
+    private Button updateAdminButton;
 
     @FXML
-    private Button addNAdmin_Button;
+    private Button deleteAdminButton;
+
+    @FXML
+    private Button userName_TextField;
+
+    @FXML
+    private Button firstName_TextField;
+
+    @FXML
+    private Button lastName_TextField;
+
+    @FXML
+    private Button newPassword_TextField;
+
 
     @FXML
     private Button MainMenu_Button;
@@ -69,14 +79,12 @@ public class adminSignUpController extends controllers.AbsController{
 
     }
 
+    /*
     //Sets the english labels
     public void englishButtons_Labels(){
         //Buttons
         addNAdmin_Button.setText("Add Administrator");
         MainMenu_Button.setText("Main Menu");
-
-        //Labels
-        adminTitle_Label.setText("Admin Sign Up By:");
 
 
         //TextField
@@ -91,15 +99,13 @@ public class adminSignUpController extends controllers.AbsController{
         addNAdmin_Button.setText("Agregar Administrador");
         MainMenu_Button.setText("Menu Principal");
 
-        //Labels
-        adminTitle_Label.setText("Registrando Administrador");
-
 
         //TextField
         username_TextField.setPromptText("usuario");
         password_PasswordField.setPromptText("contrasena");
 
     }
+    */
 
     //sets the current language given information form other screens
     public void setCurrentLanguage(int i){
