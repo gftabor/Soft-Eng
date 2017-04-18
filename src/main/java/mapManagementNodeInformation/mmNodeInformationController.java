@@ -380,11 +380,11 @@ public class mmNodeInformationController extends controllers.AbsController {
                 firstName = rset.getString("FIRSTNAME");
                 lastName = rset.getString("LASTNAME");
                 if (c_language == 0) {
-                    System.out.println("Getting ENGLISH type and department c_language = " + c_language);
+                    System.out.println("Getting ENGLISH type and department c_language NOW = " + c_language);
                     title = rset.getString("TYPE");
                     department = rset.getString("DEPARTMENT");
                 } else {
-                    System.out.println("Getting SPANISH type and department c_language = " + c_language);
+                    System.out.println("Getting SPANISH type and department c_language NOW = " + c_language);
                     title = rset.getString("SPTYPE");
                     System.out.println("getting title " + title);
                     department = rset.getString("SPDEPARTMENT");
@@ -417,7 +417,9 @@ public class mmNodeInformationController extends controllers.AbsController {
                 }
                 System.out.println("Name: " + firstName + lastName);
                 if (!ids.contains(id)) {
-                    Table table = new Table(id, firstName, lastName, title, department, roomNum = "");
+                    //Something bad happened
+                    roomNum= "empty";
+                    Table table = new Table(id, firstName, lastName, title, department, roomNum);
                     data.add(table);
                 }
             }
