@@ -3,8 +3,8 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -13,15 +13,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adminSignUp.adminSignUpController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adminSignUp.adminSignUpController">
    <children>
       <BorderPane layoutX="1.0" layoutY="1.0" prefHeight="709.0" prefWidth="1274.0" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="1.0">
          <top>
-            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
                <children>
                   <Label fx:id="currentAdmin_Label" text="Current Admin" />
-                  <Region prefHeight="100.0" prefWidth="893.0" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label fx:id="mainTitle_Label" text="Admin Management" />
+                  <Region HBox.hgrow="ALWAYS" />
                   <Button fx:id="MainMenu_Button" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="26.0" prefWidth="184.0" text="Main Menu">
                      <HBox.margin>
                         <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
@@ -30,43 +33,6 @@
                </children>
             </HBox>
          </top>
-         <left>
-            <VBox alignment="TOP_CENTER" prefHeight="609.0" prefWidth="298.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Label text="Add/Edit/Remove Admin" />
-                  <Separator opacity="0.5" prefHeight="20.0" prefWidth="246.0" />
-                  <Label text="Currently Selected:" />
-                  <Label text="..." />
-                  <Label text="Username:" />
-                  <TextField fx:id="userName_TextField" prefHeight="29.0" prefWidth="298.0" />
-                  <Label layoutX="102.0" layoutY="120.0" text="First Name:" />
-                  <TextField fx:id="firstName_TextField" layoutX="10.0" layoutY="150.0" prefHeight="29.0" prefWidth="298.0" />
-                  <Label layoutX="100.0" layoutY="216.0" text="Last Name:" />
-                  <TextField fx:id="lastName_TextField" layoutX="10.0" layoutY="246.0" prefHeight="29.0" prefWidth="298.0" />
-                  <Label layoutX="99.0" layoutY="312.0" text="New Password:" />
-                  <TextField fx:id="newPassword_TextField" layoutX="10.0" layoutY="342.0" prefHeight="29.0" prefWidth="298.0" />
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Button fx:id="addAdminButton" mnemonicParsing="false" onAction="#addAdminButton_Clicked" prefHeight="50.0" prefWidth="80.0" styleClass="small-text" text="Add">
-                           <HBox.margin>
-                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Button fx:id="updateAdminButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#editAdminButton_Clicked" prefHeight="50.0" prefWidth="83.0" style="-fx-background-color: orange;" styleClass="small-text" text="Update">
-                           <HBox.margin>
-                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Button fx:id="deleteAdminButton" layoutX="115.0" layoutY="10.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="80.0" style="-fx-background-color: red;" styleClass="small-text" text="Delete">
-                           <HBox.margin>
-                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                           </HBox.margin>
-                        </Button>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </left>
          <stylesheets>
             <URL value="@../css/flatterfx_test.css" />
             <URL value="@../css/styles.css" />
@@ -74,12 +40,13 @@
          <center>
             <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label text="Current Admins:" />
-                  <TableView prefHeight="587.0" prefWidth="976.0">
+                  <TableView fx:id="Table_TableView" fixedCellSize="0.0" prefHeight="587.0" prefWidth="976.0" tableMenuButtonVisible="true">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="username" />
-                      <TableColumn prefWidth="75.0" text="firstname" />
-                        <TableColumn prefWidth="75.0" text="lastname" />
+                        <TableColumn fx:id="ID_TableColumn" prefWidth="90.3900146484375" text="ID" />
+                      <TableColumn fx:id="username_TableColumn" prefWidth="195.43374633789062" text="Username" />
+                      <TableColumn fx:id="firstName_TableColumn" minWidth="0.0" prefWidth="190.49871826171875" text="First Name" />
+                        <TableColumn fx:id="lastName_TableColumn" minWidth="0.0" prefWidth="168.4932861328125" text="Last Name" />
+                        <TableColumn fx:id="password_TableColumn" prefWidth="182.4970703125" text="Password" />
                     </columns>
                   </TableView>
                   <Label fx:id="queryStatus" text="Query Status" />
@@ -89,6 +56,203 @@
                </BorderPane.margin>
             </VBox>
          </center>
+         <left>
+            <VBox prefHeight="544.0" prefWidth="386.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="subTitle_Label" text="Manage Administrators">
+                           <font>
+                              <Font name="System Bold Italic" size="30.0" />
+                           </font>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="3.0" right="3.0" top="3.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="search_textField" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="200.0" promptText="search">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="error_LabelText" textFill="#cd2727">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Label fx:id="Mode_Label" prefWidth="160.0" text="Mode:">
+                           <font>
+                              <Font name="System Bold Italic" size="23.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
+                           </HBox.margin>
+                        </Label>
+                        <ChoiceBox fx:id="mode_ChoiceBox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="25.0" right="5.0" top="1.0" />
+                           </HBox.margin>
+                        </ChoiceBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox fx:id="ID_Label">
+                     <children>
+                        <Label minHeight="-Infinity" minWidth="-Infinity" prefWidth="160.0" text="ID:">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="System Bold Italic" size="23.0" />
+                           </font>
+                        </Label>
+                        <TextField editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="ID">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="25.0" right="5.0" top="1.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Label fx:id="username_Label" prefWidth="160.0" text="Username:">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="System Bold Italic" size="23.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="userName_TextField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="Username">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="25.0" right="5.0" top="1.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox fx:id="firstName_Label">
+                     <children>
+                        <Label minWidth="-Infinity" prefWidth="160.0" text="First Name:">
+                           <font>
+                              <Font name="System Bold Italic" size="23.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="firstName_TextField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="First Name">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="25.0" right="5.0" top="1.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Label fx:id="lastName_Label" prefWidth="160.0" text="Last Name:">
+                           <font>
+                              <Font name="System Bold Italic" size="23.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="lastName_TextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="Last Name">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="25.0" right="5.0" top="1.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Label fx:id="password_Label" prefWidth="160.0" text="Password">
+                           <font>
+                              <Font name="System Bold Italic" size="23.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="newPassword_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="Password">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="25.0" right="5.0" top="1.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox />
+                  <HBox>
+                     <children>
+                        <Button fx:id="cancel_Button" mnemonicParsing="false" onMouseClicked="#cancelButton_Clicked" prefHeight="20.0" prefWidth="100.0" text="Clear">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="submit_Button" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" prefHeight="20.0" prefWidth="100.0" text="Submit">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+         </left>
       </BorderPane>
    </children>
    <stylesheets>

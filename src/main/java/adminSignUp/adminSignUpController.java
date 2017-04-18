@@ -1,11 +1,16 @@
 package adminSignUp;
 import DBController.DatabaseController;
 import javafx.fxml.FXML;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 
 /**
  * Created by AugustoR on 4/17/17.
@@ -18,32 +23,79 @@ public class adminSignUpController extends controllers.AbsController{
     private Label currentAdmin_Label;
 
     @FXML
+    private Label mainTitle_Label;
+
+    @FXML
+    private Button MainMenu_Button;
+
+    @FXML
+    private TableView<?> Table_TableView;
+
+    @FXML
+    private TableColumn<Table, String> ID_TableColumn;
+
+    @FXML
+    private TableColumn<?, ?> username_TableColumn;
+
+    @FXML
+    private TableColumn<?, ?> firstName_TableColumn;
+
+    @FXML
+    private TableColumn<?, ?> lastName_TableColumn;
+
+    @FXML
+    private TableColumn<?, ?> password_TableColumn;
+
+    @FXML
     private Label queryStatus;
 
     @FXML
-    private Button addAdminButton;
+    private Label subTitle_Label;
 
     @FXML
-    private Button updateAdminButton;
+    private TextField search_textField;
 
     @FXML
-    private Button deleteAdminButton;
+    private Label error_LabelText;
+
+    @FXML
+    private Label Mode_Label;
+
+    @FXML
+    private ChoiceBox<?> mode_ChoiceBox;
+
+    @FXML
+    private HBox ID_Label;
+
+    @FXML
+    private Label username_Label;
 
     @FXML
     private TextField userName_TextField;
 
     @FXML
+    private HBox firstName_Label;
+
+    @FXML
     private TextField firstName_TextField;
+
+    @FXML
+    private Label lastName_Label;
 
     @FXML
     private TextField lastName_TextField;
 
     @FXML
-    private TextField newPassword_TextField;
-
+    private Label password_Label;
 
     @FXML
-    private Button MainMenu_Button;
+    private TextField newPassword_TextField;
+
+    @FXML
+    private Button cancel_Button;
+
+    @FXML
+    private Button submit_Button;
 
     int c_language = 0; //English by default
 
