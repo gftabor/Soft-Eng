@@ -136,7 +136,7 @@ public class adminSignUpController extends controllers.AbsController{
             editAdmin();
             setUpTreeView();
         }else{
-
+            System.out.println("Error with choicebox on admin page");
         }
 
     }
