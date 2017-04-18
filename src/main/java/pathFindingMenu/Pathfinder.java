@@ -69,6 +69,10 @@ public class Pathfinder {
         System.out.println("PATHFINDER: generating path from node at (" + startNode.getPosX() + ", " +
                 startNode.getPosY() + ", floor: " + startNode.getFloor() + ") to node at (" + endNode.getPosX() + ", " +
                 endNode.getPosY() + ", floor: " + endNode.getFloor() + ")");
+        for(Node oldNode : alreadyProcessed){
+            oldNode.setTotalCost(Integer.MAX_VALUE);
+            oldNode.setCostToReach(Integer.MAX_VALUE);
+        }
         alreadyProcessed.clear();
         path.clear();
         algorithm.resetNodes();
@@ -85,7 +89,7 @@ public class Pathfinder {
             Node processing = algorithm.getNode();
             if(processing == null)
                 break;
-            finished = processing.equals(endNode);//
+            finished = processing.equals(endNode);
             if (!alreadyProcessed.contains(processing)) {
                 processNode(processing, endNode);
                 alreadyProcessed.add(processing);
