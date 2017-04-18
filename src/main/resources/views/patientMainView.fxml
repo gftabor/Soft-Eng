@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -20,27 +21,20 @@
          <top>
             <VBox BorderPane.alignment="CENTER">
                <children>
-                  <HBox>
+                  <Label fx:id="mainTitle_Label" alignment="TOP_CENTER" prefHeight="37.0" prefWidth="1308.0" text="Welcome to Brigham and Women's Faulkner Hospital" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="30.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER">
                      <children>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Label fx:id="mainTitle_Label" text="Welcome to Brigham and Women's Faulkner Hospital">
-                           <font>
-                              <Font name="System Bold" size="30.0" />
-                           </font>
-                        </Label>
-                        <Region HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <HBox>
-                     <children>
-                        <ChoiceBox fx:id="language_ChoiceBox" prefHeight="20.0" prefWidth="160.0">
+                        <ChoiceBox fx:id="language_ChoiceBox" prefHeight="57.0" prefWidth="170.0">
                            <HBox.margin>
-                              <Insets bottom="3.0" left="30.0" right="3.0" top="3.0" />
+                              <Insets />
                            </HBox.margin>
                         </ChoiceBox>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Region prefWidth="200.0" />
-                        <Button fx:id="about_Button" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="About">
+                        <Region prefHeight="76.0" prefWidth="522.0" />
+                        <Button fx:id="about_Button" mnemonicParsing="false" prefHeight="57.0" prefWidth="170.0" text="About">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
@@ -48,7 +42,7 @@
                               <Font size="20.0" />
                            </font>
                         </Button>
-                        <Button fx:id="admin_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefHeight="30.0" prefWidth="160.0" text="Administrator">
+                        <Button fx:id="admin_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefHeight="57.0" prefWidth="170.0" text="Administrator">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -56,7 +50,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="30.0" prefWidth="190.0" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="57.0" prefWidth="170.0" styleClass="emergency" text="EMERGENCY">
                            <font>
                               <Font name="System Bold Italic" size="21.0" />
                            </font>
@@ -73,11 +67,11 @@
             </VBox>
          </top>
          <left>
-            <VBox prefHeight="613.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER" prefHeight="539.0" prefWidth="304.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox>
+                  <HBox alignment="CENTER">
                      <children>
-                        <Label fx:id="start_Label" minHeight="-Infinity" minWidth="-Infinity" prefWidth="90.0" text="Start">
+                        <Label fx:id="start_Label" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefWidth="90.0" text="Start">
                            <font>
                               <Font name="System Bold" size="22.0" />
                            </font>
@@ -93,12 +87,11 @@
                               <Font size="16.0" />
                            </font>
                         </TextField>
-                        <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <HBox>
+                  <HBox alignment="CENTER">
                      <children>
-                        <Label fx:id="end_Label" prefWidth="90.0" text="End">
+                        <Label fx:id="end_Label" alignment="CENTER" prefWidth="90.0" text="End">
                            <font>
                               <Font name="System Bold" size="22.0" />
                            </font>
@@ -114,12 +107,19 @@
                               <Font size="16.0" />
                            </font>
                         </TextField>
-                        <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <HBox>
+                  <HBox alignment="CENTER">
                      <children>
-                        <Button fx:id="clear_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#clearButton_Clicked" prefHeight="30.0" prefWidth="100.0" text="Clear">
+                        <Button fx:id="submit_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" prefHeight="50.0" prefWidth="115.0" text="Submit">
+                           <HBox.margin>
+                              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="clear_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#clearButton_Clicked" prefHeight="50.0" prefWidth="115.0" styleClass="cancel" text="Clear">
                            <HBox.margin>
                               <Insets bottom="3.0" left="14.0" right="3.0" top="3.0" />
                            </HBox.margin>
@@ -127,30 +127,18 @@
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Region prefWidth="40.0" />
-                        <Button fx:id="submit_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" prefHeight="30.0" prefWidth="100.0" text="Submit">
-                           <HBox.margin>
-                              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Button>
-                        <Region HBox.hgrow="ALWAYS" />
                      </children>
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox>
+                  <HBox alignment="CENTER">
                      <children>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <ChoiceBox fx:id="filter_ChoiceBox" prefHeight="30.0" prefWidth="180.0">
+                        <ChoiceBox fx:id="filter_ChoiceBox" prefHeight="44.0" prefWidth="245.0">
                            <HBox.margin>
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </HBox.margin>
                         </ChoiceBox>
-                        <Region HBox.hgrow="ALWAYS" />
                      </children>
                      <VBox.margin>
                         <Insets bottom="5.0" top="15.0" />
@@ -170,15 +158,7 @@
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <TextArea fx:id="textDescription_TextFArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="300.0">
-                           <HBox.margin>
-                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                           </HBox.margin>
-                        </TextArea>
-                     </children>
-                  </HBox>
+                  <TextArea fx:id="textDescription_TextFArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="300.0" />
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
@@ -214,12 +194,14 @@
                      </children>
                   </HBox>
                </children>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
             </VBox>
          </left>
          <bottom>
-            <HBox BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" BorderPane.alignment="CENTER">
                <children>
-                  <Region HBox.hgrow="ALWAYS" />
                   <Label text="©2017 Computer Science 3733 Team E" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets />
@@ -228,7 +210,6 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Region HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
          </bottom>
@@ -268,4 +249,8 @@
          </center>
       </BorderPane>
    </children>
+   <stylesheets>
+      <URL value="@../css/flatterfx_test.css" />
+      <URL value="@../css/styles.css" />
+   </stylesheets>
 </AnchorPane>
