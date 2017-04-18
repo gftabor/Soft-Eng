@@ -11,18 +11,18 @@ public class adminTable {
     private final SimpleStringProperty rUsername;
     private final SimpleStringProperty rFirstName;
     private final SimpleStringProperty rLastName;
-    private final SimpleStringProperty rPassword;
+    //private final SimpleStringProperty rPassword;
 
 
 
 
     //Constructor for an admin info
-    public adminTable (int sID, String rUsername, String rFirstName, String rLastName, String rPassword){
+    public adminTable (int sID, String rUsername, String rFirstName, String rLastName){
         this.rID = new SimpleIntegerProperty(sID);
         this.rUsername = new SimpleStringProperty(rUsername);
         this.rFirstName = new SimpleStringProperty(rFirstName);
         this.rLastName = new SimpleStringProperty(rLastName);
-        this.rPassword = new SimpleStringProperty(rPassword);
+        //this.rPassword = new SimpleStringProperty(rPassword);
 
 
     }
@@ -44,9 +44,7 @@ public class adminTable {
         return rLastName.get();
     }
 
-    public String getrPassword() {
-        return rPassword.get();
-    }
+    //public String getrPassword() {return rPassword.get();}
 
 
 
@@ -68,9 +66,7 @@ public class adminTable {
         this.rLastName.set(rLastName);
     }
 
-    public void setrPassword(String rPassword) {
-        this.rPassword.set(rPassword);
-    }
+    //public void setrPassword(String rPassword) {this.rPassword.set(rPassword);}
 
 
 
@@ -91,7 +87,7 @@ public class adminTable {
         return rLastName;
     }
 
-    public SimpleStringProperty rPassword() {return rPassword;}
+    //public SimpleStringProperty rPassword() {return rPassword;}
 
 
 
