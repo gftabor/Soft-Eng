@@ -190,7 +190,6 @@ public class pathFindingMenuController extends controllers.mapScene{
         }
         selectionState=0;
         System.out.println("The user has clicked the submit Button");
-        //MapController.getInstance().requestMapCopy();
     }
 
     public void multiFloorPathfind() {
