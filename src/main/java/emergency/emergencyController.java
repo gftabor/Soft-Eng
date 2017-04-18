@@ -40,7 +40,7 @@ public class emergencyController extends controllers.AbsController{
     public void mainMenuButton_Clicked() {
         System.out.println("The user clicked the main menu Button");
         //Switch screen
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
         patientMenuStart.patientMenuStartController controller = loader.getController();
         //sets the current language
         controller.setCurrentLanguage(c_language);
