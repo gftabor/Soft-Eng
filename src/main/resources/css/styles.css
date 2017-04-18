@@ -8,13 +8,14 @@
 
 
 .toggle-button:hover, .button:hover{
-    -fx-background-color: derive(-flatter-red, 80%);
+    -fx-background-color: derive(-flatter-red, 87%);
 }
 .emergency{
     -fx-background-color: -actually-red;
+    -fx-font-weight: bold;
 }
 .emergency:hover{
-    -fx-background-color: derive(-actually-red, 80%);
+    -fx-background-color: derive(-actually-red, 87%);
 }
 .cancel{
     -fx-background-color: -actually-red;
