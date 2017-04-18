@@ -10,12 +10,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -43,10 +38,10 @@ public class adminSignUpController extends controllers.AbsController{
     private Button MainMenu_Button;
 
     @FXML
-    private TableView<?> Table_TableView;
+    private TableView<adminTable> Table_TableView;
 
     @FXML
-    private TableColumn<adminTable, String> ID_TableColumn;
+    private TableColumn<adminTable, Integer> ID_TableColumn;
 
     @FXML
     private TableColumn<adminTable, String> username_TableColumn;
@@ -76,7 +71,7 @@ public class adminSignUpController extends controllers.AbsController{
     private Label Mode_Label;
 
     @FXML
-    private ChoiceBox<?> mode_ChoiceBox;
+    private ChoiceBox<String> mode_ChoiceBox;
 
     @FXML
     private HBox ID_Label;
@@ -103,7 +98,10 @@ public class adminSignUpController extends controllers.AbsController{
     private Label password_Label;
 
     @FXML
-    private TextField newPassword_TextField;
+    private PasswordField newPassword_TextField;
+
+    @FXML
+    private TextField id_textField;
 
     @FXML
     private Button cancel_Button;
@@ -114,6 +112,20 @@ public class adminSignUpController extends controllers.AbsController{
     int c_language = 0; //English by default
 
     DatabaseController databaseController = DatabaseController.getInstance();
+
+    int givID;
+    String givUsername, givFirstN, givLastN, givPassword;
+
+    //Deal with the clear button clicked
+    public void cancelButton_Clicked(){
+
+    }
+
+    //Deal with the submit button clicked
+    public void submitButton_Clicked(){
+
+    }
+
 
 
     //Sends the admin back to the main menu
@@ -194,6 +206,72 @@ public class adminSignUpController extends controllers.AbsController{
     }
 
     //sets up the tree
+    public void setUpTreeView(){
+        ID_TableColumn.setCellValueFactory(new PropertyValueFactory<adminTable, Integer>("rID"));
+        username_TableColumn.setCellValueFactory(new PropertyValueFactory<adminTable, String>("rUsername"));
+        firstName_TableColumn.setCellValueFactory(new PropertyValueFactory<adminTable, String>("rFirstName"));
+        lastName_TableColumn.setCellValueFactory(new PropertyValueFactory<adminTable, String>("rLastName"));
+        //password_TableColumn.setCellValueFactory(new PropertyValueFactory<adminTable, String>("rPassword"));
+
+        int ID;
+        String username, firstName, lastName, password;
+
+        ObservableList<adminTable> data = FXCollections.observableArrayList();
+
+        data.add(new adminTable(1, "GriffTab", "Griffin", "Tabor","1234"));
+        data.add(new adminTable(2, "GriffCec", "Griffin", "Cecil","12345"));
+        data.add(new adminTable(3, "WongWong", "Wilson", "Wong","123456"));
+
+        //Getting the infomration from the table View to the user
+        Table_TableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.getClickCount() > 1) {
+                    givID = Table_TableView.getSelectionModel().getSelectedItem().getrID();
+                    givUsername = Table_TableView.getSelectionModel().getSelectedItem().getrUsername();
+                    givFirstN = Table_TableView.getSelectionModel().getSelectedItem().getrFirstName();
+                    givLastN = Table_TableView.getSelectionModel().getSelectedItem().getrLastName();
+                    //givPassword = Table_TableView.getSelectionModel().getSelectedItem().getrPassword();
+
+                    id_textField.setText(Integer.toString(givID));
+                    userName_TextField.setText(givUsername);
+                    firstName_TextField.setText(givFirstN);
+                    lastName_TextField.setText(givLastN);
+                    //newPassword_TextField.setText(givPassword);
+                }
+            }
+        });
+
+
+        FilteredList<adminTable> filteredData = new FilteredList<>(data, e-> true);
+        search_textField.setOnKeyReleased(e -> {
+            search_textField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredData.setPredicate((Predicate<? super adminTable>) adminTable ->{
+                    if(newValue == null || newValue.isEmpty()){
+                        return true;
+                    }
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    System.out.println("");
+                    if(adminTable.getrFirstName().toLowerCase().contains(lowerCaseFilter)){
+                        return true;
+
+                    }else if(adminTable.getrLastName().toLowerCase().contains(lowerCaseFilter)){
+                        System.out.println("X");
+                        return true;
+                    }else if(adminTable.getrUsername().toLowerCase().contains(lowerCaseFilter)){
+                        return true;
+                    }
+                    return false;
+                });
+            });
+        });
+        SortedList<adminTable> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(Table_TableView.comparatorProperty());
+        Table_TableView.setItems(sortedData);
+
+
+    }
+
     /*public void setUpTreeView(){
         ID_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, Integer>("rID"));
         firstName_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rFirstName"));
@@ -322,33 +400,28 @@ public class adminSignUpController extends controllers.AbsController{
 
 
 
-    /*
+
     //Sets the english labels
     public void englishButtons_Labels(){
         //Buttons
-        addNAdmin_Button.setText("Add Administrator");
         MainMenu_Button.setText("Main Menu");
 
 
         //TextField
-        username_TextField.setPromptText("username");
-        password_PasswordField.setPromptText("password");
 
     }
 
     //sets the spanish labels
     public void spanishButtons_Labels(){
         //Buttons
-        addNAdmin_Button.setText("Agregar Administrador");
         MainMenu_Button.setText("Menu Principal");
 
 
         //TextField
-        username_TextField.setPromptText("usuario");
-        password_PasswordField.setPromptText("contrasena");
+
 
     }
-    */
+
 
     //sets the current language given information form other screens
     public void setCurrentLanguage(int i){

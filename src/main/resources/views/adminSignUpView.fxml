@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -43,10 +44,9 @@
                   <TableView fx:id="Table_TableView" fixedCellSize="0.0" prefHeight="587.0" prefWidth="976.0" tableMenuButtonVisible="true">
                     <columns>
                         <TableColumn fx:id="ID_TableColumn" prefWidth="90.3900146484375" text="ID" />
-                      <TableColumn fx:id="username_TableColumn" prefWidth="195.43374633789062" text="Username" />
-                      <TableColumn fx:id="firstName_TableColumn" minWidth="0.0" prefWidth="190.49871826171875" text="First Name" />
-                        <TableColumn fx:id="lastName_TableColumn" minWidth="0.0" prefWidth="168.4932861328125" text="Last Name" />
-                        <TableColumn fx:id="password_TableColumn" prefWidth="182.4970703125" text="Password" />
+                      <TableColumn fx:id="username_TableColumn" prefWidth="252.547607421875" text="Username" />
+                      <TableColumn fx:id="firstName_TableColumn" minWidth="0.0" prefWidth="217.452392578125" text="First Name" />
+                        <TableColumn fx:id="lastName_TableColumn" minWidth="0.0" prefWidth="274.24737548828125" text="Last Name" />
                     </columns>
                   </TableView>
                   <Label fx:id="queryStatus" text="Query Status" />
@@ -126,7 +126,7 @@
                               <Font name="System Bold Italic" size="23.0" />
                            </font>
                         </Label>
-                        <TextField editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="ID">
+                        <TextField fx:id="id_textField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="ID">
                            <HBox.margin>
                               <Insets bottom="5.0" left="25.0" right="5.0" top="1.0" />
                            </HBox.margin>
@@ -218,14 +218,11 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="newPassword_TextField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="Password">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
+                        <PasswordField fx:id="newPassword_TextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="Password">
                            <HBox.margin>
                               <Insets bottom="5.0" left="25.0" right="5.0" top="1.0" />
                            </HBox.margin>
-                        </TextField>
+                        </PasswordField>
                      </children>
                      <VBox.margin>
                         <Insets top="5.0" />
