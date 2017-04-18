@@ -241,7 +241,7 @@ public class hospitalDirectorySearchController extends controllers.AbsController
                 roomNum = rset.getString("ROOMNUM");
                 System.out.println("Name: " + firstName + lastName);
                 //CHECK FOR GRIFFINS
-                data.add(new Table(id, firstName, lastName, title, department, roomNum, "", ""));
+                data.add(new Table(id, firstName, lastName, title, department, roomNum));
             }
         } catch (SQLException e){
             e.printStackTrace();
