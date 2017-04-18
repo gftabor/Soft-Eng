@@ -213,14 +213,25 @@ public class adminSignUpController extends controllers.AbsController{
         lastName_TableColumn.setCellValueFactory(new PropertyValueFactory<adminTable, String>("rLastName"));
         //password_TableColumn.setCellValueFactory(new PropertyValueFactory<adminTable, String>("rPassword"));
 
-        int ID;
-        String username, firstName, lastName, password;
-
+        int id;
+        String userName, firstName, lastName;
+        ResultSet rset = databaseController.getTableSet("ADMIN");
         ObservableList<adminTable> data = FXCollections.observableArrayList();
 
-        data.add(new adminTable(1, "GriffTab", "Griffin", "Tabor","1234"));
-        data.add(new adminTable(2, "GriffCec", "Griffin", "Cecil","12345"));
-        data.add(new adminTable(3, "WongWong", "Wilson", "Wong","123456"));
+        try {
+            while (rset.next()){
+                id = rset.getInt("ID");
+                firstName = rset.getString("FIRSTNAME");
+                lastName = rset.getString("LASTNAME");
+                userName = rset.getString("USERNAME");
+                System.out.println("Name: " + firstName + lastName);
+                //Table table = new Table(id, firstName, lastName, title, department, roomNum);
+                data.add(new adminTable(id, userName, firstName, lastName));
+            }
+            rset.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
 
         //Getting the infomration from the table View to the user
         Table_TableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
