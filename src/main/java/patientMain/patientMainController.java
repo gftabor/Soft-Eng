@@ -300,6 +300,13 @@ public class patientMainController extends controllers.AbsController{
 
     }
 
+    public void aboutButton_clicked() {
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/aboutPageView.fxml");
+        aboutPage.aboutPageController controller = loader.getController();
+        //controller.setC_language(c_language);
+
+    }
+
 
     //Handles the action when the submit button is clicked
     public void submitButton_Clicked(){
