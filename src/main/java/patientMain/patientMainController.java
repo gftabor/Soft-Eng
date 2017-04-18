@@ -134,7 +134,7 @@ public class patientMainController extends controllers.mapScene {
     private Circle end;
 
     private final double sizeUpRatio = 1.7;
-    private final double strokeRatio = 2.5;
+    private final double strokeRatio = 4;
 
     private ArrayList<ArrayList<Edge>> globalFragList;
     private int fragPathPos; //position on the global frag list
@@ -162,7 +162,10 @@ public class patientMainController extends controllers.mapScene {
 
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
         //set continue button invisible when not needed
-        continue_Button.setVisible(false);
+//        continue_Button.setVisible(false);
+
+        //draw edges
+        //graph.drawFloorEdges(currentFloor);
     }
 
     //get an instance of database controller
@@ -170,7 +173,38 @@ public class patientMainController extends controllers.mapScene {
 
     //Continue New Button Clicked
     public void continueNewButton_Clicked(){
+        if (continue_Button.isVisible() == true) {
+            System.out.println("continue button clicked");
 
+            //increment b/c continue button
+            fragPathPos++; //continue...
+
+            //update currentfloor
+            currentFloor = globalFloorSequence.get(fragPathPos);
+
+            System.out.println("current floor displayed: " + currentFloor);
+            System.out.println("frag path pos updated to: " + fragPathPos);
+            multifloorUpdate();
+
+            //disable the continue button if you reach the end
+            //also update the color
+            if (fragPathPos == globalFragList.size() - 1) {
+                continue_Button.setVisible(false);
+
+                //set the end goal color
+                ArrayList<Circle> circleList;
+                circleList = graph.getButtonList();
+
+                for (Circle c: circleList) {
+                    if(c.getLayoutX() == endX && c.getLayoutY() == endY) {
+                        c.setStrokeWidth(strokeRatio);
+                        c.setRadius(graph.getLabelRadius()*sizeUpRatio);
+                        c.setStroke(endColor);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     //previoys Button clicked
@@ -390,7 +424,6 @@ public class patientMainController extends controllers.mapScene {
         }
         selectionState=0;
         System.out.println("The user has clicked the submit Button");
-        //MapController.getInstance().requestMapCopy();
     }
 
     public void multiFloorPathfind() {
