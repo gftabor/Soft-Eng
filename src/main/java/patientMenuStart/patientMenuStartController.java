@@ -57,6 +57,7 @@ public class patientMenuStartController extends controllers.AbsController{
     public void initialize(){
         setLanguageChoices(c_language);
 
+
     }
 
     public void setLanguageChoices(int i) {
