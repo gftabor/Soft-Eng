@@ -69,7 +69,6 @@ public class MapController {
         //wipes old verson of collection of nodess
         collectionOfNodes = new CollectionOfNodes();
         edgeCollection = new ArrayList<Edge>();
-        System.out.println("new");
         System.out.println("new map copy loading...");
         try {
             //instantiate all node objects and add to collection
