@@ -93,9 +93,11 @@ public class adminSignUpController extends controllers.AbsController{
 
     //edits admin
     //FIXME: GET THE ID FROM THE CHART SELECTION
+
+    /*
     public void editAdminButton_Clicked(){
         try {
-            if (databaseController.editAdmin(/*FILL THIS IN*/, firstName_TextField.getText(), lastName_TextField.getText(),
+            if (databaseController.editAdmin(, firstName_TextField.getText(), lastName_TextField.getText(),
                     userName_TextField.getText(), newPassword_TextField.getText())) {
                 queryStatus.setText("Admin Edited");
             } else {
@@ -112,7 +114,7 @@ public class adminSignUpController extends controllers.AbsController{
     //FIXME: GET THE ID FROM THE CHART SELECTION
     public void deleteAdminButton_Clicked(){
         try {
-            if (databaseController.deleteAdmin(/*FILL THIS IN*/) {
+            if (databaseController.deleteAdmin() {
                 queryStatus.setText("Admin Deleted");
             } else {
                 queryStatus.setText("Error Deleting Admin");
@@ -124,6 +126,7 @@ public class adminSignUpController extends controllers.AbsController{
 
          }
     }
+    */
 
     /*
     //Sets the english labels
