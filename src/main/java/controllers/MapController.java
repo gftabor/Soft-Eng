@@ -3,6 +3,7 @@ package controllers;
 import DBController.DatabaseController;
 import pathFindingMenu.Pathfinder;
 
+import javax.print.attribute.standard.Destination;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -296,12 +297,27 @@ public class MapController {
 
             if(path.get(i).getStartNode().getFloor() != path.get(i).getEndNode().getFloor()
                     || path.get(i-1).getStartNode().getFloor() != path.get(i-1).getEndNode().getFloor()) {
-                   // ) {
                 directions.add("Change Floors ");
                 continue;
             }
+            String destRoom;
+            String destName;
+            destRoom = path.get(i).getEndNode().getRoomNum();
+            destName = path.get(i).getEndNode().getName();
 
-            destination = path.get(i).getEndNode().getRoomNum();
+            Node myNode = path.get(i).getEndNode();
+            if (myNode.getIsHidden() || myNode.getType().equals("Stairwell") ||
+                    myNode.getType().equals("Elevator")) {
+                if(myNode.getIsHidden()) {
+                    int floor = myNode.getFloor();
+                    destination = "floor " + floor + " " + destName;
+                } else {
+                    destination = destName;
+                }
+            } else {
+                destination = destName + " " + destRoom;
+            }
+
             if(angle > -135.0 && angle <= -45.0) {
                 directions.add("Turn left at " + destination);
             }
