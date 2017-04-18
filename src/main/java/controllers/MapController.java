@@ -25,6 +25,8 @@ public class MapController {
     private int floorForNode1;
     private int floorForNode2;
 
+    private ArrayList<Integer> floorSequence; //list of floors for multifloor pathfinding
+
     private MapController() {
         requestMapCopy();
     }
@@ -195,23 +197,22 @@ public class MapController {
     //used for multifloor pathfinding output
     //utilizes requestPath() to get pathfinding path from start to end
     //breaks up into individual path for each edge
-    public ArrayList<Edge>[] requestFragmentedPath(ArrayList<Edge> fullList, int startingFloor, int endingFloor) {
+    public ArrayList<ArrayList<Edge>> requestFragmentedPath(ArrayList<Edge> fullList, int startingFloor, int endingFloor) {
         //fullList is given specifically from requestPath()
         //path is in reverse order!!!
         Collections.reverse(fullList);
 
         //initialize fragmented list
-        ArrayList<Edge> [] fragmentedList = new ArrayList [10];
-        //put null references to avoid index out of bounds errors
-        for (int i = 0; i <= 8; i++) {
-            fragmentedList[i] = null;
-        }
+        ArrayList<ArrayList<Edge>> fragmentedList = new ArrayList<>();
+
+        //initialize floor sequence
+        floorSequence = new ArrayList<>();
 
         int currentFloor = startingFloor;
         ArrayList<Edge> currentlist = new ArrayList<>();
 
         for (Edge e: fullList) {
-            System.out.println("Edge (floor) from " + e.getStartNode().getFloor()+ " to" + e.getEndNode().getFloor());
+            System.out.println("Edge (floor) from " + e.getStartNode().getFloor()+ " to " + e.getEndNode().getFloor());
 
 
             //if change in floor, close off this list of edges
@@ -220,7 +221,9 @@ public class MapController {
                 if (!currentlist.isEmpty()) {
 
                     System.out.println("created frag path on floor: " + Integer.toString(currentFloor));
-                    fragmentedList[currentFloor] = currentlist;
+                    floorSequence.add(currentFloor);
+                    fragmentedList.add(currentlist);
+                    System.out.println("frag list size updated to: " + fragmentedList.size());
 
                 }
 
@@ -235,8 +238,9 @@ public class MapController {
                 }
                 System.out.println("currentfloor updated to: " + Integer.toString(currentFloor));
 
-                //don't add a transition edge unless you are on the currentfloor or the ending floor
+                //don't add a transition edge unless you are on the starting floor or the ending floor
                 if (currentFloor != startingFloor && currentFloor != endingFloor) {
+                    System.out.println("skipping above edge");
                     continue;
                 }
             }
@@ -247,7 +251,8 @@ public class MapController {
 
         //add the final list to the fraglist
         System.out.println("finished loop created frag path on floor: " + Integer.toString(currentFloor));
-        fragmentedList[currentFloor] = currentlist;
+        floorSequence.add(currentFloor);
+        fragmentedList.add(currentlist);
 
         return fragmentedList;
     }
@@ -373,5 +378,15 @@ public class MapController {
         double angle = Math.toDegrees(Math.atan2(e1X*e2Y - e1Y*e2X, e1X*e2X + e1Y*e2Y));
         System.out.println(angle);
         return angle;
+    }
+
+    //get method for the floor list
+    public ArrayList<Integer> getFloorSequence() {
+        if (floorSequence == null) {
+            System.out.println("floor sequence is null!!");
+            return null;
+        } else {
+            return floorSequence;
+        }
     }
 }

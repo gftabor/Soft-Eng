@@ -99,7 +99,9 @@ public class pathFindingMenuController extends controllers.mapScene{
     private controllers.MapOverlay graph;
     private MapController mapController = MapController.getInstance();
 
-    private ArrayList<Edge> [] globalFragList;
+    private ArrayList<ArrayList<Edge>> globalFragList;
+    private int fragPathPos; //position on the global frag list
+    private ArrayList<Integer> globalFloorSequence;
 
     //flags for the english/spanish feature
     int c_language = 0;
@@ -194,6 +196,8 @@ public class pathFindingMenuController extends controllers.mapScene{
     public void multiFloorPathfind() {
         //initialize reference of the global frag list to null (set up)
         globalFragList = null;
+        globalFloorSequence = null;
+        fragPathPos = 0;
 
         //set continue button visible
         continue_Button.setVisible(true);
@@ -207,7 +211,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         floor_ChoiceBox.getSelectionModel().select(startfloor - 1);
         System.out.println("Current floor: " + Integer.toString(currentFloor) + " :)");
 
-        //maintain consistency of colors - doesn't work - references go missing
+        //todo: maintain consistency of colors - doesn't work - references go missing
         // start.setStrokeWidth(strokeRatio);
         // start.setStroke(Color.ORANGERED);
         //start.setRadius(graph.getLabelRadius());
@@ -220,26 +224,44 @@ public class pathFindingMenuController extends controllers.mapScene{
         //original call below >
         //graph.createEdgeLines(reqPath);
         System.out.println("=====================");
-        ArrayList<Edge> [] fragPath;
+        ArrayList<ArrayList<Edge>> fragPath;
         fragPath = mapController.requestFragmentedPath(reqPath, mapController.returnOriginalFloor(), mapController.returnDestFloor());
+
+        System.out.println("frag path info:");
+        System.out.println("---");
+        System.out.println("size: " + fragPath.size());
+        System.out.println("---");
+        for (int i = 0; i < fragPath.size(); i++) {
+            System.out.println(fragPath.get(i).size());
+        }
+        System.out.println("-----");
         System.out.println("=====================");
 
-        System.out.println("printing the fragmented path, floor = " + Integer.toString(startfloor));
+        System.out.println("printing the fragmented path for (startfloor) floor = " + Integer.toString(startfloor));
         //loop and display the edges per floor - use the startfloor
 
 
-        if (fragPath[startfloor] == null) {
+        if (fragPath.get(0) == null) {
             //only occurs if the first transition is a null
             //instead just highlight the first thing
 
-            //to do -> highlight
+            //todo -> highlight
 
         } else {
-            graph.createEdgeLines(fragPath[startfloor]);
+            graph.createEdgeLines(fragPath.get(0));
         }
 
-        //set the global so you can send to the continue button
+        //set the globals so you can send to the continue button
         globalFragList = fragPath;
+        globalFloorSequence = mapController.getFloorSequence();
+
+        //print floor sequence (testing)
+        System.out.println("_____");
+        System.out.println("floor sequence: ");
+        for (int i = 0; i < globalFloorSequence.size(); i++) {
+            System.out.println(globalFloorSequence.get(i));
+        }
+        System.out.println("_____");
 
 
     }
@@ -414,47 +436,19 @@ public class pathFindingMenuController extends controllers.mapScene{
 
         if (continue_Button.isVisible() == true) {
             System.out.println("continue button clicked");
-            System.out.println("going up:" );
-            System.out.println(mapController.goingUp());
-            if (mapController.goingUp()) {
 
-                //loop until you hit the top of the hospital
-                while (currentFloor != 8) {
-                    System.out.println("going up loop");
+            //increment b/c continue button
+            fragPathPos++; //continue...
 
-                    //increment floor
-                    currentFloor ++;
+            //update currentfloor
+            currentFloor = globalFloorSequence.get(fragPathPos);
 
-                    //if there are no edges of interest, do not display them
-                    if (globalFragList[currentFloor] == null || globalFragList[currentFloor].isEmpty()) {
-                        continue;
-                    }
-                    multifloorUpdate();
-
-                    break;
-
-                }
-            } else {
-                //loop until you hit the bottom of the hospital
-                while (currentFloor != 0) {
-                    System.out.println("going down loop");
-                    //decrement floor
-                    currentFloor --;
-
-                    //if there are no edges of interest, do not display them
-                    if (globalFragList[currentFloor] == null || globalFragList[currentFloor].isEmpty()) {
-                        continue;
-                    }
-                    multifloorUpdate();
-
-                    break;
-                }
-
-            }
+            System.out.println("current floor displayed: " + currentFloor);
+            System.out.println("frag path pos updated to: " + fragPathPos);
+            multifloorUpdate();
 
             //disable the continue button if you reach the end
-            int destFloor = mapController.returnDestFloor();
-            if (currentFloor == destFloor) {
+            if (fragPathPos == globalFragList.size() - 1) {
                 continue_Button.setVisible(false);
             }
         }
@@ -462,65 +456,66 @@ public class pathFindingMenuController extends controllers.mapScene{
 
     //abstracted floor refresh for multifloor pathfinding
     public void multifloorUpdate() {
-        System.out.println(currentFloor + "   " + globalFragList[currentFloor].size());
+        System.out.println("cf: " + currentFloor + "   size: " + globalFragList.get(fragPathPos).size());
 
         //otherwise, change to the appropriate screen and display edges
         graph.wipeEdgeLines();
         floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
-        graph.createEdgeLines(globalFragList[currentFloor]);
+        System.out.println("creating edge lines for fp pos: " + fragPathPos);
+        graph.createEdgeLines(globalFragList.get(fragPathPos));
     }
 
-    public void previousButton_Clicked() {
-
-        //todo: fix continue button check later
-        if (continue_Button.isVisible() == true) {
-            System.out.println(".previous. button clicked");
-            System.out.println("going up:" );
-            System.out.println(mapController.goingUp());
-            if (mapController.goingUp()) {
-
-                //loop until you hit the top of the hospital
-                while (currentFloor != 0) {
-                    System.out.println("Prev: going down loop");
-
-                    //increment floor
-                    currentFloor --;
-
-                    //if there are no edges of interest, do not display them
-                    if (globalFragList[currentFloor] == null || globalFragList[currentFloor].isEmpty()) {
-                        continue;
-                    }
-                    multifloorUpdate();
-
-                    break;
-
-                }
-            } else {
-                //loop until you hit the bottom of the hospital
-                while (currentFloor != 8) {
-
-                    System.out.println("Prev: going up loop");
-                    //decrement floor
-                    currentFloor ++;
-
-                    //if there are no edges of interest, do not display them
-                    if (globalFragList[currentFloor] == null || globalFragList[currentFloor].isEmpty()) {
-                        continue;
-                    }
-                    multifloorUpdate();
-
-                    break;
-                }
-
-            }
-
-            //disable the continue button if you reach the end
-            int startFloor = mapController.returnOriginalFloor();
-            if (currentFloor == startFloor) {
-                //todo fix later - set to prev button
-//                continue_Button.setVisible(false);
-            }
-        }
-    }
+//    public void previousButton_Clicked() {
+//
+//        //todo: fix continue button check later
+//        if (continue_Button.isVisible() == true) {
+//            System.out.println(".previous. button clicked");
+//            System.out.println("going up:" );
+//            System.out.println(mapController.goingUp());
+//            if (mapController.goingUp()) {
+//
+//                //loop until you hit the top of the hospital
+//                while (currentFloor != 0) {
+//                    System.out.println("Prev: going down loop");
+//
+//                    //increment floor
+//                    currentFloor --;
+//
+//                    //if there are no edges of interest, do not display them
+//                    if (globalFragList[currentFloor] == null || globalFragList[currentFloor].isEmpty()) {
+//                        continue;
+//                    }
+//                    multifloorUpdate();
+//
+//                    break;
+//
+//                }
+//            } else {
+//                //loop until you hit the bottom of the hospital
+//                while (currentFloor != 8) {
+//
+//                    System.out.println("Prev: going up loop");
+//                    //decrement floor
+//                    currentFloor ++;
+//
+//                    //if there are no edges of interest, do not display them
+//                    if (globalFragList[currentFloor] == null || globalFragList[currentFloor].isEmpty()) {
+//                        continue;
+//                    }
+//                    multifloorUpdate();
+//
+//                    break;
+//                }
+//
+//            }
+//
+//            //disable the continue button if you reach the end
+//            int startFloor = mapController.returnOriginalFloor();
+//            if (currentFloor == startFloor) {
+//                //todo fix later - set to prev button
+////                continue_Button.setVisible(false);
+//            }
+//        }
+//    }
 
 }
