@@ -224,11 +224,9 @@ public class pathFindingMenuController extends controllers.mapScene{
         //switch floors to original floor's pathfinding view
         int startfloor = mapController.returnOriginalFloor();
         currentFloor_Label.setText(Integer.toString(startfloor));
-        System.out.println("startfloor: " + Integer.toString(startfloor));
 
         //switch back to the original floor using the choicebox selection
         floor_ChoiceBox.getSelectionModel().select(startfloor - 1);
-        System.out.println("Current floor: " + Integer.toString(currentFloor) + " :)");
 
         //maintain consistency of colors
         ArrayList<Circle> tempCircleList;
@@ -252,21 +250,9 @@ public class pathFindingMenuController extends controllers.mapScene{
         } else {
             textDescription_TextFArea.setText(mapController.getTextDirections(reqPath));
 
-            System.out.println("=====================");
             ArrayList<ArrayList<Edge>> fragPath;
             fragPath = mapController.requestFragmentedPath(reqPath, mapController.returnOriginalFloor(), mapController.returnDestFloor());
-
-            System.out.println("frag path info:");
-            System.out.println("---");
-            System.out.println("size: " + fragPath.size());
-            System.out.println("---");
-            for (int i = 0; i < fragPath.size(); i++) {
-                System.out.println(fragPath.get(i).size());
-            }
-            System.out.println("-----");
-            System.out.println("=====================");
-
-            System.out.println("printing the fragmented path for (startfloor) floor = " + Integer.toString(startfloor));
+            
             //loop and display the edges per floor - use the startfloor
 
 
@@ -285,12 +271,9 @@ public class pathFindingMenuController extends controllers.mapScene{
             globalFloorSequence = mapController.getFloorSequence();
 
             //print floor sequence (testing)
-            System.out.println("_____");
-            System.out.println("floor sequence: ");
             for (int i = 0; i < globalFloorSequence.size(); i++) {
                 System.out.println(globalFloorSequence.get(i));
             }
-            System.out.println("_____");
         }
 
 
