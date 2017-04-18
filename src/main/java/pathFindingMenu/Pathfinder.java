@@ -85,6 +85,7 @@ public class Pathfinder {
         startNode.setCostToReach(0);
         algorithm.addNode(startNode);
         boolean finished = false;
+        int tries =0;
         while (!finished) {
             Node processing = algorithm.getNode();
             if(processing == null)
@@ -94,7 +95,9 @@ public class Pathfinder {
                 processNode(processing, endNode);
                 alreadyProcessed.add(processing);
             }
+            tries ++;
         }
+        System.out.println("had to search  " + tries);
         Node viewingNode = endNode;
         while(!viewingNode.equals(startNode) && finished){
             path.add(viewingNode.getParentEdge());
