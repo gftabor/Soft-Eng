@@ -23,7 +23,7 @@ public class Main extends Application {
         //Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("/views/patientMenuStartView.fxml"));
         Parent root = FXMLLoader.load(getClass().getResource("/views/patientMainView.fxml"));
 
-        primaryStage.setTitle("Iteration 2 Expanded Application");
+        primaryStage.setTitle("Iteration 3 Professional Prototype");
         //primaryStage.setFullScreen(true);
         //primaryStage.setMaximized(true);
         primaryStage.setScene(new Scene(root, 1274, 710));
