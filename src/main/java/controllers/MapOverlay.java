@@ -137,4 +137,9 @@ public class MapOverlay {
     public double getLabelRadius() {
         return labelRadius;
     }
+
+    //get method for the circle list (buttonList)
+    public ArrayList<Circle> getButtonList() {
+        return ButtonList;
+    }
 }

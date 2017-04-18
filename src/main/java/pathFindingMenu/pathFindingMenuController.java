@@ -86,6 +86,8 @@ public class pathFindingMenuController extends controllers.mapScene{
 
     private double startX;
     private double startY;
+    private double endX;
+    private double endY;
 
 
     private Circle btK;
@@ -94,7 +96,9 @@ public class pathFindingMenuController extends controllers.mapScene{
     private int currentFloor;
 
     private final double sizeUpRatio = 1.7;
-    private final double strokeRatio = 2.5;
+    private final double strokeRatio = 4;
+    private final Color startColor = Color.RED;
+    private final Color endColor = Color.GREEN;
 
     private controllers.MapOverlay graph;
     private MapController mapController = MapController.getInstance();
@@ -165,6 +169,13 @@ public class pathFindingMenuController extends controllers.mapScene{
         //hide the continue button
         continue_Button.setVisible(false);
 
+        //reset the startx, starty, endx, endy
+        startX = -9999999;
+        startY = -9999999;
+        endX = -9999999;
+        endY = -9999999;
+
+
     }
 
     public void submitButton_Clicked(){
@@ -210,18 +221,24 @@ public class pathFindingMenuController extends controllers.mapScene{
         floor_ChoiceBox.getSelectionModel().select(startfloor - 1);
         System.out.println("Current floor: " + Integer.toString(currentFloor) + " :)");
 
-        //todo: maintain consistency of colors - doesn't work - references go missing
-        // start.setStrokeWidth(strokeRatio);
-        // start.setStroke(Color.ORANGERED);
-        //start.setRadius(graph.getLabelRadius());
+        //maintain consistency of colors
+        ArrayList<Circle> tempCircleList;
+        tempCircleList = graph.getButtonList();
+        for (Circle c: tempCircleList) {
+            if(c.getLayoutX() == startX && c.getLayoutY() == startY) {
+                c.setStrokeWidth(strokeRatio);
+                c.setRadius(graph.getLabelRadius()*sizeUpRatio);
+                c.setStroke(startColor);
+                break;
+            }
+        }
+
 
         //reset for next pathfinding session
         MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
         ArrayList<Edge> reqPath = mapController.requestPath();
         textDescription_TextFArea.setText(mapController.getTextDirections(reqPath));
 
-        //original call below >
-        //graph.createEdgeLines(reqPath);
         System.out.println("=====================");
         ArrayList<ArrayList<Edge>> fragPath;
         fragPath = mapController.requestFragmentedPath(reqPath, mapController.returnOriginalFloor(), mapController.returnDestFloor());
@@ -240,7 +257,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         //loop and display the edges per floor - use the startfloor
 
 
-        if (fragPath.get(0) == null) {
+        if (fragPath.get(0).size() == 0) {
             //only occurs if the first transition is a null
             //instead just highlight the first thing
 
@@ -321,10 +338,12 @@ public class pathFindingMenuController extends controllers.mapScene{
             start =c;
             //color
             c.setStrokeWidth(strokeRatio);
-            c.setStroke(Color.ORANGERED);
+            c.setStroke(startColor);
 
-            startX = c.getCenterX();
-            startY = c.getCenterY();
+            //location
+            startX = c.getLayoutX();
+            startY = c.getLayoutY();
+            System.out.println("Start coords updated: " + startX + "," + startY);
 
             //size
             c.setRadius(graph.getLabelRadius() * sizeUpRatio);
@@ -338,7 +357,12 @@ public class pathFindingMenuController extends controllers.mapScene{
             end = c;
             //color
             c.setStrokeWidth(strokeRatio);
-            c.setStroke(Color.FUCHSIA);
+            c.setStroke(endColor);
+
+            //location
+            endX = c.getLayoutX();
+            endY = c.getLayoutY();
+            System.out.println("End coords updated: " + endX + "," + endY);
 
             //size
             c.setRadius(graph.getLabelRadius() * sizeUpRatio);
@@ -447,8 +471,26 @@ public class pathFindingMenuController extends controllers.mapScene{
             multifloorUpdate();
 
             //disable the continue button if you reach the end
+            //also update the color
             if (fragPathPos == globalFragList.size() - 1) {
                 continue_Button.setVisible(false);
+
+                //set the end goal color
+                ArrayList<Circle> circleList;
+                circleList = graph.getButtonList();
+
+                System.out.println("+++++++++++++++++++++");
+                System.out.println("Trying to find coords: " + endX + ", " + endY);
+                for (Circle c: circleList) {
+                    if(c.getLayoutX() == endX && c.getLayoutY() == endY) {
+                        System.out.println("Found!!!");
+                        c.setStrokeWidth(strokeRatio);
+                        c.setRadius(graph.getLabelRadius()*sizeUpRatio);
+                        c.setStroke(endColor);
+                        break;
+                    }
+                }
+                System.out.println("+++++++++++++++++++++");
             }
         }
     }
