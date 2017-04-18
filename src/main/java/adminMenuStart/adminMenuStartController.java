@@ -245,7 +245,7 @@ public class adminMenuStartController extends controllers.AbsController{
         mapManagement_Button.setText("Map Management");
         SignOut_Button.setText("Sign Out");
         emergency_Button.setText("EMERGENCY");
-        addAdmin_Button.setText("Add");
+        addAdmin_Button.setText("Add Admin");
 
         //Change the labels
         title_Label.setText("Welcome to Faulkner Hospital");
@@ -263,7 +263,7 @@ public class adminMenuStartController extends controllers.AbsController{
         mapManagement_Button.setText("Control de Mapa");
         SignOut_Button.setText("Salir");
         emergency_Button.setText("EMERGENCIA");
-        addAdmin_Button.setText("Agregar");
+        addAdmin_Button.setText("Agregar Admin");
         //change the Labels
         title_Label.setText("Bienvenidos al Hospital de Faulkner");
 
