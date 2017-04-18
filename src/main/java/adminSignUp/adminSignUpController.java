@@ -87,7 +87,42 @@ public class adminSignUpController extends controllers.AbsController{
         }
         catch(Exception e){
             queryStatus.setText("ERROR: Exception");
+            e.printStackTrace();
         }
+    }
+
+    //edits admin
+    //FIXME: GET THE ID FROM THE CHART SELECTION
+    public void editAdminButton_Clicked(){
+        try {
+            if (databaseController.editAdmin(/*FILL THIS IN*/, firstName_TextField.getText(), lastName_TextField.getText(),
+                    userName_TextField.getText(), newPassword_TextField.getText())) {
+                queryStatus.setText("Admin Edited");
+            } else {
+                queryStatus.setText("Error Edit Admin");
+            }
+        }
+        catch(Exception e){
+            queryStatus.setText("ERROR: Exception");
+            e.printStackTrace();
+        }
+    }
+
+    //deletes admin from database
+    //FIXME: GET THE ID FROM THE CHART SELECTION
+    public void deleteAdminButton_Clicked(){
+        try {
+            if (databaseController.deleteAdmin(/*FILL THIS IN*/) {
+                queryStatus.setText("Admin Deleted");
+            } else {
+                queryStatus.setText("Error Deleting Admin");
+            }
+        }
+        catch(Exception e){
+            queryStatus.setText("ERROR: Exception");
+            e.printStackTrace();
+
+         }
     }
 
     /*
