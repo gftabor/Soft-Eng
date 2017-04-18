@@ -1,5 +1,11 @@
 package adminSignUp;
 import DBController.DatabaseController;
+import hospitalDirectorySearch.Table;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 
 import javafx.fxml.FXMLLoader;
@@ -9,8 +15,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.function.Predicate;
 
 /**
  * Created by AugustoR on 4/17/17.
@@ -35,16 +47,16 @@ public class adminSignUpController extends controllers.AbsController{
     private TableColumn<Table, String> ID_TableColumn;
 
     @FXML
-    private TableColumn<?, ?> username_TableColumn;
+    private TableColumn<Table, String> username_TableColumn;
 
     @FXML
-    private TableColumn<?, ?> firstName_TableColumn;
+    private TableColumn<Table, String> firstName_TableColumn;
 
     @FXML
-    private TableColumn<?, ?> lastName_TableColumn;
+    private TableColumn<Table, String> lastName_TableColumn;
 
     @FXML
-    private TableColumn<?, ?> password_TableColumn;
+    private TableColumn<Table, String> password_TableColumn;
 
     @FXML
     private Label queryStatus;
@@ -179,6 +191,8 @@ public class adminSignUpController extends controllers.AbsController{
          }
     }
 
+
+    
 
     /*
     //Sets the english labels

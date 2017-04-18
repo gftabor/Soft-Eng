@@ -15,13 +15,22 @@ public class Table {
     private final SimpleStringProperty rType;
     private final SimpleStringProperty rRoom;
 
-    public Table(int sID, String sFirstName, String sLastName, String sTitle, String sType, String sRoom){
+    //Admin Management Attributes ASK GRIFFIN T
+    private final SimpleStringProperty rUsername;
+    private final SimpleStringProperty rPassword;
+
+
+    //Constructor for an admin info
+    public Table (int sID, String sFirstName, String sLastName, String sTitle, String sType, String sRoom,
+                  String sUsername, String sPassword){
         this.rID = new SimpleIntegerProperty(sID);
         this.rFirstName = new SimpleStringProperty(sFirstName);
         this.rLastName = new SimpleStringProperty(sLastName);
         this.rTitle = new SimpleStringProperty(sTitle);
         this.rType = new SimpleStringProperty(sType);
         this.rRoom = new SimpleStringProperty(sRoom);
+        this.rUsername = new SimpleStringProperty(sUsername);
+        this.rPassword = new SimpleStringProperty(sPassword);
 
     }
 
@@ -49,6 +58,10 @@ public class Table {
     public String getrRoom() {
         return rRoom.get();
     }
+    //Admin attributes
+    public String getrUsername(){return rUsername.get();}
+
+    public String getrPassword(){return rPassword.get();}
 
 
     //Setters
@@ -75,6 +88,15 @@ public class Table {
     public void setrRoom(String rRoom) {
         this.rRoom.set(rRoom);
     }
+    //Admin attributes
+    public void setrUsername(String rUsername) {
+        this.rUsername.set(rUsername);
+    }
+
+    public void setrPassword(String rPassword) {
+        this.rPassword.set(rPassword);
+    }
+
 
     //Properties Might not be useful
     public SimpleIntegerProperty rIDProperty() {
@@ -89,7 +111,6 @@ public class Table {
         return rLastName;
     }
 
-
     public SimpleStringProperty rTitleProperty() {
         return rTitle;
     }
@@ -101,4 +122,13 @@ public class Table {
     public SimpleStringProperty rRoomProperty() {
         return rRoom;
     }
+    //Admin Attributes
+    public  SimpleStringProperty rUsernameProperty() {
+        return rUsername;
+    }
+
+    public  SimpleStringProperty rPasswordProperty() {
+        return rPassword;
+    }
+
 }

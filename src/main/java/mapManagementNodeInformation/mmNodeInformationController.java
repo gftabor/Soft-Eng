@@ -393,7 +393,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                 roomNum = rset.getString("ROOMNUM");
                 System.out.println("Name: " + firstName + lastName);
                 //Table table = new Table(id, firstName, lastName, title, department, roomNum);
-                data.add(new Table(id, firstName, lastName, title, department, roomNum));
+                data.add(new Table(id, firstName, lastName, title, department, roomNum, "", ""));
             }
             rset.close();
         } catch (SQLException e){
@@ -417,7 +417,9 @@ public class mmNodeInformationController extends controllers.AbsController {
                 }
                 System.out.println("Name: " + firstName + lastName);
                 if (!ids.contains(id)) {
-                    Table table = new Table(id, firstName, lastName, title, department, roomNum = "");
+                    //Something bad happened
+                    roomNum= "empty";
+                    Table table = new Table(id, firstName, lastName, title, department, roomNum , "", "");
                     data.add(table);
                 }
             }
