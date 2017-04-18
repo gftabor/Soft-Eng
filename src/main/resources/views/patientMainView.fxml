@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -15,7 +22,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="patientMain.patientMainController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="patientMain.patientMainController">
    <children>
       <BorderPane layoutX="96.0" layoutY="187.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -33,8 +40,16 @@
                               <Insets />
                            </HBox.margin>
                         </ChoiceBox>
-                        <Region prefHeight="76.0" prefWidth="522.0" />
-                        <Button fx:id="about_Button" mnemonicParsing="false" prefHeight="57.0" prefWidth="170.0" text="About">
+                        <Region prefHeight="76.0" prefWidth="301.0" />
+                        <Button fx:id="directory_Button" mnemonicParsing="false" onMouseClicked="#directoryClicked" prefHeight="57.0" prefWidth="218.0" text="Directory Search">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="about_Button" mnemonicParsing="false" onMouseClicked="#aboutButton_clicked" prefHeight="57.0" prefWidth="170.0" text="About">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
@@ -119,7 +134,7 @@
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="clear_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#clearButton_Clicked" prefHeight="50.0" prefWidth="115.0" styleClass="cancel" text="Clear">
+                        <Button fx:id="cancel_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#cancelButton_Clicked" prefHeight="50.0" prefWidth="115.0" styleClass="cancel" text="Clear">
                            <HBox.margin>
                               <Insets bottom="3.0" left="14.0" right="3.0" top="3.0" />
                            </HBox.margin>
@@ -193,6 +208,7 @@
                         </Button>
                      </children>
                   </HBox>
+                  <Label fx:id="phoneStatus" prefHeight="21.0" prefWidth="0.0" />
                </children>
                <padding>
                   <Insets left="5.0" right="5.0" />
@@ -200,8 +216,9 @@
             </VBox>
          </left>
          <bottom>
-            <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="47.0" prefWidth="1274.0" BorderPane.alignment="CENTER">
                <children>
+                  <Region prefHeight="37.0" prefWidth="408.0" />
                   <Label text="©2017 Computer Science 3733 Team E" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets />
@@ -210,6 +227,12 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
+                  <Region prefHeight="37.0" prefWidth="343.0" />
+                  <Button fx:id="continue_Button" mnemonicParsing="false" onMouseClicked="#continueButton_Clicked" text="Continue">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
                </children>
             </HBox>
          </bottom>
@@ -243,7 +266,14 @@
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <Pane prefHeight="544.0" prefWidth="974.0" />
+                  <Pane fx:id="node_Plane" prefHeight="544.0" prefWidth="974.0">
+                     <children>
+                        <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="920.0" onMouseClicked="#continueButton_Clicked">
+                           <image>
+                              <Image url="@../images/4.png" />
+                           </image>
+                        </ImageView>
+                     </children></Pane>
                </children>
             </VBox>
          </center>
