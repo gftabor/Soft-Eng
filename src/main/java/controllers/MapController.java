@@ -291,36 +291,33 @@ public class MapController {
             return null;
         for(int i = path.size()-1; i > 0; i--) {
             double angle = getAngle(path.get(i), path.get(i-1));
+            
             if(path.get(i).getStartNode().getFloor() != path.get(i).getEndNode().getFloor() ||
                     path.get(i-1).getStartNode().getFloor() != path.get(i-1).getEndNode().getFloor()) {
                 directions.add("Change Floors ");
                 continue;
             }
+
+            destination = path.get(i).getEndNode().getRoomNum();
             if(angle > -135.0 && angle <= -45.0) {
-                destination = path.get(i).getEndNode().getRoomNum();
                 directions.add("Turn left at " + destination);
             }
             else if(angle >= 45.0 && angle < 135.0) {
-                destination = path.get(i).getEndNode().getRoomNum();
                 directions.add("Turn right at " + destination);
             }
             else if(angle > 10.0 && angle < 45.0) {
-                destination = path.get(i).getEndNode().getRoomNum();
                 directions.add("Make a slight right at " + destination);
             }
             else if(angle >= -10.0 && angle <= 10.0){
                 directions.add("Continue straight.");
             }
             else if(angle > -45.0 && angle < -10.0) {
-                destination = path.get(i).getEndNode().getRoomNum();
                 directions.add("Make a slight left at " + destination);
             }
             else if(angle > 135.0 && angle < 180.0) {
-                destination = path.get(i).getEndNode().getRoomNum();
                 directions.add("Make a hard right at " + destination);
             }
             else if(angle > -180.0 && angle < -135.0) {
-                destination = path.get(i).getEndNode().getRoomNum();
                 directions.add("Make a hard left at " + destination);
             }else{
                 directions.add("nothing");
