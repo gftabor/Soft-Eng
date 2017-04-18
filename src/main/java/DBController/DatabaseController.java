@@ -611,6 +611,97 @@ public class DatabaseController {
         return resultSet;
     }
 
+    // returns english department list
+    public ArrayList<String> getEnglishDepartmentList(){
+        ArrayList<String> departments = new ArrayList<>();
+        String department;
+        ResultSet rset = databaseController.getDepartmentNames();
+        try {
+            while (rset.next()) {
+                department = rset.getString("DEPARTMENT");
+                if (!departments.contains(department)) {
+                    departments.add(department);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return departments;
+    }
+
+    // returns spanish department list
+    public ArrayList<String> getSpanishDepartmentList(){
+        ArrayList<String> departments = new ArrayList<>();
+        String department;
+        ResultSet rset = databaseController.getSpanishDepartmentNames();
+        try {
+            while (rset.next()) {
+                department = rset.getString("SPDEPARTMENT");
+                System.out.println("In the database -- getting spanish department: "+ department);
+                if (!departments.contains(department) && department != null) {
+                    departments.add(department);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return departments;
+    }
+
+    // returns english type list
+    public ArrayList<String> getEnglishTitleList(){
+        ResultSet resultSet = null;
+        String title;
+        ArrayList<String> titles = new ArrayList<>();
+        System.out.println(
+                String.format(
+                        "Getting all professional english title as a list"));
+        try{
+            String query = "SELECT TYPE FROM PROFESSIONAL";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                title = resultSet.getString("TYPE");
+                if (!titles.contains(title)) {
+                    titles.add(title);
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return titles;
+    }
+
+    //returns spanish type list
+    public ArrayList<String> getSpanishTitleList(){
+        ResultSet resultSet = null;
+        String title;
+        ArrayList<String> titles = new ArrayList<>();
+        System.out.println(
+                String.format(
+                        "Getting all professional spanish title as a list"));
+        try{
+            String query = "SELECT SPTYPE FROM PROFESSIONAL";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                title = resultSet.getString("SPTYPE");
+                if (!titles.contains(title)) {
+                    titles.add(title);
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return titles;
+    }
+
     /*******************************************************************************
      * PROFESSIONAL - LOCATION actions
      *
@@ -713,60 +804,30 @@ public class DatabaseController {
         return true;
     }
 
-    // returns english department list
-    public ArrayList<String> getEnglishDepartmentList(){
-        ArrayList<String> departments = new ArrayList<>();
-        String department;
-        ResultSet rset = databaseController.getDepartmentNames();
-        try {
-            while (rset.next()) {
-                department = rset.getString("DEPARTMENT");
-                if (!departments.contains(department)) {
-                    departments.add(department);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return departments;
-    }
+    public ArrayList<String> getProfessionalList(){
 
-    // returns spanish department list
-    public ArrayList<String> getSpanishDepartmentList(){
-        ArrayList<String> departments = new ArrayList<>();
-        String department;
-        ResultSet rset = databaseController.getSpanishDepartmentNames();
-        try {
-            while (rset.next()) {
-                department = rset.getString("SPDEPARTMENT");
-                System.out.println("In the database -- getting spanish department: "+ department);
-                if (!departments.contains(department) && department != null) {
-                    departments.add(department);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return departments;
-    }
+        System.out.println("Getting all professionals, appending title and department, roomnum");
 
-    // returns english type list
-    public ArrayList<String> getEnglishProfessionalTitleList(){
         ResultSet resultSet = null;
-        String title;
-        ArrayList<String> titles = new ArrayList<>();
-        System.out.println(
-                String.format(
-                        "Getting all professional english title as a list"));
+        ArrayList<String> professionals = new ArrayList<>();
+        String professional = "";
+
         try{
-            String query = "SELECT TYPE FROM PROFESSIONAL";
+            String query = "SELECT P.FIRSTNAME, P.LASTNAME, P.DEPARTMENT, N.ROOMNUM " +
+                    "FROM PROFESSIONAL P, NODE N, PROLOCATION PL " +
+                    "WHERE P.ID = PL.PROID AND PL.XPOS = N.XPOS AND PL.YPOS = N.YPOS AND " +
+                    "PL.FLOOR = N.FLOOR";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             // run statement and query
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                title = resultSet.getString("TYPE");
-                if (!titles.contains(title)) {
-                    titles.add(title);
+                professional = resultSet.getString("FIRSTNAME") + " " +
+                        resultSet.getString("LASTNAME") + ", " +
+                        resultSet.getString("DEPARTMENT") + ", " +
+                        resultSet.getString("ROOMNUM");
+                System.out.println("Entire professional string: " + professional);
+                if (!professionals.contains(professional)) {
+                    professionals.add(professional);
                 }
             }
         } catch (SQLException e){
@@ -774,34 +835,8 @@ public class DatabaseController {
             return null;
         }
 
-        return titles;
-    }
+        return professionals;
 
-    //returns spanish type list
-    public ArrayList<String> getSpanishProfessionalTitleList(){
-        ResultSet resultSet = null;
-        String title;
-        ArrayList<String> titles = new ArrayList<>();
-        System.out.println(
-                String.format(
-                        "Getting all professional spanish title as a list"));
-        try{
-            String query = "SELECT SPTYPE FROM PROFESSIONAL";
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-            // run statement and query
-            resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                title = resultSet.getString("SPTYPE");
-                if (!titles.contains(title)) {
-                    titles.add(title);
-                }
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
-            return null;
-        }
-
-        return titles;
     }
 
 
@@ -810,24 +845,23 @@ public class DatabaseController {
      *
      ******************************************************************************/
 
-    public boolean newAdmin(int ID, String firstName, String lastName, String userName, String password){
+    public boolean newAdmin(String firstName, String lastName, String userName, String password){
         String encrypted = BCrypt.hashpw(password, BCrypt.gensalt());
 
         System.out.println(
                 String.format(
-                        "Adding Admin. ID: %s, firstName: %s, lastName: %s, userName: %s, password: REDACTED",
-                        ID, firstName, lastName, userName));
+                        "Adding Admin. firstName: %s, lastName: %s, userName: %s, password: REDACTED",
+                        firstName, lastName, userName));
         try {
             // sql statement with "?" to be filled later
-            String query = "INSERT INTO ADMIN (ID, FIRSTNAME, LASTNAME, USERNAME, PASSWORD)" +
-                    " values (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO ADMIN (FIRSTNAME, LASTNAME, USERNAME, PASSWORD)" +
+                    " values (?, ?, ?, ?)";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setInt(1, ID);
-            preparedStatement.setString(2, firstName);
-            preparedStatement.setString(3, lastName);
-            preparedStatement.setString(4, userName);
-            preparedStatement.setString(5, encrypted);
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setString(3, userName);
+            preparedStatement.setString(4, encrypted);
             // execute prepared statement
 
             preparedStatement.execute();
@@ -889,6 +923,34 @@ public class DatabaseController {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public boolean editAdmin(int ID, String firstName, String lastName, String userName, String password){
+        String encrypted = BCrypt.hashpw(password, BCrypt.gensalt());
+
+        System.out.println(
+                String.format(
+                        "Editing Admin. ID: %d, firstName: %s, lastName: %s, userName: %s, password: REDACTED",
+                        ID, firstName, lastName, userName));
+        try {
+            // sql statement with "?" to be filled later
+            String query = "UPDATE ADMIN SET FIRSTNAME = ?, LASTNAME = ?, USERNAME = ?, PASSWORD = ? WHERE ID = ?";
+            // prepare statement by replacing "?" with corresponding variable
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setString(3, userName);
+            preparedStatement.setString(4, encrypted);
+            preparedStatement.setInt(5, ID);
+            // execute prepared statement
+
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public boolean deleteAdmin(int ID){

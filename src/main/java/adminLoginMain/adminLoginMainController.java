@@ -51,7 +51,7 @@ public class adminLoginMainController extends controllers.AbsController{
             FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
             adminMenuStart.adminMenuStartController controller = loader.getController();
             //Set the correct username for the next scene
-            controller.setUsername_Admin("Admin: "+ username_TextField.getText());
+            controller.setUsername_Admin("Welcome, "+ username_TextField.getText());
             //sets the current language
             controller.setCurrentLanguage(c_language);
             //set up english labels
@@ -73,7 +73,7 @@ public class adminLoginMainController extends controllers.AbsController{
             invalidLogInputs.setText("Enter your password.");
 
         }else{//Incorrect inputs
-            invalidLogInputs.setText("Incorrect username or password, try again.");
+            invalidLogInputs.setText("Incorrect credentials, try again.");
 
         }
 
@@ -83,7 +83,7 @@ public class adminLoginMainController extends controllers.AbsController{
     //Switches screen to the patient menu
     public void mainMenuButton_Clicked(){
         System.out.println("The user has clicked the main menu Button");
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMenuStartView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
         patientMenuStart.patientMenuStartController controller = loader.getController();
         //sets the current language
         controller.setCurrentLanguage(c_language);

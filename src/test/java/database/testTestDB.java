@@ -3,8 +3,6 @@ package database;
 import DBController.DatabaseController;
 import org.junit.Test;
 
-import static junit.framework.TestCase.*;
-
 /**
  * Created by jasonashton on 4/8/17.
  */

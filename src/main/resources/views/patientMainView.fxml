@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="patientMain.patientMainController">
+   <children>
+      <BorderPane layoutX="96.0" layoutY="187.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <VBox BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="mainTitle_Label" alignment="TOP_CENTER" prefHeight="37.0" prefWidth="1308.0" text="Welcome to Brigham and Women's Faulkner Hospital" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="30.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER">
+                     <children>
+                        <ChoiceBox fx:id="language_ChoiceBox" prefHeight="57.0" prefWidth="170.0">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </ChoiceBox>
+                        <Region prefHeight="76.0" prefWidth="301.0" />
+                        <Button fx:id="directory_Button" mnemonicParsing="false" onMouseClicked="#directoryClicked" prefHeight="57.0" prefWidth="218.0" text="Directory Search">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="about_Button" mnemonicParsing="false" onMouseClicked="#aboutButton_clicked" prefHeight="57.0" prefWidth="170.0" text="About">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="admin_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefHeight="57.0" prefWidth="170.0" text="Administrator">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="57.0" prefWidth="170.0" styleClass="emergency" text="EMERGENCY">
+                           <font>
+                              <Font name="System Bold Italic" size="21.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+         </top>
+         <left>
+            <VBox alignment="CENTER" prefHeight="539.0" prefWidth="304.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER">
+                     <children>
+                        <Label fx:id="start_Label" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefWidth="90.0" text="Start">
+                           <font>
+                              <Font name="System Bold" size="22.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="start_textField" prefHeight="30.0" prefWidth="175.0" promptText="Starting position">
+                           <HBox.margin>
+                              <Insets bottom="3.0" right="3.0" top="3.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER">
+                     <children>
+                        <Label fx:id="end_Label" alignment="CENTER" prefWidth="90.0" text="End">
+                           <font>
+                              <Font name="System Bold" size="22.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="end_TextField" prefHeight="30.0" prefWidth="175.0" promptText="Ending position">
+                           <HBox.margin>
+                              <Insets bottom="3.0" right="3.0" top="3.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER">
+                     <children>
+                        <Button fx:id="submit_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" prefHeight="50.0" prefWidth="115.0" text="Submit">
+                           <HBox.margin>
+                              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="cancel_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#cancelButton_Clicked" prefHeight="50.0" prefWidth="115.0" styleClass="cancel" text="Clear">
+                           <HBox.margin>
+                              <Insets bottom="3.0" left="14.0" right="3.0" top="3.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER">
+                     <children>
+                        <ChoiceBox fx:id="filter_ChoiceBox" prefHeight="44.0" prefWidth="245.0">
+                           <HBox.margin>
+                              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                           </HBox.margin>
+                        </ChoiceBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="15.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="textD_Label" text="Text Description">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <TextArea fx:id="textDescription_TextFArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="300.0" />
+                  <HBox>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="phoneInfo_Label" text="Send directions to my phone">
+                           <font>
+                              <Font name="System Bold Italic" size="16.0" />
+                           </font>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="phoneInsert" prefHeight="35.0" prefWidth="210.0" promptText="123456789">
+                           <HBox.margin>
+                              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                        <Button fx:id="phoneSend" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Send">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <Label fx:id="phoneStatus" prefHeight="21.0" prefWidth="0.0" />
+               </children>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </VBox>
+         </left>
+         <bottom>
+            <HBox alignment="CENTER" prefHeight="47.0" prefWidth="1274.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Region prefHeight="37.0" prefWidth="408.0" />
+                  <Label text="©2017 Computer Science 3733 Team E" textAlignment="CENTER">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Region prefHeight="37.0" prefWidth="343.0" />
+                  <Button fx:id="continue_Button" mnemonicParsing="false" onMouseClicked="#continueButton_Clicked" text="Continue">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </bottom>
+         <center>
+            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox>
+                     <children>
+                        <ChoiceBox fx:id="floor_ChoiceBox" prefHeight="30.0" prefWidth="110.0">
+                           <HBox.margin>
+                              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                           </HBox.margin>
+                        </ChoiceBox>
+                        <Region maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" HBox.hgrow="ALWAYS" />
+                        <Label fx:id="floor_Label" text="Floor: ">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="c_Floor_Label" text="1">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <Pane fx:id="node_Plane" prefHeight="544.0" prefWidth="974.0">
+                     <children>
+                        <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="920.0" onMouseClicked="#continueButton_Clicked">
+                           <image>
+                              <Image url="@../images/4.png" />
+                           </image>
+                        </ImageView>
+                     </children></Pane>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+   <stylesheets>
+      <URL value="@../css/flatterfx_test.css" />
+      <URL value="@../css/styles.css" />
+   </stylesheets>
+</AnchorPane>

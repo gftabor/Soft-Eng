@@ -19,7 +19,6 @@ import pathFindingMenu.Pathfinder;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.function.Predicate;
 
 
@@ -185,6 +184,11 @@ public class hospitalDirectorySearchController extends controllers.AbsController
             if (start.getFloor() != end.getFloor()) {
                 //multifloor pathfinding detected
                 System.out.println("directory -> multifloor pathfinding");
+
+                //mark the floors
+                MapController.getInstance().markNode(start.getPosX(), start.getPosY(), 1, start.getFloor());
+                MapController.getInstance().markNode(end.getPosX(), end.getPosY(), 2, end.getFloor());
+
                 controller.multiFloorPathfind();
             } else {
                 //no multifloor pathfinding (simple)

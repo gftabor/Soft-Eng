@@ -4,19 +4,17 @@ import controllers.Edge;
 import controllers.Node;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 
 /**
  * Created by griffincecil on 4/1/2017.
  */
 public class Pathfinder {
-    private ArrayList<Node> frontier = new ArrayList<Node>();
     private HashSet<Node> alreadyProcessed = new HashSet<Node>();;
 
     private ArrayList<Edge> path = new ArrayList<Edge>();
+    public Search algorithm = new AStar();
     private ArrayList<Node> nodePath = new ArrayList<Node>();
-
 
     public ArrayList<Edge> getPath() {
         return path;
@@ -36,6 +34,14 @@ public class Pathfinder {
        double squareY = Math.pow((currentNode.getPosY()-goalNode.getPosY()),2);
        return Math.sqrt(squareX + squareY) + 1000* Math.abs(currentNode.getFloor() - goalNode.getFloor());
 
+    }
+    public void algorithmSwitch(int choice){
+        switch(choice){
+            case 0: algorithm = new AStar(); break;
+            case 1: algorithm = new Breadth(); break;
+            case 2: algorithm = new Depth(); break;
+            default: algorithm = new AStar(); break;
+        }
     }
 
     //if process node is end node return true, otherwise process and return false
@@ -58,13 +64,11 @@ public class Pathfinder {
                 neighbor.setParentEdge(currentEdge);
                 neighbor.setCostToReach(neighbourNewCost);
                 neighbor.setTotalCost(neighbourNewCost + getHueristic(neighbor, goalNode));
-
                 //if the object is in frontier only edit the object
-                if(!frontier.contains(neighbor) && neighbor.getEnabled()) {
-                    frontier.add(neighbor);
-                    //System.out.println("new frontier");
-                }
+
             }
+            algorithm.addNode(neighbor);
+
 
         }
         return false;
@@ -78,27 +82,34 @@ public class Pathfinder {
         System.out.println("PATHFINDER: generating path from node at (" + startNode.getPosX() + ", " +
                 startNode.getPosY() + ", floor: " + startNode.getFloor() + ") to node at (" + endNode.getPosX() + ", " +
                 endNode.getPosY() + ", floor: " + endNode.getFloor() + ")");
+        for(Node oldNode : alreadyProcessed){
+            oldNode.setTotalCost(Integer.MAX_VALUE);
+            oldNode.setCostToReach(Integer.MAX_VALUE);
+        }
         alreadyProcessed.clear();
-        frontier.clear();
         path.clear();
         nodePath.clear();
+        algorithm.resetNodes();
         if(!(startNode.getEnabled() && endNode.getEnabled())){
             System.out.println("selected node not enabled");
             return -2;
         }
+
         startNode.setTotalCost(getHueristic(startNode, endNode));
         startNode.setCostToReach(0);
-        frontier.add(startNode);
+        algorithm.addNode(startNode);
         boolean finished = false;
-        while (!finished && !frontier.isEmpty()) {
-            Collections.sort(frontier);
-            Node processing = frontier.get(0);
-            finished = processing.equals(endNode);//
+        int tries =0;
+        while (!finished) {
+            Node processing = algorithm.getNode();
+            if(processing == null)
+                break;
+            finished = processing.equals(endNode);
             if (!alreadyProcessed.contains(processing)) {
                 processNode(processing, endNode);
                 alreadyProcessed.add(processing);
             }
-            frontier.remove(0);
+            tries ++;
         }
         Node viewingNode = endNode;
         while(!viewingNode.equals(startNode) && finished){
@@ -107,6 +118,7 @@ public class Pathfinder {
             viewingNode = viewingNode.getParentEdge().getNeighbor(viewingNode);
         }
         nodePath.add(startNode);
+        System.out.println(algorithm + " had to search  " + tries +  " and path contains " + path.size() + " edges");
 
         if (finished)
             return endNode.getTotalCost();
