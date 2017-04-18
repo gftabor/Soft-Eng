@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MZ-Soft-Eng_main.iml" filepath="$PROJECT_DIR$/.idea/modules/MZ-Soft-Eng_main.iml" group="Soft-Eng" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MZ-Soft-Eng_test.iml" filepath="$PROJECT_DIR$/.idea/modules/MZ-Soft-Eng_test.iml" group="Soft-Eng" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Soft-Eng.iml" filepath="$PROJECT_DIR$/.idea/modules/Soft-Eng.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Soft-Eng_Git.iml" filepath="$PROJECT_DIR$/.idea/modules/Soft-Eng_Git.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Soft-Eng_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Soft-Eng_main.iml" group="Soft-Eng" />

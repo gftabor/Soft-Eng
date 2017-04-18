@@ -845,24 +845,23 @@ public class DatabaseController {
      *
      ******************************************************************************/
 
-    public boolean newAdmin(int ID, String firstName, String lastName, String userName, String password){
+    public boolean newAdmin(String firstName, String lastName, String userName, String password){
         String encrypted = BCrypt.hashpw(password, BCrypt.gensalt());
 
         System.out.println(
                 String.format(
-                        "Adding Admin. ID: %s, firstName: %s, lastName: %s, userName: %s, password: REDACTED",
-                        ID, firstName, lastName, userName));
+                        "Adding Admin. firstName: %s, lastName: %s, userName: %s, password: REDACTED",
+                        firstName, lastName, userName));
         try {
             // sql statement with "?" to be filled later
-            String query = "INSERT INTO ADMIN (ID, FIRSTNAME, LASTNAME, USERNAME, PASSWORD)" +
-                    " values (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO ADMIN (FIRSTNAME, LASTNAME, USERNAME, PASSWORD)" +
+                    " values (?, ?, ?, ?)";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setInt(1, ID);
-            preparedStatement.setString(2, firstName);
-            preparedStatement.setString(3, lastName);
-            preparedStatement.setString(4, userName);
-            preparedStatement.setString(5, encrypted);
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setString(3, userName);
+            preparedStatement.setString(4, encrypted);
             // execute prepared statement
 
             preparedStatement.execute();

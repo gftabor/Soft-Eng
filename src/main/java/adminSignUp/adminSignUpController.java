@@ -1,12 +1,11 @@
 package adminSignUp;
+import DBController.DatabaseController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import controllers.AbsController;
 
 /**
  * Created by AugustoR on 4/17/17.
@@ -31,22 +30,24 @@ public class adminSignUpController extends controllers.AbsController{
     private Button deleteAdminButton;
 
     @FXML
-    private Button userName_TextField;
+    private TextField userName_TextField;
 
     @FXML
-    private Button firstName_TextField;
+    private TextField firstName_TextField;
 
     @FXML
-    private Button lastName_TextField;
+    private TextField lastName_TextField;
 
     @FXML
-    private Button newPassword_TextField;
+    private TextField newPassword_TextField;
 
 
     @FXML
     private Button MainMenu_Button;
 
     int c_language = 0; //English by default
+
+    DatabaseController databaseController = DatabaseController.getInstance();
 
 
     //Sends the admin back to the main menu
@@ -76,7 +77,17 @@ public class adminSignUpController extends controllers.AbsController{
 
     //adds the admin into the database
     public void addAdminButton_Clicked(){
-
+        try {
+            if (databaseController.newAdmin(firstName_TextField.getText(), lastName_TextField.getText(),
+                    userName_TextField.getText(), newPassword_TextField.getText())) {
+                queryStatus.setText("Admin Added");
+            } else {
+                queryStatus.setText("Error Adding Admin");
+            }
+        }
+        catch(Exception e){
+            queryStatus.setText("ERROR: Exception");
+        }
     }
 
     /*
