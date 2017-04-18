@@ -24,17 +24,21 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="patientMain.patientMainController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="patientMain.patientMainController">
    <children>
-      <BorderPane layoutX="96.0" layoutY="187.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane layoutX="96.0" layoutY="187.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
-            <VBox BorderPane.alignment="CENTER">
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
                <children>
-                  <Label fx:id="mainTitle_Label" alignment="TOP_CENTER" prefHeight="37.0" prefWidth="1308.0" text="Welcome to Brigham and Women's Faulkner Hospital" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="30.0" />
-                     </font>
-                  </Label>
+                  <HBox alignment="CENTER" prefHeight="23.0" prefWidth="1366.0">
+                     <children>
+                        <Label fx:id="mainTitle_Label" alignment="TOP_CENTER" text="Welcome to Brigham and Women's Faulkner Hospital" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="30.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                   <HBox alignment="CENTER">
                      <children>
                         <ChoiceBox fx:id="language_ChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0">
@@ -84,7 +88,7 @@
             </VBox>
          </top>
          <left>
-            <VBox alignment="CENTER" prefHeight="582.0" prefWidth="252.0" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="539.0" prefWidth="304.0" BorderPane.alignment="CENTER">
                <children>
                   <HBox alignment="CENTER">
                      <children>
@@ -175,7 +179,7 @@
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <TextArea fx:id="textDescription_TextFArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="300.0" />
+                  <TextArea fx:id="textDescription_TextFArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="168.0" prefWidth="385.0" />
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
@@ -217,8 +221,32 @@
                </padding>
             </VBox>
          </left>
+         <bottom>
+            <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="47.0" prefWidth="1274.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Region prefHeight="37.0" prefWidth="408.0" />
+                  <Label text="©2017 Computer Science 3733 Team E" textAlignment="CENTER">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Region prefHeight="37.0" prefWidth="343.0" />
+                  <Button fx:id="continue_Button" mnemonicParsing="false" onMouseClicked="#continueButton_Clicked" text="Continue">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </bottom>
          <center>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="539.0" prefWidth="932.0" BorderPane.alignment="CENTER">
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
                   <HBox>
                      <children>
@@ -257,7 +285,7 @@
                         </Button>
                      </children>
                   </HBox>
-                  <Pane fx:id="node_Plane">
+                  <Pane fx:id="node_Plane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1199.0">
                      <children>
                         <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="920.0" onMouseClicked="#continueButton_Clicked">
                            <image>
