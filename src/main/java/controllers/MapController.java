@@ -3,6 +3,7 @@ package controllers;
 import DBController.DatabaseController;
 import pathFindingMenu.Pathfinder;
 
+import javax.print.attribute.standard.Destination;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public class MapController {
 
     private int floorForNode1;
     private int floorForNode2;
+
+    private ArrayList<Integer> floorSequence; //list of floors for multifloor pathfinding
 
     private MapController() {
         requestMapCopy();
@@ -67,7 +70,6 @@ public class MapController {
         //wipes old verson of collection of nodess
         collectionOfNodes = new CollectionOfNodes();
         edgeCollection = new ArrayList<Edge>();
-        System.out.println("new");
         System.out.println("new map copy loading...");
         try {
             //instantiate all node objects and add to collection
@@ -187,6 +189,11 @@ public class MapController {
 
         //creates and runs a pathfinder
         Pathfinder pathfinder = new Pathfinder();
+        pathfinder.algorithmSwitch(2);
+        pathfinder.generatePath(startNode, endNode);
+        pathfinder.algorithmSwitch(1);
+        pathfinder.generatePath(startNode, endNode);
+        pathfinder.algorithmSwitch(0);//A *
         pathfinder.generatePath(startNode, endNode);
         return pathfinder.getPath();
 
@@ -195,33 +202,41 @@ public class MapController {
     //used for multifloor pathfinding output
     //utilizes requestPath() to get pathfinding path from start to end
     //breaks up into individual path for each edge
-    public ArrayList<Edge>[] requestFragmentedPath(ArrayList<Edge> fullList, int startingFloor, int endingFloor) {
+    public ArrayList<ArrayList<Edge>> requestFragmentedPath(ArrayList<Edge> fullList, int startingFloor, int endingFloor) {
         //fullList is given specifically from requestPath()
         //path is in reverse order!!!
         Collections.reverse(fullList);
 
         //initialize fragmented list
-        ArrayList<Edge> [] fragmentedList = new ArrayList [10];
-        //put null references to avoid index out of bounds errors
-        for (int i = 0; i <= 8; i++) {
-            fragmentedList[i] = null;
-        }
+        ArrayList<ArrayList<Edge>> fragmentedList = new ArrayList<>();
+
+        //initialize floor sequence
+        floorSequence = new ArrayList<>();
 
         int currentFloor = startingFloor;
         ArrayList<Edge> currentlist = new ArrayList<>();
 
         for (Edge e: fullList) {
-            System.out.println("Edge (floor) from " + e.getStartNode().getFloor()+ " to" + e.getEndNode().getFloor());
+            System.out.println("Edge (floor) from " + e.getStartNode().getFloor()+ " to " + e.getEndNode().getFloor());
 
 
             //if change in floor, close off this list of edges
             if (e.getEndNode().getFloor() != e.getStartNode().getFloor()) {
+                System.out.println("edge floors do not match");
                 //add old list to the fragList - if it is not empty
                 if (!currentlist.isEmpty()) {
 
                     System.out.println("created frag path on floor: " + Integer.toString(currentFloor));
-                    fragmentedList[currentFloor] = currentlist;
+                    floorSequence.add(currentFloor);
+                    fragmentedList.add(currentlist);
+                    System.out.println("frag list size updated to: " + fragmentedList.size());
 
+                } else if (currentFloor == startingFloor) {
+                    //first node
+                    floorSequence.add(currentFloor);
+                    currentlist.add(e);
+                    fragmentedList.add(currentlist); //add empty list
+                    System.out.println("Adding starting floor, you are starting at an elevator");
                 }
 
                 //instantiate new version of currentlist
@@ -233,10 +248,11 @@ public class MapController {
                 } else {
                     currentFloor = e.getStartNode().getFloor();
                 }
-                System.out.println("currentfloor updated to: " + Integer.toString(currentFloor));
+                //System.out.println("currentfloor updated to: " + Integer.toString(currentFloor));
 
-                //don't add a transition edge unless you are on the currentfloor or the ending floor
+                //don't add a transition edge unless you are on the starting floor or the ending floor
                 if (currentFloor != startingFloor && currentFloor != endingFloor) {
+                    System.out.println("skipping above edge");
                     continue;
                 }
             }
@@ -247,7 +263,8 @@ public class MapController {
 
         //add the final list to the fraglist
         System.out.println("finished loop created frag path on floor: " + Integer.toString(currentFloor));
-        fragmentedList[currentFloor] = currentlist;
+        floorSequence.add(currentFloor);
+        fragmentedList.add(currentlist);
 
         return fragmentedList;
     }
@@ -276,40 +293,55 @@ public class MapController {
     public String getTextDirections(ArrayList<Edge> path) {
         String destination;
         ArrayList<String> directions = new ArrayList<>();
-        if(path.isEmpty())
+        if(path.isEmpty()) {
             return null;
+        }
+
         for(int i = path.size()-1; i > 0; i--) {
             double angle = getAngle(path.get(i), path.get(i-1));
-            if(path.get(i).getStartNode().getFloor() != path.get(i).getEndNode().getFloor() ||
-                    path.get(i-1).getStartNode().getFloor() != path.get(i-1).getEndNode().getFloor()) {
+
+            if(path.get(i).getStartNode().getFloor() != path.get(i).getEndNode().getFloor()
+                    || path.get(i-1).getStartNode().getFloor() != path.get(i-1).getEndNode().getFloor()) {
                 directions.add("Change Floors ");
                 continue;
             }
+            String destRoom;
+            String destName;
+            destRoom = path.get(i).getEndNode().getRoomNum();
+            destName = path.get(i).getEndNode().getName();
+
+            Node myNode = path.get(i).getEndNode();
+            if (myNode.getIsHidden() || myNode.getType().equals("Stairwell") ||
+                    myNode.getType().equals("Elevator")) {
+                if(myNode.getIsHidden()) {
+                    int floor = myNode.getFloor();
+                    destination = "floor " + floor + " " + destName;
+                } else {
+                    destination = destName;
+                }
+            } else {
+                destination = destName + " " + destRoom;
+            }
+
             if(angle > -135.0 && angle <= -45.0) {
-                destination = path.get(i).getEndNode().getRoomNum();
                 directions.add("Turn left at " + destination);
             }
             else if(angle >= 45.0 && angle < 135.0) {
-                destination = path.get(i).getEndNode().getRoomNum();
                 directions.add("Turn right at " + destination);
             }
             else if(angle > 10.0 && angle < 45.0) {
-                destination = path.get(i).getEndNode().getRoomNum();
                 directions.add("Make a slight right at " + destination);
             }
             else if(angle >= -10.0 && angle <= 10.0){
                 directions.add("Continue straight.");
             }
             else if(angle > -45.0 && angle < -10.0) {
-                destination = path.get(i).getEndNode().getRoomNum();
                 directions.add("Make a slight left at " + destination);
             }
             else if(angle > 135.0 && angle < 180.0) {
-                destination = path.get(i).getEndNode().getRoomNum();
                 directions.add("Make a hard right at " + destination);
             }
             else if(angle > -180.0 && angle < -135.0) {
-                destination = path.get(i).getEndNode().getRoomNum();
                 directions.add("Make a hard left at " + destination);
             }else{
                 directions.add("nothing");
@@ -326,15 +358,15 @@ public class MapController {
     }
 
     private ArrayList<String> cleanDirections(ArrayList<String> direc) {
-        ArrayList<String> directions = direc;
-        for(int i = directions.size()-1; i > 0; i--) {
-            if("Continue straight.".equals(directions.get(i)) && directions.get(i).equals(directions.get(i-1))) {
-                directions.remove(directions.get(i));
-            }
-            if("Change Floors ".equals(directions.get(i)) && directions.get(i).equals(directions.get(i-1))) {
-                directions.remove(directions.get(i));
+        ArrayList<String> directions = new ArrayList<>();
+        String current = "";
+        for (String s: direc) {
+            if (s != current) {
+                current = s;
+                directions.add(s);
             }
         }
+
         return directions;
     }
 
@@ -371,7 +403,17 @@ public class MapController {
         e2Y =  e2.getNeighbor(middle).getPosY() - middle.getPosY();
 
         double angle = Math.toDegrees(Math.atan2(e1X*e2Y - e1Y*e2X, e1X*e2X + e1Y*e2Y));
-        System.out.println(angle);
+        //System.out.println(angle);
         return angle;
+    }
+
+    //get method for the floor list
+    public ArrayList<Integer> getFloorSequence() {
+        if (floorSequence == null) {
+            System.out.println("floor sequence is null!!");
+            return null;
+        } else {
+            return floorSequence;
+        }
     }
 }

@@ -58,7 +58,7 @@ public class adminMenuStartController extends controllers.AbsController{
 
         //Change to patient menu
         FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
-        patientMenuStart.patientMenuStartController controller = loader.getController();
+        patientMain.patientMainController controller = loader.getController();
         //sends the current language to the next screen
         controller.setCurrentLanguage(c_language);
         //set up english labels

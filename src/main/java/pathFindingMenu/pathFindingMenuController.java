@@ -86,6 +86,8 @@ public class pathFindingMenuController extends controllers.mapScene{
 
     private double startX;
     private double startY;
+    private double endX;
+    private double endY;
 
 
     private Circle btK;
@@ -94,12 +96,16 @@ public class pathFindingMenuController extends controllers.mapScene{
     private int currentFloor;
 
     private final double sizeUpRatio = 1.7;
-    private final double strokeRatio = 2.5;
+    private final double strokeRatio = 4;
+    private final Color startColor = Color.RED;
+    private final Color endColor = Color.GREEN;
 
     private controllers.MapOverlay graph;
     private MapController mapController = MapController.getInstance();
 
-    private ArrayList<Edge> [] globalFragList;
+    private ArrayList<ArrayList<Edge>> globalFragList;
+    private int fragPathPos; //position on the global frag list
+    private ArrayList<Integer> globalFloorSequence;
 
     //flags for the english/spanish feature
     int c_language = 0;
@@ -148,6 +154,10 @@ public class pathFindingMenuController extends controllers.mapScene{
         //set continue button invisible when not needed
         continue_Button.setVisible(false);
 
+        //draw edges
+        graph.drawFloorEdges(currentFloor);
+
+
     }
     public void cancelButton_Clicked(){
         //MapController.getInstance().requestMapCopy();
@@ -162,6 +172,13 @@ public class pathFindingMenuController extends controllers.mapScene{
 
         //hide the continue button
         continue_Button.setVisible(false);
+
+        //reset the startx, starty, endx, endy
+        startX = -9999999;
+        startY = -9999999;
+        endX = -9999999;
+        endY = -9999999;
+
 
     }
 
@@ -180,20 +197,26 @@ public class pathFindingMenuController extends controllers.mapScene{
             } else {
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
                 ArrayList<Edge> path = mapController.requestPath();
-                graph.createEdgeLines(path);
-                textDescription_TextFArea.setText(mapController.getTextDirections(path));
+                if (path == null) { //can't find path, reset
+                    System.out.println("Could not pathfind. Resetting now...");
+                    cancelButton_Clicked();
+                } else {
+                    graph.createEdgeLines(path, true);
+                    textDescription_TextFArea.setText(mapController.getTextDirections(path));
+                }
 
             }
 
         }
         selectionState=0;
         System.out.println("The user has clicked the submit Button");
-        //MapController.getInstance().requestMapCopy();
     }
 
     public void multiFloorPathfind() {
         //initialize reference of the global frag list to null (set up)
         globalFragList = null;
+        globalFloorSequence = null;
+        fragPathPos = 0;
 
         //set continue button visible
         continue_Button.setVisible(true);
@@ -201,45 +224,57 @@ public class pathFindingMenuController extends controllers.mapScene{
         //switch floors to original floor's pathfinding view
         int startfloor = mapController.returnOriginalFloor();
         currentFloor_Label.setText(Integer.toString(startfloor));
-        System.out.println("startfloor: " + Integer.toString(startfloor));
 
         //switch back to the original floor using the choicebox selection
         floor_ChoiceBox.getSelectionModel().select(startfloor - 1);
-        System.out.println("Current floor: " + Integer.toString(currentFloor) + " :)");
 
-        //maintain consistency of colors - doesn't work - references go missing
-        // start.setStrokeWidth(strokeRatio);
-        // start.setStroke(Color.ORANGERED);
-        //start.setRadius(graph.getLabelRadius());
+        //maintain consistency of colors
+        ArrayList<Circle> tempCircleList;
+        tempCircleList = graph.getButtonList();
+        for (Circle c: tempCircleList) {
+            if(c.getLayoutX() == startX && c.getLayoutY() == startY) {
+                c.setStrokeWidth(strokeRatio);
+                c.setRadius(graph.getLabelRadius()*sizeUpRatio);
+                c.setStroke(startColor);
+                break;
+            }
+        }
+
 
         //reset for next pathfinding session
         MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
         ArrayList<Edge> reqPath = mapController.requestPath();
-        textDescription_TextFArea.setText(mapController.getTextDirections(reqPath));
-
-        //original call below >
-        //graph.createEdgeLines(reqPath);
-        System.out.println("=====================");
-        ArrayList<Edge> [] fragPath;
-        fragPath = mapController.requestFragmentedPath(reqPath, mapController.returnOriginalFloor(), mapController.returnDestFloor());
-        System.out.println("=====================");
-
-        System.out.println("printing the fragmented path, floor = " + Integer.toString(startfloor));
-        //loop and display the edges per floor - use the startfloor
-
-
-        if (fragPath[startfloor] == null) {
-            //only occurs if the first transition is a null
-            //instead just highlight the first thing
-
-            //to do -> highlight
-
+        if (reqPath == null) { //can't find path, reset
+            System.out.println("Could not pathfind. Resetting now...");
+            cancelButton_Clicked();
         } else {
-            graph.createEdgeLines(fragPath[startfloor]);
-        }
+            textDescription_TextFArea.setText(mapController.getTextDirections(reqPath));
 
-        //set the global so you can send to the continue button
-        globalFragList = fragPath;
+            ArrayList<ArrayList<Edge>> fragPath;
+            fragPath = mapController.requestFragmentedPath(reqPath, mapController.returnOriginalFloor(), mapController.returnDestFloor());
+            
+            //loop and display the edges per floor - use the startfloor
+
+
+            if (fragPath.get(0).size() == 0) {
+                //only occurs if the first transition is a null
+                //instead just highlight the first thing
+
+                //todo -> highlight
+
+            } else {
+                graph.createEdgeLines(fragPath.get(0), true);
+            }
+
+            //set the globals so you can send to the continue button
+            globalFragList = fragPath;
+            globalFloorSequence = mapController.getFloorSequence();
+
+            //print floor sequence (testing)
+            for (int i = 0; i < globalFloorSequence.size(); i++) {
+                System.out.println(globalFloorSequence.get(i));
+            }
+        }
 
 
     }
@@ -300,10 +335,12 @@ public class pathFindingMenuController extends controllers.mapScene{
             start =c;
             //color
             c.setStrokeWidth(strokeRatio);
-            c.setStroke(Color.ORANGERED);
+            c.setStroke(startColor);
 
-            startX = c.getCenterX();
-            startY = c.getCenterY();
+            //location
+            startX = c.getLayoutX();
+            startY = c.getLayoutY();
+            System.out.println("Start coords updated: " + startX + "," + startY);
 
             //size
             c.setRadius(graph.getLabelRadius() * sizeUpRatio);
@@ -317,7 +354,12 @@ public class pathFindingMenuController extends controllers.mapScene{
             end = c;
             //color
             c.setStrokeWidth(strokeRatio);
-            c.setStroke(Color.FUCHSIA);
+            c.setStroke(endColor);
+
+            //location
+            endX = c.getLayoutX();
+            endY = c.getLayoutY();
+            System.out.println("End coords updated: " + endX + "," + endY);
 
             //size
             c.setRadius(graph.getLabelRadius() * sizeUpRatio);
@@ -397,6 +439,9 @@ public class pathFindingMenuController extends controllers.mapScene{
 
                 currentFloor_Label.setText(Integer.toString(currentFloor));
                 graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+
+                //draw edges
+                graph.drawFloorEdges(currentFloor);
             }
         });
 
@@ -407,120 +452,107 @@ public class pathFindingMenuController extends controllers.mapScene{
     }
 
     public void createEdgeLines(ArrayList<Edge> path) {
-        graph.createEdgeLines(path);
+        graph.createEdgeLines(path, true);
     }
 
     public void continueButton_Clicked() {
 
         if (continue_Button.isVisible() == true) {
             System.out.println("continue button clicked");
-            System.out.println("going up:" );
-            System.out.println(mapController.goingUp());
-            if (mapController.goingUp()) {
 
-                //loop until you hit the top of the hospital
-                while (currentFloor != 8) {
-                    System.out.println("going up loop");
+            //increment b/c continue button
+            fragPathPos++; //continue...
 
-                    //increment floor
-                    currentFloor ++;
+            //update currentfloor
+            currentFloor = globalFloorSequence.get(fragPathPos);
 
-                    //if there are no edges of interest, do not display them
-                    if (globalFragList[currentFloor] == null || globalFragList[currentFloor].isEmpty()) {
-                        continue;
-                    }
-                    multifloorUpdate();
-
-                    break;
-
-                }
-            } else {
-                //loop until you hit the bottom of the hospital
-                while (currentFloor != 0) {
-                    System.out.println("going down loop");
-                    //decrement floor
-                    currentFloor --;
-
-                    //if there are no edges of interest, do not display them
-                    if (globalFragList[currentFloor] == null || globalFragList[currentFloor].isEmpty()) {
-                        continue;
-                    }
-                    multifloorUpdate();
-
-                    break;
-                }
-
-            }
+            System.out.println("current floor displayed: " + currentFloor);
+            System.out.println("frag path pos updated to: " + fragPathPos);
+            multifloorUpdate();
 
             //disable the continue button if you reach the end
-            int destFloor = mapController.returnDestFloor();
-            if (currentFloor == destFloor) {
+            //also update the color
+            if (fragPathPos == globalFragList.size() - 1) {
                 continue_Button.setVisible(false);
+
+                //set the end goal color
+                ArrayList<Circle> circleList;
+                circleList = graph.getButtonList();
+
+                for (Circle c: circleList) {
+                    if(c.getLayoutX() == endX && c.getLayoutY() == endY) {
+                        c.setStrokeWidth(strokeRatio);
+                        c.setRadius(graph.getLabelRadius()*sizeUpRatio);
+                        c.setStroke(endColor);
+                        break;
+                    }
+                }
             }
         }
     }
 
     //abstracted floor refresh for multifloor pathfinding
     public void multifloorUpdate() {
-        System.out.println(currentFloor + "   " + globalFragList[currentFloor].size());
+        System.out.println("cf: " + currentFloor + "   size: " + globalFragList.get(fragPathPos).size());
 
         //otherwise, change to the appropriate screen and display edges
         graph.wipeEdgeLines();
         floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
-        graph.createEdgeLines(globalFragList[currentFloor]);
+        System.out.println("creating edge lines for fp pos: " + fragPathPos);
+        graph.createEdgeLines(globalFragList.get(fragPathPos), true);
     }
 
-    public void previousButton_Clicked() {
-
-        //todo: fix continue button check later
-        if (continue_Button.isVisible() == true) {
-            System.out.println(".previous. button clicked");
-            System.out.println("going up:" );
-            System.out.println(mapController.goingUp());
-            if (mapController.goingUp()) {
-
-                //loop until you hit the top of the hospital
-                while (currentFloor != 0) {
-                    System.out.println("Prev: going down loop");
-
-                    //increment floor
-                    currentFloor --;
-
-                    //if there are no edges of interest, do not display them
-                    if (globalFragList[currentFloor] == null || globalFragList[currentFloor].isEmpty()) {
-                        continue;
-                    }
-                    multifloorUpdate();
-
-                    break;
-
-                }
-            } else {
-                //loop until you hit the bottom of the hospital
-                while (currentFloor != 8) {
-
-                    System.out.println("Prev: going up loop");
-                    //decrement floor
-                    currentFloor ++;
-
-                    //if there are no edges of interest, do not display them
-                    if (globalFragList[currentFloor] == null || globalFragList[currentFloor].isEmpty()) {
-                        continue;
-                    }
-                    multifloorUpdate();
-
-                    break;
-                }
-
-            }
-
-            //disable the continue button if you reach the end
-            int startFloor = mapController.returnOriginalFloor();
-            if (currentFloor == startFloor) {
-                //todo fix later - set to prev button
-//                continue_Button.setVisible(false);
-            }
-        }
-    }
+//    public void previousButton_Clicked() {
+//
+//        //todo: fix continue button check later
+//        if (continue_Button.isVisible() == true) {
+//            System.out.println(".previous. button clicked");
+//            System.out.println("going up:" );
+//            System.out.println(mapController.goingUp());
+//            if (mapController.goingUp()) {
+//
+//                //loop until you hit the top of the hospital
+//                while (currentFloor != 0) {
+//                    System.out.println("Prev: going down loop");
+//
+//                    //increment floor
+//                    currentFloor --;
+//
+//                    //if there are no edges of interest, do not display them
+//                    if (globalFragList[currentFloor] == null || globalFragList[currentFloor].isEmpty()) {
+//                        continue;
+//                    }
+//                    multifloorUpdate();
+//
+//                    break;
+//
+//                }
+//            } else {
+//                //loop until you hit the bottom of the hospital
+//                while (currentFloor != 8) {
+//
+//                    System.out.println("Prev: going up loop");
+//                    //decrement floor
+//                    currentFloor ++;
+//
+//                    //if there are no edges of interest, do not display them
+//                    if (globalFragList[currentFloor] == null || globalFragList[currentFloor].isEmpty()) {
+//                        continue;
+//                    }
+//                    multifloorUpdate();
+//
+//                    break;
+//                }
+//
+//            }
+//
+//            //disable the continue button if you reach the end
+//            int startFloor = mapController.returnOriginalFloor();
+//            if (currentFloor == startFloor) {
+//                //todo fix later - set to prev button
+////                continue_Button.setVisible(false);
+//            }
+//        }
+//    }
 
 }
