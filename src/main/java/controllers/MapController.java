@@ -189,6 +189,11 @@ public class MapController {
 
         //creates and runs a pathfinder
         Pathfinder pathfinder = new Pathfinder();
+        pathfinder.algorithmSwitch(2);
+        pathfinder.generatePath(startNode, endNode);
+        pathfinder.algorithmSwitch(1);
+        pathfinder.generatePath(startNode, endNode);
+        pathfinder.algorithmSwitch(0);//A *
         pathfinder.generatePath(startNode, endNode);
         return pathfinder.getPath();
 
@@ -243,7 +248,7 @@ public class MapController {
                 } else {
                     currentFloor = e.getStartNode().getFloor();
                 }
-                System.out.println("currentfloor updated to: " + Integer.toString(currentFloor));
+                //System.out.println("currentfloor updated to: " + Integer.toString(currentFloor));
 
                 //don't add a transition edge unless you are on the starting floor or the ending floor
                 if (currentFloor != startingFloor && currentFloor != endingFloor) {
