@@ -51,7 +51,7 @@ public class adminLoginMainController extends controllers.AbsController{
             FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
             adminMenuStart.adminMenuStartController controller = loader.getController();
             //Set the correct username for the next scene
-            controller.setUsername_Admin("Admin: "+ username_TextField.getText());
+            controller.setUsername_Admin("Welcome, "+ username_TextField.getText());
             //sets the current language
             controller.setCurrentLanguage(c_language);
             //set up english labels
@@ -73,7 +73,7 @@ public class adminLoginMainController extends controllers.AbsController{
             invalidLogInputs.setText("Enter your password.");
 
         }else{//Incorrect inputs
-            invalidLogInputs.setText("Incorrect username or password, try again.");
+            invalidLogInputs.setText("Incorrect credentials, try again.");
 
         }
 

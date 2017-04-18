@@ -30,7 +30,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label fx:id="username_Label" text="Username">
+                        <Label fx:id="username_Label" text="Welcome, ">
                            <font>
                               <Font size="30.0" />
                            </font>
@@ -39,7 +39,7 @@
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="SignOut_Button" mnemonicParsing="false" onMouseClicked="#signOutButton_Clicked" prefHeight="40.0" prefWidth="120.0" text="Sign Out">
+                        <Button fx:id="SignOut_Button" mnemonicParsing="false" onMouseClicked="#signOutButton_Clicked" prefHeight="52.0" prefWidth="120.0" text="Sign Out">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -47,7 +47,7 @@
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="40.0" prefWidth="180.0" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="52.0" prefWidth="180.0" styleClass="emergency" text="EMERGENCY">
                            <font>
                               <Font name="System Bold" size="21.0" />
                            </font>
@@ -112,15 +112,14 @@
          <bottom>
             <VBox BorderPane.alignment="CENTER">
                <children>
-                  <HBox alignment="TOP_RIGHT">
+                  <HBox alignment="CENTER_RIGHT">
                      <children>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Label fx:id="chooseLanguage_Label" text="Choose your language">
+                        <Label fx:id="chooseLanguage_Label" alignment="CENTER_RIGHT" prefHeight="61.0" prefWidth="377.0" text="Choose your language" textAlignment="RIGHT">
                            <HBox.margin>
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
                         </Label>
-                        <ChoiceBox fx:id="languages_ChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="200.0">
+                        <ChoiceBox fx:id="languages_ChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="74.0" prefWidth="200.0">
                            <HBox.margin>
                               <Insets bottom="6.0" left="6.0" right="30.0" top="6.0" />
                            </HBox.margin>
