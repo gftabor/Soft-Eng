@@ -217,6 +217,7 @@ public class MapController {
 
             //if change in floor, close off this list of edges
             if (e.getEndNode().getFloor() != e.getStartNode().getFloor()) {
+                System.out.println("edge floors do not match");
                 //add old list to the fragList - if it is not empty
                 if (!currentlist.isEmpty()) {
 
@@ -225,6 +226,12 @@ public class MapController {
                     fragmentedList.add(currentlist);
                     System.out.println("frag list size updated to: " + fragmentedList.size());
 
+                } else if (currentFloor == startingFloor) {
+                    //first node
+                    floorSequence.add(currentFloor);
+                    currentlist.add(e);
+                    fragmentedList.add(currentlist); //add empty list
+                    System.out.println("Adding starting floor, you are starting at an elevator");
                 }
 
                 //instantiate new version of currentlist
@@ -376,7 +383,7 @@ public class MapController {
         e2Y =  e2.getNeighbor(middle).getPosY() - middle.getPosY();
 
         double angle = Math.toDegrees(Math.atan2(e1X*e2Y - e1Y*e2X, e1X*e2X + e1Y*e2Y));
-        System.out.println(angle);
+        //System.out.println(angle);
         return angle;
     }
 

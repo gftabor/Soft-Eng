@@ -56,9 +56,9 @@ public class Edge {
             if(startNode.getType() == "Elevator" && endNode.getType() == "Elevator") {
                 return 10;
             } else if(startNode.getType() == "Stair" && endNode.getType() == "Stair") {
-                return 20 * (Math.abs(floorEnd - floorStart)); //get worse by floor
+                return 20000 * (Math.abs(floorEnd - floorStart)); //get worse by floor
             } else {
-                return 40; //idk just pick something, perhaps revisit later
+                return 400; //idk just pick something, perhaps revisit later
             }
 
         }
