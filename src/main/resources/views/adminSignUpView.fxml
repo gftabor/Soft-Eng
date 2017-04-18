@@ -18,11 +18,12 @@
          <center>
             <VBox alignment="CENTER" maxWidth="500.0" prefHeight="324.0" prefWidth="337.0" style="-fx-background-color: #955e83; -fx-background-radius: 5;" BorderPane.alignment="CENTER">
                <children>
-                  <Label fx:id="adminTitle_Label" text="Admin Sign Up" textFill="WHITE">
+                  <Label fx:id="adminTitle_Label" text="Admin Sign Up By:" textFill="WHITE">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Label>
+                  <Label fx:id="currentAdmin_Label" text="Current Admin" />
                   <HBox prefHeight="55.0" prefWidth="423.0">
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
@@ -44,12 +45,12 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </PasswordField>
-                  <Button fx:id="addNAdmin_Button" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" text="Add New Admin">
+                  <Button fx:id="addNAdmin_Button" mnemonicParsing="false" onMouseClicked="#addAdminButton_Clicked" prefHeight="26.0" prefWidth="300.0" text="Add Adminastrator">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="MainMenu_Button" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" text="Main Menu" />
+                  <Button fx:id="MainMenu_Button" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="26.0" prefWidth="300.0" text="Main Menu" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

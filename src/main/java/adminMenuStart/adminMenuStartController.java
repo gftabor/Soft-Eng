@@ -71,12 +71,15 @@ public class adminMenuStartController extends controllers.AbsController{
 
     }
 
+    //Changes the scene to the admin sign up view
     public void addAdmin(){
         //Change to patient menu
         FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/adminSignUpView.fxml");
-        patientMenuStart.patientMenuStartController controller = loader.getController();
+        adminSignUp.adminSignUpController controller = loader.getController();
         //sends the current language to the next screen
         controller.setCurrentLanguage(c_language);
+        //Gets the current admin
+        controller.setUsername(username_Label.getText());
         //set up english labels
         if(c_language == 0){
             controller.englishButtons_Labels();
@@ -242,6 +245,7 @@ public class adminMenuStartController extends controllers.AbsController{
         mapManagement_Button.setText("Map Management");
         SignOut_Button.setText("Sign Out");
         emergency_Button.setText("EMERGENCY");
+        addAdmin_Button.setText("Add");
 
         //Change the labels
         title_Label.setText("Welcome to Faulkner Hospital");
@@ -253,12 +257,13 @@ public class adminMenuStartController extends controllers.AbsController{
         c_language = 1;
 
         //change the Buttons
+
         pathFinding_Button.setText("Mapa");
         hospitalDirectory_Button.setText("Control de Directorio");
         mapManagement_Button.setText("Control de Mapa");
         SignOut_Button.setText("Salir");
         emergency_Button.setText("EMERGENCIA");
-
+        addAdmin_Button.setText("Agregar");
         //change the Labels
         title_Label.setText("Bienvenidos al Hospital de Faulkner");
 
