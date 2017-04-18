@@ -74,19 +74,21 @@ public class adminMenuStartController extends controllers.AbsController{
     //Changes the scene to the admin sign up view
     public void addAdmin(){
         //Change to patient menu
-        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/adminSignUpView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminSignUpView.fxml");
         adminSignUp.adminSignUpController controller = loader.getController();
         //sends the current language to the next screen
         controller.setCurrentLanguage(c_language);
         //Gets the current admin
         controller.setUsername(username_Label.getText());
         //set up english labels
+        /*
         if(c_language == 0){
             controller.englishButtons_Labels();
             //set up spanish labels
         }else if(c_language == 1){
             controller.spanishButtons_Labels();
         }
+        */
 
 
     }
