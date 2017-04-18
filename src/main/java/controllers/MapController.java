@@ -187,6 +187,11 @@ public class MapController {
 
         //creates and runs a pathfinder
         Pathfinder pathfinder = new Pathfinder();
+        pathfinder.algorithmSwitch(2);
+        pathfinder.generatePath(startNode, endNode);
+        pathfinder.algorithmSwitch(1);
+        pathfinder.generatePath(startNode, endNode);
+        pathfinder.algorithmSwitch(0);//A *
         pathfinder.generatePath(startNode, endNode);
         return pathfinder.getPath();
 
@@ -211,7 +216,7 @@ public class MapController {
         ArrayList<Edge> currentlist = new ArrayList<>();
 
         for (Edge e: fullList) {
-            System.out.println("Edge (floor) from " + e.getStartNode().getFloor()+ " to" + e.getEndNode().getFloor());
+            //System.out.println("Edge (floor) from " + e.getStartNode().getFloor()+ " to" + e.getEndNode().getFloor());
 
 
             //if change in floor, close off this list of edges
@@ -219,7 +224,7 @@ public class MapController {
                 //add old list to the fragList - if it is not empty
                 if (!currentlist.isEmpty()) {
 
-                    System.out.println("created frag path on floor: " + Integer.toString(currentFloor));
+                    //System.out.println("created frag path on floor: " + Integer.toString(currentFloor));
                     fragmentedList[currentFloor] = currentlist;
 
                 }
@@ -233,7 +238,7 @@ public class MapController {
                 } else {
                     currentFloor = e.getStartNode().getFloor();
                 }
-                System.out.println("currentfloor updated to: " + Integer.toString(currentFloor));
+                //System.out.println("currentfloor updated to: " + Integer.toString(currentFloor));
 
                 //don't add a transition edge unless you are on the currentfloor or the ending floor
                 if (currentFloor != startingFloor && currentFloor != endingFloor) {
@@ -246,7 +251,7 @@ public class MapController {
         }
 
         //add the final list to the fraglist
-        System.out.println("finished loop created frag path on floor: " + Integer.toString(currentFloor));
+       // System.out.println("finished loop created frag path on floor: " + Integer.toString(currentFloor));
         fragmentedList[currentFloor] = currentlist;
 
         return fragmentedList;
@@ -371,7 +376,7 @@ public class MapController {
         e2Y =  e2.getNeighbor(middle).getPosY() - middle.getPosY();
 
         double angle = Math.toDegrees(Math.atan2(e1X*e2Y - e1Y*e2X, e1X*e2X + e1Y*e2Y));
-        System.out.println(angle);
+        //System.out.println(angle);
         return angle;
     }
 }
