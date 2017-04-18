@@ -192,7 +192,7 @@ public class adminSignUpController extends controllers.AbsController{
     }
 
 
-    
+
 
     /*
     //Sets the english labels
