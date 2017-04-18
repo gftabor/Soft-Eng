@@ -200,7 +200,7 @@ public class MapController {
         //edgeListToText(pathfinder.getPath());
         nodeListToText(pathfinder.getNodePath());
         try {
-            Runtime.getRuntime().exec(new String[] { "testFloor4.exe"});
+            Runtime.getRuntime().exec(new String[] { "pathfinder3D.exe"});
         } catch (IOException e) {
             e.printStackTrace();
         }
