@@ -185,6 +185,7 @@ public class patientMainController extends controllers.mapScene {
             //update currentfloor
             currentFloor = globalFloorSequence.get(fragPathPos);
 
+            System.out.println("++++++++++++++++++++++++++++++=============+++++++++");
             System.out.println("current floor displayed: " + currentFloor);
             System.out.println("frag path pos updated to: " + fragPathPos);
             multifloorUpdate();
@@ -434,6 +435,10 @@ public class patientMainController extends controllers.mapScene {
     public void submitButton_Clicked() {
         Node startN;
         Node endN;
+
+        //reset visibility just in case
+        continueNew_Button.setVisible(false);
+        previous_Button.setVisible(false);
 
         if (selectionState == 2) {
             //submit stuff
