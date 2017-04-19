@@ -31,7 +31,7 @@
                      <children>
                         <Label text="Developed By">
                            <font>
-                              <Font size="27.0" />
+                              <Font name="System Bold" size="27.0" />
                            </font>
                         </Label>
                         <Label text="Team E &quot;The Gray Griffins&quot;">
@@ -72,7 +72,7 @@
                               <Label GridPane.rowIndex="4" />
                               <Label text="Project Manager" GridPane.rowIndex="2">
                                  <font>
-                                    <Font size="20.0" />
+                                    <Font name="System Bold Italic" size="20.0" />
                                  </font>
                               </Label>
                               <Label text="Jackson Baker" GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -82,7 +82,7 @@
                               </Label>
                               <Label text="Product Owner" GridPane.rowIndex="3">
                                  <font>
-                                    <Font size="20.0" />
+                                    <Font name="System Bold" size="20.0" />
                                  </font>
                               </Label>
                               <Label text="Augusto Wong" GridPane.columnIndex="1" GridPane.rowIndex="3">
@@ -92,17 +92,17 @@
                               </Label>
                               <Label text="Test Engineer" GridPane.rowIndex="4">
                                  <font>
-                                    <Font size="20.0" />
+                                    <Font name="System Bold Italic" size="20.0" />
                                  </font>
                               </Label>
                               <Label text="Lead Software Engineer">
                                  <font>
-                                    <Font size="20.0" />
+                                    <Font name="System Bold Italic" size="20.0" />
                                  </font>
                               </Label>
                               <Label text="Assistant Lead Software Engineer" GridPane.rowIndex="1">
                                  <font>
-                                    <Font size="20.0" />
+                                    <Font name="System Bold" size="20.0" />
                                  </font>
                               </Label>
                               <Label text="Jason Ashton" GridPane.columnIndex="1" GridPane.rowIndex="4">
@@ -112,7 +112,7 @@
                               </Label>
                               <Label text="Documentation Analyst" GridPane.rowIndex="5">
                                  <font>
-                                    <Font size="20.0" />
+                                    <Font name="System Bold" size="20.0" />
                                  </font>
                               </Label>
                               <Label text="Ryan Walsh" GridPane.columnIndex="1" GridPane.rowIndex="5">
@@ -122,7 +122,7 @@
                               </Label>
                               <Label text="Software Engineers" GridPane.rowIndex="6">
                                  <font>
-                                    <Font size="20.0" />
+                                    <Font name="System Bold Italic" size="20.0" />
                                  </font>
                               </Label>
                               <Label text="Mylena Guzman, Griffin Cecil" GridPane.columnIndex="1" GridPane.rowIndex="6">
@@ -137,8 +137,11 @@
                         </GridPane>
                         <Label text="WPI CS 3733 Software Engineering">
                            <font>
-                              <Font size="22.0" />
+                              <Font name="System Bold" size="22.0" />
                            </font>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
                         </Label>
                         <HBox alignment="CENTER" prefHeight="39.0" prefWidth="887.0">
                            <children>
@@ -154,21 +157,27 @@
                                  </font>
                               </Label>
                            </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" />
+                           </VBox.margin>
                         </HBox>
                         <Label text="Special Thanks To">
                            <font>
-                              <Font size="18.0" />
+                              <Font name="System Bold Italic" size="22.0" />
                            </font>
                         </Label>
                         <Label text="Brigham and Women's Faulkner Hospital">
                            <font>
-                              <Font size="23.0" />
+                              <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label text="and" />
+                        <Label text="and">
+                           <font>
+                              <Font size="18.0" />
+                           </font></Label>
                         <Label text="Andrew Shinn">
                            <font>
-                              <Font size="23.0" />
+                              <Font size="20.0" />
                            </font>
                         </Label>
                      </children>
