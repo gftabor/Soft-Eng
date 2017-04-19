@@ -24,6 +24,8 @@ public class CollectionOfNodes {
 
     DatabaseController databaseController = DatabaseController.getInstance();
 
+    private HashMap<Integer, Node> outsidenodes; //floor 0
+
     private HashMap<Integer, Node> floor1nodes;
     private HashMap<Integer, Node> floor2nodes;
     private HashMap<Integer, Node> floor3nodes;
@@ -32,9 +34,17 @@ public class CollectionOfNodes {
     private HashMap<Integer, Node> floor6nodes;
     private HashMap<Integer, Node> floor7nodes;
 
+    private HashMap<Integer, Node> belkinfloor1nodes; //floor 8
+    private HashMap<Integer, Node> belkinfloor2nodes; //floor 9
+    private HashMap<Integer, Node> belkinfloor3nodes; //floor 10
+    private HashMap<Integer, Node> belkinfloor4nodes; //floor 11
+
+
     private ArrayList<HashMap<Integer, Node>> allNodes;
 
     public CollectionOfNodes() {
+        outsidenodes = new HashMap<>();
+
         floor1nodes = new HashMap<>();
         floor2nodes = new HashMap<>();
         floor3nodes = new HashMap<>();
@@ -43,7 +53,13 @@ public class CollectionOfNodes {
         floor6nodes = new HashMap<>();
         floor7nodes = new HashMap<>();
 
+        belkinfloor1nodes = new HashMap<>();
+        belkinfloor2nodes = new HashMap<>();
+        belkinfloor3nodes = new HashMap<>();
+        belkinfloor4nodes = new HashMap<>();
+
         allNodes = new ArrayList<HashMap<Integer, Node>>();
+        allNodes.add(outsidenodes);
         allNodes.add(floor1nodes);
         allNodes.add(floor2nodes);
         allNodes.add(floor3nodes);
@@ -51,6 +67,10 @@ public class CollectionOfNodes {
         allNodes.add(floor5nodes);
         allNodes.add(floor6nodes);
         allNodes.add(floor7nodes);
+        allNodes.add(belkinfloor1nodes);
+        allNodes.add(belkinfloor2nodes);
+        allNodes.add(belkinfloor3nodes);
+        allNodes.add(belkinfloor4nodes);
     }
 
     //resets all nodes to initial state for pathfinding
@@ -60,7 +80,7 @@ public class CollectionOfNodes {
     //  - sets the reference to parentEdge to null
     public void resetForPathfinding() {
 
-        for(int i = 0; i < 7; i++) {
+        for(int i = 0; i < allNodes.size(); i++) {
             for(Node n: allNodes.get(i).values()) {
                 n.setCostToReach(Integer.MAX_VALUE);
                 n.setTotalCost(Integer.MAX_VALUE);
@@ -75,8 +95,8 @@ public class CollectionOfNodes {
     public void addNode(Node node) {
         // Add node entry to the hashmap
         int floor = node.getFloor();
-        allNodes.get(floor-1).put(node.getKey(), node);
-        if(!allNodes.get(floor-1).containsKey(node.getKey())) {
+        allNodes.get(floor).put(node.getKey(), node);
+        if(!allNodes.get(floor).containsKey(node.getKey())) {
             System.out.println("COLLECTIONOFNODES: addNode(): added node but then couldn't find in hashmap");
         }
         else {
@@ -90,15 +110,15 @@ public class CollectionOfNodes {
     public void removeNode(Node node) {
         // Remove node entry from hashmap
         int floor = node.getFloor();
-        allNodes.get(floor-1).remove(node.getKey());
+        allNodes.get(floor).remove(node.getKey());
     }
 
     //returns string representation of ALL FLOORS of the database
-    //  returns: concatenation of string representation of ALL 7 FLOORS
+    //  returns: concatenation of string representation of ALL 13 FLOORS
     public String toString() {
 
         String output = "";
-        for (int i = 1; i < 8; i++) {
+        for (int i = 0; i < allNodes.size(); i++) {
             output += "\n\n||Floor Number: " + i + " |";
             output += toStringFloor(i);
             output += "\n||";
@@ -112,7 +132,7 @@ public class CollectionOfNodes {
 
         String output = "";
         Iterator it;
-        it = allNodes.get(floor - 1).entrySet().iterator();
+        it = allNodes.get(floor).entrySet().iterator();
 
         while(it.hasNext()) {
             Map.Entry node = (Map.Entry) it.next();
@@ -132,8 +152,8 @@ public class CollectionOfNodes {
         
         int key = generateNodeKey(x, y);
 
-        if(allNodes.get(floor-1).containsKey(key)) {
-            node = allNodes.get(floor-1).get(key);
+        if(allNodes.get(floor).containsKey(key)) {
+            node = allNodes.get(floor).get(key);
             return node;
         }
         else {
@@ -148,7 +168,7 @@ public class CollectionOfNodes {
     //  input: floor number of the hash map you want to receive
     //  output: returns one of the 7 hash maps in the collection
     public HashMap<Integer, Node> getMap(int floor) {
-        return allNodes.get(floor - 1);
+        return allNodes.get(floor);
     }
 
     //generate a key depending on the node information
@@ -169,8 +189,8 @@ public class CollectionOfNodes {
         return key;
     }
 
-    //get method for all 7 hash maps
-    //  returns: one array list (indexes 0 based - 0 to 6) containing all 7 hash maps of nodes
+    //get method for all 12 hash maps
+    //  returns: one array list (indexes 0 based - 0 to 6) containing all 12 hash maps of nodes
     public ArrayList<HashMap<Integer, Node>> getAllNodes() {
         return allNodes;
     }
