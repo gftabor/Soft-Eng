@@ -47,10 +47,39 @@ public class adminMenuStartController extends controllers.AbsController{
     private ChoiceBox<String> languages_ChoiceBox;
 
     @FXML
+    private ChoiceBox<String> search_ChoiceBox;
+
+    @FXML
     private Button addAdmin_Button;
 
     //Set to english by default
     int c_language = 0;
+
+    int c_algorithm = 0;
+
+    MapController mapController = MapController.getInstance();
+
+    @FXML
+    public void initialize(){
+        search_ChoiceBox.getItems().addAll("A*", "Depth First", "Breadth First");
+        search_ChoiceBox.setValue("" + mapController.getAlgorithm());
+        search_ChoiceBox.getSelectionModel()
+                .selectedItemProperty()
+                .addListener( (ObservableValue<? extends String> observable, String oldValue, String newValue) -> changeSearch(newValue) );
+    }
+
+
+    public void changeSearch(String algorithm){
+        if(algorithm.equals("A*")){
+            mapController.setAlgorithm(0);
+        }else if(algorithm.equals("Depth First")){
+            mapController.setAlgorithm(2);
+        }else if(algorithm.equals("Breadth First")){
+            mapController.setAlgorithm(1);
+        }else{
+            mapController.setAlgorithm(0);
+        }
+    }
 
 
     public void signOutButton_Clicked(){
@@ -255,7 +284,7 @@ public class adminMenuStartController extends controllers.AbsController{
         title_Label.setText("Welcome to Faulkner Hospital");
     }
 
-    //switches all teh labels to spanish
+    //switches all the labels to spanish
     public void spanishButtons_Labels() {
         //change the current language to spanish
         c_language = 1;
