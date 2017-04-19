@@ -41,6 +41,9 @@ public class adminMenuStartController extends controllers.AbsController{
     private Label title_Label;
 
     @FXML
+    private Label default_Search;
+
+    @FXML
     private Label chooseLanguage_Label;
 
     @FXML
@@ -62,6 +65,7 @@ public class adminMenuStartController extends controllers.AbsController{
     @FXML
     public void initialize(){
         search_ChoiceBox.getItems().addAll("A*", "Depth First", "Breadth First");
+        search_ChoiceBox.getSelectionModel().select(0);
         search_ChoiceBox.setValue("" + mapController.getAlgorithm());
         search_ChoiceBox.getSelectionModel()
                 .selectedItemProperty()
@@ -232,7 +236,7 @@ public class adminMenuStartController extends controllers.AbsController{
         //Makes sure you only set the choices once
 
         //sets the choices and sets the current language as the top choice
-        languages_ChoiceBox.getItems().addAll("English", "Spanish");
+        languages_ChoiceBox.getItems().addAll("English", "Espanol");
         languages_ChoiceBox.getSelectionModel().select(c_language);
         //makes sure to not do this again
 
@@ -282,6 +286,8 @@ public class adminMenuStartController extends controllers.AbsController{
 
         //Change the labels
         title_Label.setText("Welcome to Faulkner Hospital");
+        default_Search.setText("Default Algorithm");
+        chooseLanguage_Label.setText("Choose your language");
     }
 
     //switches all the labels to spanish
@@ -299,6 +305,8 @@ public class adminMenuStartController extends controllers.AbsController{
         addAdmin_Button.setText("Administración admin");
         //change the Labels
         title_Label.setText("Bienvenidos al Hospital de Faulkner");
+        default_Search.setText("Algoritmo Predeterminado");
+        chooseLanguage_Label.setText("Escoje tu lenguaje");
     }
 
     //sets the current language given information form other screens
