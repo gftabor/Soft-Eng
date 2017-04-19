@@ -32,14 +32,13 @@
                         </Label>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER">
+                  <HBox alignment="CENTER_RIGHT">
                      <children>
                         <ChoiceBox fx:id="language_ChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="59.0" prefWidth="150.0">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                         </ChoiceBox>
-                        <Region prefHeight="76.0" prefWidth="301.0" />
                         <Button fx:id="about_Button" mnemonicParsing="false" onMouseClicked="#aboutButton_clicked" prefHeight="57.0" prefWidth="170.0" text="About">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -225,14 +224,13 @@
          <center>
             <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox>
+                  <HBox alignment="CENTER">
                      <children>
                         <ChoiceBox fx:id="floor_ChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="54.0" prefWidth="110.0">
                            <HBox.margin>
-                              <Insets />
+                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
                         </ChoiceBox>
-                        <Region maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" HBox.hgrow="ALWAYS" />
                         <Label fx:id="floor_Label" text="Floor: ">
                            <font>
                               <Font name="System Bold" size="24.0" />
