@@ -275,55 +275,6 @@ public class patientMainController extends controllers.mapScene {
 
     }
 
-    /*public void setComboBox(){
-        //Makes sure you only set the choices once
-        //sets the choices and sets the current language as the top choice
-        if(c_language == 0) {
-            filter_ChoiceBox.getSelectionModel().clearSelection();
-            filter_ChoiceBox.getItems().clear();
-            filter_ChoiceBox.getItems().addAll("All", "Employees", "Services", "Frequently Searched", "Miscellaneous");
-            filter_ChoiceBox.getSelectionModel().select(0);
-        }else if(c_language == 1){
-            filter_ChoiceBox.getSelectionModel().clearSelection();
-            filter_ChoiceBox.getItems().clear();
-            filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios", "Buscados Frequentemente", "Varios");
-            filter_ChoiceBox.getSelectionModel().select(0);
-
-        }
-
-
-
-        //Checks if the user has decided to change languages
-        filter_ChoiceBox.getSelectionModel().selectedIndexProperty()
-                .addListener(new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                        //System.out.println(newValue);
-
-                        //Checks if the user wants english language
-                        if (newValue.intValue() == 0) {
-                            //Load everything
-
-                        } else if (newValue.intValue() == 1) {
-                            //Load only employees
-
-                        } else if (newValue.intValue() == 2) {
-                            //Load services
-
-                        }else if(newValue.intValue() == 3){
-                            //load frequently searched
-
-                        }else if(newValue.intValue() == 4){
-                            System.out.println("Hello World");
-                            //Miscellaneous
-                        }
-                    }
-
-                });
-
-
-    }*/
-
     //Set the choices for Filter
     public void setFilterChoices(){
         //Makes sure you only set the choices once
@@ -349,9 +300,6 @@ public class patientMainController extends controllers.mapScene {
 
         }
 
-        //filter_ChoiceBox.getItems().removeAll();
-        //filter_ChoiceBox.getItems().remove(filter_ChoiceBox);
-        //filter_ChoiceBox.setValue("X");
         //Checks if the user has decided to change languages
         filter_ChoiceBox.getSelectionModel().selectedIndexProperty()
                 .addListener(new ChangeListener<Number>() {
@@ -530,7 +478,6 @@ public class patientMainController extends controllers.mapScene {
                     textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
                 }
             }
-
 
         }
         selectionState=0;
