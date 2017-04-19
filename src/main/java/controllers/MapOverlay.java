@@ -1,5 +1,6 @@
 package controllers;
 
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -22,7 +23,8 @@ public class MapOverlay {
     private HashMap<Integer, controllers.Node> currentNodeMap;
     private Line lne;
     private Circle location;
-    private static final double labelRadius = 8.5;
+    private static final double labelRadius = 6.8;
+    private final double sizeUpRatio = 1.9;
     mapScene sceneController;
 
     private ArrayList<Circle> ButtonList = new ArrayList<Circle>();
@@ -31,7 +33,7 @@ public class MapOverlay {
 
     //takes in a Hashtable when scene is switched and calls setNodes
 
-    public void setMapAndNodes(HashMap<Integer, Node> nodeMap, boolean devMode) {
+    public void setMapAndNodes(HashMap<Integer, Node> nodeMap, boolean devMode, int floor) {
 
         if (devMode) {
             System.out.println("DEVMODE active");
@@ -49,12 +51,12 @@ public class MapOverlay {
                 //  - node can be disabled and show in dev mode
                 //devs can see everything and interact with everything
                 if (devMode == true) {
-                    create_Button(current.getPosX(), current.getPosY(), current.getIsHidden(), current.getEnabled());
+                    create_Button(current.getPosX(), current.getPosY(), current.getIsHidden(), current.getEnabled(), floor);
                 } else {
                     //if not dev mode:
                     //show only if enabled and not hidden
                     if (current.getIsHidden() == false && current.getEnabled() == true) {
-                        create_Button(current.getPosX(), current.getPosY(), false, true);
+                        create_Button(current.getPosX(), current.getPosY(), false, true, floor);
                     }
                 }
                 //else skip displaying the node
@@ -64,17 +66,37 @@ public class MapOverlay {
         }
 
 
-
-    public void create_Button(double nodeX, double nodeY, boolean hidden, boolean enabled){
+    public void create_Button(int nodeX, int nodeY, boolean hidden, boolean enabled, int floor){
         //System.out.println("checking button");
         //System.out.println("make button");
+
+        Node current = MapController.getInstance().getCollectionOfNodes().getNode(nodeX, nodeY, floor);
+        final String infoString;
+        infoString = "x: " + nodeX + " y: " + nodeY + " Floor: " + floor + "\n" +
+                "Name: " + current.getName() + "\n" +
+                "Room: " + current.getRoomNum() + "\n" +
+                "Type: " + current.getType();
+
         location = new Circle(labelRadius);
         location.setOnMouseClicked(e -> {
 
             Object o = e.getSource();
             Circle c = (Circle) o;
             sceneController.sceneEvent((int)((nodeX)), (int)((nodeY)), c);
-            //set color --
+        });
+        location.setOnMouseEntered(e -> {
+            Object o = e.getSource();
+            Circle c = (Circle) o;
+            c.setRadius(labelRadius * sizeUpRatio);
+            Tooltip.install(
+                    c,
+                    new Tooltip(infoString)
+            );
+        });
+        location.setOnMouseExited(e -> {
+            Object o = e.getSource();
+            Circle c = (Circle) o;
+            c.setRadius(labelRadius);
         });
 
         // this code sets node's x and y pos to be on the plane holding the graph
