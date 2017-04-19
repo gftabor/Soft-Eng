@@ -367,7 +367,7 @@ public class patientMainController extends controllers.mapScene {
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
                 ArrayList<Edge> path = mapController.requestPath();
                 graph.createEdgeLines(path, true);
-                textDescription_TextFArea.setText(mapController.getTextDirections(path));
+                textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
 
             }
 
@@ -413,7 +413,7 @@ public class patientMainController extends controllers.mapScene {
             System.out.println("Could not pathfind. Resetting now...");
             cancelButton_Clicked();
         } else {
-            textDescription_TextFArea.setText(mapController.getTextDirections(reqPath));
+            textDescription_TextFArea.setText(mapController.getTextDirections(reqPath, c_language));
 
             ArrayList<ArrayList<Edge>> fragPath;
             fragPath = mapController.requestFragmentedPath(reqPath, mapController.returnOriginalFloor(), mapController.returnDestFloor());
