@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -24,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="patientMain.patientMainController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="patientMain.patientMainController">
    <children>
       <BorderPane layoutX="96.0" layoutY="187.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -39,22 +32,13 @@
                         </Label>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER">
+                  <HBox alignment="CENTER_RIGHT">
                      <children>
-                        <ChoiceBox fx:id="language_ChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </ChoiceBox>
-                        <Region prefHeight="76.0" prefWidth="301.0" />
-                        <Button fx:id="directory_Button" mnemonicParsing="false" onMouseClicked="#directoryClicked" prefHeight="57.0" prefWidth="218.0" text="Directory Search">
+                        <ChoiceBox fx:id="language_ChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="59.0" prefWidth="150.0">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Button>
+                        </ChoiceBox>
                         <Button fx:id="about_Button" mnemonicParsing="false" onMouseClicked="#aboutButton_clicked" prefHeight="57.0" prefWidth="170.0" text="About">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -155,7 +139,7 @@
                   </HBox>
                   <HBox alignment="CENTER">
                      <children>
-                        <ChoiceBox fx:id="filter_ChoiceBox" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="250.0">
+                        <ChoiceBox fx:id="filter_ChoiceBox" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="68.0" prefWidth="250.0">
                            <HBox.margin>
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </HBox.margin>
@@ -240,14 +224,13 @@
          <center>
             <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox>
+                  <HBox alignment="CENTER">
                      <children>
-                        <ChoiceBox fx:id="floor_ChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="110.0">
+                        <ChoiceBox fx:id="floor_ChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="54.0" prefWidth="110.0">
                            <HBox.margin>
-                              <Insets />
+                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
                         </ChoiceBox>
-                        <Region maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" HBox.hgrow="ALWAYS" />
                         <Label fx:id="floor_Label" text="Floor: ">
                            <font>
                               <Font name="System Bold" size="24.0" />
@@ -265,12 +248,12 @@
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="previous_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#previousButton_Clicked" prefHeight="45.0" prefWidth="100.0" text="Previous">
+                        <Button fx:id="previous_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#previousButton_Clicked" prefHeight="60.0" prefWidth="132.0" text="Previous">
                            <HBox.margin>
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="continueNew_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#continueNewButton_Clicked" prefHeight="45.0" prefWidth="100.0" text="Continue">
+                        <Button fx:id="continueNew_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#continueNewButton_Clicked" prefHeight="61.0" prefWidth="144.0" text="Continue">
                            <HBox.margin>
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                            </HBox.margin>
