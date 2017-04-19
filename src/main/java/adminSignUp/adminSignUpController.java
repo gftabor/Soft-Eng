@@ -75,8 +75,8 @@ public class adminSignUpController extends controllers.AbsController{
     @FXML
     private ChoiceBox<String> mode_ChoiceBox;
 
-    @FXML
-    private HBox ID_Label;
+   /* @FXML
+    private HBox ID_Label;*/
 
     @FXML
     private Label username_Label;
@@ -84,8 +84,11 @@ public class adminSignUpController extends controllers.AbsController{
     @FXML
     private TextField userName_TextField;
 
-    @FXML
-    private HBox firstName_Label;
+   /* @FXML
+    private Label firstName_Label;*/
+
+   @FXML
+   private Label firstName_Lab;
 
     @FXML
     private TextField firstName_TextField;
@@ -114,7 +117,7 @@ public class adminSignUpController extends controllers.AbsController{
     private boolean selfSelected = false;
 
     int c_language = 0; //English by default
-    int c_mode = 0; //
+    int c_mode = 0; //Keeps track of the current mode
 
     DatabaseController databaseController = DatabaseController.getInstance();
 
@@ -123,10 +126,15 @@ public class adminSignUpController extends controllers.AbsController{
 
     //Deal with the clear button clicked
     public void cancelButton_Clicked(){
+        id_textField.clear();
+        userName_TextField.clear();
+        firstName_TextField.clear();
+        lastName_TextField.clear();
+        newPassword_TextField.clear();
 
     }
 
-    public void clearInputs(){
+   public void clearInputs(){
         id_textField.clear();
         userName_TextField.clear();
         firstName_TextField.clear();
@@ -148,6 +156,7 @@ public class adminSignUpController extends controllers.AbsController{
         }else{
             System.out.println("Error with choicebox on admin page");
         }
+        //cancelButton_Clicked();
         clearInputs();
 
     }
@@ -361,153 +370,73 @@ public class adminSignUpController extends controllers.AbsController{
 
     }
 
-    /*public void setUpTreeView(){
-        ID_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, Integer>("rID"));
-        firstName_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rFirstName"));
-        lastName_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rLastName"));
-        //title_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rTitle"));
-        //department_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rType"));
-        //room_TableColumn.setCellValueFactory(new PropertyValueFactory<Table, String>("rRoom"));
-
-
-        ResultSet rset, rset2;
-        rset = databaseController.getProRoomNums();
-        rset2 = databaseController.getProsWithoutRooms();
-        ArrayList<Integer> ids = new ArrayList<>();
-
-        ObservableList<Table> data = FXCollections.observableArrayList();
-
-        int id;
-        String firstName, lastName, title, department, roomNum;
-        try {
-            while (rset.next()){
-                id = rset.getInt("ID");
-                ids.add(id);
-                firstName = rset.getString("FIRSTNAME");
-                lastName = rset.getString("LASTNAME");
-                if (c_language == 0) {
-                    System.out.println("Getting ENGLISH type and department c_language NOW = " + c_language);
-                    title = rset.getString("TYPE");
-                    department = rset.getString("DEPARTMENT");
-                } else {
-                    System.out.println("Getting SPANISH type and department c_language NOW = " + c_language);
-                    title = rset.getString("SPTYPE");
-                    System.out.println("getting title " + title);
-                    department = rset.getString("SPDEPARTMENT");
-                    System.out.println("getting department " + department);
-                }
-                roomNum = rset.getString("ROOMNUM");
-                System.out.println("Name: " + firstName + lastName);
-                //Table table = new Table(id, firstName, lastName, title, department, roomNum);
-                data.add(new Table(id, firstName, lastName, title, department, roomNum));
-            }
-            rset.close();
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-        try {
-            while (rset2.next()){
-                id = rset2.getInt("ID");
-                firstName = rset2.getString("FIRSTNAME");
-                lastName = rset2.getString("LASTNAME");
-                if (c_language == 0) {
-                    System.out.println("Getting ENGLISH type and department c_language = " + c_language);
-                    title = rset2.getString("TYPE");
-                    department = rset2.getString("DEPARTMENT");
-                } else {
-                    System.out.println("Getting SPANISH type and department c_language = " + c_language);
-                    title = rset2.getString("SPTYPE");
-                    System.out.println("getting title " + title);
-                    department = rset2.getString("SPDEPARTMENT");
-                    System.out.println("getting department " + department);
-                }
-                System.out.println("Name: " + firstName + lastName);
-                if (!ids.contains(id)) {
-                    //Something bad happened
-                    roomNum= "empty";
-                    Table table = new Table(id, firstName, lastName, title, department, roomNum);
-                    data.add(table);
-                }
-            }
-            rset2.close();
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-
-        Table_TableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(event.getClickCount() > 1) {
-                    ID = Table_TableView.getSelectionModel().getSelectedItem().getrID();
-                    First_N = Table_TableView.getSelectionModel().getSelectedItem().getrFirstName();
-                    Last_N = Table_TableView.getSelectionModel().getSelectedItem().getrLastName();
-                    Title = Table_TableView.getSelectionModel().getSelectedItem().getrTitle();
-                    Department = Table_TableView.getSelectionModel().getSelectedItem().getrType();
-                    Room = Table_TableView.getSelectionModel().getSelectedItem().getrRoom();
-                    department_TextField.setText(Department);
-                    room_TextField.setText(Room);
-                    //
-                    title_TextField.setText(Title);
-
-                    id_TextField.setText(Integer.toString(ID));
-                    Firstname_TextField.setText(First_N);
-                    lastName_TextField.setText(Last_N);
-
-                }
-            }
-        });
-        FilteredList<Table> filteredData = new FilteredList<>(data, e-> true);
-        search_textField.setOnKeyReleased(e -> {
-            search_textField.textProperty().addListener((observable, oldValue, newValue) -> {
-                filteredData.setPredicate((Predicate<? super Table>) Table ->{
-                    if(newValue == null || newValue.isEmpty()){
-                        return true;
-                    }
-                    String lowerCaseFilter = newValue.toLowerCase();
-                    if(Table.getrFirstName().toLowerCase().contains(lowerCaseFilter)){
-                        return true;
-
-                    }else if(Table.getrLastName().toLowerCase().contains(lowerCaseFilter)){
-                        return true;
-                    }else if(Table.getrType().toLowerCase().contains(lowerCaseFilter)){
-                        return true;
-                    }else if(Table.getrTitle().toLowerCase().contains(lowerCaseFilter)){
-                        return true;
-                    }else if(Table.getrRoom().toLowerCase().contains(lowerCaseFilter)){
-                        return true;
-                    }
-                    return false;
-                });
-            });
-        });
-        SortedList<Table> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(Table_TableView.comparatorProperty());
-        Table_TableView.setItems(sortedData);
-    }
-    */
-
-
-
 
 
     //Sets the english labels
     public void englishButtons_Labels(){
         //Buttons
+        c_language = 0;
         MainMenu_Button.setText("Main Menu");
+        cancel_Button.setText("Clear");
+        submit_Button.setText("Submit");
 
 
         //TextField
+        search_textField.setPromptText("search");
+        userName_TextField.setPromptText("Username");
+        firstName_TextField.setPromptText("First Name");
+        lastName_TextField.setPromptText("Last Name");
+        newPassword_TextField.setPromptText("Password");
+
+
+        //Labels
+        mainTitle_Label.setText("Administrators");
+        subTitle_Label.setText("Manage Administrators");
+        Mode_Label.setText("Mode:");
+        username_Label.setText("Username:");
+        firstName_Lab.setText("First Name:");
+        lastName_Label.setText("Last Name:");
+        password_Label.setText("New password");
+        queryStatus.setText("Query Status");
+
+        //COLUMNS
+        username_TableColumn.setText("Username");
+        firstName_TableColumn.setText("First Name");
+        lastName_TableColumn.setText("Last Name");
+
+
 
     }
 
     //sets the spanish labels
     public void spanishButtons_Labels(){
+        c_language = 1;
         //Buttons
         MainMenu_Button.setText("Menu Principal");
-
+        cancel_Button.setText("Borrar");
+        submit_Button.setText("Enviar");
 
         //TextField
+        search_textField.setPromptText("buscar");
+        userName_TextField.setPromptText("Usuario");
+        firstName_TextField.setPromptText("Nombre");
+        lastName_TextField.setPromptText("Appellido");
+        newPassword_TextField.setPromptText("Contrasena");
 
+        //Labels
+        mainTitle_Label.setText("Administradores");
+        subTitle_Label.setText("Control de Administradores");
+        Mode_Label.setText("Modo:");
+        username_Label.setText("Usuario:");
+        firstName_Lab.setText("Nombre:");
+        lastName_Label.setText("Apellido:");
+        password_Label.setText("Nueva Contrasena");
+        queryStatus.setText("Estatus");
+
+        //Columns
+        username_TableColumn.setText("Usuario");
+        firstName_TableColumn.setText("Nombre");
+        lastName_TableColumn.setText("Apellido");
 
     }
 
