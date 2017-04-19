@@ -81,14 +81,16 @@ public class adminMenuStartController extends controllers.AbsController{
         //Gets the current admin
         controller.setUsername(username_Label.getText());
         //set up english labels
-        /*
+
         if(c_language == 0){
             controller.englishButtons_Labels();
             //set up spanish labels
         }else if(c_language == 1){
             controller.spanishButtons_Labels();
         }
-        */
+
+        controller.setUpTreeView();
+        controller.setModeChoices();
 
 
     }

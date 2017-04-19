@@ -94,13 +94,17 @@ public class patientMainController extends controllers.mapScene {
     private ImageView map_viewer;
 
     @FXML
-    private Button continue_Button;
-
-    @FXML
     private Label phoneStatus;
 
     @FXML
     private Button directory_Button;
+
+    @FXML
+    private Button previous_Button;
+
+    @FXML
+    private Button continueNew_Button;
+
 
     int c_language = 0;
 
@@ -127,7 +131,7 @@ public class patientMainController extends controllers.mapScene {
     private Circle end;
 
     private final double sizeUpRatio = 1.7;
-    private final double strokeRatio = 2.5;
+    private final double strokeRatio = 4;
 
     private ArrayList<ArrayList<Edge>> globalFragList;
     private int fragPathPos; //position on the global frag list
@@ -155,12 +159,89 @@ public class patientMainController extends controllers.mapScene {
 
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
         //set continue button invisible when not needed
-        continue_Button.setVisible(false);
+        continueNew_Button.setVisible(false);
+        previous_Button.setVisible(false);
+
+        //draw edges
+        //graph.drawFloorEdges(currentFloor);
     }
 
     //get an instance of database controller
     DatabaseController databaseController = DatabaseController.getInstance();
 
+    //Continue New Button Clicked
+    public void continueNewButton_Clicked(){
+        if (continueNew_Button.isVisible() == true) {
+            System.out.println("continue button clicked");
+
+            //set the previous button to be enabled
+            previous_Button.setVisible(true);
+
+            //increment b/c continue button
+            fragPathPos++; //continue...
+
+            //update currentfloor
+            currentFloor = globalFloorSequence.get(fragPathPos);
+
+            System.out.println("current floor displayed: " + currentFloor);
+            System.out.println("frag path pos updated to: " + fragPathPos);
+            multifloorUpdate();
+
+            //disable the continue button if you reach the end
+            //also update the color
+            if (fragPathPos == globalFragList.size() - 1) {
+                continueNew_Button.setVisible(false);
+
+                //set the end goal color
+                ArrayList<Circle> circleList;
+                circleList = graph.getButtonList();
+
+                for (Circle c: circleList) {
+                    if(c.getLayoutX() == endX && c.getLayoutY() == endY) {
+                        c.setStrokeWidth(strokeRatio);
+                        c.setRadius(graph.getLabelRadius()*sizeUpRatio);
+                        c.setStroke(endColor);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    //previoys Button clicked
+    public void previousButton_Clicked(){
+        System.out.println("prev button clicked");
+
+        //show the continue button
+        continueNew_Button.setVisible(true);
+
+        //decrement frag path pos
+        fragPathPos--;
+
+        //update currentfloor
+        currentFloor = globalFloorSequence.get(fragPathPos);
+
+        multifloorUpdate();
+
+        //disable the previous button if you reach the beginning
+        //also update the color
+        if (fragPathPos == 0) {
+            previous_Button.setVisible(false);
+
+            //set the end goal color
+            ArrayList<Circle> circleList;
+            circleList = graph.getButtonList();
+
+            for (Circle c: circleList) {
+                if(c.getLayoutX() == startX && c.getLayoutY() == startY) {
+                    c.setStrokeWidth(strokeRatio);
+                    c.setRadius(graph.getLabelRadius()*sizeUpRatio);
+                    c.setStroke(startColor);
+                    break;
+                }
+            }
+        }
+    }
 
     //Sets the choices for the language
     public void setLanguage_ChoiceBox(){
@@ -374,7 +455,6 @@ public class patientMainController extends controllers.mapScene {
         }
         selectionState=0;
         System.out.println("The user has clicked the submit Button");
-        //MapController.getInstance().requestMapCopy();
     }
 
     public void multiFloorPathfind() {
@@ -384,11 +464,11 @@ public class patientMainController extends controllers.mapScene {
         fragPathPos = 0;
 
         //set continue button visible
-        continue_Button.setVisible(true);
+        continueNew_Button.setVisible(true);
 
         //switch floors to original floor's pathfinding view
         int startfloor = mapController.returnOriginalFloor();
-        floor_Label.setText(Integer.toString(startfloor));
+        c_Floor_Label.setText(Integer.toString(startfloor));
 
         //switch back to the original floor using the choicebox selection
         floor_ChoiceBox.getSelectionModel().select(startfloor - 1);
@@ -490,7 +570,7 @@ public class patientMainController extends controllers.mapScene {
         graph.wipeEdgeLines();
 
         //hide the continue button
-        continue_Button.setVisible(false);
+        continueNew_Button.setVisible(false);
 
         start_textField.setText("");
         end_TextField.setText("");
@@ -583,16 +663,18 @@ public class patientMainController extends controllers.mapScene {
             start =c;
             //color
             c.setStrokeWidth(strokeRatio);
-            c.setStroke(Color.ORANGERED);
+            c.setStroke(startColor);
 
-            startX = c.getCenterX();
-            startY = c.getCenterY();
+            //location
+            startX = c.getLayoutX();
+            startY = c.getLayoutY();
+            System.out.println("Start coords updated: " + startX + "," + startY);
 
             //size
             c.setRadius(graph.getLabelRadius() * sizeUpRatio);
 
             //hide the continue button if possible
-            continue_Button.setVisible(false);
+            continueNew_Button.setVisible(false);
         } else if (selectionState == 1){
             //place the red marker at end location
             mapController.markNode(x, y, 2, currentFloor);
@@ -600,48 +682,17 @@ public class patientMainController extends controllers.mapScene {
             end = c;
             //color
             c.setStrokeWidth(strokeRatio);
-            c.setStroke(Color.FUCHSIA);
+            c.setStroke(endColor);
+
+            //location
+            endX = c.getLayoutX();
+            endY = c.getLayoutY();
+            System.out.println("End coords updated: " + endX + "," + endY);
 
             //size
             c.setRadius(graph.getLabelRadius() * sizeUpRatio);
         } else {
             //do nothing
-        }
-    }
-
-    @FXML
-    public void continueButton_Clicked() {
-        if (continue_Button.isVisible() == true) {
-            System.out.println("continue button clicked");
-
-            //increment b/c continue button
-            fragPathPos++; //continue...
-
-            //update currentfloor
-            currentFloor = globalFloorSequence.get(fragPathPos);
-
-            System.out.println("current floor displayed: " + currentFloor);
-            System.out.println("frag path pos updated to: " + fragPathPos);
-            multifloorUpdate();
-
-            //disable the continue button if you reach the end
-            //also update the color
-            if (fragPathPos == globalFragList.size() - 1) {
-                continue_Button.setVisible(false);
-
-                //set the end goal color
-                ArrayList<Circle> circleList;
-                circleList = graph.getButtonList();
-
-                for (Circle c: circleList) {
-                    if(c.getLayoutX() == endX && c.getLayoutY() == endY) {
-                        c.setStrokeWidth(strokeRatio);
-                        c.setRadius(graph.getLabelRadius()*sizeUpRatio);
-                        c.setStroke(endColor);
-                        break;
-                    }
-                }
-            }
         }
     }
 
