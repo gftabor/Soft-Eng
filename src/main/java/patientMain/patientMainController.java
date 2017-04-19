@@ -105,6 +105,9 @@ public class patientMainController extends controllers.mapScene {
     @FXML
     private Button continueNew_Button;
 
+    @FXML
+    private Button zoom_button;
+
 
 
 
@@ -138,9 +141,16 @@ public class patientMainController extends controllers.mapScene {
     private ArrayList<ArrayList<Edge>> globalFragList;
     private int fragPathPos; //position on the global frag list
     private ArrayList<Integer> globalFloorSequence;
+    private ArrayList<Edge> path;
 
     private final Color startColor = Color.RED;
     private final Color endColor = Color.GREEN;
+
+    private double origPaneWidth;
+    private double origPaneHeight;
+    double zoom;
+
+    //ArrayList<Edge> zoomPath;
 
     @FXML
     public void initialize(){
@@ -167,7 +177,9 @@ public class patientMainController extends controllers.mapScene {
 
         //draw edges
         //graph.drawFloorEdges(currentFloor);
-
+        
+        origPaneHeight = 489;
+        origPaneWidth = 920;
     }
 
     //get an instance of database controller
@@ -503,8 +515,10 @@ public class patientMainController extends controllers.mapScene {
                 multiFloorPathfind();
             } else {
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                ArrayList<Edge> path = mapController.requestPath();
+                path = mapController.requestPath();
                 graph.createEdgeLines(path, true);
+                //zoomPath = path;
+                controllers.MapOverlay.setPathfinding(1);
                 textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
                 
             }
@@ -606,6 +620,7 @@ public class patientMainController extends controllers.mapScene {
 
             } else {
                 graph.createEdgeLines(fragPath.get(0), true);
+                controllers.MapOverlay.setPathfinding(2);
             }
 
             //set the globals so you can send to the continue button
@@ -623,6 +638,8 @@ public class patientMainController extends controllers.mapScene {
 
     //Handling when the logIn Button is clicked
     public void logInButton_Clicked() {
+
+        controllers.MapOverlay.setZoom(1.0);
 
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminLoginMainView.fxml");
         adminLoginMain.adminLoginMainController controller = loader.getController();
@@ -658,6 +675,7 @@ public class patientMainController extends controllers.mapScene {
     public void cancelButton_Clicked(){
         //MapController.getInstance().requestMapCopy();
         selectionState = 0;
+
         //Remove colored dots from map
 
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
@@ -665,6 +683,7 @@ public class patientMainController extends controllers.mapScene {
 
         //wipe line from map
         graph.wipeEdgeLines();
+        controllers.MapOverlay.setPathfinding(0);
 
         //hide the continue button
         continueNew_Button.setVisible(false);
@@ -794,7 +813,9 @@ public class patientMainController extends controllers.mapScene {
                 end.setRadius(graph.getLabelRadius());
             }
             graph.wipeEdgeLines();
-            start = c;
+            controllers.MapOverlay.setPathfinding(0);
+
+            start =c;
             //color
             c.setStrokeWidth(strokeRatio);
             c.setStroke(startColor);
@@ -866,7 +887,43 @@ public class patientMainController extends controllers.mapScene {
         } else {
             floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
         }
+        controllers.MapOverlay.setPathfinding(0);
         System.out.println("creating edge lines for fp pos: " + fragPathPos);
         graph.createEdgeLines(globalFragList.get(fragPathPos), true);
+        controllers.MapOverlay.setPathfinding(2);
+    }
+
+    public void zoomButton_Clicked() {
+        zoom = controllers.MapOverlay.getZoom();
+        System.out.println(zoom);
+        if (zoom < 1.6) {
+            zoom += 0.3;
+            controllers.MapOverlay.setZoom(zoom);
+            node_Plane.setPrefWidth(origPaneWidth*zoom);
+            node_Plane.setPrefHeight(origPaneHeight*zoom);
+            map_viewer.setFitWidth(origPaneWidth*zoom);
+            map_viewer.setFitHeight(origPaneHeight*zoom);
+
+
+
+        } else {
+            System.out.println("set to 1.0");
+            zoom = 1.0;
+            controllers.MapOverlay.setZoom(1);
+            node_Plane.setPrefWidth(origPaneWidth);
+            node_Plane.setPrefHeight(origPaneHeight);
+            map_viewer.setFitWidth(origPaneWidth);
+            map_viewer.setFitHeight(origPaneHeight);
+
+
+        }
+        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
+                false, currentFloor);
+        if (controllers.MapOverlay.getPathfinding() == 1) {
+            graph.createEdgeLines(path, true);
+        } else if (controllers.MapOverlay.getPathfinding() == 2) {
+            graph.createEdgeLines(globalFragList.get(fragPathPos), true);
+        }
+
     }
 }
