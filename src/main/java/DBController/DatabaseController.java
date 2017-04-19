@@ -419,28 +419,21 @@ public class DatabaseController {
      *
      ******************************************************************************/
 
-    public boolean newProfessional(String firstName, String lastName, String type, String department){
+    public boolean newProfessional(String firstName, String lastName, String type){
         System.out.println(
                 String.format(
-                        "Adding professional. firstName: %s, lastName: %s, type: %s, department: %s",
-                        firstName, lastName, type, department));
-        String spType = getSpanish(type);
-        System.out.println("Spanish type while adding professional: " + spType);
+                        "Adding professional. firstName: %s, lastName: %s, type: %s",
+                        firstName, lastName, type));
 
-        String spDepartment = getSpanish(department);
-        System.out.println("Spanish department while adding professional: " + spDepartment);
         try{
             // sql statement with "?" to be filled later
-            String query = "INSERT INTO PROFESSIONAL (FIRSTNAME, LASTNAME, TYPE, SPTYPE, DEPARTMENT, SPDEPARTMENT)" +
-                    " values (?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO PROFESSIONAL (FIRSTNAME, LASTNAME, TYPE)" +
+                    " values (?, ?, ?)";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, type);
-            preparedStatement.setString(4, spType);
-            preparedStatement.setString(5, department);
-            preparedStatement.setString(6, spDepartment);
             // execute prepared statement
             
             preparedStatement.execute();
@@ -554,20 +547,19 @@ public class DatabaseController {
         return true;
     }
 
-    public boolean EditProfessional(int ID, String firstName, String lastName, String type, String department){
+    public boolean EditProfessional(int ID, String firstName, String lastName, String type){
         System.out.println(
                 String.format(
                         "Editing professional. id %d firstName: %s, lastName: %s, type: %s, profile: %s",
-                        ID, firstName, lastName, type, department));
+                        ID, firstName, lastName, type));
         try{
-            String query = "UPDATE PROFESSIONAL SET FIRSTNAME = ?, LASTNAME = ?, TYPE = ?, DEPARTMENT = ?" +
+            String query = "UPDATE PROFESSIONAL SET FIRSTNAME = ?, LASTNAME = ?, TYPE = ?" +
                     "WHERE ID = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, type);
-            preparedStatement.setString(4, department);
-            preparedStatement.setInt(5, ID);
+            preparedStatement.setInt(4, ID);
             // run statement and query
             preparedStatement.executeUpdate();
         } catch (SQLException e){
@@ -600,7 +592,7 @@ public class DatabaseController {
                 String.format(
                         "Getting all professionals"));
         try{
-            String query = "SELECT ID, FIRSTNAME, LASTNAME, TYPE, SPTYPE, SPDEPARTMENT, DEPARTMENT FROM PROFESSIONAL";
+            String query = "SELECT ID, FIRSTNAME, LASTNAME, TYPE FROM PROFESSIONAL";
             PreparedStatement preparedStatement2 = conn.prepareStatement(query);
             // run statement and query
             resultSet = preparedStatement2.executeQuery();
@@ -611,51 +603,78 @@ public class DatabaseController {
         return resultSet;
     }
 
-    // returns english department list
-    public ArrayList<String> getEnglishDepartmentList(){
-        ArrayList<String> departments = new ArrayList<>();
-        String department;
-        ResultSet rset = databaseController.getDepartmentNames();
-        try {
-            while (rset.next()) {
-                department = rset.getString("DEPARTMENT");
-                if (!departments.contains(department)) {
-                    departments.add(department);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return departments;
-    }
+//    // returns english department list
+//    public ArrayList<String> getEnglishDepartmentList(){
+//        ArrayList<String> departments = new ArrayList<>();
+//        String department;
+//        ResultSet rset = databaseController.getDepartmentNames();
+//        try {
+//            while (rset.next()) {
+//                department = rset.getString("DEPARTMENT");
+//                if (!departments.contains(department)) {
+//                    departments.add(department);
+//                }
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return departments;
+//    }
 
-    // returns spanish department list
-    public ArrayList<String> getSpanishDepartmentList(){
-        ArrayList<String> departments = new ArrayList<>();
-        String department;
-        ResultSet rset = databaseController.getSpanishDepartmentNames();
-        try {
-            while (rset.next()) {
-                department = rset.getString("SPDEPARTMENT");
-                System.out.println("In the database -- getting spanish department: "+ department);
-                if (!departments.contains(department) && department != null) {
-                    departments.add(department);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return departments;
-    }
+//    // returns spanish department list
+//    public ArrayList<String> getSpanishDepartmentList(){
+//        ArrayList<String> departments = new ArrayList<>();
+//        String department;
+//        ResultSet rset = databaseController.getSpanishDepartmentNames();
+//        try {
+//            while (rset.next()) {
+//                department = rset.getString("SPDEPARTMENT");
+//                System.out.println("In the database -- getting spanish department: "+ department);
+//                if (!departments.contains(department) && department != null) {
+//                    departments.add(department);
+//                }
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return departments;
+//    }
 
-    // returns english type list
-    public ArrayList<String> getEnglishTitleList(){
+//    // returns english type list
+//    public ArrayList<String> getEnglishTitleList(){
+//        ResultSet resultSet = null;
+//        String title;
+//        ArrayList<String> titles = new ArrayList<>();
+//        System.out.println(
+//                String.format(
+//                        "Getting all professional english title as a list"));
+//        try{
+//            String query = "SELECT TYPE FROM PROFESSIONAL";
+//            PreparedStatement preparedStatement = conn.prepareStatement(query);
+//            // run statement and query
+//            resultSet = preparedStatement.executeQuery();
+//            while (resultSet.next()) {
+//                title = resultSet.getString("TYPE");
+//                if (!titles.contains(title)) {
+//                    titles.add(title);
+//                }
+//            }
+//        } catch (SQLException e){
+//            e.printStackTrace();
+//            return null;
+//        }
+//
+//        return titles;
+//    }
+
+    //returns spanish type list
+    public ArrayList<String> getTitles(){
         ResultSet resultSet = null;
         String title;
         ArrayList<String> titles = new ArrayList<>();
         System.out.println(
                 String.format(
-                        "Getting all professional english title as a list"));
+                        "Getting all professional titles as a list"));
         try{
             String query = "SELECT TYPE FROM PROFESSIONAL";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -675,23 +694,29 @@ public class DatabaseController {
         return titles;
     }
 
-    //returns spanish type list
-    public ArrayList<String> getSpanishTitleList(){
+    public ArrayList<String> getProfessionalList(){
+
+        System.out.println("Getting all professionals, appending roomnum");
+
         ResultSet resultSet = null;
-        String title;
-        ArrayList<String> titles = new ArrayList<>();
-        System.out.println(
-                String.format(
-                        "Getting all professional spanish title as a list"));
+        ArrayList<String> professionals = new ArrayList<>();
+        String professional = "";
+
         try{
-            String query = "SELECT SPTYPE FROM PROFESSIONAL";
+            String query = "SELECT P.FIRSTNAME, P.LASTNAME, N.ROOMNUM " +
+                    "FROM PROFESSIONAL P, NODE N, PROLOCATION PL " +
+                    "WHERE P.ID = PL.PROID AND PL.XPOS = N.XPOS AND PL.YPOS = N.YPOS AND " +
+                    "PL.FLOOR = N.FLOOR";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             // run statement and query
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                title = resultSet.getString("SPTYPE");
-                if (!titles.contains(title)) {
-                    titles.add(title);
+                professional = resultSet.getString("FIRSTNAME") + " " +
+                        resultSet.getString("LASTNAME") + ", " +
+                        resultSet.getString("ROOMNUM");
+                System.out.println("Entire professional string: " + professional);
+                if (!professionals.contains(professional)) {
+                    professionals.add(professional);
                 }
             }
         } catch (SQLException e){
@@ -699,8 +724,10 @@ public class DatabaseController {
             return null;
         }
 
-        return titles;
+        return professionals;
+
     }
+
 
     /*******************************************************************************
      * PROFESSIONAL - LOCATION actions
@@ -803,42 +830,6 @@ public class DatabaseController {
         }
         return true;
     }
-
-    public ArrayList<String> getProfessionalList(){
-
-        System.out.println("Getting all professionals, appending title and department, roomnum");
-
-        ResultSet resultSet = null;
-        ArrayList<String> professionals = new ArrayList<>();
-        String professional = "";
-
-        try{
-            String query = "SELECT P.FIRSTNAME, P.LASTNAME, P.DEPARTMENT, N.ROOMNUM " +
-                    "FROM PROFESSIONAL P, NODE N, PROLOCATION PL " +
-                    "WHERE P.ID = PL.PROID AND PL.XPOS = N.XPOS AND PL.YPOS = N.YPOS AND " +
-                    "PL.FLOOR = N.FLOOR";
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-            // run statement and query
-            resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                professional = resultSet.getString("FIRSTNAME") + " " +
-                        resultSet.getString("LASTNAME") + ", " +
-                        resultSet.getString("DEPARTMENT") + ", " +
-                        resultSet.getString("ROOMNUM");
-                System.out.println("Entire professional string: " + professional);
-                if (!professionals.contains(professional)) {
-                    professionals.add(professional);
-                }
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
-            return null;
-        }
-
-        return professionals;
-
-    }
-
 
     /*******************************************************************************
      * ADMIN actions
@@ -1221,7 +1212,7 @@ public class DatabaseController {
                 String.format(
                         "Getting all professional room numbers"));
         try{
-            String query = "SELECT P.ID, P.FIRSTNAME, P.LASTNAME, P.TYPE, P.SPTYPE, P.SPDEPARTMENT, P.DEPARTMENT, N.ROOMNUM FROM PROFESSIONAL P, PROLOCATION PL, NODE N WHERE " +
+            String query = "SELECT P.ID, P.FIRSTNAME, P.LASTNAME, P.TYPE, N.ROOMNUM FROM PROFESSIONAL P, PROLOCATION PL, NODE N WHERE " +
                     "PL.PROID = P.ID AND N.XPOS = PL.XPOS AND N.YPOS = PL.YPOS AND " +
                     "N.FLOOR = PL.FLOOR";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -1251,22 +1242,22 @@ public class DatabaseController {
         return resultSet;
     }
 
-    public ResultSet getSpanishDepartmentNames(){
-        ResultSet resultSet = null;
-        System.out.println(
-                String.format(
-                        "Getting all professional spanish departments"));
-        try{
-            String query = "SELECT SPDEPARTMENT FROM PROFESSIONAL";
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-            // run statement and query
-            resultSet = preparedStatement.executeQuery();
-        } catch (SQLException e){
-            e.printStackTrace();
-            return null;
-        }
-        return resultSet;
-    }
+//    public ResultSet getSpanishDepartmentNames(){
+//        ResultSet resultSet = null;
+//        System.out.println(
+//                String.format(
+//                        "Getting all professional spanish departments"));
+//        try{
+//            String query = "SELECT SPDEPARTMENT FROM PROFESSIONAL";
+//            PreparedStatement preparedStatement = conn.prepareStatement(query);
+//            // run statement and query
+//            resultSet = preparedStatement.executeQuery();
+//        } catch (SQLException e){
+//            e.printStackTrace();
+//            return null;
+//        }
+//        return resultSet;
+//    }
 
     public ResultSet getPosForRoom(String room){
         ResultSet resultSet = null;
@@ -1283,6 +1274,23 @@ public class DatabaseController {
             return null;
         }
         return resultSet;
+    }
+
+    public ArrayList<String> getRooms(){
+        ArrayList<String> rooms = new ArrayList<>();
+        String roomNum;
+        ResultSet rset = databaseController.getRoomNames();
+        try {
+            while (rset.next()) {
+                roomNum = rset.getString("ROOMNUM");
+                if (!rooms.contains(roomNum)) {
+                    rooms.add(roomNum);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rooms;
     }
 
     public ArrayList<String> getRoomList() {
