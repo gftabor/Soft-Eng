@@ -1128,7 +1128,7 @@ public class DatabaseController {
 
         ResultSet resultSet = null;
         try{
-            String query = "SELECT ROOMNUM FROM NODE";
+            String query = "SELECT NAME, ROOMNUM FROM NODE";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             //preparedStatement.setString(1, "%"+roomName);
             // run statement and query
@@ -1287,12 +1287,15 @@ public class DatabaseController {
 
     public ArrayList<String> getRoomList() {
         ArrayList<String> rooms = new ArrayList<>();
+        String roomName, roomNum;
         String room;
         ResultSet rset = databaseController.getRoomNames();
         try {
             while (rset.next()) {
-                room = rset.getString("ROOMNUM");
-                if (!rooms.contains(room)) {
+                roomName = rset.getString("NAME");
+                roomNum = rset.getString("ROOMNUM");
+                if (!rooms.contains(roomNum)) {
+                    room = "" + roomName + ", " + roomNum;
                     rooms.add(room);
                 }
             }
