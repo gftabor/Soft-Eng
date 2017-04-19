@@ -167,6 +167,7 @@ public class patientMainController extends controllers.mapScene {
 
         //draw edges
         //graph.drawFloorEdges(currentFloor);
+
     }
 
     //get an instance of database controller
@@ -302,7 +303,6 @@ public class patientMainController extends controllers.mapScene {
                 filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios");
                 filter_ChoiceBox.getSelectionModel().select(0);
             }
-
         }
 
         //Checks if the user has decided to change languages
@@ -456,8 +456,6 @@ public class patientMainController extends controllers.mapScene {
 
         start_textField.setText("Kiosk");
         selectionState = 0;
-
-
     }
 
     public void aboutButton_clicked() {
@@ -479,7 +477,7 @@ public class patientMainController extends controllers.mapScene {
 
             //set the node if the 1st kiosk location is set
             if (!(start_textField.getText().equals(""))) {
-                startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText());
+                startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
                 MapController.getInstance().markNode(startN.getPosX(), startN.getPosY(), 1, startN.getFloor());
             }
 
@@ -502,8 +500,12 @@ public class patientMainController extends controllers.mapScene {
 
             //check that the txt fields are filled
             if(!(start_textField.getText().equals("")) && !(end_TextField.getText().equals(""))) {
-                startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText());
-                endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText());
+                if (start_textField.getText().equals("Kiosk")){
+                    startN = mapController.getCollectionOfNodes().getNodeWithName("Kiosk");
+                } else {
+                    startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
+                }
+                endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText().split(", ")[1]);
 
                 //set up for colors :)
                 startX = startN.getPosX();
@@ -653,8 +655,12 @@ public class patientMainController extends controllers.mapScene {
         //hide the continue button
         continueNew_Button.setVisible(false);
 
+        //reset the textfields
         start_textField.setText("");
         end_TextField.setText("");
+
+        //reset the usingMap
+        usingMap = false;
     }
 
     //switches all the labels and Buttons to english
@@ -732,7 +738,24 @@ public class patientMainController extends controllers.mapScene {
     public void sceneEvent(int x, int y, Circle c){
         //set selectionstate
         if (!usingMap) {
+            System.out.println("not using map");
             if (!(start_textField.getText().equals(""))) {
+                //reset the map display
+                if(start != null) {
+                    start.setStroke(Color.BLACK);
+                    start.setFill(Color.BLACK);
+                    start.setStrokeWidth(1);
+                    start.setRadius(graph.getLabelRadius());
+                }
+                if(end != null) {
+                    end.setStroke(Color.BLACK);
+                    end.setFill(Color.BLACK);
+                    end.setStrokeWidth(1);
+                    end.setRadius(graph.getLabelRadius());
+                }
+                graph.wipeEdgeLines();
+
+                //set the correct selection state
                 selectionState = 1;
             } else {
                 usingMap = true;
@@ -757,7 +780,7 @@ public class patientMainController extends controllers.mapScene {
                 end.setRadius(graph.getLabelRadius());
             }
             graph.wipeEdgeLines();
-            start =c;
+            start = c;
             //color
             c.setStrokeWidth(strokeRatio);
             c.setStroke(startColor);
