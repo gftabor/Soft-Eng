@@ -431,7 +431,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
     }
 
     //Sets the map of the desired floor
-    public void setFloorChoices(){
+    /*public void setFloorChoices(){
         floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7");
         floor_ChoiceBox.getSelectionModel().select(0);
         map_viewer.setImage(new Image("/images/cleaned1.png"));
@@ -449,6 +449,66 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
                 //draw edges
                 graph.drawFloorEdges(currentFloor);
+            }
+        });
+    }*/
+
+    //Sets the map of the desired floor
+    public void setFloorChoices(){
+        floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Outside",
+                "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4");
+        floor_ChoiceBox.getSelectionModel().select(0);
+        map_viewer.setImage(new Image("/images/cleaned1.png"));
+        floor_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                boolean outside = false;
+                String currentF = "";
+                //Print the floors accordingly
+                //CODE HERE!!!!!!!
+
+                currentFloor = newValue.intValue() + 1;
+
+                if(currentFloor == 8){
+                    currentFloor = 0;
+                    outside = true;
+                    currentF = "Outside";
+                }
+
+                if (currentFloor == 9) {
+                    //outside
+                    currentFloor = currentFloor - 1;
+                    outside = true;
+                    currentF = "Belkin 1";
+
+                } else if (currentFloor == 10) {
+                    //belkin
+                    currentFloor = currentFloor - 1;
+                    outside = true;
+                    currentF = "Belkin 2";
+
+                }else if(currentFloor == 11){
+                    currentFloor = currentFloor - 1;
+                    outside = true;
+                    currentF = "Belkin 3";
+
+                }else if(currentFloor == 12){
+                    currentFloor = currentFloor - 1;
+                    outside = true;
+                    currentF = "Belkin 4";
+
+                }
+
+                mapImage newMapImage = new proxyMap(currentFloor);
+                newMapImage.display(map_viewer);
+
+                if(!outside) {
+                    //c_Floor_Label.setText(Integer.toString(currentFloor));
+                }else{
+                    //c_Floor_Label.setText("");
+                    //floor_Label.setText(currentF);
+                }
+                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
             }
         });
 
