@@ -12,6 +12,10 @@
     -actually-red: #E53A40;
 }
 
+.toggle-button, .button{
+    -fx-padding: 0.5em;
+}
+
 
 .toggle-button:hover, .button:hover{
     -fx-background-color: derive(-flatter-red, 87%);
