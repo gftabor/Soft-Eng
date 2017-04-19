@@ -490,31 +490,31 @@ public class MapController {
     private ArrayList<String> cleanFloorToFloorDirections(ArrayList<String> direc) {
         System.out.println("++++++++++\nCleaning floor directions...");
         ArrayList<String> directions = new ArrayList<>();
-        String current = "";
         boolean goingUpDetected = false;
         boolean goingDownDetected = false;
-        for (String s: direc) {
+        for (int i = direc.size()-1; i >= 0; i--) {
+            String s = direc.get(i);
             if (s.contains("Go up to floor") == true) {
                 if (goingUpDetected) {
                     //drop
                 } else {
                     goingUpDetected = true;
-                    directions.add(s);
+                    directions.add(0, s);
                 }
             } else if (s.contains("Go down to floor") == true) {
                 if (goingDownDetected) {
                     //drop
                 } else {
                     goingDownDetected = true;
-                    directions.add(s);
+                    directions.add(0, s);
                 }
             } else {
-                directions.add(s);
+                directions.add(0, s);
                 goingUpDetected = false;
                 goingDownDetected = false;
             }
-
         }
+
         return directions;
     }
 
