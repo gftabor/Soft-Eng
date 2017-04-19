@@ -67,9 +67,6 @@ public class patientMainController extends controllers.mapScene {
     private TextArea textDescription_TextFArea;
 
     @FXML
-    private Label phoneInfo_Label;
-
-    @FXML
     private TextField phoneInsert;
 
     @FXML
@@ -80,6 +77,9 @@ public class patientMainController extends controllers.mapScene {
 
     @FXML
     private Label floor_Label;
+
+    @FXML
+    private Label phoneInfo_Label;
 
     @FXML
     private Label c_Floor_Label;
@@ -104,6 +104,8 @@ public class patientMainController extends controllers.mapScene {
 
     @FXML
     private Button continueNew_Button;
+
+
 
 
     int c_language = 0;
@@ -335,8 +337,34 @@ public class patientMainController extends controllers.mapScene {
 
     //Sets the map of the desired floor
     public void setFloorChoices(){
-        floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Outside",
-                "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4", "Belkin Basement");
+
+        //Makes sure you only set the choices once
+        //sets the choices and sets the current language as the top choice
+        if(c_language == 0) {
+            if(second) {
+                floor_ChoiceBox.getItems().remove(0,13);
+                floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Outside",
+                        "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4", "Belkin Basement");
+                floor_ChoiceBox.getSelectionModel().select(0);
+            }else{
+                floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Outside",
+                        "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4", "Belkin Basement");
+                floor_ChoiceBox.getSelectionModel().select(0);
+            }
+        }else if(c_language == 1){
+            if(second) {
+                floor_ChoiceBox.getItems().remove(0,13);
+                floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Afuera",
+                        "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4", "Sotano de Belkin");
+                floor_ChoiceBox.getSelectionModel().select(0);
+            }else{
+                floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Afuera",
+                        "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4", "Sotano de Belkin");
+                floor_ChoiceBox.getSelectionModel().select(0);
+            }
+
+        }
+
         floor_ChoiceBox.getSelectionModel().select(0);
         map_viewer.setImage(new Image("/images/cleaned1.png"));
         floor_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
@@ -352,7 +380,11 @@ public class patientMainController extends controllers.mapScene {
                 if(currentFloor == 8){
                     currentFloor = 0;
                     outside = true;
-                    currentF = "Outside";
+                    if(c_language == 0) {
+                        currentF = "Outside";
+                    }else{
+                        currentF = "Afuera";
+                    }
                 }
 
                 if (currentFloor == 9) {
@@ -380,7 +412,11 @@ public class patientMainController extends controllers.mapScene {
                 }else if(currentFloor == 13){
                     currentFloor = currentFloor -1;
                     outside = true;
-                    currentF = "Belkin Basement";
+                    if(c_language == 0) {
+                        currentF = "Belkin Basement";
+                    }else{
+                        currentF = "Sotano de Belkin";
+                    }
                 }
 
                 mapImage newMapImage = new proxyMap(currentFloor);
@@ -641,6 +677,7 @@ public class patientMainController extends controllers.mapScene {
         mainTitle_Label.setText("Welcome to Brigham and Women's Faulkner Hospital");
         floor_Label.setText("Floor");
         textD_Label.setText("Text Description");
+        phoneInfo_Label.setText("Send Directions to my phone");
 
         //Change the textFields
         start_textField.setPromptText("Starting position");
@@ -648,6 +685,7 @@ public class patientMainController extends controllers.mapScene {
 
         //Change choiceBox
         setFilterChoices();
+        setFloorChoices();
 
 
     }
@@ -671,6 +709,8 @@ public class patientMainController extends controllers.mapScene {
         mainTitle_Label.setText("Bienvenidos al Hospital Faulkner Brigham and Women");
         floor_Label.setText("Piso");
         textD_Label.setText("Descripciones Escritas");
+        phoneInfo_Label.setText("Enviar direcciones a mi celular");
+
 
         //Change the textFields
         start_textField.setPromptText("Nombre de inicio");
@@ -678,6 +718,7 @@ public class patientMainController extends controllers.mapScene {
 
         //Change choiceBox
         setFilterChoices();
+        setFloorChoices();
 
 
     }
