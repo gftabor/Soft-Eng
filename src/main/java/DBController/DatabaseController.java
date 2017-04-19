@@ -550,7 +550,7 @@ public class DatabaseController {
     public boolean EditProfessional(int ID, String firstName, String lastName, String type){
         System.out.println(
                 String.format(
-                        "Editing professional. id %d firstName: %s, lastName: %s, type: %s, profile: %s",
+                        "Editing professional. id %d firstName: %s, lastName: %s, type: %s",
                         ID, firstName, lastName, type));
         try{
             String query = "UPDATE PROFESSIONAL SET FIRSTNAME = ?, LASTNAME = ?, TYPE = ?" +
