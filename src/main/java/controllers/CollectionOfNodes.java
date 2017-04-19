@@ -38,6 +38,7 @@ public class CollectionOfNodes {
     private HashMap<Integer, Node> belkinfloor2nodes; //floor 9
     private HashMap<Integer, Node> belkinfloor3nodes; //floor 10
     private HashMap<Integer, Node> belkinfloor4nodes; //floor 11
+    private HashMap<Integer, Node> belkinbasementnodes; //floor 12
 
 
     private ArrayList<HashMap<Integer, Node>> allNodes;
@@ -57,6 +58,7 @@ public class CollectionOfNodes {
         belkinfloor2nodes = new HashMap<>();
         belkinfloor3nodes = new HashMap<>();
         belkinfloor4nodes = new HashMap<>();
+        belkinbasementnodes = new HashMap<>();
 
         allNodes = new ArrayList<HashMap<Integer, Node>>();
         allNodes.add(outsidenodes);
@@ -71,6 +73,7 @@ public class CollectionOfNodes {
         allNodes.add(belkinfloor2nodes);
         allNodes.add(belkinfloor3nodes);
         allNodes.add(belkinfloor4nodes);
+        allNodes.add(belkinbasementnodes);
     }
 
     //resets all nodes to initial state for pathfinding
