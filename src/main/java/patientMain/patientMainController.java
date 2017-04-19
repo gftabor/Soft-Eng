@@ -330,20 +330,20 @@ public class patientMainController extends controllers.mapScene {
         //sets the choices and sets the current language as the top choice
         if(c_language == 0) {
             if(second) {
-                filter_ChoiceBox.getItems().remove(0,5);
-                filter_ChoiceBox.getItems().addAll("All", "Employees", "Services", "Frequently Searched", "Miscellaneous");
+                filter_ChoiceBox.getItems().remove(0,3);
+                filter_ChoiceBox.getItems().addAll("All", "Employees", "Services");
                 filter_ChoiceBox.getSelectionModel().select(0);
             }else{
-                filter_ChoiceBox.getItems().addAll("All", "Employees", "Services", "Frequently Searched", "Miscellaneous");
+                filter_ChoiceBox.getItems().addAll("All", "Employees", "Services");
                 filter_ChoiceBox.getSelectionModel().select(0);
             }
         }else if(c_language == 1){
             if(second) {
-                filter_ChoiceBox.getItems().remove(0,5);
-                filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios", "Buscados Frequentemente", "Varios");
+                filter_ChoiceBox.getItems().remove(0,3);
+                filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios");
                 filter_ChoiceBox.getSelectionModel().select(0);
             }else{
-                filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios", "Buscados Frequentemente", "Varios");
+                filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios");
                 filter_ChoiceBox.getSelectionModel().select(0);
             }
 
