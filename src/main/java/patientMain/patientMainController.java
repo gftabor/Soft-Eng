@@ -433,6 +433,11 @@ public class patientMainController extends controllers.mapScene {
 
                 if(!outside) {
                     c_Floor_Label.setText(Integer.toString(currentFloor));
+                    if(c_language == 0) {
+                        floor_Label.setText("Floor");
+                    }else {
+                        floor_Label.setText("Piso");
+                    }
                 }else{
                     c_Floor_Label.setText("");
                     floor_Label.setText(currentF);

@@ -105,9 +105,9 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="search_textField" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="56.0" prefWidth="227.0" promptText="search">
+                        <TextField fx:id="search_textField" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="search">
                            <font>
-                              <Font size="20.0" />
+                              <Font size="18.0" />
                            </font>
                         </TextField>
                         <Region HBox.hgrow="ALWAYS" />
@@ -153,26 +153,6 @@
                      <VBox.margin>
                         <Insets top="5.0" />
                      </VBox.margin>
-                  </HBox>
-                  <HBox>
-                     <children>
-                        <Label fx:id="department_Label" minWidth="-Infinity" prefWidth="160.0" text="Department:">
-                           <font>
-                              <Font name="System Bold Italic" size="23.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
-                           </HBox.margin>
-                        </Label>
-                        <TextField fx:id="department_TextField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="Department">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="25.0" right="5.0" top="1.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </TextField>
-                     </children>
                   </HBox>
                   <HBox>
                      <children>
@@ -284,11 +264,11 @@
                   <TableView fx:id="Table_TableView" fixedCellSize="0.0" nodeOrientation="LEFT_TO_RIGHT" pickOnBounds="false" prefHeight="541.0" prefWidth="864.0" tableMenuButtonVisible="true">
                      <columns>
                         <TableColumn fx:id="ID_TableColumn" editable="false" prefWidth="76.73846435546875" resizable="false" text="ID" />
-                        <TableColumn fx:id="firstName_TableColumn" editable="false" prefWidth="164.75283813476562" resizable="false" text="First Name" />
-                        <TableColumn fx:id="lastName_TableColumn" editable="false" prefWidth="178.24713134765625" resizable="false" text="Last Name" />
-                        <TableColumn fx:id="title_TableColumn" editable="false" prefWidth="131.224609375" resizable="false" text="Title" />
-                        <TableColumn fx:id="department_TableColumn" editable="false" minWidth="0.0" prefWidth="147.82012939453125" resizable="false" text="Department" />
-                        <TableColumn fx:id="room_TableColumn" editable="false" minWidth="0.0" prefWidth="152.48291015625" resizable="false" text="Room" />
+                        <TableColumn fx:id="firstName_TableColumn" editable="false" prefWidth="187.04071044921875" resizable="false" text="First Name" />
+                        <TableColumn fx:id="lastName_TableColumn" editable="false" prefWidth="193.959228515625" resizable="false" text="Last Name" />
+                        <TableColumn fx:id="title_TableColumn" editable="false" prefWidth="173.69769287109375" resizable="false" text="Title" />
+                        <TableColumn fx:id="room_TableColumn" editable="false" minWidth="0.0" prefWidth="219.209228515625" resizable="false" text="Room" />
+                        <TableColumn fx:id="department_TableColumn" editable="false" minWidth="0.0" prefWidth="4.9210205078125" resizable="false" text="Department" visible="false" />
                      </columns>
                      <opaqueInsets>
                         <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
