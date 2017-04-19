@@ -456,7 +456,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
     //Sets the map of the desired floor
     public void setFloorChoices(){
         floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Outside",
-                "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4");
+                "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4", "Belkin Basement");
+
         floor_ChoiceBox.getSelectionModel().select(0);
         map_viewer.setImage(new Image("/images/cleaned1.png"));
         floor_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
@@ -497,6 +498,10 @@ public class mmFloorAndModeController extends controllers.mapScene{
                     outside = true;
                     currentF = "Belkin 4";
 
+                }else if(currentFloor == 13){
+                    currentFloor = currentFloor -1;
+                    outside = true;
+                    currentF = "Belkin Basement";
                 }
 
                 mapImage newMapImage = new proxyMap(currentFloor);
