@@ -164,13 +164,6 @@ public class patientMainController extends controllers.mapScene {
 
         //draw edges
         //graph.drawFloorEdges(currentFloor);
-        if((graph.getKioskX() != 0) && (graph.getKioskY() != 0)) {
-            try {
-                sceneEvent(graph.getKioskX(), graph.getKioskY(), new Circle());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
 
     }
 
