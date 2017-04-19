@@ -3,7 +3,6 @@ package controllers;
 import DBController.DatabaseController;
 import pathFindingMenu.Pathfinder;
 
-import javax.print.attribute.standard.Destination;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,6 +24,8 @@ public class MapController {
 
     private int floorForNode1;
     private int floorForNode2;
+
+    private int algorithm = 0; //init to A*
 
     private ArrayList<Integer> floorSequence; //list of floors for multifloor pathfinding
 
@@ -189,11 +190,16 @@ public class MapController {
 
         //creates and runs a pathfinder
         Pathfinder pathfinder = new Pathfinder();
+        /*
         pathfinder.algorithmSwitch(2);
         pathfinder.generatePath(startNode, endNode);
         pathfinder.algorithmSwitch(1);
         pathfinder.generatePath(startNode, endNode);
         pathfinder.algorithmSwitch(0);//A *
+        pathfinder.generatePath(startNode, endNode);
+        */
+
+        pathfinder.algorithmSwitch(algorithm);
         pathfinder.generatePath(startNode, endNode);
         return pathfinder.getPath();
 
@@ -495,6 +501,19 @@ public class MapController {
             return null;
         } else {
             return floorSequence;
+        }
+    }
+
+    public int getAlgorithm() {
+        return algorithm;
+    }
+
+    public void setAlgorithm(int algorithm) {
+        if (algorithm > 2 || algorithm < 0) {
+            this.algorithm = 0; //A* default
+        } else {
+            this.algorithm = algorithm;
+            System.out.println("Changing default search algorithm to: "+algorithm);
         }
     }
 }
