@@ -22,7 +22,7 @@ public class MapOverlay {
     private HashMap<Integer, controllers.Node> currentNodeMap;
     private Line lne;
     private Circle location;
-    private static final double labelRadius = 8.5;
+    private static final double labelRadius = 5.5;
     mapScene sceneController;
 
     private ArrayList<Circle> ButtonList = new ArrayList<Circle>();

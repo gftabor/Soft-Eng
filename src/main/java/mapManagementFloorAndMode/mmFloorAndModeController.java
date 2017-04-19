@@ -112,7 +112,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     private controllers.MapOverlay graph;
 
-    private static final double labelRadius = 8.5;
+    private static final double labelRadius = 10.5;
 
     private Node firstNode;
 
