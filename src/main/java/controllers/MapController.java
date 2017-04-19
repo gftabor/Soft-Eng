@@ -382,6 +382,7 @@ public class MapController {
             }
 
             directions.add("Reached Destination");
+            directions = cleanFloorToFloorDirections(directions);
             directions = cleanDirections(directions);
             return concatenateDirections(directions);
         } else {
@@ -483,7 +484,37 @@ public class MapController {
                 directions.add(s);
             }
         }
-    //s.substring(0, s.lastIndexOf(" "))
+        return directions;
+    }
+
+    private ArrayList<String> cleanFloorToFloorDirections(ArrayList<String> direc) {
+        System.out.println("++++++++++\nCleaning floor directions...");
+        ArrayList<String> directions = new ArrayList<>();
+        String current = "";
+        boolean goingUpDetected = false;
+        boolean goingDownDetected = false;
+        for (String s: direc) {
+            if (s.contains("Go up to floor") == true) {
+                if (goingUpDetected) {
+                    //drop
+                } else {
+                    goingUpDetected = true;
+                    directions.add(s);
+                }
+            } else if (s.contains("Go down to floor") == true) {
+                if (goingDownDetected) {
+                    //drop
+                } else {
+                    goingDownDetected = true;
+                    directions.add(s);
+                }
+            } else {
+                directions.add(s);
+                goingUpDetected = false;
+                goingDownDetected = false;
+            }
+
+        }
         return directions;
     }
 
