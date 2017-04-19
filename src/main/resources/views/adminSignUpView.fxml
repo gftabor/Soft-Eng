@@ -116,9 +116,9 @@
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <HBox fx:id="ID_Label">
+                  <HBox>
                      <children>
-                        <Label minHeight="-Infinity" minWidth="-Infinity" prefWidth="160.0" text="ID:">
+                        <Label fx:id="ID_Label" minHeight="-Infinity" minWidth="-Infinity" prefWidth="160.0" text="ID:">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
@@ -162,9 +162,9 @@
                         <Insets top="5.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox fx:id="firstName_Label">
+                  <HBox>
                      <children>
-                        <Label minWidth="-Infinity" prefWidth="160.0" text="First Name:">
+                        <Label fx:id="firstName_Lab" minWidth="-Infinity" prefWidth="160.0" text="First Name:">
                            <font>
                               <Font name="System Bold Italic" size="23.0" />
                            </font>
@@ -210,7 +210,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label fx:id="password_Label" prefHeight="68.0" prefWidth="169.0" text="New Password (optional)" wrapText="true">
+                        <Label fx:id="password_Label" prefHeight="68.0" prefWidth="169.0" text="New Password " wrapText="true">
                            <font>
                               <Font name="System Bold Italic" size="23.0" />
                            </font>
