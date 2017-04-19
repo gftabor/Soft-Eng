@@ -461,6 +461,7 @@ public class patientMainController extends controllers.mapScene {
 
 
         TextFields.bindAutoCompletion(start_textField, all);
+        TextFields.bindAutoCompletion(end_TextField, all);
 
 
     }
@@ -491,7 +492,7 @@ public class patientMainController extends controllers.mapScene {
                 ArrayList<Edge> path = mapController.requestPath();
                 graph.createEdgeLines(path, true);
                 textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
-
+                
             }
 
         }
