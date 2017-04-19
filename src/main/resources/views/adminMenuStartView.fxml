@@ -31,7 +31,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label fx:id="username_Label" text="Welcome, ">
+                        <Label fx:id="username_Label" text="Admin:">
                            <font>
                               <Font size="30.0" />
                            </font>
@@ -56,7 +56,7 @@
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="52.0" prefWidth="180.0" styleClass="emergency" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="58.0" prefWidth="180.0" styleClass="emergency" text="EMERGENCY">
                            <font>
                               <Font name="System Bold" size="21.0" />
                            </font>
@@ -123,7 +123,7 @@
                <children>
                   <HBox alignment="CENTER_RIGHT">
                      <children>
-                        <Label text="Default Search:" />
+                        <Label fx:id="default_Search" text="Default Search:" />
                         <ChoiceBox fx:id="search_ChoiceBox" prefHeight="70.0" prefWidth="262.0">
                            <HBox.margin>
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />

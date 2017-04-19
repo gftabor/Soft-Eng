@@ -199,6 +199,7 @@ public class patientMainController extends controllers.mapScene {
             //update currentfloor
             currentFloor = globalFloorSequence.get(fragPathPos);
 
+            System.out.println("++++++++++++++++++++++++++++++=============+++++++++");
             System.out.println("current floor displayed: " + currentFloor);
             System.out.println("frag path pos updated to: " + fragPathPos);
             multifloorUpdate();
@@ -386,67 +387,72 @@ public class patientMainController extends controllers.mapScene {
                 String currentF = "";
                 //Print the floors accordingly
                 //CODE HERE!!!!!!!
-
-                currentFloor = newValue.intValue() + 1;
-
-                if(currentFloor == 8){
+                
+                if (newValue.intValue() == 7) {
+                    //outside
                     currentFloor = 0;
+                } else if(newValue.intValue() > 7) {
+                    currentFloor = newValue.intValue();
+                } else {
+                    currentFloor = newValue.intValue() + 1;
+                }
+                System.out.println("currentfloor updated to: " + currentFloor);
+
+                if (currentFloor == 0) {
+                    System.out.println("outside");
                     outside = true;
-                    if(c_language == 0) {
+                    if (c_language == 0) {
                         currentF = "Outside";
-                    }else{
+                    } else {
                         currentF = "Afuera";
                     }
                 }
 
-                if (currentFloor == 9) {
+                if (currentFloor == 8) {
                     //outside
-                    currentFloor = currentFloor - 1;
                     outside = true;
                     currentF = "Belkin 1";
 
-                } else if (currentFloor == 10) {
+                } else if (currentFloor == 9) {
                     //belkin
-                    currentFloor = currentFloor - 1;
                     outside = true;
                     currentF = "Belkin 2";
 
-                }else if(currentFloor == 11){
-                    currentFloor = currentFloor - 1;
+                } else if (currentFloor == 10) {
                     outside = true;
                     currentF = "Belkin 3";
 
-                }else if(currentFloor == 12){
-                    currentFloor = currentFloor - 1;
+                } else if (currentFloor == 11) {
                     outside = true;
                     currentF = "Belkin 4";
 
-                }else if(currentFloor == 13){
-                    currentFloor = currentFloor -1;
+                } else if (currentFloor == 12) {
                     outside = true;
-                    if(c_language == 0) {
+                    if (c_language == 0) {
                         currentF = "Belkin Basement";
-                    }else{
+                    } else {
                         currentF = "Sotano de Belkin";
                     }
                 }
 
+
                 mapImage newMapImage = new proxyMap(currentFloor);
                 newMapImage.display(map_viewer);
 
-                if(!outside) {
+                if (!outside) {
                     c_Floor_Label.setText(Integer.toString(currentFloor));
-                    if(c_language == 0) {
+                    if (c_language == 0) {
                         floor_Label.setText("Floor");
-                    }else {
+                    } else {
                         floor_Label.setText("Piso");
                     }
-                }else{
+                } else {
                     c_Floor_Label.setText("");
                     floor_Label.setText(currentF);
                 }
-                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
+                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), false, currentFloor);
             }
+
         });
 
     }
@@ -483,13 +489,21 @@ public class patientMainController extends controllers.mapScene {
         Node startN;
         Node endN;
 
+        //reset visibility just in case
+        continueNew_Button.setVisible(false);
+        previous_Button.setVisible(false);
+
         if (selectionState == 2) {
             //submit stuff
             //createEdgeLines
 
             //set the node if the 1st kiosk location is set
             if (!(start_textField.getText().equals(""))) {
-                startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
+                if (start_textField.getText().equals("Kiosk")){
+                    startN = mapController.getCollectionOfNodes().getNodeWithName("Kiosk");
+                } else {
+                    startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
+                }
                 MapController.getInstance().markNode(startN.getPosX(), startN.getPosY(), 1, startN.getFloor());
             }
 
@@ -863,8 +877,17 @@ public class patientMainController extends controllers.mapScene {
 
         //otherwise, change to the appropriate screen and display edges
         graph.wipeEdgeLines();
+        System.out.println("multifloor update called. Currentfloor = " + currentFloor);
+        if (currentFloor == 0) {
+            System.out.println("currentfloor outside!!!!");
+            floor_ChoiceBox.getSelectionModel().select(7);
+        } else if (currentFloor > 7) {
+            floor_ChoiceBox.getSelectionModel().select(currentFloor);
+
+        } else {
+            floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
+        }
         controllers.MapOverlay.setPathfinding(0);
-        floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
         System.out.println("creating edge lines for fp pos: " + fragPathPos);
         graph.createEdgeLines(globalFragList.get(fragPathPos), true);
         controllers.MapOverlay.setPathfinding(2);
