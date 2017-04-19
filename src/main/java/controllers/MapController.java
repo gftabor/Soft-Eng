@@ -391,12 +391,27 @@ public class MapController {
 
             for (int i = path.size() - 1; i > 0; i--) {
                 double angle = getAngle(path.get(i), path.get(i - 1));
+                int startFloor = path.get(i).getStartNode().getFloor();
+                int endFloor = path.get(i).getEndNode().getFloor();
 
-                if (path.get(i).getStartNode().getFloor() != path.get(i).getEndNode().getFloor()
-                        || path.get(i - 1).getStartNode().getFloor() != path.get(i - 1).getEndNode().getFloor()) {
-                    directions.add("Cambiar piso ");
-                    continue;
+                if (goingUp() == true) {
+                    if(startFloor > endFloor) {
+                        directions.add("Subir al piso " + startFloor);
+                        continue;
+                    } else if(endFloor > startFloor) {
+                        directions.add("Subir al piso " + endFloor);
+                        continue;
+                    }
+                } else if (goingUp() == false) {
+                    if(startFloor < endFloor) {
+                        directions.add("Bajar al piso " + startFloor);
+                        continue;
+                    } else if(endFloor < startFloor) {
+                        directions.add("Bajar al piso " + endFloor);
+                        continue;
+                    }
                 }
+
                 String destRoom;
                 String destName;
                 destRoom = path.get(i).getEndNode().getRoomNum();
@@ -435,8 +450,23 @@ public class MapController {
 
 
             }
-            if (path.get(0).getStartNode().getFloor() != path.get(0).getEndNode().getFloor())
-                directions.add("Cambiar piso ");
+            int startFloor = path.get(0).getStartNode().getFloor();
+            int endFloor = path.get(0).getEndNode().getFloor();
+
+            if (goingUp() == true) {
+                if(startFloor > endFloor) {
+                    directions.add("Subir al piso " + startFloor);
+                } else if(endFloor > startFloor) {
+                    directions.add("Subir al piso " + endFloor);
+                }
+            } else if (goingUp() == false) {
+                if(startFloor < endFloor) {
+                    directions.add("Bajar al piso " + startFloor);
+                } else if(endFloor < startFloor) {
+                    directions.add("Bajar al piso " + endFloor);
+                }
+            }
+
             directions.add("Has llegado a tu destino");
             directions = cleanDirections(directions);
             return concatenateDirections(directions);
