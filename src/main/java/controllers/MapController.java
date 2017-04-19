@@ -478,12 +478,12 @@ public class MapController {
         ArrayList<String> directions = new ArrayList<>();
         String current = "";
         for (String s: direc) {
-            if (s != current) {
+            if (!(s.equals(current))) {
                 current = s;
                 directions.add(s);
             }
         }
-
+    //s.substring(0, s.lastIndexOf(" "))
         return directions;
     }
 
