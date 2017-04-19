@@ -31,6 +31,10 @@ public class MapOverlay {
 
     private ArrayList<Line> lineList = new ArrayList<Line>();
 
+    private static double zoom = 1;
+
+    private static int pathfinding = 0;
+
     //takes in a Hashtable when scene is switched and calls setNodes
 
     public void setMapAndNodes(HashMap<Integer, Node> nodeMap, boolean devMode, int floor) {
@@ -101,8 +105,8 @@ public class MapOverlay {
 
         // this code sets node's x and y pos to be on the plane holding the graph
         currentPane.getChildren().add(location);
-        location.setLayoutX(nodeX);
-        location.setLayoutY(nodeY);
+        location.setLayoutX(nodeX * zoom);
+        location.setLayoutY(nodeY * zoom);
         location.toFront();
 
         if (!enabled) {
@@ -149,10 +153,10 @@ public class MapOverlay {
 
             //add to pane
             currentPane.getChildren().add(lne);
-            lne.setStartX(thisEdge.getStartNode().getPosX());
-            lne.setStartY(thisEdge.getStartNode().getPosY());
-            lne.setEndX(thisEdge.getEndNode().getPosX());
-            lne.setEndY(thisEdge.getEndNode().getPosY());
+            lne.setStartX(thisEdge.getStartNode().getPosX() * zoom);
+            lne.setStartY(thisEdge.getStartNode().getPosY() * zoom);
+            lne.setEndX(thisEdge.getEndNode().getPosX() * zoom);
+            lne.setEndY(thisEdge.getEndNode().getPosY() * zoom);
             //show
             lne.toFront();
             //add to list
@@ -182,5 +186,21 @@ public class MapOverlay {
         }
 
         createEdgeLines(currentFloorEdges, false);
+    }
+
+    public static double getZoom() {
+        return zoom;
+    }
+
+    public static void setZoom(double zoom1) {
+        zoom = zoom1;
+    }
+
+    public static int getPathfinding() {
+        return pathfinding;
+    }
+
+    public static void setPathfinding(int newpath) {
+        pathfinding = newpath;
     }
 }
