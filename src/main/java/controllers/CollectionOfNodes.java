@@ -80,7 +80,7 @@ public class CollectionOfNodes {
     //  - sets the reference to parentEdge to null
     public void resetForPathfinding() {
 
-        for(int i = 0; i < 12; i++) {
+        for(int i = 0; i < allNodes.size(); i++) {
             for(Node n: allNodes.get(i).values()) {
                 n.setCostToReach(Integer.MAX_VALUE);
                 n.setTotalCost(Integer.MAX_VALUE);
@@ -118,7 +118,7 @@ public class CollectionOfNodes {
     public String toString() {
 
         String output = "";
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < allNodes.size(); i++) {
             output += "\n\n||Floor Number: " + i + " |";
             output += toStringFloor(i);
             output += "\n||";
