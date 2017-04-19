@@ -162,6 +162,7 @@ public class patientMainController extends controllers.mapScene {
 
         //draw edges
         //graph.drawFloorEdges(currentFloor);
+
     }
 
     //get an instance of database controller
@@ -346,7 +347,6 @@ public class patientMainController extends controllers.mapScene {
                 filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios", "Buscados Frequentemente", "Varios");
                 filter_ChoiceBox.getSelectionModel().select(0);
             }
-
         }
 
         //filter_ChoiceBox.getItems().removeAll();
@@ -456,6 +456,7 @@ public class patientMainController extends controllers.mapScene {
 
 
         TextFields.bindAutoCompletion(start_textField, all);
+        TextFields.bindAutoCompletion(end_TextField, all);
 
 
     }
@@ -700,7 +701,7 @@ public class patientMainController extends controllers.mapScene {
                 end.setRadius(graph.getLabelRadius());
             }
             graph.wipeEdgeLines();
-            start =c;
+            start = c;
             //color
             c.setStrokeWidth(strokeRatio);
             c.setStroke(startColor);
