@@ -506,47 +506,6 @@ public class DatabaseController {
         return true;
     }
 
-    public boolean deleteProfessional(String firstName, String lastName, String type){
-        ResultSet resultSet = null;
-        System.out.println(
-                String.format(
-                        "Deleting professional. firstName: %s, lastName: %s, type: %s",
-                        firstName, lastName, type));
-        try{
-            String query = "DELETE FROM PROFESSIONAL WHERE FIRSTNAME = ? AND LASTNAME = ? AND TYPE = ?";
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setString(1, firstName);
-            preparedStatement.setString(2, lastName);
-            preparedStatement.setString(3, type);
-            // run statement and query
-            preparedStatement.execute();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    public boolean deleteProfessional(String ID){
-        ResultSet resultSet = null;
-        System.out.println(
-                String.format(
-                        "Deleting professional. String %s", ID));
-        try{
-            String query = "DELETE FROM PROFESSIONAL WHERE ID = ?";
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setString(1, ID);
-            // run statement and query
-            preparedStatement.execute();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
     public boolean EditProfessional(int ID, String firstName, String lastName, String type){
         System.out.println(
                 String.format(
@@ -602,70 +561,6 @@ public class DatabaseController {
         }
         return resultSet;
     }
-
-//    // returns english department list
-//    public ArrayList<String> getEnglishDepartmentList(){
-//        ArrayList<String> departments = new ArrayList<>();
-//        String department;
-//        ResultSet rset = databaseController.getDepartmentNames();
-//        try {
-//            while (rset.next()) {
-//                department = rset.getString("DEPARTMENT");
-//                if (!departments.contains(department)) {
-//                    departments.add(department);
-//                }
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return departments;
-//    }
-
-//    // returns spanish department list
-//    public ArrayList<String> getSpanishDepartmentList(){
-//        ArrayList<String> departments = new ArrayList<>();
-//        String department;
-//        ResultSet rset = databaseController.getSpanishDepartmentNames();
-//        try {
-//            while (rset.next()) {
-//                department = rset.getString("SPDEPARTMENT");
-//                System.out.println("In the database -- getting spanish department: "+ department);
-//                if (!departments.contains(department) && department != null) {
-//                    departments.add(department);
-//                }
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return departments;
-//    }
-
-//    // returns english type list
-//    public ArrayList<String> getEnglishTitleList(){
-//        ResultSet resultSet = null;
-//        String title;
-//        ArrayList<String> titles = new ArrayList<>();
-//        System.out.println(
-//                String.format(
-//                        "Getting all professional english title as a list"));
-//        try{
-//            String query = "SELECT TYPE FROM PROFESSIONAL";
-//            PreparedStatement preparedStatement = conn.prepareStatement(query);
-//            // run statement and query
-//            resultSet = preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                title = resultSet.getString("TYPE");
-//                if (!titles.contains(title)) {
-//                    titles.add(title);
-//                }
-//            }
-//        } catch (SQLException e){
-//            e.printStackTrace();
-//            return null;
-//        }
-//
-//        return titles;
-//    }
 
     //returns spanish type list
     public ArrayList<String> getTitles(){
@@ -1312,7 +1207,5 @@ public class DatabaseController {
         }
         return rooms;
     }
-
-
 
 }
