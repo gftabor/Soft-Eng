@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -22,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapManagementFloorAndMode.mmFloorAndModeController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapManagementFloorAndMode.mmFloorAndModeController">
    <children>
       <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -46,7 +39,7 @@
                            </font>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="mainMenu_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="40.0" prefWidth="190.0" text="Main Menu">
+                        <Button fx:id="mainMenu_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="65.0" prefWidth="200.0" text="Main Menu">
                            <font>
                               <Font size="23.0" />
                            </font>
@@ -54,7 +47,7 @@
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="emergency_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="40.0" prefWidth="180.0" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="65.0" prefWidth="200.0" styleClass="emergency" text="EMERGENCY">
                            <HBox.margin>
                               <Insets bottom="6.0" left="6.0" right="30.0" top="6.0" />
                            </HBox.margin>
@@ -84,7 +77,7 @@
             </HBox>
          </bottom>
          <right>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="921.0" BorderPane.alignment="CENTER">
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="533.0" prefWidth="921.0" BorderPane.alignment="CENTER">
                <children>
                   <HBox>
                      <children>
@@ -115,9 +108,8 @@
             </VBox>
          </right>
          <center>
-            <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="0.0" BorderPane.alignment="CENTER">
+            <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="515.0" prefWidth="353.0" BorderPane.alignment="CENTER">
                <children>
-                  <Region prefHeight="57.0" prefWidth="503.0" />
                   <HBox prefHeight="48.0" prefWidth="467.0">
                      <children>
                         <Label fx:id="chooseFloor_Label" prefHeight="38.0" prefWidth="105.0" text="Floor:">
@@ -189,7 +181,7 @@
                   </HBox>
                   <HBox prefHeight="59.0" prefWidth="398.0">
                      <children>
-                        <Label fx:id="name_Label" prefHeight="38.0" prefWidth="159.0" text="Name:">
+                        <Label fx:id="name_Label" prefHeight="40.0" prefWidth="190.0" text="Name:">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
                            </HBox.margin>
@@ -209,7 +201,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label fx:id="room_Label" prefHeight="38.0" prefWidth="135.0" text="Room:">
+                        <Label fx:id="room_Label" prefHeight="40.0" prefWidth="190.0" text="Room:">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
                            </HBox.margin>
@@ -217,7 +209,7 @@
                               <Font name="System Bold Italic" size="26.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="room_TextField" promptText="room">
+                        <TextField fx:id="room_TextField" prefHeight="40.0" prefWidth="271.0" promptText="room">
                            <HBox.margin>
                               <Insets bottom="5.0" left="60.0" right="5.0" top="10.0" />
                            </HBox.margin>
@@ -263,7 +255,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Button fx:id="clear_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#clearButton_Clicked" prefHeight="48.0" prefWidth="120.0" text="Clear">
+                        <Button fx:id="clear_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#clearButton_Clicked" prefHeight="60.0" prefWidth="125.0" text="Clear">
                            <HBox.margin>
                               <Insets bottom="4.0" left="15.0" right="4.0" top="4.0" />
                            </HBox.margin>
@@ -272,7 +264,7 @@
                            </font>
                         </Button>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="submit_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" prefHeight="47.0" prefWidth="120.0" text="Submit">
+                        <Button fx:id="submit_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" prefHeight="60.0" prefWidth="125.0" text="Submit">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
@@ -280,7 +272,6 @@
                               <Font size="23.0" />
                            </font>
                         </Button>
-                        <Region prefHeight="63.0" prefWidth="82.0" />
                      </children>
                      <VBox.margin>
                         <Insets top="20.0" />
