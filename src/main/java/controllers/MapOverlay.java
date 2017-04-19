@@ -22,7 +22,8 @@ public class MapOverlay {
     private HashMap<Integer, controllers.Node> currentNodeMap;
     private Line lne;
     private Circle location;
-    private static final double labelRadius = 5.5;
+    private static final double labelRadius = 6;
+    private final double sizeUpRatio = 1.9;
     mapScene sceneController;
 
     private ArrayList<Circle> ButtonList = new ArrayList<Circle>();
@@ -75,6 +76,16 @@ public class MapOverlay {
             Circle c = (Circle) o;
             sceneController.sceneEvent((int)((nodeX)), (int)((nodeY)), c);
             //set color --
+        });
+        location.setOnMouseEntered(e -> {
+            Object o = e.getSource();
+            Circle c = (Circle) o;
+            c.setRadius(labelRadius * sizeUpRatio);
+        });
+        location.setOnMouseExited(e -> {
+            Object o = e.getSource();
+            Circle c = (Circle) o;
+            c.setRadius(labelRadius);
         });
 
         // this code sets node's x and y pos to be on the plane holding the graph
