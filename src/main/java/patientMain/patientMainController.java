@@ -531,10 +531,13 @@ public class patientMainController extends controllers.mapScene {
             if(!(start_textField.getText().equals("")) && !(end_TextField.getText().equals(""))) {
                 if (start_textField.getText().equals("Kiosk")){
                     startN = mapController.getCollectionOfNodes().getNodeWithName("Kiosk");
-                } else {
+                } else if (start_textField.getText().contains(",")){
                     startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
+                } else {
+                    startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText());
                 }
-                if (end_TextField.getText().contains(", ")){
+
+                if (end_TextField.getText().contains(",")){
                     endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText().split(", ")[1]);
                 } else {
                     endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText());
