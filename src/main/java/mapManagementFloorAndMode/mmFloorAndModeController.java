@@ -502,13 +502,18 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 mapImage newMapImage = new proxyMap(currentFloor);
                 newMapImage.display(map_viewer);
 
+                /////////////////////////////////
+
+
+                /////////////////////////////////
                 if(!outside) {
                     //c_Floor_Label.setText(Integer.toString(currentFloor));
                 }else{
                     //c_Floor_Label.setText("");
                     //floor_Label.setText(currentF);
                 }
-                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
+                //true ot see nodes false otherwise
+                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true, currentFloor);
             }
         });
 

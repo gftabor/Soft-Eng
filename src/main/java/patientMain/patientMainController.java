@@ -463,6 +463,8 @@ public class patientMainController extends controllers.mapScene {
         TextFields.bindAutoCompletion(start_textField, all);
         TextFields.bindAutoCompletion(end_TextField, all);
 
+        TextFields.bindAutoCompletion(end_TextField, all);
+
 
     }
 
@@ -494,6 +496,37 @@ public class patientMainController extends controllers.mapScene {
                 textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
                 
             }
+
+        } else { //not the map :)
+            Node startN;
+            Node endN;
+
+            //check that the txt fields are filled
+            if(!(start_textField.getText().equals("")) && !(end_TextField.getText().equals(""))) {
+                startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText());
+                endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText());
+
+                //mark the nodes
+                MapController.getInstance().markNode(startN.getPosX(), startN.getPosY(), 1, startN.getFloor());
+                MapController.getInstance().markNode(endN.getPosX(), endN.getPosY(), 2, endN.getFloor());
+
+                //detect multiflooring
+                if (startN.getFloor() != endN.getFloor()) {
+                    //multifloor pathfinding detected
+                    System.out.println("directory -> multifloor pathfinding");
+
+
+                    multiFloorPathfind();
+                } else {
+                    //no multifloor pathfinding (simple)
+
+                    MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
+                    ArrayList<Edge> path = mapController.requestPath();
+                    graph.createEdgeLines(path, true);
+                    textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
+                }
+            }
+
 
         }
         selectionState=0;
