@@ -119,8 +119,6 @@ public class patientMainController extends controllers.mapScene {
     private double endX;
     private double endY;
 
-    private Circle btK;
-
     private controllers.MapOverlay graph;
 
     private int selectionState = 0;
@@ -130,7 +128,7 @@ public class patientMainController extends controllers.mapScene {
     private Circle start;
     private Circle end;
 
-    private final double sizeUpRatio = 1.7;
+    private final double sizeUpRatio = 1.9;
     private final double strokeRatio = 4;
 
     private ArrayList<ArrayList<Edge>> globalFragList;
@@ -156,7 +154,7 @@ public class patientMainController extends controllers.mapScene {
         currentFloor = 1;
         c_Floor_Label.setText("1");
 
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
         //set continue button invisible when not needed
         continueNew_Button.setVisible(false);
         previous_Button.setVisible(false);
@@ -201,6 +199,7 @@ public class patientMainController extends controllers.mapScene {
                         c.setStrokeWidth(strokeRatio);
                         c.setRadius(graph.getLabelRadius()*sizeUpRatio);
                         c.setStroke(endColor);
+                        c.setFill(endColor);
                         break;
                     }
                 }
@@ -237,6 +236,7 @@ public class patientMainController extends controllers.mapScene {
                     c.setStrokeWidth(strokeRatio);
                     c.setRadius(graph.getLabelRadius()*sizeUpRatio);
                     c.setStroke(startColor);
+                    c.setFill(startColor);
                     break;
                 }
             }
@@ -384,23 +384,60 @@ public class patientMainController extends controllers.mapScene {
 
     //Sets the map of the desired floor
     public void setFloorChoices(){
-        floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7");
+        floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Outside",
+                "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4");
         floor_ChoiceBox.getSelectionModel().select(0);
         map_viewer.setImage(new Image("/images/cleaned1.png"));
         floor_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-
+                boolean outside = false;
+                String currentF = "";
                 //Print the floors accordingly
                 //CODE HERE!!!!!!!
 
                 currentFloor = newValue.intValue() + 1;
 
+                if(currentFloor == 8){
+                    currentFloor = 0;
+                    outside = true;
+                    currentF = "Outside";
+                }
+
+                if (currentFloor == 9) {
+                    //outside
+                    currentFloor = currentFloor - 1;
+                    outside = true;
+                    currentF = "Belkin 1";
+
+                } else if (currentFloor == 10) {
+                    //belkin
+                    currentFloor = currentFloor - 1;
+                    outside = true;
+                    currentF = "Belkin 2";
+
+                }else if(currentFloor == 11){
+                    currentFloor = currentFloor - 1;
+                    outside = true;
+                    currentF = "Belkin 3";
+
+                }else if(currentFloor == 12){
+                    currentFloor = currentFloor - 1;
+                    outside = true;
+                    currentF = "Belkin 4";
+
+                }
+
                 mapImage newMapImage = new proxyMap(currentFloor);
                 newMapImage.display(map_viewer);
 
-                c_Floor_Label.setText(Integer.toString(currentFloor));
-                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+                if(!outside) {
+                    c_Floor_Label.setText(Integer.toString(currentFloor));
+                }else{
+                    c_Floor_Label.setText("");
+                    floor_Label.setText(currentF);
+                }
+                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
             }
         });
 
@@ -481,6 +518,7 @@ public class patientMainController extends controllers.mapScene {
                 c.setStrokeWidth(strokeRatio);
                 c.setRadius(graph.getLabelRadius()*sizeUpRatio);
                 c.setStroke(startColor);
+                c.setFill(startColor);
                 break;
             }
         }
@@ -563,7 +601,7 @@ public class patientMainController extends controllers.mapScene {
         selectionState = 0;
         //Remove colored dots from map
 
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
         c_Floor_Label.setText(Integer.toString(currentFloor));
 
         //wipe line from map
@@ -651,11 +689,13 @@ public class patientMainController extends controllers.mapScene {
             selectionState++;
             if(start != null) {
                 start.setStroke(Color.BLACK);
+                start.setFill(Color.BLACK);
                 start.setStrokeWidth(1);
                 start.setRadius(graph.getLabelRadius());
             }
             if(end != null) {
                 end.setStroke(Color.BLACK);
+                end.setFill(Color.BLACK);
                 end.setStrokeWidth(1);
                 end.setRadius(graph.getLabelRadius());
             }
@@ -664,6 +704,7 @@ public class patientMainController extends controllers.mapScene {
             //color
             c.setStrokeWidth(strokeRatio);
             c.setStroke(startColor);
+            c.setFill(startColor);
 
             //location
             startX = c.getLayoutX();
@@ -683,6 +724,7 @@ public class patientMainController extends controllers.mapScene {
             //color
             c.setStrokeWidth(strokeRatio);
             c.setStroke(endColor);
+            c.setFill(endColor);
 
             //location
             endX = c.getLayoutX();
