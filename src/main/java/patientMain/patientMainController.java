@@ -443,7 +443,7 @@ public class patientMainController extends controllers.mapScene {
 
             //set the node if the 1st kiosk location is set
             if (!(start_textField.getText().equals(""))) {
-                startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText());
+                startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
                 MapController.getInstance().markNode(startN.getPosX(), startN.getPosY(), 1, startN.getFloor());
             }
 
