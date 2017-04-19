@@ -111,6 +111,8 @@ public class adminSignUpController extends controllers.AbsController{
     @FXML
     private Button submit_Button;
 
+    private boolean selfSelected = false;
+
     int c_language = 0; //English by default
     int c_mode = 0; //
 
@@ -124,20 +126,29 @@ public class adminSignUpController extends controllers.AbsController{
 
     }
 
+    public void clearInputs(){
+        id_textField.clear();
+        userName_TextField.clear();
+        firstName_TextField.clear();
+        lastName_TextField.clear();
+        newPassword_TextField.clear();
+    }
+
     //Deal with the submit button clicked
     public void submitButton_Clicked(){
         if(mode_ChoiceBox.getValue().equals("Add") || mode_ChoiceBox.getValue().equals("Agregar")){
             addAdmin();
             setUpTreeView();
         }else if (mode_ChoiceBox.getValue().equals("Remove") || mode_ChoiceBox.getValue().equals("Borrar")){
-            deleteAdmin();
-            setUpTreeView();
+                deleteAdmin();
+                setUpTreeView();
         }else if (mode_ChoiceBox.getValue().equals("Edit") || mode_ChoiceBox.getValue().equals("Editar")){
             editAdmin();
             setUpTreeView();
         }else{
             System.out.println("Error with choicebox on admin page");
         }
+        clearInputs();
 
     }
     //adds the admin into the database
@@ -311,7 +322,6 @@ public class adminSignUpController extends controllers.AbsController{
                     givFirstN = Table_TableView.getSelectionModel().getSelectedItem().getrFirstName();
                     givLastN = Table_TableView.getSelectionModel().getSelectedItem().getrLastName();
                     //givPassword = Table_TableView.getSelectionModel().getSelectedItem().getrPassword();
-
                     id_textField.setText(Integer.toString(givID));
                     userName_TextField.setText(givUsername);
                     firstName_TextField.setText(givFirstN);
