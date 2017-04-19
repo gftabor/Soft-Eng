@@ -123,7 +123,13 @@
                <children>
                   <HBox alignment="CENTER_RIGHT">
                      <children>
-                        <Label fx:id="chooseLanguage_Label" alignment="CENTER_RIGHT" prefHeight="61.0" prefWidth="377.0" text="Choose your language" textAlignment="RIGHT">
+                        <Label text="Default Search:" />
+                        <ChoiceBox fx:id="search_ChoiceBox" prefHeight="70.0" prefWidth="262.0">
+                           <HBox.margin>
+                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                           </HBox.margin>
+                        </ChoiceBox>
+                        <Label fx:id="chooseLanguage_Label" alignment="CENTER_RIGHT" prefHeight="61.0" prefWidth="314.0" text="Choose your language" textAlignment="RIGHT">
                            <HBox.margin>
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
