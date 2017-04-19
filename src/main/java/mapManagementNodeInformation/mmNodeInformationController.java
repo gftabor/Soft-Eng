@@ -60,8 +60,8 @@ public class mmNodeInformationController extends controllers.AbsController {
     @FXML
     private ChoiceBox mode_ChoiceBox;
 
-    @FXML
-    private Label error_LabelText;
+   /* @FXML
+    private Label error_LabelText;*/
 
     @FXML
     private TextField room_TextField;
@@ -87,8 +87,8 @@ public class mmNodeInformationController extends controllers.AbsController {
     @FXML
     private TableColumn<Table, String> room_TableColumn;
 
-    @FXML
-    private TextField department_TextField;
+    /*@FXML
+    private TextField department_TextField; */
 
     @FXML
     private TextField search_textField;
@@ -108,8 +108,8 @@ public class mmNodeInformationController extends controllers.AbsController {
     @FXML
     private Label docTitle_Label;
 
-    @FXML
-    private Label department_Label;
+    /*@FXML
+    private Label department_Label;*/
 
     @FXML
     private Label room_Label;
@@ -153,7 +153,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     public void cancelButton_Clicked() {
         System.out.println("The user has clicked the cancel Button");
 
-        department_TextField.setText("");
+        //department_TextField.setText("");
         room_TextField.setText("");
         id_TextField.setText("");
         Firstname_TextField.setText("");
@@ -167,7 +167,7 @@ public class mmNodeInformationController extends controllers.AbsController {
     public void submitButton_Clicked(){
 
         String cTitle = title_TextField.getText();
-        String cDepartment = department_TextField.getText();
+        //String cDepartment = department_TextField.getText();
 
         // Get user input for fields that don't care about language
         String room = room_TextField.getText();
@@ -178,7 +178,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         if(c_language == 0){
             // language is english
             ArrayList<String> english_departments = databaseController.getEnglishDepartmentList();
-            if (!(english_departments.contains(cDepartment))) {
+            /*if (!(english_departments.contains(cDepartment))) {
                 // if current english department not in the list of available english departments
                 // pop up window should get the new department in spanish (since we don't know the
                 // translation)
@@ -193,7 +193,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                 result.ifPresent(name -> spDepartment = name);
                 department = cDepartment; // department to be added in the database later is current department
                 databaseController.addInTranslation(cDepartment, spDepartment);
-            }
+            }*/
             //department = databaseController.getSpanish(cDepartment);
             ArrayList<String> english_titles = databaseController.getEnglishTitleList();
             if (!(english_titles.contains(cTitle))){
@@ -214,7 +214,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         } else if(c_language == 1) {
             // language is spanish
             ArrayList<String> spanish_departments = databaseController.getSpanishDepartmentList();
-            if (!(spanish_departments.contains(cDepartment))) {
+            /*if (!(spanish_departments.contains(cDepartment))) {
                 TextInputDialog dialog = new TextInputDialog("");
                 dialog.setTitle("Agrega un Nuevo Departamento");
                 dialog.setHeaderText("Has ingresado un departamento desconocido! Por favor agrega la versión en Inglés.");
@@ -225,7 +225,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                 result.ifPresent(name -> enDepartment = name);
                 department = enDepartment;
                 databaseController.addInTranslation(enDepartment, cDepartment);
-            }
+            }*/
             //department = databaseController.getEnglish(cDepartment);
             ArrayList<String> spanish_titles = databaseController.getSpanishTitleList();
             if (!(spanish_titles.contains(cTitle))){
@@ -439,7 +439,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                     Title = Table_TableView.getSelectionModel().getSelectedItem().getrTitle();
                     Department = Table_TableView.getSelectionModel().getSelectedItem().getrType();
                     Room = Table_TableView.getSelectionModel().getSelectedItem().getrRoom();
-                    department_TextField.setText(Department);
+                    //department_TextField.setText(Department);
                     room_TextField.setText(Room);
                     //
                     title_TextField.setText(Title);
@@ -516,11 +516,11 @@ public class mmNodeInformationController extends controllers.AbsController {
     public void add_settings() {
         c_mode = 0;
         System.out.println("Add settings");
-        error_LabelText.setText("");
+        //error_LabelText.setText("");
 
         //Starts the choices for the user
         title_TextField.setText("");
-        department_TextField.setText("");
+        //department_TextField.setText("");
         id_TextField.setText("");
         Firstname_TextField.setText("");
         lastName_TextField.setText("");
@@ -529,7 +529,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         lastName_TextField.setPromptText("Last");
         //Sets the properties
         title_TextField.setDisable(false);
-        department_TextField.setDisable(false);
+        //department_TextField.setDisable(false);
         room_TextField.setDisable(false);
         id_TextField.setEditable(false);
         Firstname_TextField.setEditable(true);
@@ -540,10 +540,10 @@ public class mmNodeInformationController extends controllers.AbsController {
     public void remove_settings() {
         c_mode = 1;
         System.out.println("remove settings");
-        error_LabelText.setText("");
+        //error_LabelText.setText("");
         //sets the properties
         title_TextField.setDisable(true);
-        department_TextField.setDisable(true);
+        //department_TextField.setDisable(true);
         room_TextField.setDisable(true);
         id_TextField.setEditable(false);
         Firstname_TextField.setEditable(false);
@@ -555,11 +555,11 @@ public class mmNodeInformationController extends controllers.AbsController {
     public void edit_settings() {
         c_mode = 2;
         System.out.println("edit settings");
-        error_LabelText.setText("");
+        //error_LabelText.setText("");
 
         //sets the properties
         title_TextField.setDisable(false);
-        department_TextField.setDisable(false);
+        //department_TextField.setDisable(false);
         room_TextField.setDisable(false);
         id_TextField.setEditable(false);
         Firstname_TextField.setEditable(true);
@@ -568,9 +568,10 @@ public class mmNodeInformationController extends controllers.AbsController {
     }
 
     //Sets the label of an error
-    public void setError(String error) {
+    //
+    /*public void setError(String error) {
         error_LabelText.setText(error);
-    }
+    }*/
 
     //Sets the user in the scene
     public void setUser(String user) {
@@ -605,14 +606,14 @@ public class mmNodeInformationController extends controllers.AbsController {
         // rooms not affected by language
         TextFields.bindAutoCompletion(room_TextField,rooms);
 
-        TextFields.bindAutoCompletion(department_TextField, departments);
+        //TextFields.bindAutoCompletion(department_TextField, departments);
 
         TextFields.bindAutoCompletion(title_TextField, titles);
     }
 
     //Cleans the text fields
     public void cleaningTextFields(int mode){
-        department_TextField.setText("");
+        //department_TextField.setText("");
         room_TextField.setText("");
         Firstname_TextField.setText("");
         lastName_TextField.setText("");
@@ -641,7 +642,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         subTitle_Label.setText("Manage Directory");
         Mode_Label.setText("Mode:");
         docTitle_Label.setText("Title:");
-        department_Label.setText("Department:");
+        //department_Label.setText("Department:");
         room_Label.setText("Room:");
         firstName_Label.setText("First Name");
         lastName_Label.setText("Last Name");
@@ -651,7 +652,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         room_TextField.setPromptText("room");
         Firstname_TextField.setPromptText("First Name");
         lastName_TextField.setPromptText("Last Name");
-        department_TextField.setPromptText("Department");
+        //department_TextField.setPromptText("Department");
         id_TextField.setPromptText("ID");
 
         //Table columns
@@ -677,7 +678,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         subTitle_Label.setText("Control de Directorio");
         Mode_Label.setText("Modo:");
         docTitle_Label.setText("Título");
-        department_Label.setText("Departamento:");
+        //department_Label.setText("Departamento:");
         room_Label.setText("Habitación:");
         firstName_Label.setText("Nombre");
         lastName_Label.setText("Apellido");
@@ -687,7 +688,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         room_TextField.setPromptText("Habitación");
         Firstname_TextField.setPromptText("Nombre");
         lastName_TextField.setPromptText("Apellido");
-        department_TextField.setPromptText("Departamento");
+        //department_TextField.setPromptText("Departamento");
         id_TextField.setPromptText("ID");
 
         //Table columns

@@ -67,9 +67,6 @@ public class patientMainController extends controllers.mapScene {
     private TextArea textDescription_TextFArea;
 
     @FXML
-    private Label phoneInfo_Label;
-
-    @FXML
     private TextField phoneInsert;
 
     @FXML
@@ -80,6 +77,9 @@ public class patientMainController extends controllers.mapScene {
 
     @FXML
     private Label floor_Label;
+
+    @FXML
+    private Label phoneInfo_Label;
 
     @FXML
     private Label c_Floor_Label;
@@ -109,6 +109,8 @@ public class patientMainController extends controllers.mapScene {
     private Button zoom_button;
 
 
+
+
     int c_language = 0;
 
     int first_Time = 0;
@@ -122,9 +124,11 @@ public class patientMainController extends controllers.mapScene {
     private double endX;
     private double endY;
 
+    private boolean usingMap;
+
     private controllers.MapOverlay graph;
 
-    private int selectionState = 0;
+    private int selectionState;
 
     private MapController mapController = MapController.getInstance();
 
@@ -163,6 +167,7 @@ public class patientMainController extends controllers.mapScene {
         //we will use floor 1 as default
         currentFloor = 1;
         c_Floor_Label.setText("1");
+        usingMap = false;
 
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
         //set continue button invisible when not needed
@@ -172,7 +177,7 @@ public class patientMainController extends controllers.mapScene {
 
         //draw edges
         //graph.drawFloorEdges(currentFloor);
-
+        
         origPaneHeight = 489;
         origPaneWidth = 920;
     }
@@ -288,83 +293,30 @@ public class patientMainController extends controllers.mapScene {
 
     }
 
-    /*public void setComboBox(){
-        //Makes sure you only set the choices once
-        //sets the choices and sets the current language as the top choice
-        if(c_language == 0) {
-            filter_ChoiceBox.getSelectionModel().clearSelection();
-            filter_ChoiceBox.getItems().clear();
-            filter_ChoiceBox.getItems().addAll("All", "Employees", "Services", "Frequently Searched", "Miscellaneous");
-            filter_ChoiceBox.getSelectionModel().select(0);
-        }else if(c_language == 1){
-            filter_ChoiceBox.getSelectionModel().clearSelection();
-            filter_ChoiceBox.getItems().clear();
-            filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios", "Buscados Frequentemente", "Varios");
-            filter_ChoiceBox.getSelectionModel().select(0);
-
-        }
-
-
-
-        //Checks if the user has decided to change languages
-        filter_ChoiceBox.getSelectionModel().selectedIndexProperty()
-                .addListener(new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                        //System.out.println(newValue);
-
-                        //Checks if the user wants english language
-                        if (newValue.intValue() == 0) {
-                            //Load everything
-
-                        } else if (newValue.intValue() == 1) {
-                            //Load only employees
-
-                        } else if (newValue.intValue() == 2) {
-                            //Load services
-
-                        }else if(newValue.intValue() == 3){
-                            //load frequently searched
-
-                        }else if(newValue.intValue() == 4){
-                            System.out.println("Hello World");
-                            //Miscellaneous
-                        }
-                    }
-
-                });
-
-
-    }*/
-
     //Set the choices for Filter
     public void setFilterChoices(){
         //Makes sure you only set the choices once
         //sets the choices and sets the current language as the top choice
         if(c_language == 0) {
             if(second) {
-                filter_ChoiceBox.getItems().remove(0,5);
-                filter_ChoiceBox.getItems().addAll("All", "Employees", "Services", "Frequently Searched", "Miscellaneous");
+                filter_ChoiceBox.getItems().remove(0,3);
+                filter_ChoiceBox.getItems().addAll("All", "Employees", "Services");
                 filter_ChoiceBox.getSelectionModel().select(0);
             }else{
-                filter_ChoiceBox.getItems().addAll("All", "Employees", "Services", "Frequently Searched", "Miscellaneous");
+                filter_ChoiceBox.getItems().addAll("All", "Employees", "Services");
                 filter_ChoiceBox.getSelectionModel().select(0);
             }
         }else if(c_language == 1){
             if(second) {
-                filter_ChoiceBox.getItems().remove(0,5);
-                filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios", "Buscados Frequentemente", "Varios");
+                filter_ChoiceBox.getItems().remove(0,3);
+                filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios");
                 filter_ChoiceBox.getSelectionModel().select(0);
             }else{
-                filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios", "Buscados Frequentemente", "Varios");
+                filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios");
                 filter_ChoiceBox.getSelectionModel().select(0);
             }
-
         }
 
-        //filter_ChoiceBox.getItems().removeAll();
-        //filter_ChoiceBox.getItems().remove(filter_ChoiceBox);
-        //filter_ChoiceBox.setValue("X");
         //Checks if the user has decided to change languages
         filter_ChoiceBox.getSelectionModel().selectedIndexProperty()
                 .addListener(new ChangeListener<Number>() {
@@ -397,8 +349,34 @@ public class patientMainController extends controllers.mapScene {
 
     //Sets the map of the desired floor
     public void setFloorChoices(){
-        floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Outside",
-                "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4");
+
+        //Makes sure you only set the choices once
+        //sets the choices and sets the current language as the top choice
+        if(c_language == 0) {
+            if(second) {
+                floor_ChoiceBox.getItems().remove(0,13);
+                floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Outside",
+                        "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4", "Belkin Basement");
+                floor_ChoiceBox.getSelectionModel().select(0);
+            }else{
+                floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Outside",
+                        "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4", "Belkin Basement");
+                floor_ChoiceBox.getSelectionModel().select(0);
+            }
+        }else if(c_language == 1){
+            if(second) {
+                floor_ChoiceBox.getItems().remove(0,13);
+                floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Afuera",
+                        "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4", "Sotano de Belkin");
+                floor_ChoiceBox.getSelectionModel().select(0);
+            }else{
+                floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Afuera",
+                        "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4", "Sotano de Belkin");
+                floor_ChoiceBox.getSelectionModel().select(0);
+            }
+
+        }
+
         floor_ChoiceBox.getSelectionModel().select(0);
         map_viewer.setImage(new Image("/images/cleaned1.png"));
         floor_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
@@ -414,7 +392,11 @@ public class patientMainController extends controllers.mapScene {
                 if(currentFloor == 8){
                     currentFloor = 0;
                     outside = true;
-                    currentF = "Outside";
+                    if(c_language == 0) {
+                        currentF = "Outside";
+                    }else{
+                        currentF = "Afuera";
+                    }
                 }
 
                 if (currentFloor == 9) {
@@ -439,6 +421,14 @@ public class patientMainController extends controllers.mapScene {
                     outside = true;
                     currentF = "Belkin 4";
 
+                }else if(currentFloor == 13){
+                    currentFloor = currentFloor -1;
+                    outside = true;
+                    if(c_language == 0) {
+                        currentF = "Belkin Basement";
+                    }else{
+                        currentF = "Sotano de Belkin";
+                    }
                 }
 
                 mapImage newMapImage = new proxyMap(currentFloor);
@@ -446,6 +436,11 @@ public class patientMainController extends controllers.mapScene {
 
                 if(!outside) {
                     c_Floor_Label.setText(Integer.toString(currentFloor));
+                    if(c_language == 0) {
+                        floor_Label.setText("Floor");
+                    }else {
+                        floor_Label.setText("Piso");
+                    }
                 }else{
                     c_Floor_Label.setText("");
                     floor_Label.setText(currentF);
@@ -469,8 +464,10 @@ public class patientMainController extends controllers.mapScene {
 
 
         TextFields.bindAutoCompletion(start_textField, all);
+        TextFields.bindAutoCompletion(end_TextField, all);
 
-
+        start_textField.setText("Kiosk");
+        selectionState = 0;
     }
 
     public void aboutButton_clicked() {
@@ -482,11 +479,19 @@ public class patientMainController extends controllers.mapScene {
 
 
     //Handles the action when the submit button is clicked
-    public void submitButton_Clicked(){
+    public void submitButton_Clicked() {
+        Node startN;
+        Node endN;
 
         if (selectionState == 2) {
             //submit stuff
             //createEdgeLines
+
+            //set the node if the 1st kiosk location is set
+            if (!(start_textField.getText().equals(""))) {
+                startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
+                MapController.getInstance().markNode(startN.getPosX(), startN.getPosY(), 1, startN.getFloor());
+            }
 
             //check for multifloor
             if (mapController.areDifferentFloors()) {
@@ -501,7 +506,46 @@ public class patientMainController extends controllers.mapScene {
                 //zoomPath = path;
                 controllers.MapOverlay.setPathfinding(1);
                 textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
+                
+            }
 
+        } else { //not the map :)
+
+
+            //check that the txt fields are filled
+            if(!(start_textField.getText().equals("")) && !(end_TextField.getText().equals(""))) {
+                if (start_textField.getText().equals("Kiosk")){
+                    startN = mapController.getCollectionOfNodes().getNodeWithName("Kiosk");
+                } else {
+                    startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
+                }
+                endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText().split(", ")[1]);
+
+                //set up for colors :)
+                startX = startN.getPosX();
+                startY = startN.getPosY();
+                endX = endN.getPosX();
+                endY = endN.getPosY();
+
+                //mark the nodes
+                MapController.getInstance().markNode(startN.getPosX(), startN.getPosY(), 1, startN.getFloor());
+                MapController.getInstance().markNode(endN.getPosX(), endN.getPosY(), 2, endN.getFloor());
+
+                //detect multiflooring
+                if (startN.getFloor() != endN.getFloor()) {
+                    //multifloor pathfinding detected
+                    System.out.println("directory -> multifloor pathfinding");
+
+
+                    multiFloorPathfind();
+                } else {
+                    //no multifloor pathfinding (simple)
+
+                    MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
+                    ArrayList<Edge> path = mapController.requestPath();
+                    graph.createEdgeLines(path, true);
+                    textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
+                }
             }
 
         }
@@ -630,8 +674,12 @@ public class patientMainController extends controllers.mapScene {
         //hide the continue button
         continueNew_Button.setVisible(false);
 
+        //reset the textfields
         start_textField.setText("");
         end_TextField.setText("");
+
+        //reset the usingMap
+        usingMap = false;
     }
 
     //switches all the labels and Buttons to english
@@ -654,6 +702,7 @@ public class patientMainController extends controllers.mapScene {
         mainTitle_Label.setText("Welcome to Brigham and Women's Faulkner Hospital");
         floor_Label.setText("Floor");
         textD_Label.setText("Text Description");
+        phoneInfo_Label.setText("Send Directions to my phone");
 
         //Change the textFields
         start_textField.setPromptText("Starting position");
@@ -661,6 +710,7 @@ public class patientMainController extends controllers.mapScene {
 
         //Change choiceBox
         setFilterChoices();
+        setFloorChoices();
 
 
     }
@@ -684,6 +734,8 @@ public class patientMainController extends controllers.mapScene {
         mainTitle_Label.setText("Bienvenidos al Hospital Faulkner Brigham and Women");
         floor_Label.setText("Piso");
         textD_Label.setText("Descripciones Escritas");
+        phoneInfo_Label.setText("Enviar direcciones a mi celular");
+
 
         //Change the textFields
         start_textField.setPromptText("Nombre de inicio");
@@ -691,6 +743,7 @@ public class patientMainController extends controllers.mapScene {
 
         //Change choiceBox
         setFilterChoices();
+        setFloorChoices();
 
 
     }
@@ -702,6 +755,32 @@ public class patientMainController extends controllers.mapScene {
 
 
     public void sceneEvent(int x, int y, Circle c){
+        //set selectionstate
+        if (!usingMap) {
+            System.out.println("not using map");
+            if (!(start_textField.getText().equals(""))) {
+                //reset the map display
+                if(start != null) {
+                    start.setStroke(Color.BLACK);
+                    start.setFill(Color.BLACK);
+                    start.setStrokeWidth(1);
+                    start.setRadius(graph.getLabelRadius());
+                }
+                if(end != null) {
+                    end.setStroke(Color.BLACK);
+                    end.setFill(Color.BLACK);
+                    end.setStrokeWidth(1);
+                    end.setRadius(graph.getLabelRadius());
+                }
+                graph.wipeEdgeLines();
+
+                //set the correct selection state
+                selectionState = 1;
+            } else {
+                usingMap = true;
+                selectionState = 0;
+            }
+        }
         System.out.println("Node at (" + x + ", " + y + ") selected during state: " + selectionState);
         if (selectionState == 0) {
             //place the black marker at the starting location
