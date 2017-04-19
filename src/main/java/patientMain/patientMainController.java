@@ -467,7 +467,7 @@ public class patientMainController extends controllers.mapScene {
         TextFields.bindAutoCompletion(start_textField, all);
         TextFields.bindAutoCompletion(end_TextField, all);
 
-        TextFields.bindAutoCompletion(end_TextField, all);
+        start_textField.setText("Kiosk");
 
 
     }
