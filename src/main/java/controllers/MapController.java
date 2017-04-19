@@ -300,11 +300,25 @@ public class MapController {
 
             for (int i = path.size() - 1; i > 0; i--) {
                 double angle = getAngle(path.get(i), path.get(i - 1));
+                int startFloor = path.get(i).getStartNode().getFloor();
+                int endFloor = path.get(i).getEndNode().getFloor();
 
-                if (path.get(i).getStartNode().getFloor() != path.get(i).getEndNode().getFloor()
-                        || path.get(i - 1).getStartNode().getFloor() != path.get(i - 1).getEndNode().getFloor()) {
-                    directions.add("Change Floors ");
-                    continue;
+                if (goingUp() == true) {
+                    if(startFloor > endFloor) {
+                        directions.add("Go up to floor " + startFloor);
+                        continue;
+                    } else if(endFloor > startFloor) {
+                        directions.add("Go up to floor " + endFloor);
+                        continue;
+                    }
+                } else if (goingUp() == false) {
+                    if(startFloor < endFloor) {
+                        directions.add("Go down to floor " + startFloor);
+                        continue;
+                    } else if(endFloor < startFloor) {
+                        directions.add("Go down to floor " + endFloor);
+                        continue;
+                    }
                 }
                 String destRoom;
                 String destName;
@@ -344,11 +358,26 @@ public class MapController {
 
 
             }
-            if (path.get(0).getStartNode().getFloor() != path.get(0).getEndNode().getFloor())
-                directions.add("Change Floors ");
-                directions.add("Reached Destination");
-                directions = cleanDirections(directions);
-                return concatenateDirections(directions);
+            int startFloor = path.get(0).getStartNode().getFloor();
+            int endFloor = path.get(0).getEndNode().getFloor();
+
+            if (goingUp() == true) {
+                if(startFloor > endFloor) {
+                    directions.add("Go up to floor " + startFloor);
+                } else if(endFloor > startFloor) {
+                    directions.add("Go up to floor " + endFloor);
+                }
+            } else if (goingUp() == false) {
+                if(startFloor < endFloor) {
+                    directions.add("Go down to floor " + startFloor);
+                } else if(endFloor < startFloor) {
+                    directions.add("Go down to floor " + endFloor);
+                }
+            }
+
+            directions.add("Reached Destination");
+            directions = cleanDirections(directions);
+            return concatenateDirections(directions);
         } else {
             if (path.isEmpty()) {
                 return null;
@@ -432,10 +461,10 @@ public class MapController {
 
     private double getAngle(Edge e1, Edge e2) {
         Node middle;
-        double e1X = 0.0;
-        double e1Y = 0.0;
-        double e2X = 0.0;
-        double e2Y = 0.0;
+        double e1X;
+        double e1Y;
+        double e2X;
+        double e2Y;
         if(e1.getEndNode() == e2.getStartNode()) {
             middle = e1.getEndNode();
 
