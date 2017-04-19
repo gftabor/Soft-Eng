@@ -391,26 +391,52 @@ public class patientMainController extends controllers.mapScene {
         floor_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-
+                boolean outside = false;
+                String currentF = "";
                 //Print the floors accordingly
                 //CODE HERE!!!!!!!
 
                 currentFloor = newValue.intValue() + 1;
 
-                if (currentFloor == 8) {
-                    //outside
+                if(currentFloor == 8){
                     currentFloor = 0;
+                    outside = true;
+                    currentF = "Outside";
+                }
 
-                } else if (currentFloor > 8) {
+                if (currentFloor == 9) {
+                    //outside
+                    currentFloor = currentFloor - 1;
+                    outside = true;
+                    currentF = "Belkin 1";
+
+                } else if (currentFloor == 10) {
                     //belkin
                     currentFloor = currentFloor - 1;
+                    outside = true;
+                    currentF = "Belkin 2";
+
+                }else if(currentFloor == 11){
+                    currentFloor = currentFloor - 1;
+                    outside = true;
+                    currentF = "Belkin 3";
+
+                }else if(currentFloor == 12){
+                    currentFloor = currentFloor - 1;
+                    outside = true;
+                    currentF = "Belkin 4";
 
                 }
 
                 mapImage newMapImage = new proxyMap(currentFloor);
                 newMapImage.display(map_viewer);
 
-                c_Floor_Label.setText(Integer.toString(currentFloor));
+                if(!outside) {
+                    c_Floor_Label.setText(Integer.toString(currentFloor));
+                }else{
+                    c_Floor_Label.setText("");
+                    floor_Label.setText(currentF);
+                }
                 graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
             }
         });
