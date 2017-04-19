@@ -119,9 +119,11 @@ public class patientMainController extends controllers.mapScene {
     private double endX;
     private double endY;
 
+    private boolean usingMap;
+
     private controllers.MapOverlay graph;
 
-    private int selectionState = 0;
+    private int selectionState;
 
     private MapController mapController = MapController.getInstance();
 
@@ -153,6 +155,7 @@ public class patientMainController extends controllers.mapScene {
         //we will use floor 1 as default
         currentFloor = 1;
         c_Floor_Label.setText("1");
+        usingMap = false;
 
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
         //set continue button invisible when not needed
@@ -416,6 +419,7 @@ public class patientMainController extends controllers.mapScene {
         TextFields.bindAutoCompletion(end_TextField, all);
 
         start_textField.setText("Kiosk");
+        selectionState = 0;
 
 
     }
@@ -429,11 +433,19 @@ public class patientMainController extends controllers.mapScene {
 
 
     //Handles the action when the submit button is clicked
-    public void submitButton_Clicked(){
+    public void submitButton_Clicked() {
+        Node startN;
+        Node endN;
 
         if (selectionState == 2) {
             //submit stuff
             //createEdgeLines
+
+            //set the node if the 1st kiosk location is set
+            if (!(start_textField.getText().equals(""))) {
+                startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText());
+                MapController.getInstance().markNode(startN.getPosX(), startN.getPosY(), 1, startN.getFloor());
+            }
 
             //check for multifloor
             if (mapController.areDifferentFloors()) {
@@ -450,8 +462,7 @@ public class patientMainController extends controllers.mapScene {
             }
 
         } else { //not the map :)
-            Node startN;
-            Node endN;
+
 
             //check that the txt fields are filled
             if(!(start_textField.getText().equals("")) && !(end_TextField.getText().equals(""))) {
@@ -461,6 +472,12 @@ public class patientMainController extends controllers.mapScene {
                     startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
                 }
                 endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText().split(", ")[1]);
+
+                //set up for colors :)
+                startX = startN.getPosX();
+                startY = startN.getPosY();
+                endX = endN.getPosX();
+                endY = endN.getPosY();
 
                 //mark the nodes
                 MapController.getInstance().markNode(startN.getPosX(), startN.getPosY(), 1, startN.getFloor());
@@ -676,6 +693,15 @@ public class patientMainController extends controllers.mapScene {
 
 
     public void sceneEvent(int x, int y, Circle c){
+        //set selectionstate
+        if (!usingMap) {
+            if (!(start_textField.getText().equals(""))) {
+                selectionState = 1;
+            } else {
+                usingMap = true;
+                selectionState = 0;
+            }
+        }
         System.out.println("Node at (" + x + ", " + y + ") selected during state: " + selectionState);
         if (selectionState == 0) {
             //place the black marker at the starting location
