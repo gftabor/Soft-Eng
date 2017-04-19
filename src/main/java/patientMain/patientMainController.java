@@ -105,6 +105,9 @@ public class patientMainController extends controllers.mapScene {
     @FXML
     private Button continueNew_Button;
 
+    @FXML
+    private Button zoom_button;
+
 
     int c_language = 0;
 
@@ -138,6 +141,12 @@ public class patientMainController extends controllers.mapScene {
     private final Color startColor = Color.RED;
     private final Color endColor = Color.GREEN;
 
+    private double origPaneWidth;
+    private double origPaneHeight;
+    double zoom;
+
+    
+
     @FXML
     public void initialize(){
         graph = new controllers.MapOverlay(node_Plane,(mapScene) this);
@@ -162,6 +171,9 @@ public class patientMainController extends controllers.mapScene {
 
         //draw edges
         //graph.drawFloorEdges(currentFloor);
+
+        origPaneHeight = 489;
+        origPaneWidth = 920;
     }
 
     //get an instance of database controller
@@ -765,5 +777,34 @@ public class patientMainController extends controllers.mapScene {
         floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
         System.out.println("creating edge lines for fp pos: " + fragPathPos);
         graph.createEdgeLines(globalFragList.get(fragPathPos), true);
+    }
+
+    public void zoomButton_Clicked() {
+        zoom = controllers.MapOverlay.getZoom();
+        System.out.println(zoom);
+        if (zoom < 1.6) {
+            zoom += 0.3;
+            controllers.MapOverlay.setZoom(zoom);
+            node_Plane.setPrefWidth(origPaneWidth*zoom);
+            node_Plane.setPrefHeight(origPaneHeight*zoom);
+            map_viewer.setFitWidth(origPaneWidth*zoom);
+            map_viewer.setFitHeight(origPaneHeight*zoom);
+
+
+
+        } else {
+            System.out.println("set to 1.0");
+            zoom = 1.0;
+            controllers.MapOverlay.setZoom(1);
+            node_Plane.setPrefWidth(origPaneWidth);
+            node_Plane.setPrefHeight(origPaneHeight);
+            map_viewer.setFitWidth(origPaneWidth);
+            map_viewer.setFitHeight(origPaneHeight);
+
+
+        }
+        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
+                false, currentFloor);
+
     }
 }
