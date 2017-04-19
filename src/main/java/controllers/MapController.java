@@ -290,70 +290,122 @@ public class MapController {
     }
 
     //in progress -> prints directions until I can figure out how to get it on the UI
-    public String getTextDirections(ArrayList<Edge> path) {
+    public String getTextDirections(ArrayList<Edge> path, int c_lang) {
         String destination;
         ArrayList<String> directions = new ArrayList<>();
-        if(path.isEmpty()) {
-            return null;
-        }
-
-        for(int i = path.size()-1; i > 0; i--) {
-            double angle = getAngle(path.get(i), path.get(i-1));
-
-            if(path.get(i).getStartNode().getFloor() != path.get(i).getEndNode().getFloor()
-                    || path.get(i-1).getStartNode().getFloor() != path.get(i-1).getEndNode().getFloor()) {
-                directions.add("Change Floors ");
-                continue;
+        if(c_lang == 0) {
+            if (path.isEmpty()) {
+                return null;
             }
-            String destRoom;
-            String destName;
-            destRoom = path.get(i).getEndNode().getRoomNum();
-            destName = path.get(i).getEndNode().getName();
 
-            Node myNode = path.get(i).getEndNode();
-            if (myNode.getIsHidden() || myNode.getType().equals("Stairwell") ||
-                    myNode.getType().equals("Elevator")) {
-                if(myNode.getIsHidden()) {
-                    int floor = myNode.getFloor();
-                    destination = "floor " + floor + " " + destName;
-                } else {
-                    destination = destName;
+            for (int i = path.size() - 1; i > 0; i--) {
+                double angle = getAngle(path.get(i), path.get(i - 1));
+
+                if (path.get(i).getStartNode().getFloor() != path.get(i).getEndNode().getFloor()
+                        || path.get(i - 1).getStartNode().getFloor() != path.get(i - 1).getEndNode().getFloor()) {
+                    directions.add("Change Floors ");
+                    continue;
                 }
-            } else {
-                destination = destName + " " + destRoom;
+                String destRoom;
+                String destName;
+                destRoom = path.get(i).getEndNode().getRoomNum();
+                destName = path.get(i).getEndNode().getName();
+
+                Node myNode = path.get(i).getEndNode();
+                if (myNode.getIsHidden() || myNode.getType().equals("Stairwell") ||
+                        myNode.getType().equals("Elevator")) {
+                    if (myNode.getIsHidden()) {
+                        int floor = myNode.getFloor();
+                        destination = "floor " + floor + " " + destName;
+                    } else {
+                        destination = destName;
+                    }
+                } else {
+                    destination = destName + " " + destRoom;
+                }
+
+                if (angle > -135.0 && angle <= -45.0) {
+                    directions.add("Turn left at " + destination);
+                } else if (angle >= 45.0 && angle < 135.0) {
+                    directions.add("Turn right at " + destination);
+                } else if (angle > 10.0 && angle < 45.0) {
+                    directions.add("Make a slight right at " + destination);
+                } else if (angle >= -10.0 && angle <= 10.0) {
+                    directions.add("Continue straight.");
+                } else if (angle > -45.0 && angle < -10.0) {
+                    directions.add("Make a slight left at " + destination);
+                } else if (angle > 135.0 && angle < 180.0) {
+                    directions.add("Make a hard right at " + destination);
+                } else if (angle > -180.0 && angle < -135.0) {
+                    directions.add("Make a hard left at " + destination);
+                } else {
+                    directions.add("nothing");
+                }
+
+
+            }
+            if (path.get(0).getStartNode().getFloor() != path.get(0).getEndNode().getFloor())
+                directions.add("Change Floors ");
+                directions.add("Reached Destination");
+                directions = cleanDirections(directions);
+                return concatenateDirections(directions);
+        } else {
+            if (path.isEmpty()) {
+                return null;
             }
 
-            if(angle > -135.0 && angle <= -45.0) {
-                directions.add("Turn left at " + destination);
-            }
-            else if(angle >= 45.0 && angle < 135.0) {
-                directions.add("Turn right at " + destination);
-            }
-            else if(angle > 10.0 && angle < 45.0) {
-                directions.add("Make a slight right at " + destination);
-            }
-            else if(angle >= -10.0 && angle <= 10.0){
-                directions.add("Continue straight.");
-            }
-            else if(angle > -45.0 && angle < -10.0) {
-                directions.add("Make a slight left at " + destination);
-            }
-            else if(angle > 135.0 && angle < 180.0) {
-                directions.add("Make a hard right at " + destination);
-            }
-            else if(angle > -180.0 && angle < -135.0) {
-                directions.add("Make a hard left at " + destination);
-            }else{
-                directions.add("nothing");
-            }
+            for (int i = path.size() - 1; i > 0; i--) {
+                double angle = getAngle(path.get(i), path.get(i - 1));
+
+                if (path.get(i).getStartNode().getFloor() != path.get(i).getEndNode().getFloor()
+                        || path.get(i - 1).getStartNode().getFloor() != path.get(i - 1).getEndNode().getFloor()) {
+                    directions.add("Cambiar piso ");
+                    continue;
+                }
+                String destRoom;
+                String destName;
+                destRoom = path.get(i).getEndNode().getRoomNum();
+                destName = path.get(i).getEndNode().getName();
+
+                Node myNode = path.get(i).getEndNode();
+                if (myNode.getIsHidden() || myNode.getType().equals("Stairwell") ||
+                        myNode.getType().equals("Elevator")) {
+                    if (myNode.getIsHidden()) {
+                        int floor = myNode.getFloor();
+                        destination = "floor " + floor + " " + destName;
+                    } else {
+                        destination = destName;
+                    }
+                } else {
+                    destination = destName + " " + destRoom;
+                }
+
+                if (angle > -135.0 && angle <= -45.0) {
+                    directions.add("Girar a la izquierda hacia " + destination);
+                } else if (angle >= 45.0 && angle < 135.0) {
+                    directions.add("Girar a la derecha hacia " + destination);
+                } else if (angle > 10.0 && angle < 45.0) {
+                    directions.add("Girar un poco a la derecha hacia " + destination);
+                } else if (angle >= -10.0 && angle <= 10.0) {
+                    directions.add("Sigue derecho.");
+                } else if (angle > -45.0 && angle < -10.0) {
+                    directions.add("Girar un poco a la izquierda hacia " + destination);
+                } else if (angle > 135.0 && angle < 180.0) {
+                    directions.add("Haz un gran giro a la derecha hacia " + destination);
+                } else if (angle > -180.0 && angle < -135.0) {
+                    directions.add("Haz un gran giro a la izquierda hacia " + destination);
+                } else {
+                    directions.add("nada");
+                }
 
 
+            }
+            if (path.get(0).getStartNode().getFloor() != path.get(0).getEndNode().getFloor())
+                directions.add("Cambiar piso ");
+            directions.add("Has llegado a tu destino");
+            directions = cleanDirections(directions);
+            return concatenateDirections(directions);
         }
-        if(path.get(0).getStartNode().getFloor() != path.get(0).getEndNode().getFloor())
-            directions.add("Change Floors ");
-        directions.add("Reached Destination");
-        directions = cleanDirections(directions);
-        return concatenateDirections(directions);
 
     }
 

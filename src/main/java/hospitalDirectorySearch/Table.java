@@ -15,7 +15,11 @@ public class Table {
     private final SimpleStringProperty rType;
     private final SimpleStringProperty rRoom;
 
-    public Table(int sID, String sFirstName, String sLastName, String sTitle, String sType, String sRoom){
+
+
+
+    //Constructor for an admin info
+    public Table (int sID, String sFirstName, String sLastName, String sTitle, String sType, String sRoom){
         this.rID = new SimpleIntegerProperty(sID);
         this.rFirstName = new SimpleStringProperty(sFirstName);
         this.rLastName = new SimpleStringProperty(sLastName);
@@ -49,6 +53,7 @@ public class Table {
     public String getrRoom() {
         return rRoom.get();
     }
+    //Admin attributes
 
 
     //Setters
@@ -75,6 +80,8 @@ public class Table {
     public void setrRoom(String rRoom) {
         this.rRoom.set(rRoom);
     }
+    //Admin attributes
+
 
     //Properties Might not be useful
     public SimpleIntegerProperty rIDProperty() {
@@ -89,7 +96,6 @@ public class Table {
         return rLastName;
     }
 
-
     public SimpleStringProperty rTitleProperty() {
         return rTitle;
     }
@@ -101,4 +107,7 @@ public class Table {
     public SimpleStringProperty rRoomProperty() {
         return rRoom;
     }
+    //Admin Attributes
+
+
 }

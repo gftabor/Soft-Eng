@@ -925,23 +925,46 @@ public class DatabaseController {
         }
     }
 
-    public boolean editAdmin(int ID, String firstName, String lastName, String userName, String password){
-        String encrypted = BCrypt.hashpw(password, BCrypt.gensalt());
+    public boolean editAdmin(int ID, String firstName, String lastName, String userName){
+
 
         System.out.println(
                 String.format(
-                        "Editing Admin. ID: %d, firstName: %s, lastName: %s, userName: %s, password: REDACTED",
+                        "Editing Admin. ID: %d, firstName: %s, lastName: %s, userName: %s",
                         ID, firstName, lastName, userName));
         try {
             // sql statement with "?" to be filled later
-            String query = "UPDATE ADMIN SET FIRSTNAME = ?, LASTNAME = ?, USERNAME = ?, PASSWORD = ? WHERE ID = ?";
+            String query = "UPDATE ADMIN SET FIRSTNAME = ?, LASTNAME = ?, USERNAME = ? WHERE ID = ?";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, userName);
-            preparedStatement.setString(4, encrypted);
-            preparedStatement.setInt(5, ID);
+            preparedStatement.setInt(4, ID);
+            // execute prepared statement
+
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean editAdminPassword(int ID, String password){
+        String encrypted = BCrypt.hashpw(password, BCrypt.gensalt());
+        System.out.println(
+                String.format(
+                        "Editing Admin Password: ID: %d", ID
+                ));
+        try {
+            // sql statement with "?" to be filled later
+            String query = "UPDATE ADMIN SET PASSWORD = ? WHERE ID = ?";
+            // prepare statement by replacing "?" with corresponding variable
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, encrypted);
+            preparedStatement.setInt(2, ID);
             // execute prepared statement
 
             preparedStatement.execute();

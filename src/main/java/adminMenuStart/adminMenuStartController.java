@@ -81,14 +81,16 @@ public class adminMenuStartController extends controllers.AbsController{
         //Gets the current admin
         controller.setUsername(username_Label.getText());
         //set up english labels
-        /*
+
         if(c_language == 0){
             controller.englishButtons_Labels();
             //set up spanish labels
         }else if(c_language == 1){
             controller.spanishButtons_Labels();
         }
-        */
+
+        controller.setUpTreeView();
+        controller.setModeChoices();
 
 
     }
@@ -247,7 +249,7 @@ public class adminMenuStartController extends controllers.AbsController{
         mapManagement_Button.setText("Map Management");
         SignOut_Button.setText("Sign Out");
         emergency_Button.setText("EMERGENCY");
-        addAdmin_Button.setText("Add Admin");
+        addAdmin_Button.setText("Admin Management");
 
         //Change the labels
         title_Label.setText("Welcome to Faulkner Hospital");
@@ -265,11 +267,9 @@ public class adminMenuStartController extends controllers.AbsController{
         mapManagement_Button.setText("Control de Mapa");
         SignOut_Button.setText("Salir");
         emergency_Button.setText("EMERGENCIA");
-        addAdmin_Button.setText("Agregar Admin");
+        addAdmin_Button.setText("Administración admin");
         //change the Labels
         title_Label.setText("Bienvenidos al Hospital de Faulkner");
-
-
     }
 
     //sets the current language given information form other screens
