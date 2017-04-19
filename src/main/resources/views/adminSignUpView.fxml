@@ -76,7 +76,7 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="search_textField" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="200.0" promptText="search">
+                        <TextField fx:id="search_textField" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="54.0" prefWidth="200.0" promptText="search">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -108,7 +108,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <ChoiceBox fx:id="mode_ChoiceBox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0">
+                        <ChoiceBox fx:id="mode_ChoiceBox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="72.0" prefWidth="214.0">
                            <HBox.margin>
                               <Insets bottom="5.0" left="25.0" right="5.0" top="1.0" />
                            </HBox.margin>
@@ -126,7 +126,7 @@
                               <Font name="System Bold Italic" size="23.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="id_textField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="ID">
+                        <TextField fx:id="id_textField" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="52.0" prefWidth="180.0" promptText="ID">
                            <HBox.margin>
                               <Insets bottom="5.0" left="25.0" right="5.0" top="1.0" />
                            </HBox.margin>
@@ -149,7 +149,7 @@
                               <Font name="System Bold Italic" size="23.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="userName_TextField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="Username">
+                        <TextField fx:id="userName_TextField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="52.0" prefWidth="180.0" promptText="Username">
                            <HBox.margin>
                               <Insets bottom="5.0" left="25.0" right="5.0" top="1.0" />
                            </HBox.margin>
@@ -172,7 +172,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="firstName_TextField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="First Name">
+                        <TextField fx:id="firstName_TextField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="52.0" prefWidth="180.0" promptText="First Name">
                            <HBox.margin>
                               <Insets bottom="5.0" left="25.0" right="5.0" top="1.0" />
                            </HBox.margin>
@@ -195,7 +195,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="lastName_TextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="Last Name">
+                        <TextField fx:id="lastName_TextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="52.0" prefWidth="180.0" promptText="Last Name">
                            <HBox.margin>
                               <Insets bottom="5.0" left="25.0" right="5.0" top="1.0" />
                            </HBox.margin>
@@ -210,7 +210,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label fx:id="password_Label" prefWidth="160.0" text="Password">
+                        <Label fx:id="password_Label" prefHeight="68.0" prefWidth="169.0" text="New Password (optional)" wrapText="true">
                            <font>
                               <Font name="System Bold Italic" size="23.0" />
                            </font>
@@ -218,7 +218,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="1.0" />
                            </HBox.margin>
                         </Label>
-                        <PasswordField fx:id="newPassword_TextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="180.0" promptText="Password">
+                        <PasswordField fx:id="newPassword_TextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="68.0" prefWidth="183.0" promptText="Password">
                            <HBox.margin>
                               <Insets bottom="5.0" left="25.0" right="5.0" top="1.0" />
                            </HBox.margin>

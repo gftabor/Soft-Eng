@@ -111,6 +111,8 @@ public class adminSignUpController extends controllers.AbsController{
     @FXML
     private Button submit_Button;
 
+    private boolean selfSelected = false;
+
     int c_language = 0; //English by default
     int c_mode = 0; //
 
@@ -124,12 +126,83 @@ public class adminSignUpController extends controllers.AbsController{
 
     }
 
-    //Deal with the submit button clicked
-    public void submitButton_Clicked(){
-
-
+    public void clearInputs(){
+        id_textField.clear();
+        userName_TextField.clear();
+        firstName_TextField.clear();
+        lastName_TextField.clear();
+        newPassword_TextField.clear();
     }
 
+    //Deal with the submit button clicked
+    public void submitButton_Clicked(){
+        if(mode_ChoiceBox.getValue().equals("Add") || mode_ChoiceBox.getValue().equals("Agregar")){
+            addAdmin();
+            setUpTreeView();
+        }else if (mode_ChoiceBox.getValue().equals("Remove") || mode_ChoiceBox.getValue().equals("Borrar")){
+                deleteAdmin();
+                setUpTreeView();
+        }else if (mode_ChoiceBox.getValue().equals("Edit") || mode_ChoiceBox.getValue().equals("Editar")){
+            editAdmin();
+            setUpTreeView();
+        }else{
+            System.out.println("Error with choicebox on admin page");
+        }
+        clearInputs();
+
+    }
+    //adds the admin into the database
+    public void addAdmin(){
+        try {
+            if (databaseController.newAdmin(firstName_TextField.getText(), lastName_TextField.getText(),
+                    userName_TextField.getText(), newPassword_TextField.getText())) {
+                queryStatus.setText("Admin Added");
+            } else {
+                queryStatus.setText("Error Adding Admin");
+            }
+        }
+        catch(Exception e){
+            queryStatus.setText("ERROR: Exception");
+            e.printStackTrace();
+        }
+    }
+
+    //edits admin
+
+    public void editAdmin(){
+        try {
+            if (databaseController.editAdmin(Integer.parseInt(id_textField.getText()), firstName_TextField.getText(), lastName_TextField.getText(),
+                    userName_TextField.getText())) {
+                if(newPassword_TextField.getText() != ""){
+                    databaseController.editAdminPassword(Integer.parseInt(id_textField.getText()), newPassword_TextField.getText());
+                }
+                queryStatus.setText("Admin Edited");
+            } else {
+                queryStatus.setText("Error Edit Admin");
+            }
+
+        }
+        catch(Exception e){
+            queryStatus.setText("ERROR: Exception");
+            e.printStackTrace();
+        }
+    }
+
+    //deletes admin from database
+    public void deleteAdmin(){
+        try {
+            if (databaseController.deleteAdmin(Integer.parseInt(id_textField.getText()))){
+                queryStatus.setText("Admin Deleted");
+            } else {
+                queryStatus.setText("Error Deleting Admin");
+            }
+        }
+        catch(Exception e){
+            queryStatus.setText("ERROR: Exception");
+            e.printStackTrace();
+
+        }
+    }
 
     //Sets the choices for the mode Add, edit remove
     public void setModeChoices() {
@@ -167,7 +240,6 @@ public class adminSignUpController extends controllers.AbsController{
     //The add settings for the user to add a Doctor/nurse
     public void add_settings() {
         c_mode = 0;
-
     }
 
     //The remove settings for the user to remove a Doctor/nurse
@@ -212,58 +284,6 @@ public class adminSignUpController extends controllers.AbsController{
         currentAdmin_Label.setText(user);
     }
 
-    //adds the admin into the database
-    public void addAdminButton_Clicked(){
-        try {
-            if (databaseController.newAdmin(firstName_TextField.getText(), lastName_TextField.getText(),
-                    userName_TextField.getText(), newPassword_TextField.getText())) {
-                queryStatus.setText("Admin Added");
-            } else {
-                queryStatus.setText("Error Adding Admin");
-            }
-        }
-        catch(Exception e){
-            queryStatus.setText("ERROR: Exception");
-            e.printStackTrace();
-        }
-    }
-
-    //edits admin
-    //FIXME: GET THE ID FROM THE CHART SELECTION
-
-
-    public void editAdminButton_Clicked(){
-        try {
-            if (databaseController.editAdmin(999, firstName_TextField.getText(), lastName_TextField.getText(),
-                    userName_TextField.getText(), newPassword_TextField.getText())) {
-                queryStatus.setText("Admin Edited");
-            } else {
-                queryStatus.setText("Error Edit Admin");
-            }
-        }
-        catch(Exception e){
-            queryStatus.setText("ERROR: Exception");
-            e.printStackTrace();
-        }
-    }
-
-    //deletes admin from database
-    //FIXME: GET THE ID FROM THE CHART SELECTION
-    public void deleteAdminButton_Clicked(){
-        try {
-            if (databaseController.deleteAdmin(999)){
-                queryStatus.setText("Admin Deleted");
-            } else {
-                queryStatus.setText("Error Deleting Admin");
-            }
-        }
-        catch(Exception e){
-            queryStatus.setText("ERROR: Exception");
-            e.printStackTrace();
-
-         }
-    }
-
     //sets up the tree
     public void setUpTreeView(){
         ID_TableColumn.setCellValueFactory(new PropertyValueFactory<adminTable, Integer>("rID"));
@@ -292,7 +312,7 @@ public class adminSignUpController extends controllers.AbsController{
             e.printStackTrace();
         }
 
-        //Getting the infomration from the table View to the user
+        //Getting the information from the table View to the user
         Table_TableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -302,7 +322,6 @@ public class adminSignUpController extends controllers.AbsController{
                     givFirstN = Table_TableView.getSelectionModel().getSelectedItem().getrFirstName();
                     givLastN = Table_TableView.getSelectionModel().getSelectedItem().getrLastName();
                     //givPassword = Table_TableView.getSelectionModel().getSelectedItem().getrPassword();
-
                     id_textField.setText(Integer.toString(givID));
                     userName_TextField.setText(givUsername);
                     firstName_TextField.setText(givFirstN);
