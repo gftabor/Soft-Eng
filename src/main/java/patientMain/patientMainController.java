@@ -130,7 +130,7 @@ public class patientMainController extends controllers.mapScene {
     private Circle start;
     private Circle end;
 
-    private final double sizeUpRatio = 1.7;
+    private final double sizeUpRatio = 1.9;
     private final double strokeRatio = 4;
 
     private ArrayList<ArrayList<Edge>> globalFragList;
@@ -403,7 +403,7 @@ public class patientMainController extends controllers.mapScene {
 
                 } else if (currentFloor > 8) {
                     //belkin
-                    currentFloor = currentFloor + 2;
+                    currentFloor = currentFloor - 1;
 
                 }
 
