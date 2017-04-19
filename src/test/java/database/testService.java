@@ -42,6 +42,7 @@ public class testService {
     }
 
 
+    /*
     @Test
     public void testAddDelete(){
         assertTrue(databaseController.newNode(134, 2345, 7, ishidden, enabled, type, name, "TEST555"));
@@ -65,6 +66,7 @@ public class testService {
 
         assertTrue(databaseController.deleteService(name, type, x, y, floor));
     }
+    */
 
     @Test
     public void testNull(){
