@@ -466,8 +466,12 @@ public class patientMainController extends controllers.mapScene {
 
             //check that the txt fields are filled
             if(!(start_textField.getText().equals("")) && !(end_TextField.getText().equals(""))) {
-                startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText());
-                endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText());
+                if (start_textField.getText().equals("Kiosk")){
+                    startN = mapController.getCollectionOfNodes().getNodeWithName("Kiosk");
+                } else {
+                    startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
+                }
+                endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText().split(", ")[1]);
 
                 //set up for colors :)
                 startX = startN.getPosX();
