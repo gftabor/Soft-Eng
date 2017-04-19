@@ -89,7 +89,6 @@ public class pathFindingMenuController extends controllers.mapScene{
     private double endX;
     private double endY;
 
-
     private Circle btK;
 
     private int selectionState = 0;
@@ -150,7 +149,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         //we will use floor 1 as default
         currentFloor = 1;
         currentFloor_Label.setText("1");
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
 
         //set continue button invisible when not needed
         continue_Button.setVisible(false);
@@ -165,7 +164,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         selectionState = 0;
         //Remove colored dots from map
 
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
         currentFloor_Label.setText(Integer.toString(currentFloor));
 
         //wipe line from map
@@ -179,7 +178,6 @@ public class pathFindingMenuController extends controllers.mapScene{
         startY = -9999999;
         endX = -9999999;
         endY = -9999999;
-
 
     }
 
@@ -439,7 +437,7 @@ public class pathFindingMenuController extends controllers.mapScene{
                 newMapImage.display(map_viewer);
 
                 currentFloor_Label.setText(Integer.toString(currentFloor));
-                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
 
                 //draw edges
                 graph.drawFloorEdges(currentFloor);
