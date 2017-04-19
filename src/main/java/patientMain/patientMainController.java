@@ -119,8 +119,6 @@ public class patientMainController extends controllers.mapScene {
     private double endX;
     private double endY;
 
-    private Circle btK;
-
     private controllers.MapOverlay graph;
 
     private int selectionState = 0;
@@ -157,7 +155,7 @@ public class patientMainController extends controllers.mapScene {
         currentFloor = 1;
         c_Floor_Label.setText("1");
 
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
         //set continue button invisible when not needed
         continueNew_Button.setVisible(false);
         previous_Button.setVisible(false);
@@ -201,6 +199,7 @@ public class patientMainController extends controllers.mapScene {
                         c.setStrokeWidth(strokeRatio);
                         c.setRadius(graph.getLabelRadius()*sizeUpRatio);
                         c.setStroke(endColor);
+                        c.setFill(endColor);
                         break;
                     }
                 }
@@ -237,6 +236,7 @@ public class patientMainController extends controllers.mapScene {
                     c.setStrokeWidth(strokeRatio);
                     c.setRadius(graph.getLabelRadius()*sizeUpRatio);
                     c.setStroke(startColor);
+                    c.setFill(startColor);
                     break;
                 }
             }
@@ -437,7 +437,7 @@ public class patientMainController extends controllers.mapScene {
                     c_Floor_Label.setText("");
                     floor_Label.setText(currentF);
                 }
-                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
             }
         });
 
@@ -518,6 +518,7 @@ public class patientMainController extends controllers.mapScene {
                 c.setStrokeWidth(strokeRatio);
                 c.setRadius(graph.getLabelRadius()*sizeUpRatio);
                 c.setStroke(startColor);
+                c.setFill(startColor);
                 break;
             }
         }
@@ -600,7 +601,7 @@ public class patientMainController extends controllers.mapScene {
         selectionState = 0;
         //Remove colored dots from map
 
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
         c_Floor_Label.setText(Integer.toString(currentFloor));
 
         //wipe line from map
@@ -688,11 +689,13 @@ public class patientMainController extends controllers.mapScene {
             selectionState++;
             if(start != null) {
                 start.setStroke(Color.BLACK);
+                start.setFill(Color.BLACK);
                 start.setStrokeWidth(1);
                 start.setRadius(graph.getLabelRadius());
             }
             if(end != null) {
                 end.setStroke(Color.BLACK);
+                end.setFill(Color.BLACK);
                 end.setStrokeWidth(1);
                 end.setRadius(graph.getLabelRadius());
             }
@@ -701,6 +704,7 @@ public class patientMainController extends controllers.mapScene {
             //color
             c.setStrokeWidth(strokeRatio);
             c.setStroke(startColor);
+            c.setFill(startColor);
 
             //location
             startX = c.getLayoutX();
@@ -720,6 +724,7 @@ public class patientMainController extends controllers.mapScene {
             //color
             c.setStrokeWidth(strokeRatio);
             c.setStroke(endColor);
+            c.setFill(endColor);
 
             //location
             endX = c.getLayoutX();
