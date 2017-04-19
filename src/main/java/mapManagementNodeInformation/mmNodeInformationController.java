@@ -175,9 +175,9 @@ public class mmNodeInformationController extends controllers.AbsController {
         String lastName = lastName_TextField.getText();
         String title = title_TextField.getText();
 
-        if(c_language == 0){
-            // language is english
-            ArrayList<String> english_departments = databaseController.getEnglishDepartmentList();
+//        if(c_language == 0){
+//            // language is english
+//            ArrayList<String> english_departments = databaseController.getEnglishDepartmentList();
             /*if (!(english_departments.contains(cDepartment))) {
                 // if current english department not in the list of available english departments
                 // pop up window should get the new department in spanish (since we don't know the
@@ -195,55 +195,55 @@ public class mmNodeInformationController extends controllers.AbsController {
                 databaseController.addInTranslation(cDepartment, spDepartment);
             }*/
             //department = databaseController.getSpanish(cDepartment);
-            ArrayList<String> english_titles = databaseController.getEnglishTitleList();
-            if (!(english_titles.contains(cTitle))){
-                // if current english title not in the list of available english titles
-                // pop up window should get the new title in spanish (since we don't know the
-                // translation)
-                //Get spanish translation of new title
-                TextInputDialog dialogTitle = new TextInputDialog("");
-                dialogTitle.setTitle("Add new Title");
-                dialogTitle.setHeaderText("You have entered an unknown title! Please provide Spanish translation.");
-                dialogTitle.setContentText("Title in Spanish:");
-                Optional<String> result = dialogTitle.showAndWait();
-                result.ifPresent(name -> spTitle = name);
-                title = cTitle;
-                databaseController.addInTranslation(cTitle, spTitle);
-            }
+//            ArrayList<String> english_titles = databaseController.getEnglishTitleList();
+//            if (!(english_titles.contains(cTitle))){
+//                // if current english title not in the list of available english titles
+//                // pop up window should get the new title in spanish (since we don't know the
+//                // translation)
+//                //Get spanish translation of new title
+//                TextInputDialog dialogTitle = new TextInputDialog("");
+//                dialogTitle.setTitle("Add new Title");
+//                dialogTitle.setHeaderText("You have entered an unknown title! Please provide Spanish translation.");
+//                dialogTitle.setContentText("Title in Spanish:");
+//                Optional<String> result = dialogTitle.showAndWait();
+//                result.ifPresent(name -> spTitle = name);
+//                title = cTitle;
+//                databaseController.addInTranslation(cTitle, spTitle);
+//            }
             //title = databaseController.getSpanish(cTitle);
-        } else if(c_language == 1) {
-            // language is spanish
-            ArrayList<String> spanish_departments = databaseController.getSpanishDepartmentList();
-            /*if (!(spanish_departments.contains(cDepartment))) {
-                TextInputDialog dialog = new TextInputDialog("");
-                dialog.setTitle("Agrega un Nuevo Departamento");
-                dialog.setHeaderText("Has ingresado un departamento desconocido! Por favor agrega la versión en Inglés.");
-                dialog.setContentText("Departamento en Inglés:");
-                // The Java 8 way to get the response value (with lambda expression).
-                // Traditional way to get the response value.
-                Optional<String> result = dialog.showAndWait();
-                result.ifPresent(name -> enDepartment = name);
-                department = enDepartment;
-                databaseController.addInTranslation(enDepartment, cDepartment);
-            }*/
-            //department = databaseController.getEnglish(cDepartment);
-            ArrayList<String> spanish_titles = databaseController.getSpanishTitleList();
-            if (!(spanish_titles.contains(cTitle))){
-                // if current spanish title not in the list of available spanish titles
-                // pop up window should get the new title in english (since we don't know the
-                // translation)
-                //Get englsih translation of new title
-                TextInputDialog dialogTitle = new TextInputDialog("");
-                dialogTitle.setTitle("Agrega un Nuevo Título");
-                dialogTitle.setHeaderText("Has ingresado un título desconocido! Por favor agrega la versión en Inglés.");
-                dialogTitle.setContentText("Título en Inglés:");
-                Optional<String> result = dialogTitle.showAndWait();
-                result.ifPresent(name -> enTitle = name);
-                title = enTitle;
-                databaseController.addInTranslation(enTitle, cTitle);
-            }
-           title = databaseController.getEnglish(cTitle);
-        }
+//        } else if(c_language == 1) {
+//            // language is spanish
+//            ArrayList<String> spanish_departments = databaseController.getSpanishDepartmentList();
+//            /*if (!(spanish_departments.contains(cDepartment))) {
+//                TextInputDialog dialog = new TextInputDialog("");
+//                dialog.setTitle("Agrega un Nuevo Departamento");
+//                dialog.setHeaderText("Has ingresado un departamento desconocido! Por favor agrega la versión en Inglés.");
+//                dialog.setContentText("Departamento en Inglés:");
+//                // The Java 8 way to get the response value (with lambda expression).
+//                // Traditional way to get the response value.
+//                Optional<String> result = dialog.showAndWait();
+//                result.ifPresent(name -> enDepartment = name);
+//                department = enDepartment;
+//                databaseController.addInTranslation(enDepartment, cDepartment);
+//            }*/
+//            //department = databaseController.getEnglish(cDepartment);
+//            ArrayList<String> spanish_titles = databaseController.getSpanishTitleList();
+//            if (!(spanish_titles.contains(cTitle))){
+//                // if current spanish title not in the list of available spanish titles
+//                // pop up window should get the new title in english (since we don't know the
+//                // translation)
+//                //Get englsih translation of new title
+//                TextInputDialog dialogTitle = new TextInputDialog("");
+//                dialogTitle.setTitle("Agrega un Nuevo Título");
+//                dialogTitle.setHeaderText("Has ingresado un título desconocido! Por favor agrega la versión en Inglés.");
+//                dialogTitle.setContentText("Título en Inglés:");
+//                Optional<String> result = dialogTitle.showAndWait();
+//                result.ifPresent(name -> enTitle = name);
+//                title = enTitle;
+//                databaseController.addInTranslation(enTitle, cTitle);
+//            }
+//           title = databaseController.getEnglish(cTitle);
+//        }
 
         ResultSet rset;
         int id = 0, xpos = 0, ypos = 0, floor = 0;
@@ -266,7 +266,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         switch (c_mode) {
             case 0: // adding
                 System.out.println("Adding professional mode");
-                databaseController.newProfessional(firstName, lastName, title, department);
+                databaseController.newProfessional(firstName, lastName, title);
                 rset = databaseController.getProfessional(firstName, lastName, title);
                 try {
                     rset.next();
@@ -307,7 +307,7 @@ public class mmNodeInformationController extends controllers.AbsController {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                databaseController.EditProfessional(id, firstName, lastName, title, department);
+                databaseController.EditProfessional(id, firstName, lastName, title);
                 databaseController.EditProfessionalLocation(id, xpos, ypos, floor);
                 System.out.println("Editing professional mode ------------");
                 break;
@@ -379,21 +379,11 @@ public class mmNodeInformationController extends controllers.AbsController {
                 ids.add(id);
                 firstName = rset.getString("FIRSTNAME");
                 lastName = rset.getString("LASTNAME");
-                if (c_language == 0) {
-                    System.out.println("Getting ENGLISH type and department c_language NOW = " + c_language);
-                    title = rset.getString("TYPE");
-                    department = rset.getString("DEPARTMENT");
-                } else {
-                    System.out.println("Getting SPANISH type and department c_language NOW = " + c_language);
-                    title = rset.getString("SPTYPE");
-                    System.out.println("getting title " + title);
-                    department = rset.getString("SPDEPARTMENT");
-                    System.out.println("getting department " + department);
-                }
+                title = rset.getString("TYPE");
                 roomNum = rset.getString("ROOMNUM");
                 System.out.println("Name: " + firstName + lastName);
                 //Table table = new Table(id, firstName, lastName, title, department, roomNum);
-                data.add(new Table(id, firstName, lastName, title, department, roomNum));
+                data.add(new Table(id, firstName, lastName, title, "", roomNum));
             }
             rset.close();
         } catch (SQLException e){
@@ -404,22 +394,12 @@ public class mmNodeInformationController extends controllers.AbsController {
                 id = rset2.getInt("ID");
                 firstName = rset2.getString("FIRSTNAME");
                 lastName = rset2.getString("LASTNAME");
-                if (c_language == 0) {
-                    System.out.println("Getting ENGLISH type and department c_language = " + c_language);
-                    title = rset2.getString("TYPE");
-                    department = rset2.getString("DEPARTMENT");
-                } else {
-                    System.out.println("Getting SPANISH type and department c_language = " + c_language);
-                    title = rset2.getString("SPTYPE");
-                    System.out.println("getting title " + title);
-                    department = rset2.getString("SPDEPARTMENT");
-                    System.out.println("getting department " + department);
-                }
+                title = rset2.getString("TYPE");
                 System.out.println("Name: " + firstName + lastName);
                 if (!ids.contains(id)) {
                     //Something bad happened
                     roomNum= "empty";
-                    Table table = new Table(id, firstName, lastName, title, department, roomNum);
+                    Table table = new Table(id, firstName, lastName, title, "", roomNum);
                     data.add(table);
                 }
             }
@@ -591,22 +571,11 @@ public class mmNodeInformationController extends controllers.AbsController {
         ArrayList<String> departments = new ArrayList<>();
         ArrayList<String> titles = new ArrayList<>();
 
-        rooms = databaseController.getRoomList();
-
-        if (c_language == 0) {
-            System.out.println("showing suggestions in english");
-            departments = databaseController.getEnglishDepartmentList();
-            titles = databaseController.getEnglishTitleList();
-        } else {
-            System.out.println("showing suggestions in spanish");
-            departments = databaseController.getSpanishDepartmentList();
-            titles = databaseController.getSpanishTitleList();
-        }
+        rooms = databaseController.getRooms();
+        titles = databaseController.getTitles();
 
         // rooms not affected by language
         TextFields.bindAutoCompletion(room_TextField,rooms);
-
-        //TextFields.bindAutoCompletion(department_TextField, departments);
 
         TextFields.bindAutoCompletion(title_TextField, titles);
     }
