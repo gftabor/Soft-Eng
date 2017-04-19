@@ -165,6 +165,7 @@ public class patientMainController extends controllers.mapScene {
 
         //draw edges
         //graph.drawFloorEdges(currentFloor);
+
     }
 
     //get an instance of database controller
@@ -300,7 +301,6 @@ public class patientMainController extends controllers.mapScene {
                 filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios");
                 filter_ChoiceBox.getSelectionModel().select(0);
             }
-
         }
 
         //Checks if the user has decided to change languages
@@ -420,8 +420,6 @@ public class patientMainController extends controllers.mapScene {
 
         start_textField.setText("Kiosk");
         selectionState = 0;
-
-
     }
 
     public void aboutButton_clicked() {
@@ -741,7 +739,7 @@ public class patientMainController extends controllers.mapScene {
                 end.setRadius(graph.getLabelRadius());
             }
             graph.wipeEdgeLines();
-            start =c;
+            start = c;
             //color
             c.setStrokeWidth(strokeRatio);
             c.setStroke(startColor);
