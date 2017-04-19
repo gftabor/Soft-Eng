@@ -403,7 +403,7 @@ public class patientMainController extends controllers.mapScene {
 
                 } else if (currentFloor > 8) {
                     //belkin
-                    currentFloor = currentFloor + 2;
+                    currentFloor = currentFloor - 1;
 
                 }
 
