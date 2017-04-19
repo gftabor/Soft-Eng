@@ -142,7 +142,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
         graph = new controllers.MapOverlay(admin_FloorPane,(mapScene) this);
         MapController.getInstance().requestMapCopy();
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true);
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true, currentFloor);
 
         setFloorChoices();
     }
@@ -368,7 +368,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
         //show edge lines to tell user change has been made
         //check so edge lines do not show up on wrong floor
-        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true);
+        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true, currentFloor);
         edgesSelected = 0;
 
 
@@ -445,7 +445,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 mapImage newMapImage = new proxyMap(currentFloor);
                 newMapImage.display(map_viewer);
 
-                graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true);
+                graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true, currentFloor);
 
                 //draw edges
                 graph.drawFloorEdges(currentFloor);
