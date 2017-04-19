@@ -18,7 +18,6 @@
 }
 .emergency{
     -fx-background-color: -actually-red;
-    -fx-font-weight: bold;
 }
 .emergency:hover{
     -fx-background-color: derive(-actually-red, 87%);
