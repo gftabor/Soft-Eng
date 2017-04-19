@@ -149,9 +149,8 @@ public class patientMainController extends controllers.mapScene {
         setFloorChoices();
         setStartEndChoices();
         setLanguage_ChoiceBox();
-        setComboBox();
+        //setComboBox();
         setFilterChoices();
-        second = true;
         //set current floor
         //we will use floor 1 as default
         currentFloor = 1;
@@ -161,6 +160,7 @@ public class patientMainController extends controllers.mapScene {
         //set continue button invisible when not needed
         continueNew_Button.setVisible(false);
         previous_Button.setVisible(false);
+        second = true;
 
         //draw edges
         //graph.drawFloorEdges(currentFloor);
@@ -275,7 +275,7 @@ public class patientMainController extends controllers.mapScene {
 
     }
 
-    public void setComboBox(){
+    /*public void setComboBox(){
         //Makes sure you only set the choices once
         //sets the choices and sets the current language as the top choice
         if(c_language == 0) {
@@ -322,7 +322,7 @@ public class patientMainController extends controllers.mapScene {
                 });
 
 
-    }
+    }*/
 
     //Set the choices for Filter
     public void setFilterChoices(){
