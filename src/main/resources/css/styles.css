@@ -1,8 +1,14 @@
+@font-face {
+    font-family: 'Lato';
+    src: url('Lato/Lato-Regular.ttf');
+}
+
 .root{
+    -fx-font-family: 'Lato';
+    -fx-font-size: 22.0px;
     -dark: #566270;
     -flatter-red: #30A9DE;
     -flatter-blue: #30A9DE;
-
     -actually-red: #E53A40;
 }
 
