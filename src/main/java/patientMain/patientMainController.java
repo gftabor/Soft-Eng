@@ -663,10 +663,12 @@ public class patientMainController extends controllers.mapScene {
             start =c;
             //color
             c.setStrokeWidth(strokeRatio);
-            c.setStroke(Color.ORANGERED);
+            c.setStroke(startColor);
 
-            startX = c.getCenterX();
-            startY = c.getCenterY();
+            //location
+            startX = c.getLayoutX();
+            startY = c.getLayoutY();
+            System.out.println("Start coords updated: " + startX + "," + startY);
 
             //size
             c.setRadius(graph.getLabelRadius() * sizeUpRatio);
@@ -680,7 +682,12 @@ public class patientMainController extends controllers.mapScene {
             end = c;
             //color
             c.setStrokeWidth(strokeRatio);
-            c.setStroke(Color.FUCHSIA);
+            c.setStroke(endColor);
+
+            //location
+            endX = c.getLayoutX();
+            endY = c.getLayoutY();
+            System.out.println("End coords updated: " + endX + "," + endY);
 
             //size
             c.setRadius(graph.getLabelRadius() * sizeUpRatio);
