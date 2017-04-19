@@ -376,9 +376,12 @@ public class patientMainController extends controllers.mapScene {
                 //Print the floors accordingly
                 //CODE HERE!!!!!!!
 
+                System.out.println("fuck: " + newValue.intValue());
                 currentFloor = newValue.intValue() + 1;
+                System.out.println("currentfloor updated to: " + currentFloor);
 
                 if(currentFloor == 8){
+                    System.out.println("outside");
                     currentFloor = 0;
                     outside = true;
                     if(c_language == 0) {
