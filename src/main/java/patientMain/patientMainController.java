@@ -160,6 +160,7 @@ public class patientMainController extends controllers.mapScene {
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false);
         //set continue button invisible when not needed
         continueNew_Button.setVisible(false);
+        previous_Button.setVisible(false);
 
         //draw edges
         //graph.drawFloorEdges(currentFloor);
@@ -172,6 +173,9 @@ public class patientMainController extends controllers.mapScene {
     public void continueNewButton_Clicked(){
         if (continueNew_Button.isVisible() == true) {
             System.out.println("continue button clicked");
+
+            //set the previous button to be enabled
+            previous_Button.setVisible(true);
 
             //increment b/c continue button
             fragPathPos++; //continue...
@@ -208,6 +212,35 @@ public class patientMainController extends controllers.mapScene {
     public void previousButton_Clicked(){
         System.out.println("prev button clicked");
 
+        //show the continue button
+        continueNew_Button.setVisible(true);
+
+        //decrement frag path pos
+        fragPathPos--;
+
+        //update currentfloor
+        currentFloor = globalFloorSequence.get(fragPathPos);
+
+        multifloorUpdate();
+
+        //disable the previous button if you reach the beginning
+        //also update the color
+        if (fragPathPos == 0) {
+            previous_Button.setVisible(false);
+
+            //set the end goal color
+            ArrayList<Circle> circleList;
+            circleList = graph.getButtonList();
+
+            for (Circle c: circleList) {
+                if(c.getLayoutX() == startX && c.getLayoutY() == startY) {
+                    c.setStrokeWidth(strokeRatio);
+                    c.setRadius(graph.getLabelRadius()*sizeUpRatio);
+                    c.setStroke(startColor);
+                    break;
+                }
+            }
+        }
     }
 
     //Sets the choices for the language
@@ -435,7 +468,7 @@ public class patientMainController extends controllers.mapScene {
 
         //switch floors to original floor's pathfinding view
         int startfloor = mapController.returnOriginalFloor();
-        floor_Label.setText(Integer.toString(startfloor));
+        c_Floor_Label.setText(Integer.toString(startfloor));
 
         //switch back to the original floor using the choicebox selection
         floor_ChoiceBox.getSelectionModel().select(startfloor - 1);
