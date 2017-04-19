@@ -16,7 +16,7 @@ Platform assembly: C:\Users\dgian\Documents\WPI\Sophmore\D\Software Engineering\
 Loading C:\Users\dgian\Documents\WPI\Sophmore\D\Software Engineering\Soft_Eng_Git_2\pathfinder3D_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: C:\Users\dgian\Documents\WPI\Sophmore\D\Software Engineering\Soft_Eng_Git_2\pathfinder3D_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
 Loading C:\Users\dgian\Documents\WPI\Sophmore\D\Software Engineering\Soft_Eng_Git_2\pathfinder3D_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-- Completed reload, in  0.065 seconds
+- Completed reload, in  0.105 seconds
 Platform assembly: C:\Users\dgian\Documents\WPI\Sophmore\D\Software Engineering\Soft_Eng_Git_2\pathfinder3D_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\dgian\Documents\WPI\Sophmore\D\Software Engineering\Soft_Eng_Git_2\pathfinder3D_Data\Managed\System.dll (this message is harmless)
 <RI> Initializing input.
@@ -24,46 +24,6 @@ XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
 <RI> Input initialized.
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initialized touch support.
-UnloadTime: 1.084400 ms
-Loaded from file
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
-Switching to floor 4
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
-nextFloor: 4 currFloor: 1
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
-Switching to floor 4
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
+UnloadTime: 2.179064 ms
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: 223c -> priority: 1 
-nextFloor: 4 currFloor: 4
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
-nextFloor: 4 currFloor: 4
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
-nextFloor: 4 currFloor: 4
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
-nextFloor: 4 currFloor: 4
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
-nextFloor: 4 currFloor: 4
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
-nextFloor: 4 currFloor: 4
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
-
+  Thread -> id: 3268 -> priority: 1 
