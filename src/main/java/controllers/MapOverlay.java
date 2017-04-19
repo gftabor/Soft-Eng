@@ -33,6 +33,8 @@ public class MapOverlay {
 
     private static double zoom = 1;
 
+    private static int pathfinding = 0;
+
     //takes in a Hashtable when scene is switched and calls setNodes
 
     public void setMapAndNodes(HashMap<Integer, Node> nodeMap, boolean devMode, int floor) {
@@ -192,5 +194,13 @@ public class MapOverlay {
 
     public static void setZoom(double zoom1) {
         zoom = zoom1;
+    }
+
+    public static int getPathfinding() {
+        return pathfinding;
+    }
+
+    public static void setPathfinding(int newpath) {
+        pathfinding = newpath;
     }
 }
