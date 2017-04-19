@@ -617,8 +617,12 @@ public class patientMainController extends controllers.mapScene {
         //hide the continue button
         continueNew_Button.setVisible(false);
 
+        //reset the textfields
         start_textField.setText("");
         end_TextField.setText("");
+
+        //reset the usingMap
+        usingMap = false;
     }
 
     //switches all the labels and Buttons to english
@@ -691,7 +695,24 @@ public class patientMainController extends controllers.mapScene {
     public void sceneEvent(int x, int y, Circle c){
         //set selectionstate
         if (!usingMap) {
+            System.out.println("not using map");
             if (!(start_textField.getText().equals(""))) {
+                //reset the map display
+                if(start != null) {
+                    start.setStroke(Color.BLACK);
+                    start.setFill(Color.BLACK);
+                    start.setStrokeWidth(1);
+                    start.setRadius(graph.getLabelRadius());
+                }
+                if(end != null) {
+                    end.setStroke(Color.BLACK);
+                    end.setFill(Color.BLACK);
+                    end.setStrokeWidth(1);
+                    end.setRadius(graph.getLabelRadius());
+                }
+                graph.wipeEdgeLines();
+
+                //set the correct selection state
                 selectionState = 1;
             } else {
                 usingMap = true;
