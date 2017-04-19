@@ -53,7 +53,7 @@
                               <Font size="23.0" />
                            </font>
                         </Button>
-                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="65.0" prefWidth="200.0" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="65.0" prefWidth="200.0" styleClass="emergency" text="EMERGENCY">
                            <HBox.margin>
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
@@ -70,7 +70,7 @@
             </VBox>
          </top>
          <bottom>
-            <HBox BorderPane.alignment="CENTER">
+            <HBox prefHeight="37.0" prefWidth="1274.0" BorderPane.alignment="CENTER">
                <children>
                   <Region HBox.hgrow="ALWAYS" />
                   <Label text="©2017 Computer Science 3733 Team E">
@@ -86,7 +86,7 @@
             </HBox>
          </bottom>
          <left>
-            <VBox prefHeight="544.0" prefWidth="386.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="508.0" prefWidth="386.0" BorderPane.alignment="CENTER">
                <children>
                   <HBox>
                      <children>
@@ -112,20 +112,6 @@
                         </TextField>
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
-                  </HBox>
-                  <HBox>
-                     <children>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Label fx:id="error_LabelText" textFill="#cd2727">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Region HBox.hgrow="ALWAYS" />
-                     </children>
-                     <VBox.margin>
-                        <Insets bottom="10.0" top="10.0" />
-                     </VBox.margin>
                   </HBox>
                   <HBox>
                      <children>
@@ -293,9 +279,9 @@
             </VBox>
          </left>
          <right>
-            <VBox prefHeight="569.0" prefWidth="864.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="518.0" prefWidth="864.0" BorderPane.alignment="CENTER">
                <children>
-                  <TableView fx:id="Table_TableView" fixedCellSize="0.0" nodeOrientation="LEFT_TO_RIGHT" pickOnBounds="false" prefHeight="567.0" prefWidth="864.0" tableMenuButtonVisible="true">
+                  <TableView fx:id="Table_TableView" fixedCellSize="0.0" nodeOrientation="LEFT_TO_RIGHT" pickOnBounds="false" prefHeight="541.0" prefWidth="864.0" tableMenuButtonVisible="true">
                      <columns>
                         <TableColumn fx:id="ID_TableColumn" editable="false" prefWidth="76.73846435546875" resizable="false" text="ID" />
                         <TableColumn fx:id="firstName_TableColumn" editable="false" prefWidth="164.75283813476562" resizable="false" text="First Name" />
