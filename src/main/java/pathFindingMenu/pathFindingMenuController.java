@@ -142,6 +142,7 @@ public class pathFindingMenuController extends controllers.mapScene{
 
     @FXML
     public void initialize() {
+        //initialize
         graph = new controllers.MapOverlay(node_Plane,(mapScene) this);
         MapController.getInstance().requestMapCopy();
         setFloorChoices();
