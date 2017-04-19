@@ -850,7 +850,13 @@ public class patientMainController extends controllers.mapScene {
 
         //otherwise, change to the appropriate screen and display edges
         graph.wipeEdgeLines();
-        floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
+        System.out.println("multifloor update called. Currentfloor = " + currentFloor);
+        if (currentFloor == 0) {
+            System.out.println("currentfloor outside!!!!");
+            floor_ChoiceBox.getSelectionModel().select(7);
+        } else {
+            floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
+        }
         System.out.println("creating edge lines for fp pos: " + fragPathPos);
         graph.createEdgeLines(globalFragList.get(fragPathPos), true);
     }
