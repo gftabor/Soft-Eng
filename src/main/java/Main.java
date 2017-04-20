@@ -33,6 +33,7 @@ public class Main extends Application {
         primaryStage.show();
 
         root.getStylesheets().add("/css/styles.css");
+        root.getStylesheets().add("/css/bootstrap3.css");
     }
 
     public static void main(String[] args) throws SQLException{
