@@ -466,6 +466,7 @@ public class patientMainController extends controllers.mapScene {
         roomNums = databaseController.getRoomList();
         professionals = databaseController.getProfessionalList();
         all.addAll(roomNums);
+        all.addAll(databaseController.getRooms());
         all.addAll(professionals);
 
 
@@ -530,10 +531,17 @@ public class patientMainController extends controllers.mapScene {
             if(!(start_textField.getText().equals("")) && !(end_TextField.getText().equals(""))) {
                 if (start_textField.getText().equals("Kiosk")){
                     startN = mapController.getCollectionOfNodes().getNodeWithName("Kiosk");
-                } else {
+                } else if (start_textField.getText().contains(",")){
                     startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
+                } else {
+                    startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText());
                 }
-                endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText().split(", ")[1]);
+
+                if (end_TextField.getText().contains(",")){
+                    endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText().split(", ")[1]);
+                } else {
+                    endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText());
+                }
 
                 //set up for colors :)
                 startX = startN.getPosX();
