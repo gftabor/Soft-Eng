@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.sql.SQLException;
-import com.guigarage.flatterfx.FlatterFX;
 
 public class Main extends Application {
 
@@ -32,9 +31,9 @@ public class Main extends Application {
         primaryStage.setResizable(true);
 
         primaryStage.show();
-        FlatterFX.style();
 
         root.getStylesheets().add("/css/styles.css");
+        root.getStylesheets().add("/css/bootstrap3.css");
     }
 
     public static void main(String[] args) throws SQLException{

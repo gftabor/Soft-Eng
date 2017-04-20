@@ -161,7 +161,6 @@
       </BorderPane>
    </children>
    <stylesheets>
-      <URL value="@../css/flatterfx_test.css" />
       <URL value="@../css/styles.css" />
    </stylesheets>
 </AnchorPane>
