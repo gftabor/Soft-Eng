@@ -587,7 +587,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         Firstname_TextField.setText("");
         lastName_TextField.setText("");
 
-        if (mode == 1){
+        if (mode == 1 || mode == 0){
             title_TextField.setText("");
             id_TextField.setText("");
         }
