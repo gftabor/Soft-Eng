@@ -5,31 +5,4 @@
 
 .root{
     -fx-font-family: 'Lato';
-    -fx-font-size: 22.0px;
-    -dark: #566270;
-    -flatter-red: #30A9DE;
-    -flatter-blue: #30A9DE;
-    -actually-red: #E53A40;
-}
-
-.toggle-button, .button{
-    -fx-padding: 0.5em;
-}
-
-
-.toggle-button:hover, .button:hover{
-    -fx-background-color: derive(-flatter-red, 87%);
-}
-.emergency{
-    -fx-background-color: -actually-red;
-}
-.emergency:hover{
-    -fx-background-color: derive(-actually-red, 87%);
-}
-.cancel{
-    -fx-background-color: -actually-red;
-}
-
-.small-text{
-    -fx-font-size: 16px;
 }
