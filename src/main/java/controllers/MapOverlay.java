@@ -1,6 +1,11 @@
 package controllers;
 
+import javafx.event.EventHandler;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -115,6 +120,21 @@ public class MapOverlay {
             location.setFill(Color.GRAY);
         }
 
+        location.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getButton() == MouseButton.SECONDARY){
+                    // Create ContextMenu
+                    ContextMenu contextMenu = new ContextMenu();
+
+                    MenuItem item1 = new MenuItem("Remove");
+                    MenuItem item2 = new MenuItem("Edit");
+                    // Add MenuItem to ContextMenu
+                    contextMenu.getItems().addAll(item1, item2);
+                    contextMenu.show(location, event.getScreenX(), event.getScreenY());
+                }
+            }
+        });
 
         ButtonList.add(location);
     }

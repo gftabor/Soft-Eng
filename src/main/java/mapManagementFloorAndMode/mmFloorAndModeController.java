@@ -166,8 +166,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
                         // Create ContextMenu
                         ContextMenu contextMenu = new ContextMenu();
 
-                        MenuItem item1 = new MenuItem("Menu Item 1");
-                        MenuItem item2 = new MenuItem("Menu Item 2");
+                        MenuItem item1 = new MenuItem("Remove");
+                        MenuItem item2 = new MenuItem("Edit");
                         // Add MenuItem to ContextMenu
                         contextMenu.getItems().addAll(item1, item2);
                         contextMenu.show(btK, event.getScreenX(), event.getScreenY());
@@ -177,7 +177,6 @@ public class mmFloorAndModeController extends controllers.mapScene{
             admin_FloorPane.getChildren().add(btK);
             Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
                     currentFloor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom);
-            System.out.println("Clicked!"); // change functionality
         });
 
 
