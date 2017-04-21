@@ -24,10 +24,10 @@ public class Main extends Application {
 
         primaryStage.setTitle("Iteration 4");
         primaryStage.setFullScreen(true);
-        //primaryStage.setMaximized(true);
+        primaryStage.setMaximized(true);
         primaryStage.setScene(new Scene(root, 1366, 768));
-        primaryStage.setMinWidth(1366);
-        primaryStage.setMinHeight(768);
+        //primaryStage.setMinWidth(1366);
+        //primaryStage.setMinHeight(768);
         primaryStage.setResizable(true);
 
         primaryStage.show();
