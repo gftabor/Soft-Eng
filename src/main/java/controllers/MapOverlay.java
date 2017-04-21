@@ -1,6 +1,7 @@
 package controllers;
 
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -140,6 +141,15 @@ public class MapOverlay {
                 continue;
                 //maybe use colors???
             }
+
+            //add code here
+            lne.setOnMouseClicked(e -> {
+                if (e.getButton() == MouseButton.SECONDARY) {
+                    Object o = e.getSource();
+                    Line lne = (Line) o;
+                    //sceneController.EdgeEvent(lne.getStartX(), lne.getStartY());
+                }
+                });
 
             //config to display properly
             if(highlighted) {
