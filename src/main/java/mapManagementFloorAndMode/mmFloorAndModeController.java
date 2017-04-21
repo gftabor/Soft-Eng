@@ -8,12 +8,17 @@ import controllers.proxyMap;
 import controllers.mapImage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -144,7 +149,38 @@ public class mmFloorAndModeController extends controllers.mapScene{
         MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true, currentFloor);
 
+        String type = "", tempName = "", tempRoom = "";
+
         setFloorChoices();
+
+
+        // creates a node when clicking the map
+        map_viewer.setOnMouseClicked((MouseEvent e) -> {
+            btK = new Circle(labelRadius);//new Button();
+            btK.setLayoutX(e.getX());
+            btK.setLayoutY(e.getY());
+            btK.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (event.getButton() == MouseButton.SECONDARY){
+                        // Create ContextMenu
+                        ContextMenu contextMenu = new ContextMenu();
+
+                        MenuItem item1 = new MenuItem("Menu Item 1");
+                        MenuItem item2 = new MenuItem("Menu Item 2");
+                        // Add MenuItem to ContextMenu
+                        contextMenu.getItems().addAll(item1, item2);
+                        contextMenu.show(btK, event.getScreenX(), event.getScreenY());
+                    }
+                }
+            });
+            admin_FloorPane.getChildren().add(btK);
+            Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
+                    currentFloor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom);
+            System.out.println("Clicked!"); // change functionality
+        });
+
+
     }
 
 
@@ -617,6 +653,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
 
     }
+
+
+
 
 
 }
