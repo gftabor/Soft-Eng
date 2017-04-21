@@ -898,6 +898,7 @@ public class DatabaseController {
     }
 
     private boolean readSQL(String path){
+        System.out.println("Database being generated from SQL...");
         String s = new String();
         StringBuffer sb = new StringBuffer();
 
@@ -919,7 +920,7 @@ public class DatabaseController {
             for (int i = 0; i < inst.length; i++) {
                 if (!inst[i].trim().equals("")) {
                     stmt.executeUpdate(inst[i]);
-                    System.out.println(">>" + inst[i]);
+                    //System.out.println(">>" + inst[i]);
                 }
             }
             stmt.close();
