@@ -589,7 +589,18 @@ public class patientMainController extends controllers.mapScene {
         c_Floor_Label.setText(Integer.toString(startfloor));
 
         //switch back to the original floor using the choicebox selection
-        floor_ChoiceBox.getSelectionModel().select(startfloor - 1);
+        if (startfloor == 0) {
+            floor_ChoiceBox.getSelectionModel().select(7);
+        } else if (startfloor > 7) {
+            floor_ChoiceBox.getSelectionModel().select(startfloor);
+
+        } else {
+            floor_ChoiceBox.getSelectionModel().select(startfloor - 1);
+        }
+
+
+
+
 
         //maintain consistency of colors
         ArrayList<Circle> tempCircleList;
