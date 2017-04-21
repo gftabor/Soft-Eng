@@ -8,12 +8,14 @@ import controllers.proxyMap;
 import controllers.mapImage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -144,7 +146,19 @@ public class mmFloorAndModeController extends controllers.mapScene{
         MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true, currentFloor);
 
+        String type = "", tempName = "", tempRoom = "";
+
         setFloorChoices();
+        map_viewer.setOnMouseClicked((MouseEvent e) -> {
+            btK = new Circle(labelRadius);//new Button();
+            btK.setLayoutX(e.getX());
+            btK.setLayoutY(e.getY());
+            admin_FloorPane.getChildren().add(btK);
+            //final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
+            Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
+                    currentFloor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom);
+            System.out.println("Clicked!"); // change functionality
+        });
     }
 
 
@@ -617,6 +631,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
 
     }
+
+
+
 
 
 }
