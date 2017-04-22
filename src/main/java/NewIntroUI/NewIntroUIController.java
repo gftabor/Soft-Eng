@@ -12,7 +12,9 @@ public class NewIntroUIController {
     @FXML
     private AnchorPane backgroundAnchorPane;
 
-    @FXML
+
+
+    /*@FXML
     private Button minus_Button;
 
     @FXML
@@ -48,7 +50,7 @@ public class NewIntroUIController {
             backgroundAnchorPane.getStyleClass().remove("touch-sizes");
         }
 
-    }
+    }*/
 
 
 }
