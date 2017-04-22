@@ -23,6 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import org.controlsfx.control.PopOver;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -159,6 +160,13 @@ public class mmFloorAndModeController extends controllers.mapScene{
             btK = new Circle(labelRadius);//new Button();
             btK.setLayoutX(e.getX());
             btK.setLayoutY(e.getY());
+            TextField nodeName = new TextField();
+
+//            PopOver popOver = new PopOver();
+//            popOver.setDetachable(true);
+//            popOver.setDetached(true);
+//            popOver.setCornerRadius(4);
+//            popOver.show();
             btK.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -167,6 +175,16 @@ public class mmFloorAndModeController extends controllers.mapScene{
                         ContextMenu contextMenu = new ContextMenu();
 
                         MenuItem item1 = new MenuItem("Remove");
+                        item1.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                admin_FloorPane.getChildren().remove(btK);
+                                // delete from database here
+//                                databaseController.deleteNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
+//                                        Integer.parseInt(floor_ChoiceBox.getValue()));
+                                //
+                                //
+                            }
+                        });
                         MenuItem item2 = new MenuItem("Edit");
                         // Add MenuItem to ContextMenu
                         contextMenu.getItems().addAll(item1, item2);
