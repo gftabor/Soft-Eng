@@ -222,6 +222,17 @@ public class mmFloorAndModeController extends controllers.mapScene{
         }
     }
 
+    public void rightClickEvent(int x, int y, Circle c) {
+        MapController.getInstance().attachSurroundingNodes(x, y, currentFloor);
+        controllers.MapController.getInstance().requestMapCopy();
+        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true, currentFloor);
+        edgesSelected = 0;
+        //show some edge lines as visual feedback:
+        Node temp = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
+        graph.createEdgeLines(temp.getEdgeList(), true);
+
+    }
+
     public void sceneEvent(int x, int y, Circle c) {
         edgesSelected++;
         //display edges already associated with selected node
@@ -503,40 +514,13 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 //Print the floors accordingly
                 //CODE HERE!!!!!!!
 
-                currentFloor = newValue.intValue() + 1;
-
-                if(currentFloor == 8){
-                    currentFloor = 0;
-                    outside = true;
-                    currentF = "Outside";
-                }
-
-                if (currentFloor == 9) {
+                if (newValue.intValue() == 7) {
                     //outside
-                    currentFloor = currentFloor - 1;
-                    outside = true;
-                    currentF = "Belkin 1";
-
-                } else if (currentFloor == 10) {
-                    //belkin
-                    currentFloor = currentFloor - 1;
-                    outside = true;
-                    currentF = "Belkin 2";
-
-                }else if(currentFloor == 11){
-                    currentFloor = currentFloor - 1;
-                    outside = true;
-                    currentF = "Belkin 3";
-
-                }else if(currentFloor == 12){
-                    currentFloor = currentFloor - 1;
-                    outside = true;
-                    currentF = "Belkin 4";
-
-                }else if(currentFloor == 13){
-                    currentFloor = currentFloor -1;
-                    outside = true;
-                    currentF = "Belkin Basement";
+                    currentFloor = 0;
+                } else if(newValue.intValue() > 7) {
+                    currentFloor = newValue.intValue();
+                } else {
+                    currentFloor = newValue.intValue() + 1;
                 }
 
                 mapImage newMapImage = new proxyMap(currentFloor);
@@ -566,8 +550,6 @@ public class mmFloorAndModeController extends controllers.mapScene{
     }
 
     public void create_Button() {
-        System.out.println("checking button");
-        System.out.println("make button");
         btK = new Circle(labelRadius);//new Button();
         // this code drags the button
         final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
