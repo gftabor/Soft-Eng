@@ -425,7 +425,7 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-border-color: #66afe9;
 
     -fx-effect: dropshadow(gaussian, #b4d1f3, 3, 3, 0, 0);
-    
+
 }
 
 .text-area .scroll-pane, .text-area .scroll-pane .content {
@@ -592,7 +592,7 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-background-color: white;
 }
 .color-palette2{
-    -fx-background-color: #f0f1f2;
+    -fx-background-color: #e0dede;
 }
 
 .pagination > .pagination-control > .control-box {
@@ -805,7 +805,7 @@ VBox > .split-menu-button.last > .arrow-button {
 .show-hide-columns-button2 {
     -fx-border-width: 0;
     -fx-background-insets: 0 0 0 0;
-    -fx-background-color: #f0f1f2;
+    -fx-background-color: #e0dede;
 }
 
 
