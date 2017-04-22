@@ -170,35 +170,53 @@ public class mmFloorAndModeController extends controllers.mapScene{
             pop.setCornerRadius(4);
             pop.show(btK);
 
-            btK.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    if (event.getButton() == MouseButton.SECONDARY){
-                        // Create ContextMenu
-                        ContextMenu contextMenu = new ContextMenu();
-
-                        MenuItem item1 = new MenuItem("Remove");
-                        item1.setOnAction(new EventHandler<ActionEvent>() {
-                            @Override public void handle(ActionEvent e) {
-                                admin_FloorPane.getChildren().remove(btK);
-                                // delete from database here
-//                                databaseController.deleteNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-//                                        Integer.parseInt(floor_ChoiceBox.getValue()));
-                                //
-                                //
-                            }
-                        });
-                        MenuItem item2 = new MenuItem("Edit");
-                        // Add MenuItem to ContextMenu
-                        contextMenu.getItems().addAll(item1, item2);
-                        contextMenu.show(btK, event.getScreenX(), event.getScreenY());
-                    }
-                }
-            });
 
             Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
                     currentFloor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom);
         });
+
+//        // creates a node when clicking the map
+//        map_viewer.setOnMouseClicked((MouseEvent e) -> {
+//            btK = new Circle(labelRadius);//new Button();
+//            btK.setLayoutX(e.getX());
+//            btK.setLayoutY(e.getY());
+//            TextField nodeName = new TextField();
+//
+////            PopOver popOver = new PopOver();
+////            popOver.setDetachable(true);
+////            popOver.setDetached(true);
+////            popOver.setCornerRadius(4);
+////            popOver.show();
+//            btK.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+//                @Override
+//                public void handle(MouseEvent event) {
+//                    if (event.getButton() == MouseButton.SECONDARY){
+//                        // Create ContextMenu
+//                        ContextMenu contextMenu = new ContextMenu();
+//
+//                        MenuItem item1 = new MenuItem("Remove");
+//                        item1.setOnAction(new EventHandler<ActionEvent>() {
+//                            @Override public void handle(ActionEvent e) {
+//                                admin_FloorPane.getChildren().remove(btK);
+//                                // delete from database here
+////                                databaseController.deleteNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
+////                                        Integer.parseInt(floor_ChoiceBox.getValue()));
+//                                //
+//                                //
+//                            }
+//                        });
+//                        MenuItem item2 = new MenuItem("Edit");
+//                        // Add MenuItem to ContextMenu
+//                        contextMenu.getItems().addAll(item1, item2);
+//                        contextMenu.show(btK, event.getScreenX(), event.getScreenY());
+//                    }
+//                }
+//            });
+//            admin_FloorPane.getChildren().add(btK);
+//            Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
+//                    currentFloor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom);
+//        });
+
 
 
     }
@@ -250,13 +268,37 @@ public class mmFloorAndModeController extends controllers.mapScene{
         edgesSelected = 0;
     }
 
-    public void rightClickEvent(int x, int y, Circle c) {
-        MapController.getInstance().attachSurroundingNodes(x, y, currentFloor);
-        resetScreen();
-        //show some edge lines as visual feedback:
-        Node temp = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
-        graph.createEdgeLines(temp.getEdgeList(), true, true);
-
+    public void rightClickEvent(int x, int y, Circle c, int mode) {
+        //CODE TO HANDLE RIGHT CLICK MENU STUFF GOES HERE:
+        switch (mode) {
+            case 1:
+                Node selectedNode = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
+                //handle errors
+                if (selectedNode == null) {
+                    break;
+                }
+                for (controllers.Edge thisEdge : selectedNode.getEdgeList()) {
+                    thisEdge.getNeighbor(selectedNode).getEdgeList().remove(thisEdge);
+                    DBController.DatabaseController.getInstance().deleteEdge(thisEdge.getStartNode().getPosX(),
+                            thisEdge.getStartNode().getPosY(), thisEdge.getStartNode().getFloor(), thisEdge.getEndNode().getPosX(),
+                            thisEdge.getEndNode().getPosY(), thisEdge.getEndNode().getFloor());
+                }
+                databaseController.deleteNode(x, y, currentFloor);
+                resetScreen();
+                break;
+            case 2:
+                break;
+            case 3:
+                MapController.getInstance().attachSurroundingNodes(x, y, currentFloor);
+                resetScreen();
+                //show some edge lines as visual feedback:
+                Node temp = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
+                graph.createEdgeLines(temp.getEdgeList(), true, true);
+                break;
+            default:
+                System.out.println("default. This probably should not have been possible...");
+                break;
+        }
     }
 
     //handle a click on an edge.

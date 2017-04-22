@@ -1,6 +1,9 @@
 package controllers;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -11,6 +14,7 @@ import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 /**
  * Created by Griffin on 4/5/2017.
@@ -62,12 +66,12 @@ public class MapOverlay {
                 //  - node can be disabled and show in dev mode
                 //devs can see everything and interact with everything
                 if (devMode == true) {
-                    create_Button(current.getPosX(), current.getPosY(), current.getIsHidden(), current.getEnabled(), floor);
+                    create_Button(current.getPosX(), current.getPosY(), current.getIsHidden(), current.getEnabled(), floor, devMode);
                 } else {
                     //if not dev mode:
                     //show only if enabled and not hidden
                     if (current.getIsHidden() == false && current.getEnabled() == true) {
-                        create_Button(current.getPosX(), current.getPosY(), false, true, floor);
+                        create_Button(current.getPosX(), current.getPosY(), false, true, floor, devMode);
                     }
                 }
                 //else skip displaying the node
@@ -77,7 +81,7 @@ public class MapOverlay {
         }
 
 
-    public void create_Button(int nodeX, int nodeY, boolean hidden, boolean enabled, int floor){
+    public void create_Button(int nodeX, int nodeY, boolean hidden, boolean enabled, int floor, boolean devmode){
         //System.out.println("checking button");
         //System.out.println("make button");
 
@@ -126,24 +130,42 @@ public class MapOverlay {
             location.setFill(Color.GRAY);
         }
 
-        location.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getButton() == MouseButton.SECONDARY){
-//                    // Create ContextMenu
-//                    ContextMenu contextMenu = new ContextMenu();
-//
-//                    MenuItem item1 = new MenuItem("Remove");
-//                    MenuItem item2 = new MenuItem("Edit");
-//                    // Add MenuItem to ContextMenu
-//                    contextMenu.getItems().addAll(item1, item2);
-//                    contextMenu.show(location, event.getScreenX(), event.getScreenY());
-                    Object o = event.getSource();
-                    Circle c = (Circle) o;
-                    sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c);
+        if (devmode) {
+            location.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (event.getButton() == MouseButton.SECONDARY) {
+                        Object o = event.getSource();
+                        Circle c = (Circle) o;
+
+                        // Create ContextMenu
+                        ContextMenu contextMenu = new ContextMenu();
+
+                        MenuItem removeOption = new MenuItem("Remove");
+                        removeOption.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 1);
+                            }
+                        });
+                        MenuItem editOption = new MenuItem("Edit");
+                        editOption.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 2);
+                            }
+                        });
+                        MenuItem autoGenEdgeOption = new MenuItem("Autogenerate Edges");
+                        autoGenEdgeOption.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 3);
+                            }
+                        });
+                        // Add MenuItem to ContextMenu
+                        contextMenu.getItems().addAll(removeOption, editOption, autoGenEdgeOption);
+                        contextMenu.show(location, event.getScreenX(), event.getScreenY());
+                    }
                 }
-            }
-        });
+            });
+        }
 
         ButtonList.add(location);
     }
@@ -176,7 +198,20 @@ public class MapOverlay {
                         Object o = e.getSource();
                         Line lne = (Line) o;
                         //sceneController.EdgeEvent(lne.getStartX(), lne.getStartY());
-                        sceneController.edgeClickRemove((int)lne.getStartX(), (int)lne.getStartY(), (int)lne.getEndX(), (int)lne.getEndY());
+                        // Create ContextMenu
+                        ContextMenu contextMenu = new ContextMenu();
+                        MenuItem removeOption = new MenuItem("Remove Edge");
+                        removeOption.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                sceneController.edgeClickRemove((int)lne.getStartX(), (int)lne.getStartY(),
+                                        (int)lne.getEndX(), (int)lne.getEndY());
+                            }
+                        });
+
+                        //show menu
+                        contextMenu.getItems().addAll(removeOption);
+                        contextMenu.show(location, e.getScreenX(), e.getScreenY());
+
                     }
                 });
 
