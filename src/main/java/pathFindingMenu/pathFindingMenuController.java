@@ -314,6 +314,9 @@ public class pathFindingMenuController extends controllers.mapScene{
         }
     }
 
+    public void rightClickEvent(int x, int y, Circle c) {}
+
+
     public void sceneEvent(int x, int y, Circle c){
         System.out.println("Node at (" + x + ", " + y + ") selected during state: " + selectionState);
         if (selectionState == 0) {

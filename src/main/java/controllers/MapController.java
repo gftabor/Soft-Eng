@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 //import main.java.controllers.CollectionOfNodes;
 
@@ -21,6 +22,8 @@ public class MapController {
     private int startNodeY;
     private int endNodeX;
     private int endNodeY;
+
+    private final double surroundingRadius = 50.0;
 
     private int floorForNode1;
     private int floorForNode2;
@@ -161,6 +164,58 @@ public class MapController {
         else {
             return 1;
         }
+    }
+
+    public void attachSurroundingNodes(int x, int y, int floor) {
+        Node myNode = collectionOfNodes.getNode(x,y,floor);
+        //exit if could not get node for whatever reason
+        if (myNode == null) {
+            return;
+        }
+
+        //get list of current edges attached to myNode
+        ArrayList<Edge> currentConnectedEdges = new ArrayList<>();
+        for (Edge e: edgeCollection) {
+            if (e.getStartNode() == myNode || e.getEndNode() == myNode) {
+                currentConnectedEdges.add(e);
+            }
+        }
+
+
+        //get appropriate hash map
+        HashMap<Integer, Node> myMap = collectionOfNodes.getMap(floor);
+        for (Node n: myMap.values()) {
+            double sld = sld(x, y, n.getPosX(), n.getPosY());
+            if (myNode != n && sld < surroundingRadius) {
+                //create an edge between them
+                //check that edge does not already exist
+                if (!edgeInList(currentConnectedEdges, myNode, n)) {
+                    //if not there, add an edge
+                    databaseController.newEdge(x, y, floor, n.getPosX(), n.getPosY(), n.getFloor());
+                }
+
+            }
+        }
+    }
+
+    //check if potential edge exists in list
+    private boolean edgeInList(ArrayList<Edge> edgeList, Node baseN, Node tryNode) {
+        for (Edge e: edgeList) {
+            //check floor
+            Node temp = e.getNeighbor(baseN);
+            if (temp == tryNode) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //get straight line distance
+    private double sld(int x1, int y1, int x2, int y2) {
+        double squareX = Math.pow((x1 - x2),2);
+        double squareY = Math.pow((y1 - y2),2);
+        return Math.sqrt(squareX + squareY);
     }
 
     //used for pathfinding

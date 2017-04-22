@@ -88,10 +88,14 @@ public class MapOverlay {
 
         location = new Circle(labelRadius);
         location.setOnMouseClicked(e -> {
-
             Object o = e.getSource();
             Circle c = (Circle) o;
-            sceneController.sceneEvent((int)((nodeX)), (int)((nodeY)), c);
+
+            //only work for left click
+            if (e.getButton() == MouseButton.PRIMARY) {
+                sceneController.sceneEvent((int)((nodeX)), (int)((nodeY)), c);
+            }
+
         });
         location.setOnMouseEntered(e -> {
             Object o = e.getSource();
@@ -124,14 +128,17 @@ public class MapOverlay {
             @Override
             public void handle(MouseEvent event) {
                 if (event.getButton() == MouseButton.SECONDARY){
-                    // Create ContextMenu
-                    ContextMenu contextMenu = new ContextMenu();
-
-                    MenuItem item1 = new MenuItem("Remove");
-                    MenuItem item2 = new MenuItem("Edit");
-                    // Add MenuItem to ContextMenu
-                    contextMenu.getItems().addAll(item1, item2);
-                    contextMenu.show(location, event.getScreenX(), event.getScreenY());
+//                    // Create ContextMenu
+//                    ContextMenu contextMenu = new ContextMenu();
+//
+//                    MenuItem item1 = new MenuItem("Remove");
+//                    MenuItem item2 = new MenuItem("Edit");
+//                    // Add MenuItem to ContextMenu
+//                    contextMenu.getItems().addAll(item1, item2);
+//                    contextMenu.show(location, event.getScreenX(), event.getScreenY());
+                    Object o = event.getSource();
+                    Circle c = (Circle) o;
+                    sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c);
                 }
             }
         });

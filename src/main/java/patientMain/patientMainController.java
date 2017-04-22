@@ -787,6 +787,10 @@ public class patientMainController extends controllers.mapScene {
     }
 
 
+    public void rightClickEvent(int x, int y, Circle c) {
+        System.out.println("Right click event");
+    }
+
     public void sceneEvent(int x, int y, Circle c){
         //set selectionstate
         if (!usingMap) {
