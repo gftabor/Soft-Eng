@@ -791,6 +791,8 @@ public class patientMainController extends controllers.mapScene {
         System.out.println("Right click event");
     }
 
+    public void edgeClickRemove(int x1, int y1, int x2, int y2){}
+
     public void sceneEvent(int x, int y, Circle c){
         //set selectionstate
         if (!usingMap) {

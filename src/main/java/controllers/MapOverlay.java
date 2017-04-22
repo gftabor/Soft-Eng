@@ -1,8 +1,6 @@
 package controllers;
 
 import javafx.event.EventHandler;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -178,7 +176,7 @@ public class MapOverlay {
                         Object o = e.getSource();
                         Line lne = (Line) o;
                         //sceneController.EdgeEvent(lne.getStartX(), lne.getStartY());
-                        System.out.println("line clicked");
+                        sceneController.edgeClickRemove((int)lne.getStartX(), (int)lne.getStartY(), (int)lne.getEndX(), (int)lne.getEndY());
                     }
                 });
 
