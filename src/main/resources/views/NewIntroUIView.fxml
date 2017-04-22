@@ -11,12 +11,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NewIntroUI.NewIntroUIController">
    <children>
-      <BorderPane layoutX="-8.0" layoutY="-1.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane layoutX="-24.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <VBox BorderPane.alignment="CENTER">
                <children>
@@ -67,9 +68,10 @@
                                     <Insets left="6.0" top="6.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField prefWidth="280.0" styleClass="show-hide-columns-button2" />
+                              <TextField prefWidth="330.0" styleClass="show-hide-columns-button2" />
                            </children>
                         </HBox>
+                        <Line endX="100.0" startX="-280.0" stroke="#9e9e9e" />
                         <HBox>
                            <children>
                               <Label />
@@ -78,7 +80,7 @@
                                     <Insets left="6.0" top="6.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField prefWidth="280.0" styleClass="show-hide-columns-button2" />
+                              <TextField prefWidth="330.0" styleClass="show-hide-columns-button2" />
                            </children>
                            <VBox.margin>
                               <Insets top="8.0" />
@@ -86,8 +88,11 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f0f1f2" height="200.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e0dede" height="200.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
                </children>
+               <BorderPane.margin>
+                  <Insets bottom="2.0" left="5.0" right="2.0" top="2.0" />
+               </BorderPane.margin>
             </VBox>
          </left>
          <bottom>
