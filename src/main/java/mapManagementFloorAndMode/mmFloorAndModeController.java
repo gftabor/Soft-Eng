@@ -229,7 +229,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         edgesSelected = 0;
         //show some edge lines as visual feedback:
         Node temp = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
-        graph.createEdgeLines(temp.getEdgeList(), true);
+        graph.createEdgeLines(temp.getEdgeList(), true, false);
 
     }
 
@@ -245,7 +245,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
             System.out.println(nodeEdgeX1 + "     " + nodeEdgeY1);
             firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
                     .getNode(nodeEdgeX1, nodeEdgeY1, currentFloor);
-            graph.createEdgeLines(firstNode.getEdgeList(), true);
+            graph.createEdgeLines(firstNode.getEdgeList(), true, true);
 
             //color the node as well
             if (lastColoredStart !=  null) {
@@ -427,7 +427,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
             //don't know if above method is successful
             //must check again if firstNode is not null
             if (firstNode != null) {
-                graph.createEdgeLines(firstNode.getEdgeList(), true);
+                graph.createEdgeLines(firstNode.getEdgeList(), true, false);
             }
         }
 
