@@ -222,15 +222,32 @@ public class mmFloorAndModeController extends controllers.mapScene{
         }
     }
 
-    public void rightClickEvent(int x, int y, Circle c) {
-        MapController.getInstance().attachSurroundingNodes(x, y, currentFloor);
+    //requeries database and resets screen
+    public void resetScreen() {
         controllers.MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true, currentFloor);
         edgesSelected = 0;
+    }
+
+    public void rightClickEvent(int x, int y, Circle c) {
+        MapController.getInstance().attachSurroundingNodes(x, y, currentFloor);
+        resetScreen();
         //show some edge lines as visual feedback:
         Node temp = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
-        graph.createEdgeLines(temp.getEdgeList(), true, false);
+        graph.createEdgeLines(temp.getEdgeList(), true, true);
 
+    }
+
+    //handle a click on an edge.
+    public void edgeClickRemove(int x1, int y1, int x2, int y2){
+        DBController.DatabaseController.getInstance().deleteEdge(x1,
+                y1, currentFloor, x2, y2, currentFloor);
+        System.out.println("removed edge on click");
+        resetScreen();
+        if (firstNode != null) {
+            Node temp = MapController.getInstance().getCollectionOfNodes().getNode(firstNode.getPosX(), firstNode.getPosY(), firstNode.getFloor());
+            graph.createEdgeLines(temp.getEdgeList(), true, true);
+        }
     }
 
     public void sceneEvent(int x, int y, Circle c) {
@@ -239,7 +256,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         if (edgesSelected == 1 || mode_ChoiceBox.getValue().equals("Edit Node")
                 || mode_ChoiceBox.getValue().equals("Remove Node")) {
             System.out.println("Edge stage 1");
-            //display edges already associated witdh selected node
+            //display edges already associated with selected node
             nodeEdgeX1 = (int) x;
             nodeEdgeY1 = (int) y;
             System.out.println(nodeEdgeX1 + "     " + nodeEdgeY1);
@@ -399,10 +416,10 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 break;
             case "Remove Edge":
                 if (edgesSelected == 2) {
-                    System.out.println("Mode = add edge");
+                    System.out.println("Mode = delete edge");
                     DBController.DatabaseController.getInstance().deleteEdge(nodeEdgeX1,
                             nodeEdgeY1, floor1, nodeEdgeX2, nodeEdgeY2, floor2);
-                    System.out.println("added edge");
+                    System.out.println("removed edge");
                 }
                 System.out.println("Mode = remove edge");
                 break;

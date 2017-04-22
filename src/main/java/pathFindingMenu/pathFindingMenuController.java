@@ -315,6 +315,7 @@ public class pathFindingMenuController extends controllers.mapScene{
     }
 
     public void rightClickEvent(int x, int y, Circle c) {}
+    public void edgeClickRemove(int x1, int y1, int x2, int y2){}
 
 
     public void sceneEvent(int x, int y, Circle c){
