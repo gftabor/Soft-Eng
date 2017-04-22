@@ -517,7 +517,7 @@ public class patientMainController extends controllers.mapScene {
             } else {
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
                 path = mapController.requestPath();
-                graph.createEdgeLines(path, true);
+                graph.createEdgeLines(path, true, false);
                 //zoomPath = path;
                 controllers.MapOverlay.setPathfinding(1);
                 textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
@@ -565,7 +565,7 @@ public class patientMainController extends controllers.mapScene {
 
                     MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
                     ArrayList<Edge> path = mapController.requestPath();
-                    graph.createEdgeLines(path, true);
+                    graph.createEdgeLines(path, true, false);
                     textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
                 }
             }
@@ -638,7 +638,7 @@ public class patientMainController extends controllers.mapScene {
                 //todo -> highlight
 
             } else {
-                graph.createEdgeLines(fragPath.get(0), true);
+                graph.createEdgeLines(fragPath.get(0), true, false);
                 controllers.MapOverlay.setPathfinding(2);
             }
 
@@ -787,6 +787,12 @@ public class patientMainController extends controllers.mapScene {
     }
 
 
+    public void rightClickEvent(int x, int y, Circle c) {
+        System.out.println("Right click event");
+    }
+
+    public void edgeClickRemove(int x1, int y1, int x2, int y2){}
+
     public void sceneEvent(int x, int y, Circle c){
         //set selectionstate
         if (!usingMap) {
@@ -908,7 +914,7 @@ public class patientMainController extends controllers.mapScene {
         }
         controllers.MapOverlay.setPathfinding(0);
         System.out.println("creating edge lines for fp pos: " + fragPathPos);
-        graph.createEdgeLines(globalFragList.get(fragPathPos), true);
+        graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
         controllers.MapOverlay.setPathfinding(2);
     }
 
@@ -939,9 +945,9 @@ public class patientMainController extends controllers.mapScene {
         graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
                 false, currentFloor);
         if (controllers.MapOverlay.getPathfinding() == 1) {
-            graph.createEdgeLines(path, true);
+            graph.createEdgeLines(path, true, false);
         } else if (controllers.MapOverlay.getPathfinding() == 2) {
-            graph.createEdgeLines(globalFragList.get(fragPathPos), true);
+            graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
         }
 
     }
