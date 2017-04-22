@@ -25,6 +25,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import org.controlsfx.control.PopOver;
 
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
@@ -161,12 +162,14 @@ public class mmFloorAndModeController extends controllers.mapScene{
             btK.setLayoutX(e.getX());
             btK.setLayoutY(e.getY());
             TextField nodeName = new TextField();
+            admin_FloorPane.getChildren().add(btK);
 
-//            PopOver popOver = new PopOver();
-//            popOver.setDetachable(true);
-//            popOver.setDetached(true);
-//            popOver.setCornerRadius(4);
-//            popOver.show();
+            PopOver pop = new PopOver();
+            pop.setDetachable(true);
+            pop.setDetached(false);
+            pop.setCornerRadius(4);
+            pop.show(btK);
+
             btK.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -192,7 +195,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
                     }
                 }
             });
-            admin_FloorPane.getChildren().add(btK);
+
             Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
                     currentFloor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom);
         });
