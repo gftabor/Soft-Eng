@@ -168,6 +168,15 @@ public class MapOverlay {
                 //maybe use colors???
             }
 
+            //add code here
+            lne.setOnMouseClicked(e -> {
+                if (e.getButton() == MouseButton.SECONDARY) {
+                    Object o = e.getSource();
+                    Line lne = (Line) o;
+                    //sceneController.EdgeEvent(lne.getStartX(), lne.getStartY());
+                }
+                });
+
             //config to display properly
             if(highlighted) {
                 lne.setFill(Color.RED);
