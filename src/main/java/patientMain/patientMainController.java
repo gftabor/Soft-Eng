@@ -787,7 +787,7 @@ public class patientMainController extends controllers.mapScene {
     }
 
 
-    public void rightClickEvent(int x, int y, Circle c) {
+    public void rightClickEvent(int x, int y, Circle c, int mode) {
         System.out.println("Right click event");
     }
 
