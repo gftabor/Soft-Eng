@@ -14,7 +14,7 @@
 }
 
 .button,.menu-button,.toggle-button,.split-menu-button {
-    -fx-font-size: 14;
+    -fx-font-size: 15;
     -fx-background-radius: 4;
     -fx-border-radius: 4;
     -fx-pref-height: 30;
@@ -423,7 +423,9 @@ VBox > .split-menu-button.last > .arrow-button {
 
 .text-field:focused, .text-area:focused {
     -fx-border-color: #66afe9;
-    -fx-effect: dropshadow(gaussian, #66afe9, 10, 0, 0, 0);
+
+    -fx-effect: dropshadow(gaussian, #b4d1f3, 3, 3, 0, 0);
+    
 }
 
 .text-area .scroll-pane, .text-area .scroll-pane .content {
@@ -588,6 +590,9 @@ VBox > .split-menu-button.last > .arrow-button {
 
 .color-palette {
     -fx-background-color: white;
+}
+.color-palette2{
+    -fx-background-color: #f0f1f2;
 }
 
 .pagination > .pagination-control > .control-box {
@@ -797,6 +802,13 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-border-width: 0;
     -fx-background-insets: 0 0 1 1;
 }
+.show-hide-columns-button2 {
+    -fx-border-width: 0;
+    -fx-background-insets: 0 0 0 0;
+    -fx-background-color: #f0f1f2;
+}
+
+
 .column-header:hover,.show-hide-columns-button:hover {
     -fx-background-color: #dddddd, white, #f8f8f8;
 }
