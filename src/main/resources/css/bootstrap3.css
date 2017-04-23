@@ -13,13 +13,22 @@
     -fx-effect: none;
 }
 
-.button,.menu-button,.toggle-button,.split-menu-button {
+.menu-button,.toggle-button,.split-menu-button {
     -fx-font-size: 15;
     -fx-background-radius: 4;
     -fx-border-radius: 4;
     -fx-pref-height: 30;
     -fx-min-width: 30;
 }
+.button{
+    -fx-font-size: 15;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-pref-height: 30;
+    -fx-min-width: 30;
+
+}
+
 .button,.menu-button,.split-menu-button,.toggle-button,.number-button {
     -fx-background-insets: 0, 0, -1, 0;
 }
@@ -264,28 +273,28 @@ VBox > .split-menu-button.last > .arrow-button {
 
 .button.info,.split-menu-button.info,.toggle-button.info,.menu-button.info,
 .split-menu-button.info > .label, .split-menu-button.info > .arrow-button {
-    -fx-background-color: #5bc0de;
+    -fx-background-color: #e0dede;
 }
 
 .button.info,.menu-button.info,.toggle-button.info,
 .split-menu-button.info > .label,.split-menu-button.info > .arrow-button {
-    -fx-border-color: #46b8da;
+    -fx-border-color: #e0dede;
     -fx-text-fill: white;
 }
 /*hover state*/
 .button.info:hover,.menu-button.info:hover,.toggle-button.info:hover,
 .split-menu-button.info > .label:hover, .split-menu-button.info > .arrow-button:hover {
-    -fx-border-color: #269abc;
-    -fx-background-color: #31b0d5;
+    -fx-border-color: #e0dede;
+    -fx-background-color: #c9c9c9;
 }
 /*pressed selected*/
 .button.info:pressed, .button.info:selected,
 .menu-button.info:pressed,.menu-button.info:selected
 ,.toggle-button.info:pressed,.toggle-button.info:selected,
 .split-menu-button.info:pressed > .label, .split-menu-button.info > .arrow-button:pressed {
-    -fx-background-color: #31b0d5;
-    -fx-border-color: #269abc;
-    -fx-effect: innershadow(gaussian, #269abc, 10, 0, 0, 3);
+    -fx-background-color: #e0dede;
+    -fx-border-color: #e0dede;
+    -fx-effect: innershadow(gaussian, #e0dede, 10, 0, 0, 3);
 }
 
 /*warning*/
