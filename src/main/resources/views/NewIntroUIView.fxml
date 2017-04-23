@@ -68,7 +68,15 @@
                                     <Insets left="6.0" top="6.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField prefWidth="330.0" styleClass="show-hide-columns-button2" />
+                              <TextField prefWidth="270.0" styleClass="show-hide-columns-button2">
+                                 <HBox.margin>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </HBox.margin></TextField>
+                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="info" text="x" textAlignment="CENTER">
+                                 <HBox.margin>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </HBox.margin>
+                              </Button>
                            </children>
                         </HBox>
                         <Line endX="100.0" startX="-280.0" stroke="#9e9e9e" />
@@ -80,15 +88,23 @@
                                     <Insets left="6.0" top="6.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField prefWidth="330.0" styleClass="show-hide-columns-button2" />
+                              <TextField prefWidth="270.0" styleClass="show-hide-columns-button2">
+                                 <HBox.margin>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </HBox.margin></TextField>
+                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="info" text="x" textAlignment="CENTER">
+                                 <HBox.margin>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </HBox.margin>
+                              </Button>
                            </children>
                            <VBox.margin>
-                              <Insets top="8.0" />
+                              <Insets />
                            </VBox.margin>
                         </HBox>
                      </children>
                   </VBox>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e0dede" height="200.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#c9c9c9" height="200.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="2.0" left="5.0" right="2.0" top="2.0" />
