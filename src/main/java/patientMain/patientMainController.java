@@ -185,13 +185,13 @@ public class patientMainController extends controllers.mapScene {
     //get an instance of database controller
     DatabaseController databaseController = DatabaseController.getInstance();
 
-    public void drawCircleList(ArrayList<Circle> circleList){
+    public void drawCircleList(ArrayList<Circle> circleList, double x, double y, Color color){
         for (Circle c: circleList) {
-            if(c.getLayoutX() == endX && c.getLayoutY() == endY) {
+            if(c.getLayoutX() == x && c.getLayoutY() == y) {
                 c.setStrokeWidth(strokeRatio);
                 c.setRadius(graph.getLabelRadius()*sizeUpRatio);
-                c.setStroke(endColor);
-                c.setFill(endColor);
+                c.setStroke(color);
+                c.setFill(color);
                 break;
             }
         }
@@ -225,7 +225,7 @@ public class patientMainController extends controllers.mapScene {
                 ArrayList<Circle> circleList;
                 circleList = graph.getButtonList();
 
-                drawCircleList(circleList);
+                drawCircleList(circleList, endX, endY, endColor);
             }
         }
     }
@@ -254,7 +254,7 @@ public class patientMainController extends controllers.mapScene {
             ArrayList<Circle> circleList;
             circleList = graph.getButtonList();
 
-            drawCircleList(circleList);
+            drawCircleList(circleList, startX, startY, startColor);
         }
     }
 
@@ -602,7 +602,7 @@ public class patientMainController extends controllers.mapScene {
         ArrayList<Circle> tempCircleList;
         tempCircleList = graph.getButtonList();
 
-        drawCircleList(tempCircleList);
+        drawCircleList(tempCircleList, startX, startY, startColor);
 
 
         //reset for next pathfinding session
