@@ -8,6 +8,8 @@ import controllers.proxyMap;
 import controllers.mapImage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
@@ -168,8 +170,14 @@ public class mmFloorAndModeController extends controllers.mapScene{
             Button buttonCancel = new Button("Cancel");
             TextField nodeName = new TextField();
             TextField nodeType = new TextField();
+            TextField nodeRoom = new TextField();
+            CheckBox isHidden = new CheckBox("Hidden");
+            CheckBox isEnabled = new CheckBox("Enabled");
+            isHidden.setSelected(false);
+            isEnabled.setSelected(true);
             nodeName.setPromptText("Name");
             nodeType.setPromptText("Type");
+            nodeRoom.setPromptText("Room Number");
 
             GridPane grid = new GridPane();
             grid.setHgap(10);
@@ -177,15 +185,16 @@ public class mmFloorAndModeController extends controllers.mapScene{
             grid.setPadding(new Insets(10, 10, 5, 10));
 
             VBox vb = new VBox();
-            HBox hb = new HBox();
+            HBox hbCancelSave = new HBox();
+            HBox hbCheckBox = new HBox();
             vb.setPadding(new Insets(10, 10, 5, 10));
             vb.setSpacing(10);
-            hb.setPadding(new Insets(0, 0, 0, 0));
-            hb.setSpacing(60);
-            hb.getChildren().addAll(buttonCancel, buttonSave);
-
-            vb.getChildren().addAll(nodeName, nodeType, hb);
-
+            hbCancelSave.setPadding(new Insets(0, 0, 0, 0));
+            hbCancelSave.setSpacing(60);
+            hbCancelSave.getChildren().addAll(buttonCancel, buttonSave);
+            hbCheckBox.getChildren().addAll(isHidden, isEnabled);
+            hbCheckBox.setSpacing(25);
+            vb.getChildren().addAll(nodeName, nodeType, nodeRoom, hbCheckBox, hbCancelSave);
             anchorpane.getChildren().addAll(grid,vb);   // Add grid from Example 1-5
             AnchorPane.setBottomAnchor(vb, 8.0);
             AnchorPane.setRightAnchor(vb, 5.0);
@@ -197,10 +206,22 @@ public class mmFloorAndModeController extends controllers.mapScene{
             pop.setCornerRadius(4);
             pop.show(btK);
 
+            buttonSave.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    String thisNodeName = nodeName.getText();
+                    String thisNodeType = nodeType.getText();
+                    String thisNodeRoom = nodeRoom.getText();
+                    if (!thisNodeName.equals("") && !thisNodeType.equals("") && !thisNodeRoom.equals("")) {
+                        Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
+                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom);
+                        DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
+                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom);
+                        pop.hide();
+                        resetScreen();
+                    }
+                }
+            });
 
-
-            Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                    currentFloor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom);
         });
 
 //        // creates a node when clicking the map
