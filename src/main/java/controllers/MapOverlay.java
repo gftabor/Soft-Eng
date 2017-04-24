@@ -159,8 +159,21 @@ public class MapOverlay {
                                 sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 3);
                             }
                         });
+                        MenuItem addEdgeOption = new MenuItem("Add Single Edge");
+                        addEdgeOption.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 4);
+                            }
+                        });
+                        MenuItem addMultiEdgeOption = new MenuItem("Add Multiple Edges");
+                        addMultiEdgeOption.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 5);
+                            }
+                        });
                         // Add MenuItem to ContextMenu
-                        contextMenu.getItems().addAll(removeOption, editOption, autoGenEdgeOption);
+                        contextMenu.getItems().addAll(removeOption, editOption, autoGenEdgeOption,
+                                addEdgeOption, addMultiEdgeOption);
                         contextMenu.show(location, event.getScreenX(), event.getScreenY());
                     }
                 }
