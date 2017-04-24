@@ -302,6 +302,12 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
                 firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
                         .getNode(nodeEdgeX1, nodeEdgeY1, currentFloor);
+                if (firstNode == null) {
+                    System.out.println("RIP trying to get node");
+                    resetScreen();
+                    clearButton_Clicked();
+                    break;
+                }
                 graph.createEdgeLines(firstNode.getEdgeList(), true, false);
 
                 break;
@@ -331,6 +337,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
         //add edge from menu
         if (edgesSelected == 1 && addSingleEdgeMode) {
+            System.out.println("adding edge...");
             nodeEdgeX2 = (int) x;
             nodeEdgeY2 = (int) y;
             DBController.DatabaseController.getInstance().newEdge(firstNode.getPosX(),
