@@ -153,8 +153,6 @@ public class mmFloorAndModeController extends controllers.mapScene{
         MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true, currentFloor);
 
-        String type = "", tempName = "", tempRoom = "";
-
         setFloorChoices();
 
 
@@ -222,52 +220,14 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 }
             });
 
+            buttonCancel.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    pop.hide();
+                    admin_FloorPane.getChildren().remove(btK);
+                }
+            });
         });
-
-//        // creates a node when clicking the map
-//        map_viewer.setOnMouseClicked((MouseEvent e) -> {
-//            btK = new Circle(labelRadius);//new Button();
-//            btK.setLayoutX(e.getX());
-//            btK.setLayoutY(e.getY());
-//            TextField nodeName = new TextField();
-//
-////            PopOver popOver = new PopOver();
-////            popOver.setDetachable(true);
-////            popOver.setDetached(true);
-////            popOver.setCornerRadius(4);
-////            popOver.show();
-//            btK.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-//                @Override
-//                public void handle(MouseEvent event) {
-//                    if (event.getButton() == MouseButton.SECONDARY){
-//                        // Create ContextMenu
-//                        ContextMenu contextMenu = new ContextMenu();
-//
-//                        MenuItem item1 = new MenuItem("Remove");
-//                        item1.setOnAction(new EventHandler<ActionEvent>() {
-//                            @Override public void handle(ActionEvent e) {
-//                                admin_FloorPane.getChildren().remove(btK);
-//                                // delete from database here
-////                                databaseController.deleteNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-////                                        Integer.parseInt(floor_ChoiceBox.getValue()));
-//                                //
-//                                //
-//                            }
-//                        });
-//                        MenuItem item2 = new MenuItem("Edit");
-//                        // Add MenuItem to ContextMenu
-//                        contextMenu.getItems().addAll(item1, item2);
-//                        contextMenu.show(btK, event.getScreenX(), event.getScreenY());
-//                    }
-//                }
-//            });
-//            admin_FloorPane.getChildren().add(btK);
-//            Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-//                    currentFloor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom);
-//        });
-
-
-
     }
 
 
@@ -336,6 +296,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
                             thisEdge.getEndNode().getPosY(), thisEdge.getEndNode().getFloor());
                 }
                 databaseController.deleteNode(x, y, currentFloor);
+                // We need to delete the button on screen here too
+
                 resetScreen();
                 break;
             case 2:
@@ -789,17 +751,10 @@ public class mmFloorAndModeController extends controllers.mapScene{
         chooseFloor_Label.setText("Piso:");
         mode_Label.setText("Modo:");
 
-
-
         //text fields
         name_TextField.setPromptText("Name");
         room_TextField.setPromptText("Room");
 
 
     }
-
-
-
-
-
 }
