@@ -200,7 +200,7 @@ public class pathFindingMenuController extends controllers.mapScene{
                     System.out.println("Could not pathfind. Resetting now...");
                     cancelButton_Clicked();
                 } else {
-                    graph.createEdgeLines(path, true);
+                    graph.createEdgeLines(path, true, false);
                     textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
                 }
 
@@ -262,7 +262,7 @@ public class pathFindingMenuController extends controllers.mapScene{
                 //todo -> highlight
 
             } else {
-                graph.createEdgeLines(fragPath.get(0), true);
+                graph.createEdgeLines(fragPath.get(0), true, false);
             }
 
             //set the globals so you can send to the continue button
@@ -313,6 +313,10 @@ public class pathFindingMenuController extends controllers.mapScene{
             }
         }
     }
+
+    public void rightClickEvent(int x, int y, Circle c, int mode) {}
+    public void edgeClickRemove(int x1, int y1, int x2, int y2){}
+
 
     public void sceneEvent(int x, int y, Circle c){
         System.out.println("Node at (" + x + ", " + y + ") selected during state: " + selectionState);
@@ -451,7 +455,7 @@ public class pathFindingMenuController extends controllers.mapScene{
     }
 
     public void createEdgeLines(ArrayList<Edge> path) {
-        graph.createEdgeLines(path, true);
+        graph.createEdgeLines(path, true, false);
     }
 
     public void continueButton_Clicked() {
@@ -498,7 +502,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         graph.wipeEdgeLines();
         floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
         System.out.println("creating edge lines for fp pos: " + fragPathPos);
-        graph.createEdgeLines(globalFragList.get(fragPathPos), true);
+        graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
     }
 
 //    public void previousButton_Clicked() {
