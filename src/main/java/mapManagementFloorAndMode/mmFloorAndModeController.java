@@ -127,6 +127,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
     private Circle lastColoredEnd;
 
     private Circle btK;
+    private boolean addEdgeMode;
 
 
     //Set to english by default
@@ -142,6 +143,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         setUserString(username_Label.getText());
         setModeChoices();
         setTitleChoices();
+        addEdgeMode = false;
 
         //set default floor to start
         //we will use floor 1 for now
@@ -295,6 +297,14 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 Node temp = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
                 graph.createEdgeLines(temp.getEdgeList(), true, true);
                 break;
+            case 4:
+                addEdgeMode = true;
+
+                firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
+                        .getNode(nodeEdgeX1, nodeEdgeY1, currentFloor);
+                graph.createEdgeLines(firstNode.getEdgeList(), true, false);
+
+                break;
             default:
                 System.out.println("default. This probably should not have been possible...");
                 break;
@@ -315,6 +325,19 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     public void sceneEvent(int x, int y, Circle c) {
         edgesSelected++;
+
+        //add edge from menu
+        if (edgesSelected == 1 && addEdgeMode) {
+            nodeEdgeX2 = (int) x;
+            nodeEdgeY2 = (int) y;
+            DBController.DatabaseController.getInstance().newEdge(firstNode.getPosX(),
+                    firstNode.getPosY(), firstNode.getFloor(), nodeEdgeX2, nodeEdgeY2, currentFloor);
+            resetScreen();
+            addEdgeMode = false;
+            graph.createEdgeLines(firstNode.getEdgeList(), true, true);
+            return;
+        }
+
         //display edges already associated with selected node
         if (edgesSelected == 1 || mode_ChoiceBox.getValue().equals("Edit Node")
                 || mode_ChoiceBox.getValue().equals("Remove Node")) {
