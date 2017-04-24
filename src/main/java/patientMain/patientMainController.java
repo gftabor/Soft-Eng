@@ -185,6 +185,18 @@ public class patientMainController extends controllers.mapScene {
     //get an instance of database controller
     DatabaseController databaseController = DatabaseController.getInstance();
 
+    public void drawCircleList(ArrayList<Circle> circleList){
+        for (Circle c: circleList) {
+            if(c.getLayoutX() == endX && c.getLayoutY() == endY) {
+                c.setStrokeWidth(strokeRatio);
+                c.setRadius(graph.getLabelRadius()*sizeUpRatio);
+                c.setStroke(endColor);
+                c.setFill(endColor);
+                break;
+            }
+        }
+    }
+
     //Continue New Button Clicked
     public void continueNewButton_Clicked(){
         if (continueNew_Button.isVisible() == true) {
@@ -213,15 +225,7 @@ public class patientMainController extends controllers.mapScene {
                 ArrayList<Circle> circleList;
                 circleList = graph.getButtonList();
 
-                for (Circle c: circleList) {
-                    if(c.getLayoutX() == endX && c.getLayoutY() == endY) {
-                        c.setStrokeWidth(strokeRatio);
-                        c.setRadius(graph.getLabelRadius()*sizeUpRatio);
-                        c.setStroke(endColor);
-                        c.setFill(endColor);
-                        break;
-                    }
-                }
+                drawCircleList(circleList);
             }
         }
     }
@@ -250,15 +254,7 @@ public class patientMainController extends controllers.mapScene {
             ArrayList<Circle> circleList;
             circleList = graph.getButtonList();
 
-            for (Circle c: circleList) {
-                if(c.getLayoutX() == startX && c.getLayoutY() == startY) {
-                    c.setStrokeWidth(strokeRatio);
-                    c.setRadius(graph.getLabelRadius()*sizeUpRatio);
-                    c.setStroke(startColor);
-                    c.setFill(startColor);
-                    break;
-                }
-            }
+            drawCircleList(circleList);
         }
     }
 
@@ -605,15 +601,8 @@ public class patientMainController extends controllers.mapScene {
         //maintain consistency of colors
         ArrayList<Circle> tempCircleList;
         tempCircleList = graph.getButtonList();
-        for (Circle c: tempCircleList) {
-            if(c.getLayoutX() == startX && c.getLayoutY() == startY) {
-                c.setStrokeWidth(strokeRatio);
-                c.setRadius(graph.getLabelRadius()*sizeUpRatio);
-                c.setStroke(startColor);
-                c.setFill(startColor);
-                break;
-            }
-        }
+
+        drawCircleList(tempCircleList);
 
 
         //reset for next pathfinding session
