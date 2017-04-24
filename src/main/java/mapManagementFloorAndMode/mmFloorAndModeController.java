@@ -13,19 +13,20 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import org.controlsfx.control.PopOver;
 
 
+import javax.xml.soap.Text;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
@@ -161,14 +162,42 @@ public class mmFloorAndModeController extends controllers.mapScene{
             btK = new Circle(labelRadius);//new Button();
             btK.setLayoutX(e.getX());
             btK.setLayoutY(e.getY());
-            TextField nodeName = new TextField();
             admin_FloorPane.getChildren().add(btK);
 
-            PopOver pop = new PopOver();
+            AnchorPane anchorpane = new AnchorPane();
+            Button buttonSave = new Button("Save");
+            Button buttonCancel = new Button("Cancel");
+            TextField nodeName = new TextField();
+            TextField nodeType = new TextField();
+            nodeName.setPromptText("Name");
+            nodeType.setPromptText("Type");
+
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(10, 10, 5, 10));
+
+            VBox vb = new VBox();
+            HBox hb = new HBox();
+            vb.setPadding(new Insets(10, 10, 5, 10));
+            vb.setSpacing(10);
+            hb.setPadding(new Insets(0, 0, 0, 0));
+            hb.setSpacing(60);
+            hb.getChildren().addAll(buttonCancel, buttonSave);
+
+            vb.getChildren().addAll(nodeName, nodeType, hb);
+
+            anchorpane.getChildren().addAll(grid,vb);   // Add grid from Example 1-5
+            AnchorPane.setBottomAnchor(vb, 8.0);
+            AnchorPane.setRightAnchor(vb, 5.0);
+            AnchorPane.setTopAnchor(grid, 10.0);
+
+            PopOver pop = new PopOver(anchorpane);
             pop.setDetachable(true);
             pop.setDetached(false);
             pop.setCornerRadius(4);
             pop.show(btK);
+
 
 
             Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
