@@ -8,8 +8,6 @@ import controllers.proxyMap;
 import controllers.mapImage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
@@ -17,8 +15,6 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -29,7 +25,6 @@ import org.controlsfx.control.PopOver;
 import javax.xml.soap.Text;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
 
 /**
  * Created by AugustoR on 3/31/17.
@@ -128,6 +123,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
     private Circle lastColoredEnd;
 
     private Circle btK;
+    private boolean addSingleEdgeMode;
+    private boolean addMultiEdgeMode;
 
 
     //Set to english by default
@@ -143,6 +140,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
         setUserString(username_Label.getText());
         setModeChoices();
         setTitleChoices();
+        addSingleEdgeMode = false;
+        addMultiEdgeMode = false;
 
         //set default floor to start
         //we will use floor 1 for now
@@ -278,6 +277,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
         graph.wipeEdgeLines();
         edgesSelected = 0;
 
+        addSingleEdgeMode = false;
+        addMultiEdgeMode = false;
+
         //reset last colored stroke to default
         if (lastColoredStart != null) {
             lastColoredStart.setStroke(lastColoredStart.getFill());
@@ -324,6 +326,23 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 Node temp = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
                 graph.createEdgeLines(temp.getEdgeList(), true, true);
                 break;
+            case 4:
+                addSingleEdgeMode = true;
+
+                firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
+                        .getNode(nodeEdgeX1, nodeEdgeY1, currentFloor);
+                if (firstNode == null) {
+                    System.out.println("RIP trying to get node");
+                    resetScreen();
+                    clearButton_Clicked();
+                    break;
+                }
+                graph.createEdgeLines(firstNode.getEdgeList(), true, false);
+
+                break;
+            case 5:
+                addMultiEdgeMode = true;
+                break;
             default:
                 System.out.println("default. This probably should not have been possible...");
                 break;
@@ -344,6 +363,20 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     public void sceneEvent(int x, int y, Circle c) {
         edgesSelected++;
+
+        //add edge from menu
+        if (edgesSelected == 1 && addSingleEdgeMode) {
+            System.out.println("adding edge...");
+            nodeEdgeX2 = (int) x;
+            nodeEdgeY2 = (int) y;
+            DBController.DatabaseController.getInstance().newEdge(firstNode.getPosX(),
+                    firstNode.getPosY(), firstNode.getFloor(), nodeEdgeX2, nodeEdgeY2, currentFloor);
+            resetScreen();
+            addSingleEdgeMode = false;
+            graph.createEdgeLines(firstNode.getEdgeList(), true, true);
+            return;
+        }
+
         //display edges already associated with selected node
         if (edgesSelected == 1 || mode_ChoiceBox.getValue().equals("Edit Node")
                 || mode_ChoiceBox.getValue().equals("Remove Node")) {
