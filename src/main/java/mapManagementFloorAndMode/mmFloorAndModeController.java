@@ -8,16 +8,23 @@ import controllers.proxyMap;
 import controllers.mapImage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import org.controlsfx.control.PopOver;
+
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -120,6 +127,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
     private Circle lastColoredEnd;
 
     private Circle btK;
+    private boolean addEdgeMode;
 
 
     //Set to english by default
@@ -135,6 +143,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         setUserString(username_Label.getText());
         setModeChoices();
         setTitleChoices();
+        addEdgeMode = false;
 
         //set default floor to start
         //we will use floor 1 for now
@@ -144,7 +153,74 @@ public class mmFloorAndModeController extends controllers.mapScene{
         MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true, currentFloor);
 
+        String type = "", tempName = "", tempRoom = "";
+
         setFloorChoices();
+
+
+        // creates a node when clicking the map
+        map_viewer.setOnMouseClicked((MouseEvent e) -> {
+            btK = new Circle(labelRadius);//new Button();
+            btK.setLayoutX(e.getX());
+            btK.setLayoutY(e.getY());
+            TextField nodeName = new TextField();
+            admin_FloorPane.getChildren().add(btK);
+
+            PopOver pop = new PopOver();
+            pop.setDetachable(true);
+            pop.setDetached(false);
+            pop.setCornerRadius(4);
+            pop.show(btK);
+
+
+            Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
+                    currentFloor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom);
+        });
+
+//        // creates a node when clicking the map
+//        map_viewer.setOnMouseClicked((MouseEvent e) -> {
+//            btK = new Circle(labelRadius);//new Button();
+//            btK.setLayoutX(e.getX());
+//            btK.setLayoutY(e.getY());
+//            TextField nodeName = new TextField();
+//
+////            PopOver popOver = new PopOver();
+////            popOver.setDetachable(true);
+////            popOver.setDetached(true);
+////            popOver.setCornerRadius(4);
+////            popOver.show();
+//            btK.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+//                @Override
+//                public void handle(MouseEvent event) {
+//                    if (event.getButton() == MouseButton.SECONDARY){
+//                        // Create ContextMenu
+//                        ContextMenu contextMenu = new ContextMenu();
+//
+//                        MenuItem item1 = new MenuItem("Remove");
+//                        item1.setOnAction(new EventHandler<ActionEvent>() {
+//                            @Override public void handle(ActionEvent e) {
+//                                admin_FloorPane.getChildren().remove(btK);
+//                                // delete from database here
+////                                databaseController.deleteNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
+////                                        Integer.parseInt(floor_ChoiceBox.getValue()));
+//                                //
+//                                //
+//                            }
+//                        });
+//                        MenuItem item2 = new MenuItem("Edit");
+//                        // Add MenuItem to ContextMenu
+//                        contextMenu.getItems().addAll(item1, item2);
+//                        contextMenu.show(btK, event.getScreenX(), event.getScreenY());
+//                    }
+//                }
+//            });
+//            admin_FloorPane.getChildren().add(btK);
+//            Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
+//                    currentFloor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom);
+//        });
+
+
+
     }
 
 
@@ -187,19 +263,92 @@ public class mmFloorAndModeController extends controllers.mapScene{
         }
     }
 
+    //requeries database and resets screen
+    public void resetScreen() {
+        controllers.MapController.getInstance().requestMapCopy();
+        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true, currentFloor);
+        edgesSelected = 0;
+    }
+
+    public void rightClickEvent(int x, int y, Circle c, int mode) {
+        //CODE TO HANDLE RIGHT CLICK MENU STUFF GOES HERE:
+        switch (mode) {
+            case 1:
+                Node selectedNode = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
+                //handle errors
+                if (selectedNode == null) {
+                    break;
+                }
+                for (controllers.Edge thisEdge : selectedNode.getEdgeList()) {
+                    thisEdge.getNeighbor(selectedNode).getEdgeList().remove(thisEdge);
+                    DBController.DatabaseController.getInstance().deleteEdge(thisEdge.getStartNode().getPosX(),
+                            thisEdge.getStartNode().getPosY(), thisEdge.getStartNode().getFloor(), thisEdge.getEndNode().getPosX(),
+                            thisEdge.getEndNode().getPosY(), thisEdge.getEndNode().getFloor());
+                }
+                databaseController.deleteNode(x, y, currentFloor);
+                resetScreen();
+                break;
+            case 2:
+                break;
+            case 3:
+                MapController.getInstance().attachSurroundingNodes(x, y, currentFloor);
+                resetScreen();
+                //show some edge lines as visual feedback:
+                Node temp = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
+                graph.createEdgeLines(temp.getEdgeList(), true, true);
+                break;
+            case 4:
+                addEdgeMode = true;
+
+                firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
+                        .getNode(nodeEdgeX1, nodeEdgeY1, currentFloor);
+                graph.createEdgeLines(firstNode.getEdgeList(), true, false);
+
+                break;
+            default:
+                System.out.println("default. This probably should not have been possible...");
+                break;
+        }
+    }
+
+    //handle a click on an edge.
+    public void edgeClickRemove(int x1, int y1, int x2, int y2){
+        DBController.DatabaseController.getInstance().deleteEdge(x1,
+                y1, currentFloor, x2, y2, currentFloor);
+        System.out.println("removed edge on click");
+        resetScreen();
+        if (firstNode != null) {
+            Node temp = MapController.getInstance().getCollectionOfNodes().getNode(firstNode.getPosX(), firstNode.getPosY(), firstNode.getFloor());
+            graph.createEdgeLines(temp.getEdgeList(), true, true);
+        }
+    }
+
     public void sceneEvent(int x, int y, Circle c) {
         edgesSelected++;
+
+        //add edge from menu
+        if (edgesSelected == 1 && addEdgeMode) {
+            nodeEdgeX2 = (int) x;
+            nodeEdgeY2 = (int) y;
+            DBController.DatabaseController.getInstance().newEdge(firstNode.getPosX(),
+                    firstNode.getPosY(), firstNode.getFloor(), nodeEdgeX2, nodeEdgeY2, currentFloor);
+            resetScreen();
+            addEdgeMode = false;
+            graph.createEdgeLines(firstNode.getEdgeList(), true, true);
+            return;
+        }
+
         //display edges already associated with selected node
         if (edgesSelected == 1 || mode_ChoiceBox.getValue().equals("Edit Node")
                 || mode_ChoiceBox.getValue().equals("Remove Node")) {
             System.out.println("Edge stage 1");
-            //display edges already associated witdh selected node
+            //display edges already associated with selected node
             nodeEdgeX1 = (int) x;
             nodeEdgeY1 = (int) y;
             System.out.println(nodeEdgeX1 + "     " + nodeEdgeY1);
             firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
                     .getNode(nodeEdgeX1, nodeEdgeY1, currentFloor);
-            graph.createEdgeLines(firstNode.getEdgeList(), true);
+            graph.createEdgeLines(firstNode.getEdgeList(), true, true);
 
             //color the node as well
             if (lastColoredStart !=  null) {
@@ -353,10 +502,10 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 break;
             case "Remove Edge":
                 if (edgesSelected == 2) {
-                    System.out.println("Mode = add edge");
+                    System.out.println("Mode = delete edge");
                     DBController.DatabaseController.getInstance().deleteEdge(nodeEdgeX1,
                             nodeEdgeY1, floor1, nodeEdgeX2, nodeEdgeY2, floor2);
-                    System.out.println("added edge");
+                    System.out.println("removed edge");
                 }
                 System.out.println("Mode = remove edge");
                 break;
@@ -381,7 +530,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
             //don't know if above method is successful
             //must check again if firstNode is not null
             if (firstNode != null) {
-                graph.createEdgeLines(firstNode.getEdgeList(), true);
+                graph.createEdgeLines(firstNode.getEdgeList(), true, false);
             }
         }
 
@@ -468,40 +617,13 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 //Print the floors accordingly
                 //CODE HERE!!!!!!!
 
-                currentFloor = newValue.intValue() + 1;
-
-                if(currentFloor == 8){
-                    currentFloor = 0;
-                    outside = true;
-                    currentF = "Outside";
-                }
-
-                if (currentFloor == 9) {
+                if (newValue.intValue() == 7) {
                     //outside
-                    currentFloor = currentFloor - 1;
-                    outside = true;
-                    currentF = "Belkin 1";
-
-                } else if (currentFloor == 10) {
-                    //belkin
-                    currentFloor = currentFloor - 1;
-                    outside = true;
-                    currentF = "Belkin 2";
-
-                }else if(currentFloor == 11){
-                    currentFloor = currentFloor - 1;
-                    outside = true;
-                    currentF = "Belkin 3";
-
-                }else if(currentFloor == 12){
-                    currentFloor = currentFloor - 1;
-                    outside = true;
-                    currentF = "Belkin 4";
-
-                }else if(currentFloor == 13){
-                    currentFloor = currentFloor -1;
-                    outside = true;
-                    currentF = "Belkin Basement";
+                    currentFloor = 0;
+                } else if(newValue.intValue() > 7) {
+                    currentFloor = newValue.intValue();
+                } else {
+                    currentFloor = newValue.intValue() + 1;
                 }
 
                 mapImage newMapImage = new proxyMap(currentFloor);
@@ -531,8 +653,6 @@ public class mmFloorAndModeController extends controllers.mapScene{
     }
 
     public void create_Button() {
-        System.out.println("checking button");
-        System.out.println("make button");
         btK = new Circle(labelRadius);//new Button();
         // this code drags the button
         final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
@@ -617,6 +737,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
 
     }
+
+
+
 
 
 }
