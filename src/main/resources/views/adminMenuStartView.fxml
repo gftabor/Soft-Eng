@@ -31,7 +31,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label fx:id="username_Label" text="Welcome, ">
+                        <Label fx:id="username_Label" text="Admin:">
                            <font>
                               <Font size="30.0" />
                            </font>
@@ -40,7 +40,7 @@
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="addAdmin_Button" layoutX="966.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#addAdmin" prefHeight="58.0" prefWidth="152.0" text="Add Admin">
+                        <Button fx:id="addAdmin_Button" layoutX="966.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#addAdmin" prefHeight="58.0" prefWidth="286.0" text="Add Admin">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -56,7 +56,7 @@
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="52.0" prefWidth="180.0" styleClass="emergency" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="58.0" prefWidth="180.0" styleClass="emergency" text="EMERGENCY">
                            <font>
                               <Font name="System Bold" size="21.0" />
                            </font>
@@ -73,20 +73,6 @@
             <VBox prefHeight="614.0" prefWidth="1274.0" BorderPane.alignment="CENTER">
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0" />
-                  <HBox>
-                     <children>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="pathFinding_Button" mnemonicParsing="false" onMouseClicked="#pathFindingButton_Clicked" prefHeight="90.0" prefWidth="350.0" text="Map">
-                           <font>
-                              <Font size="26.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Region HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
@@ -115,6 +101,20 @@
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
+                  <HBox>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="pathFinding_Button" mnemonicParsing="false" onMouseClicked="#pathFindingButton_Clicked" prefHeight="90.0" prefWidth="350.0" text="Map" visible="false">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
          </center>
@@ -123,7 +123,13 @@
                <children>
                   <HBox alignment="CENTER_RIGHT">
                      <children>
-                        <Label fx:id="chooseLanguage_Label" alignment="CENTER_RIGHT" prefHeight="61.0" prefWidth="377.0" text="Choose your language" textAlignment="RIGHT">
+                        <Label fx:id="default_Search" text="Default Search:" />
+                        <ChoiceBox fx:id="search_ChoiceBox" prefHeight="70.0" prefWidth="262.0">
+                           <HBox.margin>
+                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                           </HBox.margin>
+                        </ChoiceBox>
+                        <Label fx:id="chooseLanguage_Label" alignment="CENTER_RIGHT" prefHeight="61.0" prefWidth="314.0" text="Choose your language" textAlignment="RIGHT">
                            <HBox.margin>
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </HBox.margin>
@@ -155,7 +161,6 @@
       </BorderPane>
    </children>
    <stylesheets>
-      <URL value="@../css/flatterfx_test.css" />
       <URL value="@../css/styles.css" />
    </stylesheets>
 </AnchorPane>

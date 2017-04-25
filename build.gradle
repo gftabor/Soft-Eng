@@ -36,7 +36,7 @@ dependencies {
     compile 'com.eclipsesource.minimal-json:minimal-json:0.9.4'
 
     // css flatter
-    compile 'com.guigarage:flatter:0.7'
+    //compile 'com.guigarage:flatter:0.7'
 
     // Use JUnit test framework
     testCompile 'junit:junit:4.12'

@@ -37,6 +37,7 @@ public class testProfessional {
         databaseController.closeDB();
     }
 
+    /*
     @Test
     public void testAddDelete(){
         //add professional
@@ -62,6 +63,7 @@ public class testProfessional {
 
         assertTrue(databaseController.deleteProfessional(firstName, lastName, type));
     }
+    */
 
     @Test
     public void testNull() {

@@ -1,26 +1,8 @@
+@font-face {
+    font-family: 'Lato';
+    src: url('Lato/Lato-Regular.ttf');
+}
+
 .root{
-    -dark: #566270;
-    -flatter-red: #30A9DE;
-    -flatter-blue: #30A9DE;
-
-    -actually-red: #E53A40;
-}
-
-
-.toggle-button:hover, .button:hover{
-    -fx-background-color: derive(-flatter-red, 87%);
-}
-.emergency{
-    -fx-background-color: -actually-red;
-    -fx-font-weight: bold;
-}
-.emergency:hover{
-    -fx-background-color: derive(-actually-red, 87%);
-}
-.cancel{
-    -fx-background-color: -actually-red;
-}
-
-.small-text{
-    -fx-font-size: 16px;
+    -fx-font-family: 'Lato';
 }
