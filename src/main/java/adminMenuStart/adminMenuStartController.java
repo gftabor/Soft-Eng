@@ -41,16 +41,49 @@ public class adminMenuStartController extends controllers.AbsController{
     private Label title_Label;
 
     @FXML
+    private Label default_Search;
+
+    @FXML
     private Label chooseLanguage_Label;
 
     @FXML
     private ChoiceBox<String> languages_ChoiceBox;
 
     @FXML
+    private ChoiceBox<String> search_ChoiceBox;
+
+    @FXML
     private Button addAdmin_Button;
 
     //Set to english by default
     int c_language = 0;
+
+    int c_algorithm = 0;
+
+    MapController mapController = MapController.getInstance();
+
+    @FXML
+    public void initialize(){
+        search_ChoiceBox.getItems().addAll("A*", "Depth First", "Breadth First");
+        search_ChoiceBox.getSelectionModel().select(0);
+        search_ChoiceBox.setValue("" + mapController.getAlgorithm());
+        search_ChoiceBox.getSelectionModel()
+                .selectedItemProperty()
+                .addListener( (ObservableValue<? extends String> observable, String oldValue, String newValue) -> changeSearch(newValue) );
+    }
+
+
+    public void changeSearch(String algorithm){
+        if(algorithm.equals("A*")){
+            mapController.setAlgorithm(0);
+        }else if(algorithm.equals("Depth First")){
+            mapController.setAlgorithm(2);
+        }else if(algorithm.equals("Breadth First")){
+            mapController.setAlgorithm(1);
+        }else{
+            mapController.setAlgorithm(0);
+        }
+    }
 
 
     public void signOutButton_Clicked(){
@@ -81,14 +114,16 @@ public class adminMenuStartController extends controllers.AbsController{
         //Gets the current admin
         controller.setUsername(username_Label.getText());
         //set up english labels
-        /*
+
         if(c_language == 0){
             controller.englishButtons_Labels();
             //set up spanish labels
         }else if(c_language == 1){
             controller.spanishButtons_Labels();
         }
-        */
+
+        controller.setUpTreeView();
+        controller.setModeChoices();
 
 
     }
@@ -201,7 +236,7 @@ public class adminMenuStartController extends controllers.AbsController{
         //Makes sure you only set the choices once
 
         //sets the choices and sets the current language as the top choice
-        languages_ChoiceBox.getItems().addAll("English", "Spanish");
+        languages_ChoiceBox.getItems().addAll("English", "Espanol");
         languages_ChoiceBox.getSelectionModel().select(c_language);
         //makes sure to not do this again
 
@@ -247,13 +282,15 @@ public class adminMenuStartController extends controllers.AbsController{
         mapManagement_Button.setText("Map Management");
         SignOut_Button.setText("Sign Out");
         emergency_Button.setText("EMERGENCY");
-        addAdmin_Button.setText("Add Admin");
+        addAdmin_Button.setText("Admin Management");
 
         //Change the labels
         title_Label.setText("Welcome to Faulkner Hospital");
+        default_Search.setText("Default Algorithm");
+        chooseLanguage_Label.setText("Choose your language");
     }
 
-    //switches all teh labels to spanish
+    //switches all the labels to spanish
     public void spanishButtons_Labels() {
         //change the current language to spanish
         c_language = 1;
@@ -265,11 +302,11 @@ public class adminMenuStartController extends controllers.AbsController{
         mapManagement_Button.setText("Control de Mapa");
         SignOut_Button.setText("Salir");
         emergency_Button.setText("EMERGENCIA");
-        addAdmin_Button.setText("Agregar Admin");
+        addAdmin_Button.setText("Administración admin");
         //change the Labels
         title_Label.setText("Bienvenidos al Hospital de Faulkner");
-
-
+        default_Search.setText("Algoritmo Predeterminado");
+        chooseLanguage_Label.setText("Escoje tu lenguaje");
     }
 
     //sets the current language given information form other screens

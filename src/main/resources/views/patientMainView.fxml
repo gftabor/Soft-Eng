@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -22,26 +18,29 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="patientMain.patientMainController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="patientMain.patientMainController">
    <children>
-      <BorderPane layoutX="96.0" layoutY="187.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane layoutX="96.0" layoutY="187.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
-            <VBox BorderPane.alignment="CENTER">
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
                <children>
-                  <Label fx:id="mainTitle_Label" alignment="TOP_CENTER" prefHeight="37.0" prefWidth="1308.0" text="Welcome to Brigham and Women's Faulkner Hospital" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="30.0" />
-                     </font>
-                  </Label>
-                  <HBox alignment="CENTER">
+                  <HBox alignment="CENTER" prefHeight="23.0" prefWidth="1366.0">
                      <children>
-                        <ChoiceBox fx:id="language_ChoiceBox" prefHeight="57.0" prefWidth="170.0">
+                        <Label fx:id="mainTitle_Label" alignment="TOP_CENTER" text="Welcome to Brigham and Women's Faulkner Hospital" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="30.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT">
+                     <children>
+                        <ChoiceBox fx:id="language_ChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="150.0">
                            <HBox.margin>
-                              <Insets />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </ChoiceBox>
-                        <Region prefHeight="76.0" prefWidth="301.0" />
-                        <Button fx:id="directory_Button" mnemonicParsing="false" onMouseClicked="#directoryClicked" prefHeight="57.0" prefWidth="218.0" text="Directory Search">
+                        <Button fx:id="about_Button" mnemonicParsing="false" onMouseClicked="#aboutButton_clicked" prefHeight="60.0" prefWidth="170.0" text="About">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
@@ -49,15 +48,7 @@
                               <Font size="20.0" />
                            </font>
                         </Button>
-                        <Button fx:id="about_Button" mnemonicParsing="false" onMouseClicked="#aboutButton_clicked" prefHeight="57.0" prefWidth="170.0" text="About">
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="admin_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefHeight="57.0" prefWidth="170.0" text="Administrator">
+                        <Button fx:id="admin_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefHeight="60.0" prefWidth="170.0" text="Administrator">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -65,7 +56,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="57.0" prefWidth="170.0" styleClass="emergency" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="60.0" prefWidth="170.0" styleClass="emergency" text="EMERGENCY">
                            <font>
                               <Font name="System Bold Italic" size="21.0" />
                            </font>
@@ -82,16 +73,16 @@
             </VBox>
          </top>
          <left>
-            <VBox alignment="CENTER" prefHeight="539.0" prefWidth="304.0" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="627.0" prefWidth="379.0" BorderPane.alignment="CENTER_LEFT">
                <children>
-                  <HBox alignment="CENTER">
+                  <HBox alignment="CENTER_LEFT">
                      <children>
-                        <Label fx:id="start_Label" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefWidth="90.0" text="Start">
+                        <Label fx:id="start_Label" minHeight="-Infinity" minWidth="-Infinity" prefWidth="90.0" text="Start">
                            <font>
                               <Font name="System Bold" size="22.0" />
                            </font>
                            <HBox.margin>
-                              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                              <Insets bottom="3.0" right="3.0" top="3.0" />
                            </HBox.margin>
                         </Label>
                         <TextField fx:id="start_textField" prefHeight="30.0" prefWidth="175.0" promptText="Starting position">
@@ -104,14 +95,14 @@
                         </TextField>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER">
+                  <HBox alignment="CENTER_LEFT">
                      <children>
-                        <Label fx:id="end_Label" alignment="CENTER" prefWidth="90.0" text="End">
+                        <Label fx:id="end_Label" prefWidth="90.0" text="End">
                            <font>
                               <Font name="System Bold" size="22.0" />
                            </font>
                            <HBox.margin>
-                              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                              <Insets bottom="3.0" right="3.0" top="3.0" />
                            </HBox.margin>
                         </Label>
                         <TextField fx:id="end_TextField" prefHeight="30.0" prefWidth="175.0" promptText="Ending position">
@@ -124,9 +115,9 @@
                         </TextField>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER">
+                  <HBox alignment="CENTER_LEFT">
                      <children>
-                        <Button fx:id="submit_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" prefHeight="50.0" prefWidth="115.0" text="Submit">
+                        <Button fx:id="submit_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" prefHeight="50.0" prefWidth="115.0" styleClass="primary" text="Submit">
                            <HBox.margin>
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </HBox.margin>
@@ -134,9 +125,9 @@
                               <Font size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="cancel_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#cancelButton_Clicked" prefHeight="50.0" prefWidth="115.0" styleClass="cancel" text="Clear">
+                        <Button fx:id="cancel_Button" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#cancelButton_Clicked" prefHeight="50.0" prefWidth="115.0" styleClass="warning" text="Clear">
                            <HBox.margin>
-                              <Insets bottom="3.0" left="14.0" right="3.0" top="3.0" />
+                              <Insets bottom="3.0" left="30.0" right="3.0" top="3.0" />
                            </HBox.margin>
                            <font>
                               <Font size="16.0" />
@@ -147,9 +138,9 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox alignment="CENTER">
+                  <HBox alignment="CENTER_LEFT">
                      <children>
-                        <ChoiceBox fx:id="filter_ChoiceBox" prefHeight="44.0" prefWidth="245.0">
+                        <ChoiceBox fx:id="filter_ChoiceBox" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="360.0">
                            <HBox.margin>
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </HBox.margin>
@@ -173,7 +164,11 @@
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <TextArea fx:id="textDescription_TextFArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="300.0" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <TextArea fx:id="textDescription_TextFArea" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="168.0" prefWidth="364.0" />
+                     </children>
+                  </HBox>
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
@@ -190,7 +185,7 @@
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="phoneInsert" prefHeight="35.0" prefWidth="210.0" promptText="123456789">
+                        <TextField fx:id="phoneInsert" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="210.0" promptText="123456789">
                            <HBox.margin>
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </HBox.margin>
@@ -198,7 +193,7 @@
                               <Font size="15.0" />
                            </font>
                         </TextField>
-                        <Button fx:id="phoneSend" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Send">
+                        <Button fx:id="phoneSend" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="110.0" styleClass="primary" text="Send">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -216,7 +211,7 @@
             </VBox>
          </left>
          <bottom>
-            <HBox alignment="CENTER" prefHeight="47.0" prefWidth="1274.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="47.0" prefWidth="1274.0" BorderPane.alignment="CENTER">
                <children>
                   <Region prefHeight="37.0" prefWidth="408.0" />
                   <Label text="©2017 Computer Science 3733 Team E" textAlignment="CENTER">
@@ -228,25 +223,19 @@
                      </font>
                   </Label>
                   <Region prefHeight="37.0" prefWidth="343.0" />
-                  <Button fx:id="continue_Button" mnemonicParsing="false" onMouseClicked="#continueButton_Clicked" text="Continue">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Button>
                </children>
             </HBox>
          </bottom>
          <center>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox>
+                  <HBox alignment="CENTER">
                      <children>
-                        <ChoiceBox fx:id="floor_ChoiceBox" prefHeight="30.0" prefWidth="110.0">
+                        <ChoiceBox fx:id="floor_ChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="50.0">
                            <HBox.margin>
-                              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                              <Insets bottom="6.0" left="-1.0" right="6.0" top="6.0" />
                            </HBox.margin>
                         </ChoiceBox>
-                        <Region maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" HBox.hgrow="ALWAYS" />
                         <Label fx:id="floor_Label" text="Floor: ">
                            <font>
                               <Font name="System Bold" size="24.0" />
@@ -264,23 +253,52 @@
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="previous_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#previousButton_Clicked" prefHeight="60.0" prefWidth="132.0" text="Previous">
+                           <HBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="continueNew_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#continueNewButton_Clicked" prefHeight="50.0" prefWidth="144.0" text="Continue">
+                           <HBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="zoom_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#zoomButton_Clicked" prefHeight="60.0" prefWidth="132.0" text="Zoom" />
                      </children>
                   </HBox>
-                  <Pane fx:id="node_Plane" prefHeight="544.0" prefWidth="974.0">
-                     <children>
-                        <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="920.0" onMouseClicked="#continueButton_Clicked">
-                           <image>
-                              <Image url="@../images/4.png" />
-                           </image>
-                        </ImageView>
-                     </children></Pane>
+                  <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                     <content>
+                        <Pane fx:id="node_Plane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                           <children>
+                              <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="920.0">
+                                 <image>
+                                    <Image url="@../images/4.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                     </content>
+                  </ScrollPane>
                </children>
             </VBox>
          </center>
+         <bottom>
+            <VBox prefHeight="28.0" prefWidth="1274.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label text="©2017 Computer Science 3733 Team E" />
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </bottom>
       </BorderPane>
    </children>
    <stylesheets>
-      <URL value="@../css/flatterfx_test.css" />
+      <URL value="@../css/bootstrap3.css" />
       <URL value="@../css/styles.css" />
    </stylesheets>
 </AnchorPane>

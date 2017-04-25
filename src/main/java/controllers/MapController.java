@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Collections;
+import java.util.HashMap;
 
 //import main.java.controllers.CollectionOfNodes;
 
@@ -30,8 +31,12 @@ public class MapController {
     private int endNodeX;
     private int endNodeY;
 
+    private final double surroundingRadius = 50.0;
+
     private int floorForNode1;
     private int floorForNode2;
+
+    private int algorithm = 0; //init to A*
 
     private ArrayList<Integer> floorSequence; //list of floors for multifloor pathfinding
 
@@ -169,6 +174,58 @@ public class MapController {
         }
     }
 
+    public void attachSurroundingNodes(int x, int y, int floor) {
+        Node myNode = collectionOfNodes.getNode(x,y,floor);
+        //exit if could not get node for whatever reason
+        if (myNode == null) {
+            return;
+        }
+
+        //get list of current edges attached to myNode
+        ArrayList<Edge> currentConnectedEdges = new ArrayList<>();
+        for (Edge e: edgeCollection) {
+            if (e.getStartNode() == myNode || e.getEndNode() == myNode) {
+                currentConnectedEdges.add(e);
+            }
+        }
+
+
+        //get appropriate hash map
+        HashMap<Integer, Node> myMap = collectionOfNodes.getMap(floor);
+        for (Node n: myMap.values()) {
+            double sld = sld(x, y, n.getPosX(), n.getPosY());
+            if (myNode != n && sld < surroundingRadius) {
+                //create an edge between them
+                //check that edge does not already exist
+                if (!edgeInList(currentConnectedEdges, myNode, n)) {
+                    //if not there, add an edge
+                    databaseController.newEdge(x, y, floor, n.getPosX(), n.getPosY(), n.getFloor());
+                }
+
+            }
+        }
+    }
+
+    //check if potential edge exists in list
+    private boolean edgeInList(ArrayList<Edge> edgeList, Node baseN, Node tryNode) {
+        for (Edge e: edgeList) {
+            //check floor
+            Node temp = e.getNeighbor(baseN);
+            if (temp == tryNode) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //get straight line distance
+    private double sld(int x1, int y1, int x2, int y2) {
+        double squareX = Math.pow((x1 - x2),2);
+        double squareY = Math.pow((y1 - y2),2);
+        return Math.sqrt(squareX + squareY);
+    }
+
     //used for pathfinding
     //creates a pathfinder and runs pathfinding on the startnode and the end node.
     //  returns: 0 if success, 1 if error
@@ -196,11 +253,16 @@ public class MapController {
 
         //creates and runs a pathfinder
         Pathfinder pathfinder = new Pathfinder();
+        /*
         pathfinder.algorithmSwitch(2);
         pathfinder.generatePath(startNode, endNode);
         pathfinder.algorithmSwitch(1);
         pathfinder.generatePath(startNode, endNode);
         pathfinder.algorithmSwitch(0);//A *
+        pathfinder.generatePath(startNode, endNode);
+        */
+
+        pathfinder.algorithmSwitch(algorithm);
         pathfinder.generatePath(startNode, endNode);
 
 
@@ -398,70 +460,182 @@ public class MapController {
     }
 
     //in progress -> prints directions until I can figure out how to get it on the UI
-    public String getTextDirections(ArrayList<Edge> path) {
+    public String getTextDirections(ArrayList<Edge> path, int c_lang) {
         String destination;
         ArrayList<String> directions = new ArrayList<>();
-        if(path.isEmpty()) {
-            return null;
-        }
-
-        for(int i = path.size()-1; i > 0; i--) {
-            double angle = getAngle(path.get(i), path.get(i-1));
-
-            if(path.get(i).getStartNode().getFloor() != path.get(i).getEndNode().getFloor()
-                    || path.get(i-1).getStartNode().getFloor() != path.get(i-1).getEndNode().getFloor()) {
-                directions.add("Change Floors ");
-                continue;
+        if(c_lang == 0) {
+            if (path.isEmpty()) {
+                return null;
             }
-            String destRoom;
-            String destName;
-            destRoom = path.get(i).getEndNode().getRoomNum();
-            destName = path.get(i).getEndNode().getName();
 
-            Node myNode = path.get(i).getEndNode();
-            if (myNode.getIsHidden() || myNode.getType().equals("Stairwell") ||
-                    myNode.getType().equals("Elevator")) {
-                if(myNode.getIsHidden()) {
-                    int floor = myNode.getFloor();
-                    destination = "floor " + floor + " " + destName;
-                } else {
-                    destination = destName;
+            for (int i = path.size() - 1; i > 0; i--) {
+                double angle = getAngle(path.get(i), path.get(i - 1));
+                int startFloor = path.get(i).getStartNode().getFloor();
+                int endFloor = path.get(i).getEndNode().getFloor();
+
+                if (goingUp() == true) {
+                    if(startFloor > endFloor) {
+                        directions.add("Go up to floor " + startFloor);
+                        continue;
+                    } else if(endFloor > startFloor) {
+                        directions.add("Go up to floor " + endFloor);
+                        continue;
+                    }
+                } else if (goingUp() == false) {
+                    if(startFloor < endFloor) {
+                        directions.add("Go down to floor " + startFloor);
+                        continue;
+                    } else if(endFloor < startFloor) {
+                        directions.add("Go down to floor " + endFloor);
+                        continue;
+                    }
                 }
-            } else {
-                destination = destName + " " + destRoom;
+                String destRoom;
+                String destName;
+                destRoom = path.get(i).getEndNode().getRoomNum();
+                destName = path.get(i).getEndNode().getName();
+
+                Node myNode = path.get(i).getEndNode();
+                if (myNode.getIsHidden() || myNode.getType().equals("Stairwell") ||
+                        myNode.getType().equals("Elevator")) {
+                    if (myNode.getIsHidden()) {
+                        int floor = myNode.getFloor();
+                        destination = "floor " + floor + " " + destName;
+                    } else {
+                        destination = destName;
+                    }
+                } else {
+                    destination = destName + " " + destRoom;
+                }
+
+                if (angle > -135.0 && angle <= -45.0) {
+                    directions.add("Turn left at " + destination);
+                } else if (angle >= 45.0 && angle < 135.0) {
+                    directions.add("Turn right at " + destination);
+                } else if (angle > 10.0 && angle < 45.0) {
+                    directions.add("Make a slight right at " + destination);
+                } else if (angle >= -10.0 && angle <= 10.0) {
+                    directions.add("Continue straight.");
+                } else if (angle > -45.0 && angle < -10.0) {
+                    directions.add("Make a slight left at " + destination);
+                } else if (angle > 135.0 && angle < 180.0) {
+                    directions.add("Make a hard right at " + destination);
+                } else if (angle > -180.0 && angle < -135.0) {
+                    directions.add("Make a hard left at " + destination);
+                } else {
+                    directions.add("nothing");
+                }
+
+
+            }
+            int startFloor = path.get(0).getStartNode().getFloor();
+            int endFloor = path.get(0).getEndNode().getFloor();
+
+            if (goingUp() == true) {
+                if(startFloor > endFloor) {
+                    directions.add("Go up to floor " + startFloor);
+                } else if(endFloor > startFloor) {
+                    directions.add("Go up to floor " + endFloor);
+                }
+            } else if (goingUp() == false) {
+                if(startFloor < endFloor) {
+                    directions.add("Go down to floor " + startFloor);
+                } else if(endFloor < startFloor) {
+                    directions.add("Go down to floor " + endFloor);
+                }
             }
 
-            if(angle > -135.0 && angle <= -45.0) {
-                directions.add("Turn left at " + destination);
-            }
-            else if(angle >= 45.0 && angle < 135.0) {
-                directions.add("Turn right at " + destination);
-            }
-            else if(angle > 10.0 && angle < 45.0) {
-                directions.add("Make a slight right at " + destination);
-            }
-            else if(angle >= -10.0 && angle <= 10.0){
-                directions.add("Continue straight.");
-            }
-            else if(angle > -45.0 && angle < -10.0) {
-                directions.add("Make a slight left at " + destination);
-            }
-            else if(angle > 135.0 && angle < 180.0) {
-                directions.add("Make a hard right at " + destination);
-            }
-            else if(angle > -180.0 && angle < -135.0) {
-                directions.add("Make a hard left at " + destination);
-            }else{
-                directions.add("nothing");
+            directions.add("Reached Destination");
+            directions = cleanFloorToFloorDirections(directions);
+            directions = cleanDirections(directions);
+            return concatenateDirections(directions);
+        } else {
+            if (path.isEmpty()) {
+                return null;
             }
 
+            for (int i = path.size() - 1; i > 0; i--) {
+                double angle = getAngle(path.get(i), path.get(i - 1));
+                int startFloor = path.get(i).getStartNode().getFloor();
+                int endFloor = path.get(i).getEndNode().getFloor();
 
+                if (goingUp() == true) {
+                    if(startFloor > endFloor) {
+                        directions.add("Subir al piso " + startFloor);
+                        continue;
+                    } else if(endFloor > startFloor) {
+                        directions.add("Subir al piso " + endFloor);
+                        continue;
+                    }
+                } else if (goingUp() == false) {
+                    if(startFloor < endFloor) {
+                        directions.add("Bajar al piso " + startFloor);
+                        continue;
+                    } else if(endFloor < startFloor) {
+                        directions.add("Bajar al piso " + endFloor);
+                        continue;
+                    }
+                }
+
+                String destRoom;
+                String destName;
+                destRoom = path.get(i).getEndNode().getRoomNum();
+                destName = path.get(i).getEndNode().getName();
+
+                Node myNode = path.get(i).getEndNode();
+                if (myNode.getIsHidden() || myNode.getType().equals("Stairwell") ||
+                        myNode.getType().equals("Elevator")) {
+                    if (myNode.getIsHidden()) {
+                        int floor = myNode.getFloor();
+                        destination = "floor " + floor + " " + destName;
+                    } else {
+                        destination = destName;
+                    }
+                } else {
+                    destination = destName + " " + destRoom;
+                }
+
+                if (angle > -135.0 && angle <= -45.0) {
+                    directions.add("Girar a la izquierda hacia " + destination);
+                } else if (angle >= 45.0 && angle < 135.0) {
+                    directions.add("Girar a la derecha hacia " + destination);
+                } else if (angle > 10.0 && angle < 45.0) {
+                    directions.add("Girar un poco a la derecha hacia " + destination);
+                } else if (angle >= -10.0 && angle <= 10.0) {
+                    directions.add("Sigue derecho.");
+                } else if (angle > -45.0 && angle < -10.0) {
+                    directions.add("Girar un poco a la izquierda hacia " + destination);
+                } else if (angle > 135.0 && angle < 180.0) {
+                    directions.add("Haz un gran giro a la derecha hacia " + destination);
+                } else if (angle > -180.0 && angle < -135.0) {
+                    directions.add("Haz un gran giro a la izquierda hacia " + destination);
+                } else {
+                    directions.add("nada");
+                }
+
+
+            }
+            int startFloor = path.get(0).getStartNode().getFloor();
+            int endFloor = path.get(0).getEndNode().getFloor();
+
+            if (goingUp() == true) {
+                if(startFloor > endFloor) {
+                    directions.add("Subir al piso " + startFloor);
+                } else if(endFloor > startFloor) {
+                    directions.add("Subir al piso " + endFloor);
+                }
+            } else if (goingUp() == false) {
+                if(startFloor < endFloor) {
+                    directions.add("Bajar al piso " + startFloor);
+                } else if(endFloor < startFloor) {
+                    directions.add("Bajar al piso " + endFloor);
+                }
+            }
+
+            directions.add("Has llegado a tu destino");
+            directions = cleanDirections(directions);
+            return concatenateDirections(directions);
         }
-        if(path.get(0).getStartNode().getFloor() != path.get(0).getEndNode().getFloor())
-            directions.add("Change Floors ");
-        directions.add("Reached Destination");
-        directions = cleanDirections(directions);
-        return concatenateDirections(directions);
 
     }
 
@@ -469,9 +643,39 @@ public class MapController {
         ArrayList<String> directions = new ArrayList<>();
         String current = "";
         for (String s: direc) {
-            if (s != current) {
+            if (!(s.equals(current))) {
                 current = s;
                 directions.add(s);
+            }
+        }
+        return directions;
+    }
+
+    private ArrayList<String> cleanFloorToFloorDirections(ArrayList<String> direc) {
+        System.out.println("++++++++++\nCleaning floor directions...");
+        ArrayList<String> directions = new ArrayList<>();
+        boolean goingUpDetected = false;
+        boolean goingDownDetected = false;
+        for (int i = direc.size()-1; i >= 0; i--) {
+            String s = direc.get(i);
+            if (s.contains("Go up to floor") == true) {
+                if (goingUpDetected) {
+                    //drop
+                } else {
+                    goingUpDetected = true;
+                    directions.add(0, s);
+                }
+            } else if (s.contains("Go down to floor") == true) {
+                if (goingDownDetected) {
+                    //drop
+                } else {
+                    goingDownDetected = true;
+                    directions.add(0, s);
+                }
+            } else {
+                directions.add(0, s);
+                goingUpDetected = false;
+                goingDownDetected = false;
             }
         }
 
@@ -488,10 +692,10 @@ public class MapController {
 
     private double getAngle(Edge e1, Edge e2) {
         Node middle;
-        double e1X = 0.0;
-        double e1Y = 0.0;
-        double e2X = 0.0;
-        double e2Y = 0.0;
+        double e1X;
+        double e1Y;
+        double e2X;
+        double e2Y;
         if(e1.getEndNode() == e2.getStartNode()) {
             middle = e1.getEndNode();
 
@@ -522,6 +726,19 @@ public class MapController {
             return null;
         } else {
             return floorSequence;
+        }
+    }
+
+    public int getAlgorithm() {
+        return algorithm;
+    }
+
+    public void setAlgorithm(int algorithm) {
+        if (algorithm > 2 || algorithm < 0) {
+            this.algorithm = 0; //A* default
+        } else {
+            this.algorithm = algorithm;
+            System.out.println("Changing default search algorithm to: "+algorithm);
         }
     }
 }
