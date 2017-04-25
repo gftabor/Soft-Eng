@@ -21,11 +21,16 @@
     -fx-min-width: 30;
 }
 .button{
-    -fx-font-size: 15;
+    -fx-font-size: 14;
     -fx-background-radius: 4;
     -fx-border-radius: 4;
     -fx-pref-height: 30;
     -fx-min-width: 30;
+
+}
+
+.label{
+    -fx-font-size: 15;
 
 }
 
@@ -64,7 +69,8 @@
 .success .arrow,
 .info .arrow,
 .warning .arrow,
-.danger .arrow {
+.danger .arrow,
+.menu .arrow{
     -fx-background-color: transparent, white;
 }
 
@@ -72,7 +78,8 @@
 .success > .label,
 .info > .label,
 .warning > .label,
-.danger > .label {
+.danger > .label,
+.menu .arrow{
     -fx-text-fill: white;
 }
 
@@ -279,7 +286,7 @@ VBox > .split-menu-button.last > .arrow-button {
 .button.info,.menu-button.info,.toggle-button.info,
 .split-menu-button.info > .label,.split-menu-button.info > .arrow-button {
     -fx-border-color: #e0dede;
-    -fx-text-fill: white;
+    -fx-text-fill: black;
 }
 /*hover state*/
 .button.info:hover,.menu-button.info:hover,.toggle-button.info:hover,
@@ -296,6 +303,37 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-border-color: #e0dede;
     -fx-effect: innershadow(gaussian, #e0dede, 10, 0, 0, 3);
 }
+
+/*MENU Attributes*/
+
+/*Changes the background*/
+.button.menu,.split-menu-button.menu,.toggle-button.menu,.menu-button.menu,
+.split-menu-button.menu > .label, .split-menu-button.menu > .arrow-button {
+    -fx-background-color: #b1b1b1;
+}
+
+/*Changes border and text*/
+.button.menu,.menu-button.menu,.toggle-button.menu,
+.split-menu-button.menu > .label,.split-menu-button.menu > .arrow-button {
+    -fx-border-color: #b1b1b1;
+    -fx-text-fill: black;
+}
+/*hover state*/
+.button.menu:hover,.menu-button.menu:hover,.toggle-button.menu:hover,
+.split-menu-button.menu > .label:hover, .split-menu-button.menu > .arrow-button:hover {
+    /*-fx-border-color: #e0dede;*/
+    -fx-background-color: #a1a1a1;
+}
+/*pressed selected*/
+.button.menu:pressed, .button.menu:selected,
+.menu-button.menu:pressed,.menu-button.menu:selected
+,.toggle-button.menu:pressed,.toggle-button.menu:selected,
+.split-menu-button.menu:pressed > .label, .split-menu-button.menu > .arrow-button:pressed {
+    -fx-background-color: #e0dede;
+    -fx-border-color: #e0dede;
+    -fx-effect: innershadow(gaussian, #e0dede, 10, 0, 0, 3);
+}
+
 
 /*warning*/
 
@@ -597,11 +635,36 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-background-color: #56c0e0;
 }
 
+/*-------------------------- map pin ------------------------- */
+
+.map-pin {
+    -fx-shape: "M13.558,0C6.07,0,0,6.07,0,13.558s13.558,22.346,13.558,22.346s13.558-14.858,13.558-22.346S21.045,0,13.558,0z
+    M13.558,20.762c-4.084,0-7.395-3.311-7.395-7.395s3.311-7.395,7.395-7.395c4.084,0,7.396,3.311,7.396,7.395
+    S17.642,20.762,13.558,20.762z";
+    -fx-background-color: #b1b1b1, #e0dede;
+    -fx-background-insets: 0, 2;
+   /* -fx-effect: dropshadow( two-pass-box, rgba(0, 0, 0, 0.5), 10, 0.0, 0, 10 ); */
+    -fx-pref-width: 24;
+    -fx-pref-height: 36;
+}
+.map-pin .arrow-button .arrow {
+    -fx-padding: 0;
+}
+
+
+
 .color-palette {
     -fx-background-color: white;
+
+    -fx-effect: innershadow(gaussian, #e4e4e4, 4, 0, 0, 1);
 }
+
 .color-palette2{
     -fx-background-color: #e0dede;
+}
+
+.color-palette3{
+    -fx-background-color: #b1b1b1;
 }
 
 .pagination > .pagination-control > .control-box {
