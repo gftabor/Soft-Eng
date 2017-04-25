@@ -8,14 +8,12 @@ import controllers.proxyMap;
 import controllers.mapImage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -159,10 +157,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
         setFloorChoices();
 
-
         // creates a node when clicking the map
         map_viewer.setOnMouseClicked((MouseEvent e) -> {
-
             if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)){
                 admin_FloorPane.getChildren().remove(temporaryButton[0]);
             }
@@ -172,53 +168,67 @@ public class mmFloorAndModeController extends controllers.mapScene{
             admin_FloorPane.getChildren().add(btK);
             temporaryButton[0] = btK;
 
-            AnchorPane anchorpane = new AnchorPane();
-            Button buttonSave = new Button("Save");
-            Button buttonCancel = new Button("Cancel");
-            TextField nodeName = new TextField();
-            TextField nodeType = new TextField();
-            TextField nodeRoom = new TextField();
-            CheckBox isHidden = new CheckBox("Hidden");
-            CheckBox isEnabled = new CheckBox("Enabled");
-            isHidden.setSelected(false);
-            isEnabled.setSelected(true);
-            nodeName.setPromptText("Name");
-            nodeType.setPromptText("Type");
-            nodeRoom.setPromptText("Room Number");
-
-            GridPane grid = new GridPane();
-            grid.setHgap(10);
-            grid.setVgap(10);
-            grid.setPadding(new Insets(10, 10, 5, 10));
-
-            VBox vb = new VBox();
-            HBox hbCancelSave = new HBox();
-            HBox hbCheckBox = new HBox();
-            vb.setPadding(new Insets(10, 10, 5, 10));
-            vb.setSpacing(10);
-            hbCancelSave.setPadding(new Insets(0, 0, 0, 0));
-            hbCancelSave.setSpacing(60);
-            hbCancelSave.getChildren().addAll(buttonCancel, buttonSave);
-            hbCheckBox.getChildren().addAll(isHidden, isEnabled);
-            hbCheckBox.setSpacing(25);
-            vb.getChildren().addAll(nodeName, nodeType, nodeRoom, hbCheckBox, hbCancelSave);
-            anchorpane.getChildren().addAll(grid,vb);   // Add grid from Example 1-5
-            AnchorPane.setBottomAnchor(vb, 8.0);
-            AnchorPane.setRightAnchor(vb, 5.0);
-            AnchorPane.setTopAnchor(grid, 10.0);
-
-            PopOver pop = new PopOver(anchorpane);
-            pop.setDetachable(true);
-            pop.setDetached(false);
-            pop.setCornerRadius(4);
+            PopOver pop = new PopOver();
+            createPop(pop, btK, "Create");
             pop.show(btK);
+        });
+    }
 
-            buttonSave.setOnAction(new EventHandler<ActionEvent>() {
-                @Override public void handle(ActionEvent e) {
-                    String thisNodeName = nodeName.getText();
-                    String thisNodeType = nodeType.getText();
-                    String thisNodeRoom = nodeRoom.getText();
-                    if (!thisNodeName.equals("") && !thisNodeType.equals("") && !thisNodeRoom.equals("")) {
+    public PopOver createPop(PopOver pop, Circle btK, String mode){
+
+        AnchorPane anchorpane = new AnchorPane();
+        Button buttonSave = new Button("Save");
+        Button buttonCancel = new Button("Cancel");
+        TextField nodeName = new TextField();
+        TextField nodeType = new TextField();
+        TextField nodeRoom = new TextField();
+        CheckBox isHidden = new CheckBox("Hidden");
+        CheckBox isEnabled = new CheckBox("Enabled");
+        isHidden.setSelected(false);
+        isEnabled.setSelected(true);
+        nodeName.setPromptText("Name");
+        nodeType.setPromptText("Type");
+        nodeRoom.setPromptText("Room Number");
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(10, 10, 5, 10));
+
+        VBox vb = new VBox();
+        HBox hbCancelSave = new HBox();
+        HBox hbCheckBox = new HBox();
+        vb.setPadding(new Insets(10, 10, 5, 10));
+        vb.setSpacing(10);
+        hbCancelSave.setPadding(new Insets(0, 0, 0, 0));
+        hbCancelSave.setSpacing(60);
+        hbCancelSave.getChildren().addAll(buttonCancel, buttonSave);
+        hbCheckBox.getChildren().addAll(isHidden, isEnabled);
+        hbCheckBox.setSpacing(25);
+        vb.getChildren().addAll(nodeName, nodeType, nodeRoom, hbCheckBox, hbCancelSave);
+        anchorpane.getChildren().addAll(grid,vb);   // Add grid from Example 1-5
+        AnchorPane.setBottomAnchor(vb, 8.0);
+        AnchorPane.setRightAnchor(vb, 5.0);
+        AnchorPane.setTopAnchor(grid, 10.0);
+
+
+        pop.setDetachable(true);
+        pop.setDetached(false);
+        pop.setCornerRadius(4);
+        pop.setContentNode(anchorpane);
+
+        buttonSave.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                String thisNodeName = nodeName.getText();
+                String thisNodeType = nodeType.getText();
+                String thisNodeRoom = nodeRoom.getText();
+                if (!thisNodeName.equals("") && !thisNodeType.equals("") && !thisNodeRoom.equals("")) {
+                    if (mode.equals("Edit")) {
+                        DBController.DatabaseController.getInstance().updateNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
+                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom);
+                        pop.hide();
+                        resetScreen();
+                    } else {
                         Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
                                 currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom);
                         DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
@@ -227,19 +237,21 @@ public class mmFloorAndModeController extends controllers.mapScene{
                         resetScreen();
                     }
                 }
-            });
-
-            buttonCancel.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    pop.hide();
-                    admin_FloorPane.getChildren().remove(btK);
-                }
-            });
+            }
         });
 
-    }
+        buttonCancel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                pop.hide();
+                if (mode.equals("Create")) {
+                    admin_FloorPane.getChildren().remove(btK);
+                }
+            }
+        });
 
+        return pop;
+    }
 
     public void emergencyButton_Clicked() {
 
@@ -294,7 +306,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
     public void rightClickEvent(int x, int y, Circle c, int mode) {
         //CODE TO HANDLE RIGHT CLICK MENU STUFF GOES HERE:
         switch (mode) {
-            case 1:
+            case 1: // remove node
                 Node selectedNode = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
                 //handle errors
                 if (selectedNode == null) {
@@ -314,12 +326,19 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 for (javafx.scene.Node n : admin_FloorPane.getChildren()){
                     if (n.getLayoutX() == x && n.getLayoutY() == y){
                         admin_FloorPane.getChildren().remove(n);
-                        admin_FloorPane.getChildren().remove(c);
                     }
                 }
-                //resetScreen();
+                resetScreen();
                 break;
-            case 2:
+            case 2:  // edit node
+                PopOver pop = new PopOver();
+                for (javafx.scene.Node n : admin_FloorPane.getChildren()){
+                    if (n.getLayoutX() == x && n.getLayoutY() == y){
+                        createPop(pop, (Circle) n, "Edit");
+                        pop.show(n);
+                    }
+                }
+
                 break;
             case 3:
                 MapController.getInstance().attachSurroundingNodes(x, y, currentFloor);
