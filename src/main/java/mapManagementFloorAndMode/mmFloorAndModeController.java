@@ -307,10 +307,17 @@ public class mmFloorAndModeController extends controllers.mapScene{
                             thisEdge.getEndNode().getPosY(), thisEdge.getEndNode().getFloor());
                 }
                 databaseController.deleteNode(x, y, currentFloor);
-                //
-                // We need to delete the button on screen here too
-                // I don't know why resetScreen() doesn't delete the button
-                resetScreen();
+
+                // go through the scene to delete the circle
+                // this deletes the circle but it is has a bug, since locating
+                // the circle and deleting it are not in the same place
+                for (javafx.scene.Node n : admin_FloorPane.getChildren()){
+                    if (n.getLayoutX() == x && n.getLayoutY() == y){
+                        admin_FloorPane.getChildren().remove(n);
+                        admin_FloorPane.getChildren().remove(c);
+                    }
+                }
+                //resetScreen();
                 break;
             case 2:
                 break;
