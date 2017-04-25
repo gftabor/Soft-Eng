@@ -234,7 +234,7 @@
             </HBox>
          </bottom>
          <center>
-            <VBox fx:id="mapVbox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <VBox fx:id="mapVbox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
                   <HBox fx:id="mapHbox" alignment="CENTER">
                      <children>
@@ -272,7 +272,7 @@
                         </Button>
                      </children>
                   </HBox>
-                  <StackPane>
+                  <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1500.0" prefWidth="987.0">
                      <children>
                         <ScrollPane fx:id="scrollPane" prefHeight="601.0" prefWidth="987.0">
                            <content>
@@ -283,13 +283,13 @@
                               </Pane>
                            </content>
                         </ScrollPane>
-                        <Button fx:id="zoomIn_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#zoomInButton_Clicked" prefHeight="60.0" prefWidth="132.0" text="Zoom In">
+                        <Button fx:id="zoomIn_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#zoomInButton_Clicked" prefHeight="60.0" prefWidth="132.0" text="Zoom In" StackPane.alignment="TOP_LEFT">
                            <StackPane.margin>
-                              <Insets bottom="450.0" left="-50.0" right="800.0" top="-100.0" />
+                              <Insets left="10.0" top="50.0" />
                            </StackPane.margin></Button>
-                        <Button fx:id="zoomOut_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#zoomOutButton_Clicked" prefHeight="60.0" prefWidth="132.0" stylesheets="@../css/bootstrap3.css" text="Zoom Out">
+                        <Button fx:id="zoomOut_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#zoomOutButton_Clicked" prefHeight="60.0" prefWidth="132.0" stylesheets="@../css/bootstrap3.css" text="Zoom Out" StackPane.alignment="TOP_LEFT">
                            <StackPane.margin>
-                              <Insets bottom="450.0" left="-50.0" right="800.0" top="-20.0" />
+                              <Insets left="10.0" top="10.0" />
                            </StackPane.margin>
                         </Button>
                      </children>
