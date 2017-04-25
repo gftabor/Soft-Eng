@@ -313,7 +313,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 addSingleEdgeMode = true;
 
                 firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
-                        .getNode(nodeEdgeX1, nodeEdgeY1, currentFloor);
+                        .getNode(x, y, currentFloor);
                 if (firstNode == null) {
                     System.out.println("RIP trying to get node");
                     resetScreen();
@@ -356,7 +356,16 @@ public class mmFloorAndModeController extends controllers.mapScene{
                     firstNode.getPosY(), firstNode.getFloor(), nodeEdgeX2, nodeEdgeY2, currentFloor);
             resetScreen();
             addSingleEdgeMode = false;
-            graph.createEdgeLines(firstNode.getEdgeList(), true, true);
+            if (firstNode != null) {
+                firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
+                        .getNode(firstNode.getPosX(), firstNode.getPosY(), firstNode.getFloor());
+                //don't know if above method is successful
+                //must check again if firstNode is not null
+                if (firstNode != null) {
+                    graph.createEdgeLines(firstNode.getEdgeList(), true, true);
+                }
+            }
+
             return;
         }
 
