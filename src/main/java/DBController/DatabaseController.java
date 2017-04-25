@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import javax.xml.transform.Result;
+
 public class DatabaseController {
 
     private static DatabaseController databaseController = new DatabaseController();
@@ -270,6 +272,38 @@ public class DatabaseController {
         return resultSet;
     }
 
+    // checks if this location is actually a node in the database
+        // and maybe not just a circle
+    public boolean isActualLocation(int x, int y, int floor){
+        ResultSet rset;
+        int thisX, thisY, thisFloor;
+        try {
+            // sql statement with "?" to be filled later
+            String query = "SELECT XPOS, YPOS, FLOOR FROM NODE WHERE XPOS = ? AND YPOS = ? AND FLOOR = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, x);
+            preparedStatement.setInt(2, y);
+            preparedStatement.setInt(3, floor);
+
+            //execute prepared statement
+            rset = preparedStatement.executeQuery();
+
+            while (rset.next()) {
+                thisX = rset.getInt("XPOS");
+                thisY = rset.getInt("YPOS");
+                thisFloor = rset.getInt("FLOOR");
+                if (x == thisX && y == thisY && floor == thisFloor){
+                    return true;
+                }
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return false;
+    }
     /*******************************************************************************
      * EDGE actions
      *

@@ -8,12 +8,14 @@ import controllers.proxyMap;
 import controllers.mapImage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,6 +29,7 @@ import org.controlsfx.control.PopOver;
 import javax.xml.soap.Text;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by AugustoR on 3/31/17.
@@ -144,6 +147,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         setTitleChoices();
         addSingleEdgeMode = false;
         addMultiEdgeMode = false;
+        final Circle[] temporaryButton = {null};
 
         //set default floor to start
         //we will use floor 1 for now
@@ -158,10 +162,15 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
         // creates a node when clicking the map
         map_viewer.setOnMouseClicked((MouseEvent e) -> {
+
+            if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)){
+                admin_FloorPane.getChildren().remove(temporaryButton[0]);
+            }
             btK = new Circle(labelRadius);//new Button();
             btK.setLayoutX(e.getX());
             btK.setLayoutY(e.getY());
             admin_FloorPane.getChildren().add(btK);
+            temporaryButton[0] = btK;
 
             AnchorPane anchorpane = new AnchorPane();
             Button buttonSave = new Button("Save");
@@ -228,6 +237,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 }
             });
         });
+
     }
 
 
@@ -278,6 +288,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         controllers.MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true, currentFloor);
         edgesSelected = 0;
+
     }
 
     public void rightClickEvent(int x, int y, Circle c, int mode) {
@@ -296,8 +307,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
                             thisEdge.getEndNode().getPosY(), thisEdge.getEndNode().getFloor());
                 }
                 databaseController.deleteNode(x, y, currentFloor);
+                //
                 // We need to delete the button on screen here too
-
+                // I don't know why resetScreen() doesn't delete the button
                 resetScreen();
                 break;
             case 2:
