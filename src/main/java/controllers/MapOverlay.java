@@ -131,6 +131,7 @@ public class MapOverlay {
         }
 
         if (devmode) {
+            final boolean[] deleteLater = {false};
             location.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -140,10 +141,11 @@ public class MapOverlay {
 
                         // Create ContextMenu
                         ContextMenu contextMenu = new ContextMenu();
-
+                        contextMenu.setImpl_showRelativeToWindow(true);
                         MenuItem removeOption = new MenuItem("Remove");
                         removeOption.setOnAction(new EventHandler<ActionEvent>() {
                             @Override public void handle(ActionEvent e) {
+                                currentPane.getChildren().remove(c);
                                 sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 1);
                             }
                         });
