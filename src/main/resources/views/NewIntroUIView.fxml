@@ -6,6 +6,8 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -109,25 +111,49 @@
                         <HBox styleClass="color-palette3">
                            <children>
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button mnemonicParsing="false" styleClass="menu" text="&lt;&gt;" />
-                              <Button mnemonicParsing="false" styleClass="menu" text="Options" />
+                              <Button mnemonicParsing="false" styleClass="menu" text="&lt;&gt;">
+                                 <HBox.margin>
+                                    <Insets right="4.0" />
+                                 </HBox.margin></Button>
+                              <Button mnemonicParsing="false" styleClass="menu" text="Options">
+                                 <HBox.margin>
+                                    <Insets right="2.0" />
+                                 </HBox.margin></Button>
                            </children>
                         </HBox>
                      </children>
                   </VBox>
-                  <ListView prefHeight="200.0" prefWidth="200.0" styleClass="color-palette" />
-                  <Button mnemonicParsing="false" styleClass="color-palette" text="Button" />
+                  <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="Locations">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="163.0" prefWidth="381.0">
+                                 <children>
+                                    <ListView layoutX="-1.0" layoutY="-4.0" prefHeight="173.0" prefWidth="384.0" styleClass="color-palette" />
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                      <Tab text="Text Directions">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
                   <Button mnemonicParsing="false" prefHeight="47.0" prefWidth="30.0" styleClass="map-pin" />
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#898989" height="200.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
                </children>
                <BorderPane.margin>
-                  <Insets bottom="2.0" left="5.0" right="2.0" top="2.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </BorderPane.margin>
             </VBox>
          </left>
          <bottom>
             <ChoiceBox prefWidth="150.0" BorderPane.alignment="CENTER" />
          </bottom>
+         <center>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#898989" height="200.0" stroke="BLACK" strokeType="INSIDE" width="200.0" BorderPane.alignment="CENTER" />
+         </center>
       </BorderPane>
    </children>
    <stylesheets>
