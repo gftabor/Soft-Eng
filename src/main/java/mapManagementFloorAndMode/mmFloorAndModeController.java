@@ -224,6 +224,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
                         DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
                                 currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom);
                         pop.hide();
+                        admin_FloorPane.getChildren().remove(btK);
                         resetScreen();
                     }
                 }
@@ -287,6 +288,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
     public void resetScreen() {
         controllers.MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true, currentFloor);
+        graph.wipeEdgeLines();
         edgesSelected = 0;
 
     }
@@ -307,13 +309,13 @@ public class mmFloorAndModeController extends controllers.mapScene{
                             thisEdge.getEndNode().getPosY(), thisEdge.getEndNode().getFloor());
                 }
                 databaseController.deleteNode(x, y, currentFloor);
+                System.out.println("deleting node...");
 
                 // go through the scene to delete the circle
                 // this deletes the circle but it is has a bug, since locating
                 // the circle and deleting it are not in the same place
                 for (javafx.scene.Node n : admin_FloorPane.getChildren()){
                     if (n.getLayoutX() == x && n.getLayoutY() == y){
-                        admin_FloorPane.getChildren().remove(n);
                         admin_FloorPane.getChildren().remove(c);
                     }
                 }

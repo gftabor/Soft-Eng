@@ -198,6 +198,7 @@ public class MapOverlay {
     public void createEdgeLines(ArrayList<controllers.Edge> edgeList, boolean highlighted, boolean devmode) {
         //for-each loop through arraylist
         wipeEdgeLines();
+        System.out.println("creating edge lines...");
         for(controllers.Edge thisEdge: edgeList) {
             lne = new Line();
 
