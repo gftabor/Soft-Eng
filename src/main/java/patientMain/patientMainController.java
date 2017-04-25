@@ -173,6 +173,9 @@ public class patientMainController extends controllers.mapScene {
         previous_Button.setVisible(false);
         second = true;
 
+        changeFloor(databaseController.GetKioskFloor() - 1);
+        floor_ChoiceBox.getSelectionModel().select(databaseController.GetKioskFloor() - 1);
+
         //draw edges
         //graph.drawFloorEdges(currentFloor);
 
@@ -213,7 +216,7 @@ public class patientMainController extends controllers.mapScene {
             //update currentfloor
             currentFloor = globalFloorSequence.get(fragPathPos);
 
-            System.out.println("++++++++++++++++++++++++++++++=============+++++++++");
+            System.out.println("+++++++++++++++++++++++++++++++++++++++");
             System.out.println("current floor displayed: " + currentFloor);
             System.out.println("frag path pos updated to: " + fragPathPos);
             multifloorUpdate();
