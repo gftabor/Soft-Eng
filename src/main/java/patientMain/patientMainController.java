@@ -145,6 +145,7 @@ public class patientMainController extends controllers.mapScene {
 
     private final Color startColor = Color.RED;
     private final Color endColor = Color.GREEN;
+    private final Color kioskColor = Color.ORANGE;
 
     private double origPaneWidth;
     private double origPaneHeight;
@@ -191,7 +192,11 @@ public class patientMainController extends controllers.mapScene {
                 c.setStrokeWidth(strokeRatio);
                 c.setRadius(graph.getLabelRadius()*sizeUpRatio);
                 c.setStroke(color);
-                c.setFill(color);
+                if(c.getFill().equals(kioskColor)){
+                    c.setFill(kioskColor);
+                }else {
+                    c.setFill(color);
+                }
                 break;
             }
         }
@@ -230,7 +235,7 @@ public class patientMainController extends controllers.mapScene {
         }
     }
 
-    //previoys Button clicked
+    //previous Button clicked
     public void previousButton_Clicked(){
         System.out.println("prev button clicked");
 
@@ -790,13 +795,21 @@ public class patientMainController extends controllers.mapScene {
                 //reset the map display
                 if(start != null) {
                     start.setStroke(Color.BLACK);
-                    start.setFill(Color.BLACK);
+                    if(start.getFill().equals(kioskColor)){
+                        start.setFill(kioskColor);
+                    }else {
+                        start.setFill(Color.BLACK);
+                    }
                     start.setStrokeWidth(1);
                     start.setRadius(graph.getLabelRadius());
                 }
                 if(end != null) {
                     end.setStroke(Color.BLACK);
-                    end.setFill(Color.BLACK);
+                    if(end.getFill().equals(kioskColor)){
+                        end.setFill(kioskColor);
+                    }else {
+                        end.setFill(Color.BLACK);
+                    }
                     end.setStrokeWidth(1);
                     end.setRadius(graph.getLabelRadius());
                 }
@@ -816,13 +829,21 @@ public class patientMainController extends controllers.mapScene {
             selectionState++;
             if(start != null) {
                 start.setStroke(Color.BLACK);
-                start.setFill(Color.BLACK);
+                if(c.getFill().equals(kioskColor)){
+                    c.setFill(kioskColor);
+                }else {
+                    c.setFill(Color.BLACK);
+                }
                 start.setStrokeWidth(1);
                 start.setRadius(graph.getLabelRadius());
             }
             if(end != null) {
                 end.setStroke(Color.BLACK);
-                end.setFill(Color.BLACK);
+                if(c.getFill().equals(kioskColor)){
+                    c.setFill(kioskColor);
+                }else {
+                    c.setFill(Color.BLACK);
+                }
                 end.setStrokeWidth(1);
                 end.setRadius(graph.getLabelRadius());
             }
@@ -833,7 +854,12 @@ public class patientMainController extends controllers.mapScene {
             //color
             c.setStrokeWidth(strokeRatio);
             c.setStroke(startColor);
-            c.setFill(startColor);
+            if(c.getFill().equals(kioskColor)){
+                c.setFill(kioskColor);
+            }else {
+                c.setFill(startColor);
+            }
+
 
             //location
             startX = c.getLayoutX();
@@ -853,7 +879,12 @@ public class patientMainController extends controllers.mapScene {
             //color
             c.setStrokeWidth(strokeRatio);
             c.setStroke(endColor);
-            c.setFill(endColor);
+            if(c.getFill().equals(kioskColor)){
+                c.setFill(kioskColor);
+            }else {
+                c.setFill(endColor);
+            }
+
 
             //location
             endX = c.getLayoutX();
