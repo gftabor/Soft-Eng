@@ -6,13 +6,17 @@ package patientMain;
 import DBController.DatabaseController;
 import controllers.*;
 import emergency.SmsSender;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -106,10 +110,13 @@ public class patientMainController extends controllers.mapScene {
     private Button continueNew_Button;
 
     @FXML
-    private Button zoom_button;
+    private Button zoomIn_button;
 
+    @FXML
+    private Button zoomOut_button;
 
-
+    @FXML
+    private ScrollPane scrollPane;
 
     int c_language = 0;
 
@@ -149,6 +156,9 @@ public class patientMainController extends controllers.mapScene {
     private double origPaneWidth;
     private double origPaneHeight;
     double zoom;
+    double heightRatio = (1000.0/489.0);
+    double widthRatio = (1600.0/920.0);
+
 
     //ArrayList<Edge> zoomPath;
 
@@ -169,6 +179,18 @@ public class patientMainController extends controllers.mapScene {
         c_Floor_Label.setText("1");
         usingMap = false;
 
+        System.out.println("width/height ratios: " + widthRatio + "/" + heightRatio);
+
+        node_Plane.setMaxWidth(2000.0);
+        node_Plane.setMaxHeight(2000.0);
+        node_Plane.setPrefHeight(489.0*heightRatio);
+        node_Plane.setPrefWidth(920.0*widthRatio);
+        map_viewer.setFitHeight(489.0*heightRatio);
+        map_viewer.setFitWidth(920.0*widthRatio);
+
+        MapOverlay.setWidthRatio(widthRatio);
+        MapOverlay.setHeightRatio(heightRatio);
+
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
         //set continue button invisible when not needed
         continueNew_Button.setVisible(false);
@@ -180,6 +202,12 @@ public class patientMainController extends controllers.mapScene {
         
         origPaneHeight = 489;
         origPaneWidth = 920;
+
+        //detects scrolling for zoom while keeping scrollpane from panning with mousewheel
+        scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
+            mapScroll(event);
+            event.consume();
+        });
     }
 
     //get an instance of database controller
@@ -598,10 +626,6 @@ public class patientMainController extends controllers.mapScene {
             floor_ChoiceBox.getSelectionModel().select(startfloor - 1);
         }
 
-
-
-
-
         //maintain consistency of colors
         ArrayList<Circle> tempCircleList;
         tempCircleList = graph.getButtonList();
@@ -912,37 +936,80 @@ public class patientMainController extends controllers.mapScene {
         controllers.MapOverlay.setPathfinding(2);
     }
 
-    public void zoomButton_Clicked() {
+    public void zoomInButton_Clicked() {
         zoom = controllers.MapOverlay.getZoom();
         System.out.println(zoom);
         if (zoom < 1.6) {
-            zoom += 0.3;
+            zoom += 0.05;
             controllers.MapOverlay.setZoom(zoom);
-            node_Plane.setPrefWidth(origPaneWidth*zoom);
-            node_Plane.setPrefHeight(origPaneHeight*zoom);
-            map_viewer.setFitWidth(origPaneWidth*zoom);
-            map_viewer.setFitHeight(origPaneHeight*zoom);
+            node_Plane.setPrefWidth(origPaneWidth*zoom*widthRatio);
+            node_Plane.setPrefHeight(origPaneHeight*zoom*heightRatio);
+            map_viewer.setFitWidth(origPaneWidth*zoom*widthRatio);
+            map_viewer.setFitHeight(origPaneHeight*zoom*heightRatio);
 
-
-
-        } else {
-            System.out.println("set to 1.0");
-            zoom = 1.0;
-            controllers.MapOverlay.setZoom(1);
-            node_Plane.setPrefWidth(origPaneWidth);
-            node_Plane.setPrefHeight(origPaneHeight);
-            map_viewer.setFitWidth(origPaneWidth);
-            map_viewer.setFitHeight(origPaneHeight);
-
-
+            graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
+                    false, currentFloor);
         }
-        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
-                false, currentFloor);
         if (controllers.MapOverlay.getPathfinding() == 1) {
             graph.createEdgeLines(path, true);
         } else if (controllers.MapOverlay.getPathfinding() == 2) {
             graph.createEdgeLines(globalFragList.get(fragPathPos), true);
         }
 
+    }
+
+    public void zoomOutButton_Clicked() {
+        zoom = controllers.MapOverlay.getZoom();
+        System.out.println(zoom);
+        if (zoom > 1.0) {
+            zoom = zoom - 0.05;
+            controllers.MapOverlay.setZoom(zoom);
+            node_Plane.setPrefWidth(origPaneWidth*zoom*widthRatio);
+            node_Plane.setPrefHeight(origPaneHeight*zoom*heightRatio);
+            map_viewer.setFitWidth(origPaneWidth*zoom*widthRatio);
+            map_viewer.setFitHeight(origPaneHeight*zoom*heightRatio);
+
+            graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
+                    false, currentFloor);
+        }
+        if (controllers.MapOverlay.getPathfinding() == 1) {
+            graph.createEdgeLines(path, true);
+        } else if (controllers.MapOverlay.getPathfinding() == 2) {
+            graph.createEdgeLines(globalFragList.get(fragPathPos), true);
+        }
+    }
+
+    public void mapScroll(ScrollEvent event) {
+            zoom = MapOverlay.getZoom();
+            if (event.getDeltaY() < 0) {
+                if (zoom < 1.6) {
+                    zoom += 0.05;
+                    controllers.MapOverlay.setZoom(zoom);
+                    node_Plane.setPrefWidth(origPaneWidth*zoom*widthRatio);
+                    node_Plane.setPrefHeight(origPaneHeight*zoom*heightRatio);
+                    map_viewer.setFitWidth(origPaneWidth*zoom*widthRatio);
+                    map_viewer.setFitHeight(origPaneHeight*zoom*heightRatio);
+
+                    graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
+                            false, currentFloor);
+                }
+            } else if (event.getDeltaY() > 0) {
+                if (zoom > 1.0) {
+                    zoom = zoom - 0.05;
+                    controllers.MapOverlay.setZoom(zoom);
+                    node_Plane.setPrefWidth(origPaneWidth*zoom*widthRatio);
+                    node_Plane.setPrefHeight(origPaneHeight*zoom*heightRatio);
+                    map_viewer.setFitWidth(origPaneWidth*zoom*widthRatio);
+                    map_viewer.setFitHeight(origPaneHeight*zoom*heightRatio);
+
+                    graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
+                            false, currentFloor);
+                }
+            }
+            if (controllers.MapOverlay.getPathfinding() == 1) {
+                graph.createEdgeLines(path, true);
+            } else if (controllers.MapOverlay.getPathfinding() == 2) {
+                graph.createEdgeLines(globalFragList.get(fragPathPos), true);
+            }
     }
 }
