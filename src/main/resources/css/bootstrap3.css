@@ -29,6 +29,8 @@
 
 }
 
+
+
 .label{
     -fx-font-size: 15;
 
@@ -329,9 +331,9 @@ VBox > .split-menu-button.last > .arrow-button {
 .menu-button.menu:pressed,.menu-button.menu:selected
 ,.toggle-button.menu:pressed,.toggle-button.menu:selected,
 .split-menu-button.menu:pressed > .label, .split-menu-button.menu > .arrow-button:pressed {
-    -fx-background-color: #e0dede;
-    -fx-border-color: #e0dede;
-    -fx-effect: innershadow(gaussian, #e0dede, 10, 0, 0, 3);
+    -fx-background-color: #b1b1b1;
+    -fx-border-color: #b1b1b1;
+    -fx-effect: innershadow(gaussian, #b1b1b1, 10, 0, 0, 3);
 }
 
 
@@ -666,6 +668,25 @@ VBox > .split-menu-button.last > .arrow-button {
 .color-palette3{
     -fx-background-color: #b1b1b1;
 }
+
+/*Testing The ionicon and button properties*/
+.color-palette4{
+    -fx-min-width: 160px;
+    -fx-min-height: 50px;
+    -fx-background-color: tomato;
+    -fx-translate-x: -50%;
+    -fx-translate-y: -50%;
+
+
+}
+
+.color-palette4:hover{
+    -fx-background-color: black;
+
+}
+
+
+
 
 .pagination > .pagination-control > .control-box {
     -fx-spacing: -1;
