@@ -131,7 +131,6 @@ public class MapOverlay {
         }
 
         if (devmode) {
-            final boolean[] deleteLater = {false};
             location.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
