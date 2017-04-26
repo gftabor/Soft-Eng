@@ -1024,16 +1024,20 @@ public class patientMainController extends controllers.mapScene {
         controllers.MapOverlay.setPathfinding(2);
     }
 
+    public void changeZoom(){
+        controllers.MapOverlay.setZoom(zoom);
+        node_Plane.setPrefWidth(origPaneWidth*zoom*widthRatio);
+        node_Plane.setPrefHeight(origPaneHeight*zoom*heightRatio);
+        map_viewer.setFitWidth(origPaneWidth*zoom*widthRatio);
+        map_viewer.setFitHeight(origPaneHeight*zoom*heightRatio);
+    }
+
     public void zoomInButton_Clicked() {
         zoom = controllers.MapOverlay.getZoom();
         System.out.println(zoom);
         if (zoom < 1.3) {
             zoom += 0.03;
-            controllers.MapOverlay.setZoom(zoom);
-            node_Plane.setPrefWidth(origPaneWidth*zoom*widthRatio);
-            node_Plane.setPrefHeight(origPaneHeight*zoom*heightRatio);
-            map_viewer.setFitWidth(origPaneWidth*zoom*widthRatio);
-            map_viewer.setFitHeight(origPaneHeight*zoom*heightRatio);
+            changeZoom();
 
             graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
                     false, currentFloor, permissionLevel);
@@ -1051,11 +1055,7 @@ public class patientMainController extends controllers.mapScene {
         System.out.println(zoom);
         if (zoom > 1.0) {
             zoom = zoom - 0.03;
-            controllers.MapOverlay.setZoom(zoom);
-            node_Plane.setPrefWidth(origPaneWidth * zoom * widthRatio);
-            node_Plane.setPrefHeight(origPaneHeight * zoom * heightRatio);
-            map_viewer.setFitWidth(origPaneWidth * zoom * widthRatio);
-            map_viewer.setFitHeight(origPaneHeight * zoom * heightRatio);
+            changeZoom();
         }
 
         graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
@@ -1072,11 +1072,7 @@ public class patientMainController extends controllers.mapScene {
             if (event.getDeltaY() > 0) {
                 if (zoom < 1.3) {
                     zoom += 0.03;
-                    controllers.MapOverlay.setZoom(zoom);
-                    node_Plane.setPrefWidth(origPaneWidth*zoom*widthRatio);
-                    node_Plane.setPrefHeight(origPaneHeight*zoom*heightRatio);
-                    map_viewer.setFitWidth(origPaneWidth*zoom*widthRatio);
-                    map_viewer.setFitHeight(origPaneHeight*zoom*heightRatio);
+                    changeZoom();
 
                     graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
                             false, currentFloor, permissionLevel);
@@ -1084,11 +1080,7 @@ public class patientMainController extends controllers.mapScene {
             } else if (event.getDeltaY() < 0) {
                 if (zoom > 1.0) {
                     zoom = zoom - 0.03;
-                    controllers.MapOverlay.setZoom(zoom);
-                    node_Plane.setPrefWidth(origPaneWidth*zoom*widthRatio);
-                    node_Plane.setPrefHeight(origPaneHeight*zoom*heightRatio);
-                    map_viewer.setFitWidth(origPaneWidth*zoom*widthRatio);
-                    map_viewer.setFitHeight(origPaneHeight*zoom*heightRatio);
+                    changeZoom();
 
                     graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
                             false, currentFloor, permissionLevel);
