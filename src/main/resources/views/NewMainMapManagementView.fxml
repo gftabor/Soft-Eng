@@ -38,33 +38,28 @@
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Label styleClass="mainTitle" text="Brigham and Women's Faulkner Hospital" textFill="WHITE">
+                        <Label styleClass="mainTitle" text="Map Management Tool" textFill="WHITE">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" styleClass="color-palette5" text="Set Map">
+                        <Button mnemonicParsing="false" prefWidth="180.0" styleClass="color-palette5" text="Directory Management">
                            <HBox.margin>
-                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                              <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefWidth="100.0" styleClass="color-palette5" text="About">
+                        <Button mnemonicParsing="false" prefWidth="180.0" styleClass="color-palette5" text="Admin Management">
                            <HBox.margin>
-                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                              <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefWidth="150.0" styleClass="color-palette5" text="Adminstrator">
+                        <Button mnemonicParsing="false" styleClass="color-palette5" text="Sign Out">
                            <HBox.margin>
-                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                              <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
                         <Button mnemonicParsing="false" prefWidth="150.0" styleClass="danger" text="EMERGENCY">
-                           <HBox.margin>
-                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Button mnemonicParsing="false" styleClass="color-palette5" text="?">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
