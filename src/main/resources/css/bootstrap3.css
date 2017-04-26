@@ -1,4 +1,6 @@
 .root {
+    /*-fx-background-color: linear-gradient(to left, #606c88 50%, #3f4c6b 100%,#000000 90%,white 100%,white 100%); #ECE9E6*/
+    -fx-background-color: linear-gradient(to right, #ECE9E9  25%, #bdc3c7 100%,#000000 90%,white 100%,white 100%);
     -fx-body-color : #F5F5F5;
     -fx-outer-border : #cecece;
 }
@@ -11,9 +13,6 @@
 }
 
 
-.choice-box:focused{
-    -fx-effect: #b1b1b1;
-}
 
 
 
@@ -136,10 +135,7 @@ ListView >{
     -fx-font-weight: bold;
 
 }
-TreeView>{
-    d
 
-}
 
 VBox > .split-menu-button.first > .label {
     -fx-border-radius: 4 0 0 0;
