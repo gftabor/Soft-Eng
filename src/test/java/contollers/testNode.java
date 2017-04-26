@@ -11,7 +11,7 @@ import controllers.Node;
 
 public class testNode {
 
-    private Node testNode = new Node(10, 10, 4, false, true, "office", "wentworth", "401");
+    private Node testNode = new Node(10, 10, 4, false, true, "office", "wentworth", "401", 0);
 
     @Test
     public void testToString() {

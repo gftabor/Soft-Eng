@@ -19,7 +19,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import org.controlsfx.control.textfield.TextFields;
 
+import javax.xml.transform.Result;
 import java.net.URISyntaxException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class patientMainController extends controllers.mapScene {
@@ -148,10 +151,13 @@ public class patientMainController extends controllers.mapScene {
     private double origPaneHeight;
     double zoom;
 
+    private int permissionLevel;
+
     //ArrayList<Edge> zoomPath;
 
     @FXML
     public void initialize() {
+        permissionLevel = 0;
         graph = new controllers.MapOverlay(node_Plane, (mapScene) this);
         MapController.getInstance().requestMapCopy();
 
@@ -167,7 +173,8 @@ public class patientMainController extends controllers.mapScene {
         c_Floor_Label.setText("1");
         usingMap = false;
 
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), false, currentFloor);
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), false,
+                currentFloor, permissionLevel);
         //set continue button invisible when not needed
         continueNew_Button.setVisible(false);
         previous_Button.setVisible(false);
@@ -178,7 +185,6 @@ public class patientMainController extends controllers.mapScene {
 
         //draw edges
         //graph.drawFloorEdges(currentFloor);
-
         origPaneHeight = 489;
         origPaneWidth = 920;
     }
@@ -415,7 +421,8 @@ public class patientMainController extends controllers.mapScene {
             c_Floor_Label.setText("");
             floor_Label.setText(currentF);
         }
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), false, currentFloor);
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), false,
+                currentFloor, permissionLevel);
 
     }
 
@@ -520,7 +527,7 @@ public class patientMainController extends controllers.mapScene {
                 multiFloorPathfind();
             } else {
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                path = mapController.requestPath();
+                path = mapController.requestPath(permissionLevel);
                 graph.createEdgeLines(path, true, false);
                 //zoomPath = path;
                 controllers.MapOverlay.setPathfinding(1);
@@ -568,7 +575,7 @@ public class patientMainController extends controllers.mapScene {
                     //no multifloor pathfinding (simple)
 
                     MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                    ArrayList<Edge> path = mapController.requestPath();
+                    ArrayList<Edge> path = mapController.requestPath(permissionLevel);
                     graph.createEdgeLines(path, true, false);
                     textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
                 }
@@ -615,7 +622,7 @@ public class patientMainController extends controllers.mapScene {
 
         //reset for next pathfinding session
         MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-        ArrayList<Edge> reqPath = mapController.requestPath();
+        ArrayList<Edge> reqPath = mapController.requestPath(permissionLevel);
         if (reqPath == null) { //can't find path, reset
             System.out.println("Could not pathfind. Resetting now...");
             cancelButton_Clicked();
@@ -694,7 +701,8 @@ public class patientMainController extends controllers.mapScene {
 
         //Remove colored dots from map
 
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false,
+                currentFloor, permissionLevel);
         c_Floor_Label.setText(Integer.toString(currentFloor));
 
         //wipe line from map
@@ -966,7 +974,7 @@ public class patientMainController extends controllers.mapScene {
 
         }
         graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
-                false, currentFloor);
+                false, currentFloor, permissionLevel);
         if (controllers.MapOverlay.getPathfinding() == 1) {
             graph.createEdgeLines(path, true, false);
         } else if (controllers.MapOverlay.getPathfinding() == 2) {
