@@ -17,6 +17,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -29,6 +31,7 @@ import javax.xml.soap.Text;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by AugustoR on 3/31/17.
@@ -122,6 +125,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
     private static final double labelRadius = 10.5;
 
     private Node firstNode;
+    Circle dragCircle;
+    Node dragNode;
 
     private Circle lastColoredStart;
     private Circle lastColoredEnd;
@@ -349,7 +354,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     }
 
-    public void showStairMenu(int x, int y, Circle c) {
+    public void showMultifloorMenu(int x, int y, Circle c) {
         //SHOW MULTIFLOOR STUFF HERE
     }
 
@@ -427,16 +432,58 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 break;
             case 7:
                 //draggable code:
-//                final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
+                System.out.println("draggable");
+                final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
+                dragCircle = c;
+                dragNode = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
+                if (dragNode == null) {
+                    System.out.println("fuck");
+                    break;
+                }
+                System.out.println("test old: x= " + dragNode.getPosX() + ", y= " + dragNode.getPosY());
+
+                //This code is for placing nodes
+                c.setOnMouseDragged(e -> {
+                    if (e.getSceneX() > paneBounds.getMinX() && e.getSceneX() < paneBounds.getMaxX()
+                            && e.getSceneY() > paneBounds.getMinY() && e.getSceneY() < paneBounds.getMaxY()) {
+                        c.setLayoutX((e.getSceneX() - paneBounds.getMinX()));
+                        c.setLayoutY((e.getSceneY() - paneBounds.getMinY()));
+                        System.out.println("dragging...");
+                    }
+                });
+//                c.setOnDragDropped(new EventHandler <DragEvent>() {
+//                    public void handle(DragEvent event) {
+//                        /* data dropped */
+//                        System.out.println("onDragDropped");
+//                        System.out.println("--");
+//                        System.out.println("old: x= " + dragNode.getPosX() + ", y= " + dragNode.getPosY());
+//                        System.out.println("new: x= " + c.getLayoutX() + ", y= " + c.getLayoutY());
+//                        System.out.println("---");
+//                        event.setDropCompleted(true);
 //
-//                //This code is for placing nodes
-//                c.setOnMouseDragged(e -> {
-//                    if (e.getSceneX() > paneBounds.getMinX() && e.getSceneX() < paneBounds.getMaxX()
-//                            && e.getSceneY() > paneBounds.getMinY() && e.getSceneY() < paneBounds.getMaxY()) {
-//                        c.setLayoutX((e.getSceneX() - paneBounds.getMinX()));
-//                        c.setLayoutY((e.getSceneY() - paneBounds.getMinY()));
+//                        event.consume();
 //                    }
 //                });
+
+                c.setOnMouseDragReleased(e -> {
+                    System.out.println("drag done");
+                    System.out.println("old: x= "+dragNode.getPosX()+", y= "+dragNode.getPosY());
+                    System.out.println("new: x= "+c.getLayoutX()+", y= "+c.getLayoutY());
+                    System.out.println("---");
+                    DatabaseController.getInstance().
+
+                    updateNode((int) c.
+
+                    getLayoutX(), (int)c.getLayoutY(),currentFloor,
+                            dragNode.getIsHidden(),dragNode.getEnabled(),dragNode.getType(),dragNode.getName(),
+                            dragNode.getRoomNum(),dragNode.getPermissionLevel());
+                    c.setOnMouseDragged(en -> {
+                        //nothing
+                    });
+
+                    resetScreen();
+
+                });
                 break;
             default:
                 System.out.println("default. This probably should not have been possible...");
@@ -551,7 +598,6 @@ public class mmFloorAndModeController extends controllers.mapScene{
         } catch (SQLException e){
             e.printStackTrace();
         }
-        System.out.println("perms: " + perms);
 
         switch(type){
         case "Doctor's Office":
