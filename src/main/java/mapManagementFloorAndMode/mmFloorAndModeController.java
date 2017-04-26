@@ -346,18 +346,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 PopOver pop = new PopOver();
                 createPop(pop, c, "Edit");
                 pop.show(c);
-//                //draggable code:
-//                final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
-//
-//                //This code is for placing nodes
-//                c.setOnMouseDragged(e -> {
-//                    if (e.getSceneX() > paneBounds.getMinX() && e.getSceneX() < paneBounds.getMaxX()
-//                            && e.getSceneY() > paneBounds.getMinY() && e.getSceneY() < paneBounds.getMaxY()) {
-//                        c.setLayoutX((e.getSceneX() - paneBounds.getMinX()));
-//                        c.setLayoutY((e.getSceneY() - paneBounds.getMinY()));
-//                    }
-//                });
-//                break;
+                break;
             case 3:
                 MapController.getInstance().attachSurroundingNodes(x, y, currentFloor);
                 resetScreen();
@@ -404,6 +393,19 @@ public class mmFloorAndModeController extends controllers.mapScene{
                             thisEdge.getEndNode().getPosY(), thisEdge.getEndNode().getFloor());
                 }
                 resetScreen();
+                break;
+            case 7:
+                //draggable code:
+                final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
+
+                //This code is for placing nodes
+                c.setOnMouseDragged(e -> {
+                    if (e.getSceneX() > paneBounds.getMinX() && e.getSceneX() < paneBounds.getMaxX()
+                            && e.getSceneY() > paneBounds.getMinY() && e.getSceneY() < paneBounds.getMaxY()) {
+                        c.setLayoutX((e.getSceneX() - paneBounds.getMinX()));
+                        c.setLayoutY((e.getSceneY() - paneBounds.getMinY()));
+                    }
+                });
                 break;
             default:
                 System.out.println("default. This probably should not have been possible...");
