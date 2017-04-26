@@ -20,11 +20,6 @@
          <top>
             <VBox BorderPane.alignment="CENTER">
                <children>
-                  <HBox>
-                     <children>
-                        <Region HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
                   <HBox styleClass="MainTitleColor">
                      <children>
                         <Button mnemonicParsing="false" styleClass="map-pin">
