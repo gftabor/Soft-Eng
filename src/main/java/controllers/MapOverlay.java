@@ -1,6 +1,9 @@
 package controllers;
 
+import javafx.event.EventHandler;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -25,6 +28,10 @@ public class MapOverlay {
     private Circle location;
     private static final double labelRadius = 6.8;
     private final double sizeUpRatio = 1.9;
+
+    private final double lineHighlightedStrokeW = 4.5;
+    private final double lineNonHighlightedStrokeW = 1.7;
+    private final double lineSizeUpRatio  = 1.5;
     mapScene sceneController;
 
     private ArrayList<Circle> ButtonList = new ArrayList<Circle>();
@@ -55,12 +62,12 @@ public class MapOverlay {
                 //  - node can be disabled and show in dev mode
                 //devs can see everything and interact with everything
                 if (devMode == true) {
-                    create_Button(current.getPosX(), current.getPosY(), current.getIsHidden(), current.getEnabled(), floor);
+                    create_Button(current, floor);
                 } else {
                     //if not dev mode:
                     //show only if enabled and not hidden
                     if (current.getIsHidden() == false && current.getEnabled() == true) {
-                        create_Button(current.getPosX(), current.getPosY(), false, true, floor);
+                        create_Button(current, floor);
                     }
                 }
                 //else skip displaying the node
@@ -70,9 +77,11 @@ public class MapOverlay {
         }
 
 
-    public void create_Button(int nodeX, int nodeY, boolean hidden, boolean enabled, int floor){
-        //System.out.println("checking button");
-        //System.out.println("make button");
+    public void create_Button(Node button, int floor){
+        int nodeX = button.getPosX();
+        int nodeY = button.getPosY();
+        boolean hidden = button.getIsHidden();
+        boolean enabled = button.getEnabled();
 
         Node current = MapController.getInstance().getCollectionOfNodes().getNode(nodeX, nodeY, floor);
         final String infoString;
@@ -83,10 +92,14 @@ public class MapOverlay {
 
         location = new Circle(labelRadius);
         location.setOnMouseClicked(e -> {
-
             Object o = e.getSource();
             Circle c = (Circle) o;
-            sceneController.sceneEvent((int)((nodeX)), (int)((nodeY)), c);
+
+            //only work for left click
+            if (e.getButton() == MouseButton.PRIMARY) {
+                sceneController.sceneEvent((int)((nodeX)), (int)((nodeY)), c);
+            }
+
         });
         location.setOnMouseEntered(e -> {
             Object o = e.getSource();
@@ -113,8 +126,29 @@ public class MapOverlay {
             location.setFill(Color.RED);
         } else if(hidden) {
             location.setFill(Color.GRAY);
+        }else if (button.getName().equals("Kiosk")){
+            System.out.println("Found Kiosk");
+            location.setFill(Color.ORANGE);
         }
 
+        location.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getButton() == MouseButton.SECONDARY){
+//                    // Create ContextMenu
+//                    ContextMenu contextMenu = new ContextMenu();
+//
+//                    MenuItem item1 = new MenuItem("Remove");
+//                    MenuItem item2 = new MenuItem("Edit");
+//                    // Add MenuItem to ContextMenu
+//                    contextMenu.getItems().addAll(item1, item2);
+//                    contextMenu.show(location, event.getScreenX(), event.getScreenY());
+                    Object o = event.getSource();
+                    Circle c = (Circle) o;
+                    sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c);
+                }
+            }
+        });
 
         ButtonList.add(location);
     }
@@ -129,7 +163,7 @@ public class MapOverlay {
     //creates visual representations of the edges of nodes on the pane
     //  input: any arraylist of Edge objects
     //NOTE: caller is responsible for not sending duplicate edges
-    public void createEdgeLines(ArrayList<controllers.Edge> edgeList, boolean highlighted) {
+    public void createEdgeLines(ArrayList<controllers.Edge> edgeList, boolean highlighted, boolean devmode) {
         //for-each loop through arraylist
         wipeEdgeLines();
         for(controllers.Edge thisEdge: edgeList) {
@@ -141,14 +175,45 @@ public class MapOverlay {
                 //maybe use colors???
             }
 
+            if (devmode) {
+                lne.setOnMouseClicked(e -> {
+                    if (e.getButton() == MouseButton.SECONDARY) {
+                        Object o = e.getSource();
+                        Line lne = (Line) o;
+                        //sceneController.EdgeEvent(lne.getStartX(), lne.getStartY());
+                        sceneController.edgeClickRemove((int)lne.getStartX(), (int)lne.getStartY(), (int)lne.getEndX(), (int)lne.getEndY());
+                    }
+                });
+
+                lne.setOnMouseEntered(e -> {
+                    Object o = e.getSource();
+                    Line lne = (Line) o;
+                    if (highlighted) {
+                        lne.setStrokeWidth(lineHighlightedStrokeW * lineSizeUpRatio);
+                    } else {
+                       lne.setStrokeWidth(lineNonHighlightedStrokeW * lineSizeUpRatio);
+                    }
+                });
+
+                lne.setOnMouseExited(e -> {
+                    Object o = e.getSource();
+                    Line lne = (Line) o;
+                    if (highlighted) {
+                        lne.setStrokeWidth(lineHighlightedStrokeW );
+                    } else {
+                        lne.setStrokeWidth(lineNonHighlightedStrokeW);
+                    }
+                });
+            }
+
             //config to display properly
             if(highlighted) {
                 lne.setFill(Color.RED);
                 lne.setStroke(Color.RED);
-                lne.setStrokeWidth(4.5);
+                lne.setStrokeWidth(lineHighlightedStrokeW);
             } else {
                 lne.setStroke(Color.BLACK);
-                lne.setStrokeWidth(0.7);
+                lne.setStrokeWidth(lineNonHighlightedStrokeW);
             }
 
             //add to pane
@@ -185,7 +250,7 @@ public class MapOverlay {
             }
         }
 
-        createEdgeLines(currentFloorEdges, false);
+        createEdgeLines(currentFloorEdges, false, false);
     }
 
     public static double getZoom() {
