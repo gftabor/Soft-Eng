@@ -5,10 +5,13 @@ import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
@@ -60,18 +63,23 @@ public class MapOverlay {
             currentPane.getChildren().remove(ButtonList.get(0));
             ButtonList.remove(0);
         }
+        boolean isStair = false;
         // Add all the nodes onto the scene as buttons
         for (controllers.Node current : nodeMap.values()) {
 
                 //  - node can be disabled and show in dev mode
                 //devs can see everything and interact with everything
                 if (devMode == true) {
-                    create_Button(current.getPosX(), current.getPosY(), current.getIsHidden(), current.getEnabled(), floor, devMode);
+                    if (current.getType().equals("Stair")){
+                       isStair = true;
+                    }
+                    create_Button(current.getPosX(), current.getPosY(), current.getIsHidden(), current.getEnabled(), floor, devMode, isStair);
+                    isStair = false;
                 } else {
                     //if not dev mode:
                     //show only if enabled and not hidden
                     if (current.getIsHidden() == false && current.getEnabled() == true) {
-                        create_Button(current.getPosX(), current.getPosY(), false, true, floor, devMode);
+                        create_Button(current.getPosX(), current.getPosY(), false, true, floor, devMode, false);
                     }
                 }
                 //else skip displaying the node
@@ -80,8 +88,9 @@ public class MapOverlay {
             wipeEdgeLines();
         }
 
+    final Image image = new Image("images/stairsImage.png");
 
-    public void create_Button(int nodeX, int nodeY, boolean hidden, boolean enabled, int floor, boolean devmode){
+    public void create_Button(int nodeX, int nodeY, boolean hidden, boolean enabled, int floor, boolean devmode, boolean isStair){
         //System.out.println("checking button");
         //System.out.println("make button");
 
@@ -92,17 +101,24 @@ public class MapOverlay {
                 "Room: " + current.getRoomNum() + "\n" +
                 "Type: " + current.getType();
 
-        location = new Circle(labelRadius);
-        location.setOnMouseClicked(e -> {
-            Object o = e.getSource();
-            Circle c = (Circle) o;
 
-            //only work for left click
-            if (e.getButton() == MouseButton.PRIMARY) {
-                sceneController.sceneEvent((int)((nodeX)), (int)((nodeY)), c);
+            location = new Circle(labelRadius);
+            if (isStair) {
+                location.setFill(new ImagePattern(image));
+//                root.getChildren().add(imageView);
+
             }
+            location.setOnMouseClicked(e -> {
+                Object o = e.getSource();
+                Circle c = (Circle) o;
 
-        });
+                //only work for left click
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    sceneController.sceneEvent((int)((nodeX)), (int)((nodeY)), c);
+                }
+
+            });
+
         location.setOnMouseEntered(e -> {
             Object o = e.getSource();
             Circle c = (Circle) o;
