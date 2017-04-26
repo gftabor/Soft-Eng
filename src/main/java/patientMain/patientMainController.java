@@ -220,6 +220,10 @@ public class patientMainController extends controllers.mapScene {
             event.consume();
         });
 
+
+        //Code used to pan around map. Works well with single click to pan. Has bugs when clicking again after
+        //already panning. It may have to do with how event handlers work because it seems as though calculations
+        //are being done for the setOnMouseDragged method before setOnMousePressed can update the dragOld values
         scrollPane.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -228,8 +232,6 @@ public class patientMainController extends controllers.mapScene {
                 System.out.println("not nuts");
             }
         });
-
-        //final Bounds stackBounds = scrollPane.localToScene(scrollPane.getBoundsInLocal());
 
         map_viewer.setOnMouseDragged(event ->  {
             //if (event.getSceneX() > stackBounds.getMinX() && event.getSceneX() < stackBounds.getMaxX() && event.getSceneY() > stackBounds.getMinY() && event.getSceneY() < stackBounds.getMaxY()) {
@@ -242,17 +244,16 @@ public class patientMainController extends controllers.mapScene {
                 if (dragOldY == 0) {
                     dragOldY = 0.01;
                 }
-                double deltaX = ((dragNewX / dragOldX) - 1.0) / 2;
-                double deltaY = ((dragNewY / dragOldY) - 1.0) / 2;
+                double deltaX = (dragNewX - dragOldX)/1000;
+                double deltaY = (dragNewY - dragOldY)/1000;
 
                 System.out.println(scrollPane.getHvalue() + "  " + scrollPane.getVvalue());
-
 
                 scrollPane.setHvalue(scrollPane.getHvalue() + deltaX);
                 scrollPane.setVvalue(scrollPane.getVvalue() + deltaY);
 
-                dragOldX = event.getX();
-                dragOldY = event.getY();
+                dragOldX = dragNewX;
+                dragOldY = dragNewY;
             //}
         });
     }
@@ -986,8 +987,8 @@ public class patientMainController extends controllers.mapScene {
     public void zoomInButton_Clicked() {
         zoom = controllers.MapOverlay.getZoom();
         System.out.println(zoom);
-        if (zoom < 1.6) {
-            zoom += 0.05;
+        if (zoom < 1.3) {
+            zoom += 0.03;
             controllers.MapOverlay.setZoom(zoom);
             node_Plane.setPrefWidth(origPaneWidth*zoom*widthRatio);
             node_Plane.setPrefHeight(origPaneHeight*zoom*heightRatio);
@@ -1009,7 +1010,7 @@ public class patientMainController extends controllers.mapScene {
         zoom = controllers.MapOverlay.getZoom();
         System.out.println(zoom);
         if (zoom > 1.0) {
-            zoom = zoom - 0.05;
+            zoom = zoom - 0.03;
             controllers.MapOverlay.setZoom(zoom);
             node_Plane.setPrefWidth(origPaneWidth*zoom*widthRatio);
             node_Plane.setPrefHeight(origPaneHeight*zoom*heightRatio);
