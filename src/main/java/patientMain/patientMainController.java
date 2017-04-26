@@ -29,6 +29,7 @@ import org.controlsfx.control.textfield.TextFields;
 
 import javax.sound.sampled.Clip;
 import java.net.StandardSocketOptions;
+import javax.xml.transform.Result;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
@@ -161,6 +162,7 @@ public class patientMainController extends controllers.mapScene {
 
     private final Color startColor = Color.RED;
     private final Color endColor = Color.GREEN;
+    private final Color kioskColor = Color.ORANGE;
 
     private double origPaneWidth;
     private double origPaneHeight;
@@ -171,11 +173,14 @@ public class patientMainController extends controllers.mapScene {
     double dragNewX, dragNewY, dragOldX, dragOldY;
     javafx.scene.Node selected;
 
+    private int permissionLevel;
+
     //ArrayList<Edge> zoomPath;
 
     @FXML
-    public void initialize(){
-        graph = new controllers.MapOverlay(node_Plane,(mapScene) this);
+    public void initialize() {
+        permissionLevel = 0;
+        graph = new controllers.MapOverlay(node_Plane, (mapScene) this);
         MapController.getInstance().requestMapCopy();
 
         //setLanguageChoices(c_language);
@@ -202,15 +207,18 @@ public class patientMainController extends controllers.mapScene {
         MapOverlay.setWidthRatio(widthRatio);
         MapOverlay.setHeightRatio(heightRatio);
 
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), false,
+                currentFloor, permissionLevel);
         //set continue button invisible when not needed
         continueNew_Button.setVisible(false);
         previous_Button.setVisible(false);
         second = true;
 
+        changeFloor(databaseController.GetKioskFloor() - 1);
+        floor_ChoiceBox.getSelectionModel().select(databaseController.GetKioskFloor() - 1);
+
         //draw edges
         //graph.drawFloorEdges(currentFloor);
-        
         origPaneHeight = 489;
         origPaneWidth = 920;
 
@@ -249,8 +257,8 @@ public class patientMainController extends controllers.mapScene {
 
                 System.out.println(scrollPane.getHvalue() + "  " + scrollPane.getVvalue());
 
-                scrollPane.setHvalue(scrollPane.getHvalue() + deltaX);
-                scrollPane.setVvalue(scrollPane.getVvalue() + deltaY);
+                scrollPane.setHvalue(scrollPane.getHvalue() - deltaX);
+                scrollPane.setVvalue(scrollPane.getVvalue() - deltaY);
 
                 dragOldX = dragNewX;
                 dragOldY = dragNewY;
@@ -261,8 +269,24 @@ public class patientMainController extends controllers.mapScene {
     //get an instance of database controller
     DatabaseController databaseController = DatabaseController.getInstance();
 
+    public void drawCircleList(ArrayList<Circle> circleList, double x, double y, Color color) {
+        for (Circle c : circleList) {
+            if (c.getLayoutX() == x && c.getLayoutY() == y) {
+                c.setStrokeWidth(strokeRatio);
+                c.setRadius(graph.getLabelRadius() * sizeUpRatio);
+                c.setStroke(color);
+                if (c.getFill().equals(kioskColor)) {
+                    c.setFill(kioskColor);
+                } else {
+                    c.setFill(color);
+                }
+                break;
+            }
+        }
+    }
+
     //Continue New Button Clicked
-    public void continueNewButton_Clicked(){
+    public void continueNewButton_Clicked() {
         if (continueNew_Button.isVisible() == true) {
             System.out.println("continue button clicked");
 
@@ -275,7 +299,7 @@ public class patientMainController extends controllers.mapScene {
             //update currentfloor
             currentFloor = globalFloorSequence.get(fragPathPos);
 
-            System.out.println("++++++++++++++++++++++++++++++=============+++++++++");
+            System.out.println("+++++++++++++++++++++++++++++++++++++++");
             System.out.println("current floor displayed: " + currentFloor);
             System.out.println("frag path pos updated to: " + fragPathPos);
             multifloorUpdate();
@@ -289,21 +313,13 @@ public class patientMainController extends controllers.mapScene {
                 ArrayList<Circle> circleList;
                 circleList = graph.getButtonList();
 
-                for (Circle c: circleList) {
-                    if(c.getLayoutX() == endX && c.getLayoutY() == endY) {
-                        c.setStrokeWidth(strokeRatio);
-                        c.setRadius(graph.getLabelRadius()*sizeUpRatio);
-                        c.setStroke(endColor);
-                        c.setFill(endColor);
-                        break;
-                    }
-                }
+                drawCircleList(circleList, endX, endY, endColor);
             }
         }
     }
 
-    //previoys Button clicked
-    public void previousButton_Clicked(){
+    //previous Button clicked
+    public void previousButton_Clicked() {
         System.out.println("prev button clicked");
 
         //show the continue button
@@ -326,20 +342,12 @@ public class patientMainController extends controllers.mapScene {
             ArrayList<Circle> circleList;
             circleList = graph.getButtonList();
 
-            for (Circle c: circleList) {
-                if(c.getLayoutX() == startX && c.getLayoutY() == startY) {
-                    c.setStrokeWidth(strokeRatio);
-                    c.setRadius(graph.getLabelRadius()*sizeUpRatio);
-                    c.setStroke(startColor);
-                    c.setFill(startColor);
-                    break;
-                }
-            }
+            drawCircleList(circleList, startX, startY, startColor);
         }
     }
 
     //Sets the choices for the language
-    public void setLanguage_ChoiceBox(){
+    public void setLanguage_ChoiceBox() {
         //Makes sure you only set the choices once
         //sets the choices and sets the current language as the top choice
         language_ChoiceBox.getItems().addAll("English", "Espanol");
@@ -371,24 +379,24 @@ public class patientMainController extends controllers.mapScene {
     }
 
     //Set the choices for Filter
-    public void setFilterChoices(){
+    public void setFilterChoices() {
         //Makes sure you only set the choices once
         //sets the choices and sets the current language as the top choice
-        if(c_language == 0) {
-            if(second) {
-                filter_ChoiceBox.getItems().remove(0,3);
+        if (c_language == 0) {
+            if (second) {
+                filter_ChoiceBox.getItems().remove(0, 3);
                 filter_ChoiceBox.getItems().addAll("All", "Employees", "Services");
                 filter_ChoiceBox.getSelectionModel().select(0);
-            }else{
+            } else {
                 filter_ChoiceBox.getItems().addAll("All", "Employees", "Services");
                 filter_ChoiceBox.getSelectionModel().select(0);
             }
-        }else if(c_language == 1){
-            if(second) {
-                filter_ChoiceBox.getItems().remove(0,3);
+        } else if (c_language == 1) {
+            if (second) {
+                filter_ChoiceBox.getItems().remove(0, 3);
                 filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios");
                 filter_ChoiceBox.getSelectionModel().select(0);
-            }else{
+            } else {
                 filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios");
                 filter_ChoiceBox.getSelectionModel().select(0);
             }
@@ -411,10 +419,10 @@ public class patientMainController extends controllers.mapScene {
                         } else if (newValue.intValue() == 2) {
                             //Load services
 
-                        }else if(newValue.intValue() == 3){
+                        } else if (newValue.intValue() == 3) {
                             //load frequently searched
 
-                        }else if(newValue.intValue() == 4){
+                        } else if (newValue.intValue() == 4) {
                             //Miscellaneous
                         }
                     }
@@ -422,6 +430,78 @@ public class patientMainController extends controllers.mapScene {
                 });
     }
 
+    public void changeFloor(Number newValue) {
+        boolean outside = false;
+        String currentF = "";
+        //Print the floors accordingly
+        //CODE HERE!!!!!!!
+
+        if (newValue.intValue() == 7) {
+            //outside
+            currentFloor = 0;
+        } else if(newValue.intValue() > 7) {
+            currentFloor = newValue.intValue();
+        } else {
+            currentFloor = newValue.intValue() + 1;
+        }
+        System.out.println("currentfloor updated to: " + currentFloor);
+
+        if (currentFloor == 0) {
+            System.out.println("outside");
+            outside = true;
+            if (c_language == 0) {
+                currentF = "Outside";
+            } else {
+                currentF = "Afuera";
+            }
+        }
+
+        if (currentFloor == 8) {
+            //outside
+            outside = true;
+            currentF = "Belkin 1";
+
+        } else if (currentFloor == 9) {
+            //belkin
+            outside = true;
+            currentF = "Belkin 2";
+
+        } else if (currentFloor == 10) {
+            outside = true;
+            currentF = "Belkin 3";
+
+        } else if (currentFloor == 11) {
+            outside = true;
+            currentF = "Belkin 4";
+
+        } else if (currentFloor == 12) {
+            outside = true;
+            if (c_language == 0) {
+                currentF = "Belkin Basement";
+            } else {
+                currentF = "Sotano de Belkin";
+            }
+        }
+
+
+        mapImage newMapImage = new proxyMap(currentFloor);
+        newMapImage.display(map_viewer);
+
+        if (!outside) {
+            c_Floor_Label.setText(Integer.toString(currentFloor));
+            if (c_language == 0) {
+                floor_Label.setText("Floor");
+            } else {
+                floor_Label.setText("Piso");
+            }
+        } else {
+            c_Floor_Label.setText("");
+            floor_Label.setText(currentF);
+        }
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), false,
+                currentFloor, permissionLevel);
+
+    }
 
 
     //Sets the map of the desired floor
@@ -459,76 +539,8 @@ public class patientMainController extends controllers.mapScene {
         floor_ChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                boolean outside = false;
-                String currentF = "";
-                //Print the floors accordingly
-                //CODE HERE!!!!!!!
-                
-                if (newValue.intValue() == 7) {
-                    //outside
-                    currentFloor = 0;
-                } else if(newValue.intValue() > 7) {
-                    currentFloor = newValue.intValue();
-                } else {
-                    currentFloor = newValue.intValue() + 1;
+                changeFloor(newValue);
                 }
-                System.out.println("currentfloor updated to: " + currentFloor);
-
-                if (currentFloor == 0) {
-                    System.out.println("outside");
-                    outside = true;
-                    if (c_language == 0) {
-                        currentF = "Outside";
-                    } else {
-                        currentF = "Afuera";
-                    }
-                }
-
-                if (currentFloor == 8) {
-                    //outside
-                    outside = true;
-                    currentF = "Belkin 1";
-
-                } else if (currentFloor == 9) {
-                    //belkin
-                    outside = true;
-                    currentF = "Belkin 2";
-
-                } else if (currentFloor == 10) {
-                    outside = true;
-                    currentF = "Belkin 3";
-
-                } else if (currentFloor == 11) {
-                    outside = true;
-                    currentF = "Belkin 4";
-
-                } else if (currentFloor == 12) {
-                    outside = true;
-                    if (c_language == 0) {
-                        currentF = "Belkin Basement";
-                    } else {
-                        currentF = "Sotano de Belkin";
-                    }
-                }
-
-
-                mapImage newMapImage = new proxyMap(currentFloor);
-                newMapImage.display(map_viewer);
-
-                if (!outside) {
-                    c_Floor_Label.setText(Integer.toString(currentFloor));
-                    if (c_language == 0) {
-                        floor_Label.setText("Floor");
-                    } else {
-                        floor_Label.setText("Piso");
-                    }
-                } else {
-                    c_Floor_Label.setText("");
-                    floor_Label.setText(currentF);
-                }
-                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), false, currentFloor);
-            }
-
         });
 
     }
@@ -592,8 +604,8 @@ public class patientMainController extends controllers.mapScene {
                 multiFloorPathfind();
             } else {
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                path = mapController.requestPath();
-                graph.createEdgeLines(path, true);
+                path = mapController.requestPath(permissionLevel);
+                graph.createEdgeLines(path, true, false);
                 //zoomPath = path;
                 controllers.MapOverlay.setPathfinding(1);
                 textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
@@ -640,8 +652,8 @@ public class patientMainController extends controllers.mapScene {
                     //no multifloor pathfinding (simple)
 
                     MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                    ArrayList<Edge> path = mapController.requestPath();
-                    graph.createEdgeLines(path, true);
+                    ArrayList<Edge> path = mapController.requestPath(permissionLevel);
+                    graph.createEdgeLines(path, true, false);
                     textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
                 }
             }
@@ -677,20 +689,13 @@ public class patientMainController extends controllers.mapScene {
         //maintain consistency of colors
         ArrayList<Circle> tempCircleList;
         tempCircleList = graph.getButtonList();
-        for (Circle c: tempCircleList) {
-            if(c.getLayoutX() == startX && c.getLayoutY() == startY) {
-                c.setStrokeWidth(strokeRatio);
-                c.setRadius(graph.getLabelRadius()*sizeUpRatio);
-                c.setStroke(startColor);
-                c.setFill(startColor);
-                break;
-            }
-        }
+
+        drawCircleList(tempCircleList, startX, startY, startColor);
 
 
         //reset for next pathfinding session
         MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-        ArrayList<Edge> reqPath = mapController.requestPath();
+        ArrayList<Edge> reqPath = mapController.requestPath(permissionLevel);
         if (reqPath == null) { //can't find path, reset
             System.out.println("Could not pathfind. Resetting now...");
             cancelButton_Clicked();
@@ -710,7 +715,7 @@ public class patientMainController extends controllers.mapScene {
                 //todo -> highlight
 
             } else {
-                graph.createEdgeLines(fragPath.get(0), true);
+                graph.createEdgeLines(fragPath.get(0), true, false);
                 controllers.MapOverlay.setPathfinding(2);
             }
 
@@ -769,7 +774,8 @@ public class patientMainController extends controllers.mapScene {
 
         //Remove colored dots from map
 
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false,
+                currentFloor, permissionLevel);
         c_Floor_Label.setText(Integer.toString(currentFloor));
 
         //wipe line from map
@@ -859,6 +865,12 @@ public class patientMainController extends controllers.mapScene {
     }
 
 
+    public void rightClickEvent(int x, int y, Circle c, int mode) {
+        System.out.println("Right click event");
+    }
+    public void edgeClickRemove(int x1, int y1, int x2, int y2){}
+    public void showStairMenu(int x, int y, Circle c) {}
+
     public void sceneEvent(int x, int y, Circle c){
         //set selectionstate
         if (!usingMap) {
@@ -867,13 +879,21 @@ public class patientMainController extends controllers.mapScene {
                 //reset the map display
                 if(start != null) {
                     start.setStroke(Color.BLACK);
-                    start.setFill(Color.BLACK);
+                    if(start.getFill().equals(kioskColor)){
+                        start.setFill(kioskColor);
+                    }else {
+                        start.setFill(Color.BLACK);
+                    }
                     start.setStrokeWidth(1);
                     start.setRadius(graph.getLabelRadius());
                 }
                 if(end != null) {
                     end.setStroke(Color.BLACK);
-                    end.setFill(Color.BLACK);
+                    if(end.getFill().equals(kioskColor)){
+                        end.setFill(kioskColor);
+                    }else {
+                        end.setFill(Color.BLACK);
+                    }
                     end.setStrokeWidth(1);
                     end.setRadius(graph.getLabelRadius());
                 }
@@ -893,13 +913,21 @@ public class patientMainController extends controllers.mapScene {
             selectionState++;
             if(start != null) {
                 start.setStroke(Color.BLACK);
-                start.setFill(Color.BLACK);
+                if(c.getFill().equals(kioskColor)){
+                    c.setFill(kioskColor);
+                }else {
+                    c.setFill(Color.BLACK);
+                }
                 start.setStrokeWidth(1);
                 start.setRadius(graph.getLabelRadius());
             }
             if(end != null) {
                 end.setStroke(Color.BLACK);
-                end.setFill(Color.BLACK);
+                if(c.getFill().equals(kioskColor)){
+                    c.setFill(kioskColor);
+                }else {
+                    c.setFill(Color.BLACK);
+                }
                 end.setStrokeWidth(1);
                 end.setRadius(graph.getLabelRadius());
             }
@@ -910,7 +938,12 @@ public class patientMainController extends controllers.mapScene {
             //color
             c.setStrokeWidth(strokeRatio);
             c.setStroke(startColor);
-            c.setFill(startColor);
+            if(c.getFill().equals(kioskColor)){
+                c.setFill(kioskColor);
+            }else {
+                c.setFill(startColor);
+            }
+
 
             //location
             startX = c.getLayoutX();
@@ -930,7 +963,12 @@ public class patientMainController extends controllers.mapScene {
             //color
             c.setStrokeWidth(strokeRatio);
             c.setStroke(endColor);
-            c.setFill(endColor);
+            if(c.getFill().equals(kioskColor)){
+                c.setFill(kioskColor);
+            }else {
+                c.setFill(endColor);
+            }
+
 
             //location
             endX = c.getLayoutX();
@@ -980,7 +1018,7 @@ public class patientMainController extends controllers.mapScene {
         }
         controllers.MapOverlay.setPathfinding(0);
         System.out.println("creating edge lines for fp pos: " + fragPathPos);
-        graph.createEdgeLines(globalFragList.get(fragPathPos), true);
+        graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
         controllers.MapOverlay.setPathfinding(2);
     }
 
@@ -996,12 +1034,12 @@ public class patientMainController extends controllers.mapScene {
             map_viewer.setFitHeight(origPaneHeight*zoom*heightRatio);
 
             graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
-                    false, currentFloor);
+                    false, currentFloor, permissionLevel);
         }
         if (controllers.MapOverlay.getPathfinding() == 1) {
-            graph.createEdgeLines(path, true);
+            graph.createEdgeLines(path, true, false);
         } else if (controllers.MapOverlay.getPathfinding() == 2) {
-            graph.createEdgeLines(globalFragList.get(fragPathPos), true);
+            graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
         }
 
     }
@@ -1012,24 +1050,24 @@ public class patientMainController extends controllers.mapScene {
         if (zoom > 1.0) {
             zoom = zoom - 0.03;
             controllers.MapOverlay.setZoom(zoom);
-            node_Plane.setPrefWidth(origPaneWidth*zoom*widthRatio);
-            node_Plane.setPrefHeight(origPaneHeight*zoom*heightRatio);
-            map_viewer.setFitWidth(origPaneWidth*zoom*widthRatio);
-            map_viewer.setFitHeight(origPaneHeight*zoom*heightRatio);
-
-            graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
-                    false, currentFloor);
+            node_Plane.setPrefWidth(origPaneWidth * zoom * widthRatio);
+            node_Plane.setPrefHeight(origPaneHeight * zoom * heightRatio);
+            map_viewer.setFitWidth(origPaneWidth * zoom * widthRatio);
+            map_viewer.setFitHeight(origPaneHeight * zoom * heightRatio);
         }
+
+        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
+                false, currentFloor, permissionLevel);
         if (controllers.MapOverlay.getPathfinding() == 1) {
-            graph.createEdgeLines(path, true);
+            graph.createEdgeLines(path, true, false);
         } else if (controllers.MapOverlay.getPathfinding() == 2) {
-            graph.createEdgeLines(globalFragList.get(fragPathPos), true);
+            graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
         }
     }
 
     public void mapScroll(ScrollEvent event) {
             zoom = MapOverlay.getZoom();
-            if (event.getDeltaY() < 0) {
+            if (event.getDeltaY() > 0) {
                 if (zoom < 1.3) {
                     zoom += 0.03;
                     controllers.MapOverlay.setZoom(zoom);
@@ -1039,9 +1077,9 @@ public class patientMainController extends controllers.mapScene {
                     map_viewer.setFitHeight(origPaneHeight*zoom*heightRatio);
 
                     graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
-                            false, currentFloor);
+                            false, currentFloor, permissionLevel);
                 }
-            } else if (event.getDeltaY() > 0) {
+            } else if (event.getDeltaY() < 0) {
                 if (zoom > 1.0) {
                     zoom = zoom - 0.03;
                     controllers.MapOverlay.setZoom(zoom);
@@ -1051,13 +1089,13 @@ public class patientMainController extends controllers.mapScene {
                     map_viewer.setFitHeight(origPaneHeight*zoom*heightRatio);
 
                     graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
-                            false, currentFloor);
+                            false, currentFloor, permissionLevel);
                 }
             }
             if (controllers.MapOverlay.getPathfinding() == 1) {
-                graph.createEdgeLines(path, true);
+                graph.createEdgeLines(path, true, false);
             } else if (controllers.MapOverlay.getPathfinding() == 2) {
-                graph.createEdgeLines(globalFragList.get(fragPathPos), true);
+                graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
             }
     }
 }
