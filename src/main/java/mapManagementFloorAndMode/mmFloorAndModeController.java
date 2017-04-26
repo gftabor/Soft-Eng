@@ -227,8 +227,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
                         DBController.DatabaseController.getInstance().updateNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
                                 currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom);
                         pop.hide();
+                        admin_FloorPane.getChildren().remove(btK);
                         resetScreen();
-                    } else {
+                    } else if (mode.equals("Create")){
                         Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
                                 currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom);
                         DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
@@ -327,13 +328,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 break;
             case 2:  // edit node
                 PopOver pop = new PopOver();
-                for (javafx.scene.Node n : admin_FloorPane.getChildren()){
-                    if (n.getLayoutX() == x && n.getLayoutY() == y){
-                        createPop(pop, (Circle) n, "Edit");
-                        pop.show(n);
-                    }
-                }
-
+                createPop(pop, c, "Edit");
+                pop.show(c);
                 break;
             case 3:
                 MapController.getInstance().attachSurroundingNodes(x, y, currentFloor);
