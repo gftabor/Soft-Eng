@@ -11,10 +11,14 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TreeView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
@@ -39,6 +43,11 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" text="Set Map">
+                           <HBox.margin>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
                         <Button mnemonicParsing="false" prefWidth="150.0" text="About">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
@@ -54,13 +63,18 @@
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
+                        <Button mnemonicParsing="false" text="?">
+                           <HBox.margin>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
                      </children>
                   </HBox>
                </children>
             </VBox>
          </top>
          <left>
-            <VBox minWidth="-Infinity" prefHeight="706.0" prefWidth="314.0" styleClass="color-palette" BorderPane.alignment="CENTER">
+            <VBox minWidth="-Infinity" prefHeight="655.0" prefWidth="314.0" styleClass="color-palette" BorderPane.alignment="CENTER">
                <children>
                   <VBox minWidth="-Infinity" prefHeight="100.0" prefWidth="283.0" styleClass="color-palette2">
                      <children>
@@ -160,14 +174,51 @@
             </VBox>
          </left>
          <center>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-              </content>
+            <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                     <content>
+                        <Pane prefHeight="701.0" prefWidth="1043.0">
+                           <children>
+                              <ImageView fitHeight="704.0" fitWidth="818.0" layoutX="-2.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="../images/4.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                     </content>
+                  </ScrollPane>
+                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="info" text="-" StackPane.alignment="CENTER_RIGHT">
+                     <StackPane.margin>
+                        <Insets right="10.0" top="35.0" />
+                     </StackPane.margin>
+                  </Button>
+                  <ChoiceBox prefWidth="50.0" styleClass="menu" StackPane.alignment="TOP_LEFT">
+                     <StackPane.margin>
+                        <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                     </StackPane.margin>
+                  </ChoiceBox>
+                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="info" text="+" StackPane.alignment="CENTER_RIGHT">
+                     <StackPane.margin>
+                        <Insets right="10.0" top="-35.0" />
+                     </StackPane.margin>
+                  </Button>
+                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="menu" text="&lt;" StackPane.alignment="TOP_RIGHT">
+                     <StackPane.margin>
+                        <Insets right="45.0" top="5.0" />
+                     </StackPane.margin>
+                  </Button>
+                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="menu" text="&gt;" StackPane.alignment="TOP_RIGHT">
+                     <StackPane.margin>
+                        <Insets right="10.0" top="5.0" />
+                     </StackPane.margin>
+                  </Button>
+               </children>
                <BorderPane.margin>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="4.0" />
+                  <Insets bottom="5.0" left="5.0" right="2.0" top="2.0" />
                </BorderPane.margin>
-            </ScrollPane>
+            </StackPane>
          </center>
       </BorderPane>
    </children>
