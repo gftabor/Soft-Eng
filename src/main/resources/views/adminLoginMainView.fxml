@@ -19,7 +19,7 @@
          <center>
             <VBox alignment="CENTER" maxWidth="500.0" prefHeight="324.0" prefWidth="337.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label fx:id="adminTitle_Label" alignment="TOP_CENTER" text="Admin Login" textFill="WHITE">
+                  <Label fx:id="adminTitle_Label" alignment="TOP_CENTER" text="Admin Login">
                      <font>
                         <Font size="36.0" />
                      </font>
