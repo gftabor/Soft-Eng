@@ -5,10 +5,19 @@
 .button:focused, .toggle-button:focused,
 .split-menu-button:focused, .menu-button:focused,
 .number-button:focused,
-.combo-box:focused .text-field, .choice-box:focused, .color-picker:focused, .date-picker:focused .text-field
+.combo-box:focused .text-field, .color-picker:focused, .date-picker:focused .text-field
 {
     -fx-effect: dropshadow(gaussian, #b4d1f3, 3, 3, 0, 0);
 }
+
+
+.choice-box:focused{
+    -fx-effect: #b1b1b1;
+}
+
+
+
+
 .combo-box:focused * {
     -fx-effect: none;
 }
@@ -21,20 +30,28 @@
     -fx-min-width: 30;
 }
 .button{
-    -fx-font-size: 14;
+    -fx-font-size: 13;
     -fx-background-radius: 4;
     -fx-border-radius: 4;
     -fx-pref-height: 30;
     -fx-min-width: 30;
 
 }
-
-
-
 .label{
-    -fx-font-size: 15;
-
+    -fx-font-size: 13;
 }
+.text-D{
+    -fx-font-size: 15px;
+    -fx-font-family: "Latin Black";
+    -fx-font-weight: bold;
+}
+.mainTitle{
+    -fx-font-size: 20px;
+    -fx-font-family: "Latin Black";
+    -fx-font-weight: bold;
+}
+
+
 
 .button,.menu-button,.split-menu-button,.toggle-button,.number-button {
     -fx-background-insets: 0, 0, -1, 0;
@@ -109,6 +126,19 @@ VBox > .text-field.first,
 VBox > .text-area.first {
     -fx-border-radius: 4 4 0 0;
     -fx-background-radius: 4 4 0 0;
+}
+
+/*Modified the list view everywhere*/
+ListView >{
+    -fx-font-size: 12px;
+    -fx-border-color: #c9c9c9;
+    -fx-font-family: "Latin Black";
+    -fx-font-weight: bold;
+
+}
+TreeView>{
+    d
+
 }
 
 VBox > .split-menu-button.first > .label {
@@ -197,7 +227,7 @@ VBox > .split-menu-button.last > .arrow-button {
 /*hover state*/
 .color-picker:hover,
 .date-picker:hover > .arrow-button,
-.combo-box:hover,.choice-box:hover,
+.combo-box:hover,
 .number-button:hover,.left-arrow-button:hover,.right-arrow-button:hover,
 .button:hover,.menu-button:hover,.toggle-button:hover,
 .font-menu-button:hover,
@@ -205,12 +235,15 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-background-color: #e6e6e6;
     -fx-border-color: #acacac;
 }
+.choice-box:hover{
+    -fx-background-color: #a1a1a1;
+}
+
 /*pressed selected*/
 .color-picker:pressed,.color-picker:selected,
 .number-button:pressed,.number-button:selected,
 .date-picker:pressed > .arrow-button,
 .combo-box:pressed > .arrow-button,.combo-box:selected > .arrow-button,
-.choice-box:pressed > .arrow-button,.choice-box:selected > .arrow-button,
 .font-menu-button:pressed,.font-menu-button:selected,
 .left-arrow-button:pressed,.left-arrow-button:selected,
 .right-arrow-button:pressed,.right-arrow-button:selected,
@@ -220,6 +253,9 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-background-color: #e6e6e6;
     -fx-border-color: #acacac;
     -fx-effect: innershadow(gaussian, #adadad, 10, 0, 0, 3);
+}
+.choice-box:pressed > .arrow-button,.choice-box:selected > .arrow-button{
+    -fx-background-color: #b1b1b1;
 }
 
 /*primary*/
@@ -370,6 +406,10 @@ VBox > .split-menu-button.last > .arrow-button {
 .button.danger,.split-menu-button.danger,.toggle-button.danger,.menu-button.danger,
 .split-menu-button.danger > .label, .split-menu-button.danger > .arrow-button {
     -fx-background-color: #d9534f;
+    -fx-font-size: 15px;
+    -fx-border-color: #c9c9c9;
+    -fx-font-family: "Latin Black";
+    -fx-font-weight: bold;
 }
 
 .button.danger,.menu-button.danger,.toggle-button.danger,
@@ -435,7 +475,8 @@ VBox > .split-menu-button.last > .arrow-button {
 
 .combo-box, .choice-box {
     -fx-background-insets: 0;
-    -fx-border-color: #cecece;
+    -fx-body-color: #b1b1b1;
+    -fx-border-color: #b1b1b1;
     -fx-padding: -1;
     -fx-border-width: 1;
 }
@@ -646,8 +687,8 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-background-color: #b1b1b1, #e0dede;
     -fx-background-insets: 0, 2;
    /* -fx-effect: dropshadow( two-pass-box, rgba(0, 0, 0, 0.5), 10, 0.0, 0, 10 ); */
-    -fx-pref-width: 24;
-    -fx-pref-height: 36;
+    -fx-pref-width: 3;
+    -fx-pref-height: 6;
 }
 .map-pin .arrow-button .arrow {
     -fx-padding: 0;
@@ -676,14 +717,32 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-background-color: tomato;
     -fx-translate-x: -50%;
     -fx-translate-y: -50%;
-
-
 }
-
 .color-palette4:hover{
     -fx-background-color: black;
 
 }
+
+/*Testing tables to make it prettier*/
+.color-palette5{
+
+}
+.color-palette5:hover{
+
+}
+.color-palette5:focused{
+
+}
+
+/*.show-hide-columns-button2 {
+    -fx-border-width: 0;
+    -fx-background-insets: 0 0 0 0;
+    -fx-background-color: #e0dede;
+}
+/*Makes that surrounding the same color of the background after clicked*/
+/*.show-hide-columns-button2:focused{
+    -fx-effect: dropshadow(gaussian, #e0dede, 0, 0, 0, 0);
+}*/
 
 
 
@@ -895,11 +954,20 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-border-width: 0;
     -fx-background-insets: 0 0 1 1;
 }
+
+
+/*Text Fields from the camin*/
 .show-hide-columns-button2 {
     -fx-border-width: 0;
     -fx-background-insets: 0 0 0 0;
     -fx-background-color: #e0dede;
 }
+/*Makes that surrounding the same color of the background after clicked*/
+.show-hide-columns-button2:focused{
+    -fx-effect: dropshadow(gaussian, #e0dede, 0, 0, 0, 0);
+}
+
+
 
 
 .column-header:hover,.show-hide-columns-button:hover {

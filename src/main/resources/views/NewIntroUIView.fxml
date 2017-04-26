@@ -6,16 +6,17 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NewIntroUI.NewIntroUIController">
@@ -27,7 +28,7 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label text="Welcome to Brigham and Women's Faulkner Hospital">
+                        <Label styleClass="mainTitle" text="Welcome to Brigham and Women's Faulkner Hospital">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -59,9 +60,9 @@
             </VBox>
          </top>
          <left>
-            <VBox prefHeight="674.0" prefWidth="351.0" styleClass="color-palette" BorderPane.alignment="CENTER">
+            <VBox minWidth="-Infinity" prefHeight="706.0" prefWidth="314.0" styleClass="color-palette" BorderPane.alignment="CENTER">
                <children>
-                  <VBox styleClass="color-palette2">
+                  <VBox minWidth="-Infinity" prefHeight="100.0" prefWidth="283.0" styleClass="color-palette2">
                      <children>
                         <HBox>
                            <children>
@@ -71,10 +72,11 @@
                                     <Insets left="6.0" top="6.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField prefWidth="270.0" styleClass="show-hide-columns-button2">
+                              <TextField prefWidth="200.0" styleClass="show-hide-columns-button2">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin></TextField>
+                              <Region HBox.hgrow="ALWAYS" />
                               <Region HBox.hgrow="ALWAYS" />
                               <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="info" text="x" textAlignment="CENTER">
                                  <HBox.margin>
@@ -83,7 +85,7 @@
                               </Button>
                            </children>
                         </HBox>
-                        <Line endX="100.0" startX="-280.0" stroke="#9e9e9e" />
+                        <Line endX="100.0" startX="-186.0" stroke="#9e9e9e" />
                         <HBox>
                            <children>
                               <Label />
@@ -92,11 +94,12 @@
                                     <Insets left="6.0" top="6.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField prefWidth="270.0" styleClass="show-hide-columns-button2">
+                              <TextField prefWidth="210.0" styleClass="show-hide-columns-button2">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
                               </TextField>
+                              <Region HBox.hgrow="ALWAYS" />
                               <Region HBox.hgrow="ALWAYS" />
                               <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="info" text="x" textAlignment="CENTER">
                                  <HBox.margin>
@@ -110,49 +113,61 @@
                         </HBox>
                         <HBox styleClass="color-palette3">
                            <children>
+                              <Button mnemonicParsing="false" styleClass="menu" text="Options:">
+                                 <HBox.margin>
+                                    <Insets right="2.0" top="1.0" />
+                                 </HBox.margin></Button>
                               <Region HBox.hgrow="ALWAYS" />
+                              <ChoiceBox prefWidth="100.0" styleClass="menu" />
                               <Button mnemonicParsing="false" styleClass="menu" text="&lt;&gt;">
                                  <HBox.margin>
-                                    <Insets right="4.0" />
+                                    <Insets right="4.0" top="1.0" />
                                  </HBox.margin></Button>
-                              <Button mnemonicParsing="false" styleClass="menu" text="Options">
+                              <Button mnemonicParsing="false" styleClass="menu" text="Submit">
                                  <HBox.margin>
-                                    <Insets right="2.0" />
-                                 </HBox.margin></Button>
+                                    <Insets right="2.0" top="1.0" />
+                                 </HBox.margin>
+                              </Button>
                            </children>
                         </HBox>
                      </children>
                   </VBox>
-                  <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+                  <TabPane prefHeight="433.0" prefWidth="381.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                       <Tab text="Locations">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="163.0" prefWidth="381.0">
+                           <content>
+                              <TreeView prefHeight="200.0" prefWidth="200.0" />
+                           </content>
+                      </Tab>
+                        <Tab text="Text Directions">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="393.0" prefWidth="143.0">
                                  <children>
-                                    <ListView layoutX="-1.0" layoutY="-4.0" prefHeight="173.0" prefWidth="384.0" styleClass="color-palette" />
+                                    <ListView layoutX="-3.0" prefHeight="311.0" prefWidth="293.0" />
+                                    <Label layoutX="34.0" layoutY="324.0" styleClass="text-D" text="Send directions to my phone" />
+                                    <TextField layoutX="11.0" layoutY="345.0" prefWidth="200.0" promptText="123456789" />
+                                    <Button layoutX="212.0" layoutY="345.0" mnemonicParsing="false" styleClass="primary" text="Button" />
                                  </children>
                               </AnchorPane>
-                        </content>
-                      </Tab>
-                      <Tab text="Text Directions">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                        </content>
-                      </Tab>
+                          </content>
+                        </Tab>
                     </tabs>
                   </TabPane>
-                  <Button mnemonicParsing="false" prefHeight="47.0" prefWidth="30.0" styleClass="map-pin" />
                </children>
                <BorderPane.margin>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                  <Insets bottom="5.0" left="5.0" right="2.0" top="2.0" />
                </BorderPane.margin>
             </VBox>
          </left>
-         <bottom>
-            <ChoiceBox prefWidth="150.0" BorderPane.alignment="CENTER" />
-         </bottom>
          <center>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#898989" height="200.0" stroke="BLACK" strokeType="INSIDE" width="200.0" BorderPane.alignment="CENTER" />
+            <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+              </content>
+               <BorderPane.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="4.0" />
+               </BorderPane.margin>
+            </ScrollPane>
          </center>
       </BorderPane>
    </children>
