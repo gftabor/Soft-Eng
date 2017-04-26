@@ -16,17 +16,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adminSignUp.adminSignUpController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" style="-fx-padding: 20px;" stylesheets="@../css/bootstrap3.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adminSignUp.adminSignUpController">
    <children>
-      <BorderPane layoutX="1.0" layoutY="1.0" prefHeight="709.0" prefWidth="1274.0" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="1.0">
+      <BorderPane layoutX="1.0" layoutY="1.0" prefHeight="709.0" prefWidth="1274.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
                <children>
-                  <Label fx:id="currentAdmin_Label" text="Current Admin" />
+                  <Label fx:id="currentAdmin_Label" text="Current Admin: " />
                   <Region HBox.hgrow="ALWAYS" />
-                  <Label fx:id="mainTitle_Label" text="Admin Management" />
+                  <Label fx:id="mainTitle_Label" style="-fx-font-size: 26px;" text="Admin Management" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <Button fx:id="MainMenu_Button" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="26.0" prefWidth="184.0" text="Main Menu">
+                  <Button fx:id="MainMenu_Button" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="26.0" prefWidth="184.0" styleClass="info" text="Main Menu">
                      <HBox.margin>
                         <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                      </HBox.margin>
@@ -38,9 +38,9 @@
             <URL value="@../css/styles.css" />
          </stylesheets>
          <center>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <TableView fx:id="Table_TableView" fixedCellSize="0.0" prefHeight="587.0" prefWidth="976.0" tableMenuButtonVisible="true">
+                  <TableView fx:id="Table_TableView" fixedCellSize="0.0" prefHeight="587.0" prefWidth="976.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="ID_TableColumn" prefWidth="90.3900146484375" text="ID" />
                       <TableColumn fx:id="username_TableColumn" prefWidth="252.547607421875" text="Username" />
@@ -48,7 +48,7 @@
                         <TableColumn fx:id="lastName_TableColumn" minWidth="0.0" prefWidth="274.24737548828125" text="Last Name" />
                     </columns>
                   </TableView>
-                  <Label fx:id="queryStatus" text="Query Status" />
+                  <Label fx:id="queryStatus" text="Query Status: " />
                </children>
                <BorderPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -209,7 +209,7 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Label fx:id="password_Label" prefHeight="68.0" prefWidth="169.0" text="New Password " wrapText="true">
+                        <Label fx:id="password_Label" prefWidth="160.0" text="New Password " wrapText="true">
                            <font>
                               <Font name="System Bold Italic" size="23.0" />
                            </font>
@@ -230,13 +230,13 @@
                   <HBox />
                   <HBox>
                      <children>
-                        <Button fx:id="cancel_Button" mnemonicParsing="false" onMouseClicked="#cancelButton_Clicked" prefHeight="20.0" prefWidth="100.0" text="Clear">
+                        <Button fx:id="cancel_Button" mnemonicParsing="false" onMouseClicked="#cancelButton_Clicked" prefHeight="20.0" prefWidth="100.0" styleClass="warning" text="Clear">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="submit_Button" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" prefHeight="20.0" prefWidth="100.0" text="Submit">
+                        <Button fx:id="submit_Button" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" prefHeight="20.0" prefWidth="100.0" styleClass="primary" text="Submit">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -251,7 +251,4 @@
          </left>
       </BorderPane>
    </children>
-   <stylesheets>
-      <URL value="@../css/styles.css" />
-   </stylesheets>
 </AnchorPane>
