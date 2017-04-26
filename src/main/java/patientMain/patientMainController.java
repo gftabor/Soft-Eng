@@ -248,8 +248,8 @@ public class patientMainController extends controllers.mapScene {
                 System.out.println(scrollPane.getHvalue() + "  " + scrollPane.getVvalue());
 
 
-                scrollPane.setHvalue(scrollPane.getHvalue() + deltaX);
-                scrollPane.setVvalue(scrollPane.getVvalue() + deltaY);
+                scrollPane.setHvalue(scrollPane.getHvalue() - deltaX);
+                scrollPane.setVvalue(scrollPane.getVvalue() - deltaY);
 
                 dragOldX = event.getX();
                 dragOldY = event.getY();
@@ -1028,7 +1028,7 @@ public class patientMainController extends controllers.mapScene {
 
     public void mapScroll(ScrollEvent event) {
             zoom = MapOverlay.getZoom();
-            if (event.getDeltaY() < 0) {
+            if (event.getDeltaY() > 0) {
                 if (zoom < 1.3) {
                     zoom += 0.03;
                     controllers.MapOverlay.setZoom(zoom);
@@ -1040,7 +1040,7 @@ public class patientMainController extends controllers.mapScene {
                     graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
                             false, currentFloor);
                 }
-            } else if (event.getDeltaY() > 0) {
+            } else if (event.getDeltaY() < 0) {
                 if (zoom > 1.0) {
                     zoom = zoom - 0.03;
                     controllers.MapOverlay.setZoom(zoom);
