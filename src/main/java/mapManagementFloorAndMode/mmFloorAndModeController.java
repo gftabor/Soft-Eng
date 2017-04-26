@@ -22,6 +22,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import org.controlsfx.control.PopOver;
+import org.controlsfx.control.textfield.TextFields;
 
 
 import javax.xml.soap.Text;
@@ -193,8 +194,14 @@ public class mmFloorAndModeController extends controllers.mapScene{
         AnchorPane anchorpane = new AnchorPane();
         Button buttonSave = new Button("Save");
         Button buttonCancel = new Button("Cancel");
+        Label nameLabel = new Label("Name");
+        Label typeLabel = new Label("Type");
+        Label roomLabel = new Label("Room Number");
         TextField nodeName = new TextField();
         TextField nodeType = new TextField();
+        ArrayList<String> types = new ArrayList<>();
+        types = databaseController.getNodeTypes();
+        TextFields.bindAutoCompletion(nodeType, types);
         TextField nodeRoom = new TextField();
         CheckBox isHidden = new CheckBox("Hidden");
         CheckBox isEnabled = new CheckBox("Enabled");
@@ -219,7 +226,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
         hbCancelSave.getChildren().addAll(buttonCancel, buttonSave);
         hbCheckBox.getChildren().addAll(isHidden, isEnabled);
         hbCheckBox.setSpacing(25);
-        vb.getChildren().addAll(nodeName, nodeType, nodeRoom, hbCheckBox, hbCancelSave);
+        vb.getChildren().addAll(nameLabel, nodeName,
+                typeLabel, nodeType, roomLabel, nodeRoom, hbCheckBox, hbCancelSave);
         anchorpane.getChildren().addAll(grid,vb);   // Add grid from Example 1-5
         AnchorPane.setBottomAnchor(vb, 8.0);
         AnchorPane.setRightAnchor(vb, 5.0);
@@ -349,7 +357,18 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 PopOver pop = new PopOver();
                 createPop(pop, c, "Edit");
                 pop.show(c);
-                break;
+//                //draggable code:
+//                final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
+//
+//                //This code is for placing nodes
+//                c.setOnMouseDragged(e -> {
+//                    if (e.getSceneX() > paneBounds.getMinX() && e.getSceneX() < paneBounds.getMaxX()
+//                            && e.getSceneY() > paneBounds.getMinY() && e.getSceneY() < paneBounds.getMaxY()) {
+//                        c.setLayoutX((e.getSceneX() - paneBounds.getMinX()));
+//                        c.setLayoutY((e.getSceneY() - paneBounds.getMinY()));
+//                    }
+//                });
+//                break;
             case 3:
                 MapController.getInstance().attachSurroundingNodes(x, y, currentFloor);
                 resetScreen();
