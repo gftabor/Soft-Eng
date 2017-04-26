@@ -175,6 +175,7 @@ public class patientMainController extends controllers.mapScene {
 
         changeFloor(databaseController.GetKioskFloor() - 1);
         floor_ChoiceBox.getSelectionModel().select(databaseController.GetKioskFloor() - 1);
+        start_textField.setText("Kiosk");
 
         //draw edges
         //graph.drawFloorEdges(currentFloor);
