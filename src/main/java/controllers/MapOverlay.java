@@ -128,6 +128,9 @@ public class MapOverlay {
             location.setFill(Color.RED);
         } else if(hidden) {
             location.setFill(Color.GRAY);
+        }else if (current.getName().equals("Kiosk")){
+            System.out.println("Found Kiosk");
+            location.setFill(Color.ORANGE);
         }
 
         if (devmode) {
