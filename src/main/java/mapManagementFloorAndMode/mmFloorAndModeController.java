@@ -129,6 +129,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
     private boolean addSingleEdgeMode;
     private boolean addMultiEdgeMode;
 
+    private int permissionLevel;
+
 
     //Set to english by default
     int c_language = 0;
@@ -150,10 +152,13 @@ public class mmFloorAndModeController extends controllers.mapScene{
         //set default floor to start
         //we will use floor 1 for now
         currentFloor = 1;
+        //set to admin level
+        permissionLevel = 2;
 
         graph = new controllers.MapOverlay(admin_FloorPane,(mapScene) this);
         MapController.getInstance().requestMapCopy();
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true, currentFloor);
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true,
+                currentFloor, permissionLevel);
 
         setFloorChoices();
 
@@ -234,14 +239,14 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 if (!thisNodeName.equals("") && !thisNodeType.equals("") && !thisNodeRoom.equals("")) {
                     if (mode.equals("Edit")) {
                         DBController.DatabaseController.getInstance().updateNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom);
+                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom, 0);
                         pop.hide();
                         resetScreen();
                     } else {
                         Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom);
+                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom, 0);
                         DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom);
+                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom, 0);
                         pop.hide();
                         admin_FloorPane.getChildren().remove(btK);
                         resetScreen();
@@ -308,7 +313,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
     //requeries database and resets screen
     public void resetScreen() {
         controllers.MapController.getInstance().requestMapCopy();
-        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true, currentFloor);
+        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
+                currentFloor, permissionLevel);
         graph.wipeEdgeLines();
         edgesSelected = 0;
 
@@ -494,6 +500,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
 //        }
         String type = "", name = "", room = "";
         boolean hidden = false, enabled = false;
+        int perms = -1;
         ResultSet rset = databaseController.getNode(x, y, currentFloor);
         try {
             while (rset.next()){
@@ -502,10 +509,12 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 room = rset.getString("ROOMNUM");
                 hidden = rset.getBoolean("ISHIDDEN");
                 enabled = rset.getBoolean("ENABLED");
+                perms = rset.getInt("PERMISSIONS");
             }
         } catch (SQLException e){
             e.printStackTrace();
         }
+        System.out.println("perms: " + perms);
 
         switch(type){
         case "Doctor's Office":
@@ -565,9 +574,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
 
                     Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                            currentFloor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom);
+                            currentFloor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom, 0);
                     DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                            currentFloor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom);
+                            currentFloor, hidden_CheckBox.isSelected(), enabled_CheckBox.isSelected(), type, tempName, tempRoom, 0);
                 }
                 mode_ChoiceBox.getSelectionModel().select("---");
 
@@ -595,7 +604,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
                 //update to new version in db
                 DBController.DatabaseController.getInstance().updateNode(firstNode.getPosX(), firstNode.getPosY(),
-                        firstNode.getFloor(), newHidden, newEnabled, newType, newName, newRoomnum);
+                        firstNode.getFloor(), newHidden, newEnabled, newType, newName, newRoomnum, 0);
 
                 break;
             case "Remove Node":
@@ -634,7 +643,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
         //show edge lines to tell user change has been made
         //check so edge lines do not show up on wrong floor
-        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true, currentFloor);
+        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
+                currentFloor, permissionLevel);
         edgesSelected = 0;
 
 
@@ -757,7 +767,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
                     //floor_Label.setText(currentF);
                 }
                 //true ot see nodes false otherwise
-                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true, currentFloor);
+                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true,
+                        currentFloor, permissionLevel);
             }
         });
 
