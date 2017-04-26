@@ -21,7 +21,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NewIntroUI.NewIntroUIController">
    <children>
@@ -32,28 +31,32 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label styleClass="mainTitle" text="Welcome to Brigham and Women's Faulkner Hospital">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Label>
-                        <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <HBox>
+                  <HBox styleClass="MainTitleColor">
                      <children>
+                        <Button mnemonicParsing="false" styleClass="map-pin">
+                           <HBox.margin>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Label styleClass="mainTitle" text="Brigham and Women's Faulkner Hospital" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" text="Set Map">
+                        <Button mnemonicParsing="false" styleClass="color-palette5" text="Set Map">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefWidth="150.0" text="About">
+                        <Button mnemonicParsing="false" prefWidth="100.0" styleClass="color-palette5" text="About">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefWidth="150.0" text="Adminstrator">
+                        <Button mnemonicParsing="false" prefWidth="150.0" styleClass="color-palette5" text="Adminstrator">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
@@ -63,7 +66,7 @@
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" text="?">
+                        <Button mnemonicParsing="false" styleClass="color-palette5" text="?">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>

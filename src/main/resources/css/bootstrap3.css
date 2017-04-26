@@ -45,8 +45,8 @@
     -fx-font-weight: bold;
 }
 .mainTitle{
-    -fx-font-size: 20px;
-    -fx-font-family: "Latin Black";
+    -fx-font-size: 25px;
+    -fx-font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     -fx-font-weight: bold;
 }
 
@@ -689,6 +689,9 @@ VBox > .split-menu-button.last > .arrow-button {
 .map-pin .arrow-button .arrow {
     -fx-padding: 0;
 }
+.map-pin:focused{
+    -fx-effect: dropshadow(gaussian, black, 0,0,0,0);
+}
 
 
 
@@ -719,15 +722,35 @@ VBox > .split-menu-button.last > .arrow-button {
 
 }
 
+/*Top of the titles*/
+.MainTitleColor{
+    -fx-background-color: #333;
+    -fx-border-color: #333;
+}
 /*Testing tables to make it prettier*/
 .color-palette5{
 
+    -fx-border-width: 0;
+    -fx-background-insets: 0 0 0 0;
+    -fx-background-color: #333;
+    -fx-font-size: 15px;
+    -fx-border-color: #333;
+    -fx-font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    -fx-text-fill: white;
+
 }
 .color-palette5:hover{
+    -fx-background-color: #111;
 
 }
-.color-palette5:focused{
+.color-palette5:pressed{
+    -fx-border-color: #111;
+    -fx-background-color: #111;
+    -fx-effect: innershadow(gaussian, white, 10, 0, 0, 3);
+}
 
+.color-palette5:focused{
+    -fx-effect: dropshadow(gaussian, #111 , 0, 0, 0, 0)
 }
 
 /*.show-hide-columns-button2 {
