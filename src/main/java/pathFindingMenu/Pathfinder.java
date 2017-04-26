@@ -54,7 +54,7 @@ public class Pathfinder {
             }
 
             //must be of correct permission level for the node to be used
-            if (neighbor.getPermissionLevel() >= currentPermissionLevel) {
+            if (neighbor.getPermissionLevel() <= currentPermissionLevel) {
                 continue;
             }
 
