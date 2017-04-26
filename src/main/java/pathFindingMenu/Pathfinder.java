@@ -52,9 +52,12 @@ public class Pathfinder {
             if (!neighbor.getEnabled()) {
                 continue;
             }
-
+//
+//            System.out.println("---");
+//            System.out.println("current perms: " + currentPermissionLevel);
+//            System.out.println("neighbor perms: " + neighbor.getPermissionLevel());
             //must be of correct permission level for the node to be used
-            if (neighbor.getPermissionLevel() <= currentPermissionLevel) {
+            if (neighbor.getPermissionLevel() < currentPermissionLevel) {
                 continue;
             }
 
