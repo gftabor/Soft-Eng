@@ -77,7 +77,7 @@ public class MapController {
         System.out.println("new map copy loading...");
         try {
             //instantiate all node objects and add to collection
-            int x, y, floor;
+            int x, y, floor, permissionLevel;
             boolean hidden;
             boolean enabled;
 
@@ -92,7 +92,8 @@ public class MapController {
                 floor = nodeRset.getInt("FLOOR");
                 type = nodeRset.getString("TYPE");
                 roomnum = nodeRset.getString("ROOMNUM");
-                node = new Node(x, y, floor, hidden, enabled, type, name, roomnum);
+                permissionLevel = nodeRset.getInt("PERMISSIONS");
+                node = new Node(x, y, floor, hidden, enabled, type, name, roomnum, permissionLevel);
                 collectionOfNodes.addNode(node);
                 //System.out.println("MAPCONTROLLER: requestMapCopy(): Added a node from the rset to collection of nodes");
             }
@@ -106,7 +107,6 @@ public class MapController {
         try {
             //instantiate edges and add to corresponding nodes
             int x1, y1, x2, y2, floor1, floor2;
-            Edge myEdge;
             while (edgeRset.next()) {
                 //get info from each query tuple
                 x1 = edgeRset.getInt("XPOS1");
@@ -221,7 +221,7 @@ public class MapController {
     //used for pathfinding
     //creates a pathfinder and runs pathfinding on the startnode and the end node.
     //  returns: 0 if success, 1 if error
-    public ArrayList<Edge> requestPath() {
+    public ArrayList<Edge> requestPath(int permissionLevel) {
         Node startNode, endNode;
 
         //instantiates the collection if nothing is there yet
@@ -255,7 +255,7 @@ public class MapController {
         */
 
         pathfinder.algorithmSwitch(algorithm);
-        pathfinder.generatePath(startNode, endNode);
+        pathfinder.generatePath(startNode, endNode, permissionLevel);
         return pathfinder.getPath();
 
     }
