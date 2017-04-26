@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NewIntroUI.NewIntroUIController">
+   <children>
+      <BorderPane layoutX="-1.0" layoutY="-1.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="-1.0">
+         <top>
+            <VBox BorderPane.alignment="CENTER">
+               <children>
+                  <HBox>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox styleClass="MainTitleColor">
+                     <children>
+                        <Button mnemonicParsing="false" styleClass="map-pin">
+                           <HBox.margin>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Label styleClass="mainTitle" text="Brigham and Women's Faulkner Hospital" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" styleClass="color-palette5" text="Set Map">
+                           <HBox.margin>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" prefWidth="100.0" styleClass="color-palette5" text="About">
+                           <HBox.margin>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" prefWidth="150.0" styleClass="color-palette5" text="Adminstrator">
+                           <HBox.margin>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" prefWidth="150.0" styleClass="danger" text="EMERGENCY">
+                           <HBox.margin>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" styleClass="color-palette5" text="?">
+                           <HBox.margin>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </top>
+         <left>
+            <VBox minWidth="-Infinity" prefHeight="655.0" prefWidth="314.0" styleClass="color-palette" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox minWidth="-Infinity" prefHeight="100.0" prefWidth="283.0" styleClass="color-palette2">
+                     <children>
+                        <HBox>
+                           <children>
+                              <Label />
+                              <Label prefWidth="40.0" text="From:" textFill="#797878">
+                                 <HBox.margin>
+                                    <Insets left="6.0" top="6.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField prefWidth="200.0" styleClass="show-hide-columns-button2">
+                                 <HBox.margin>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </HBox.margin>
+                              </TextField>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="info" text="x" textAlignment="CENTER">
+                                 <HBox.margin>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <Line endX="100.0" startX="-186.0" stroke="#9e9e9e" />
+                        <HBox>
+                           <children>
+                              <Label />
+                              <Label prefWidth="40.0" text="To:" textFill="#797878">
+                                 <HBox.margin>
+                                    <Insets left="6.0" top="6.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField prefWidth="210.0" styleClass="show-hide-columns-button2">
+                                 <HBox.margin>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </HBox.margin>
+                              </TextField>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="info" text="x" textAlignment="CENTER">
+                                 <HBox.margin>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox styleClass="color-palette3">
+                           <children>
+                              <Button mnemonicParsing="false" styleClass="menu" text="Options:">
+                                 <HBox.margin>
+                                    <Insets right="2.0" top="1.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <ChoiceBox prefWidth="100.0" styleClass="menu" />
+                              <Button mnemonicParsing="false" styleClass="menu" text="&lt;&gt;">
+                                 <HBox.margin>
+                                    <Insets right="4.0" top="1.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" styleClass="menu" text="Submit">
+                                 <HBox.margin>
+                                    <Insets right="2.0" top="1.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <TabPane prefHeight="433.0" prefWidth="381.0" tabClosingPolicy="UNAVAILABLE">
+                     <tabs>
+                        <Tab text="Locations">
+                           <content>
+                              <TreeView prefHeight="200.0" prefWidth="200.0" />
+                           </content>
+                        </Tab>
+                        <Tab text="Text Directions">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="393.0" prefWidth="143.0">
+                                 <children>
+                                    <ListView layoutX="-3.0" prefHeight="311.0" prefWidth="293.0" />
+                                    <Label layoutX="34.0" layoutY="324.0" styleClass="text-D" text="Send directions to my phone" />
+                                    <TextField layoutX="11.0" layoutY="345.0" prefWidth="200.0" promptText="123456789" />
+                                    <Button layoutX="212.0" layoutY="345.0" mnemonicParsing="false" styleClass="primary" text="Button" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                     </tabs>
+                  </TabPane>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="2.0" top="2.0" />
+               </BorderPane.margin>
+            </VBox>
+         </left>
+         <center>
+            <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                     <content>
+                        <Pane prefHeight="701.0" prefWidth="1043.0" />
+                     </content>
+                  </ScrollPane>
+                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="info" text="-" StackPane.alignment="CENTER_RIGHT">
+                     <StackPane.margin>
+                        <Insets right="10.0" top="35.0" />
+                     </StackPane.margin>
+                  </Button>
+                  <ChoiceBox prefWidth="50.0" styleClass="menu" StackPane.alignment="TOP_LEFT">
+                     <StackPane.margin>
+                        <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                     </StackPane.margin>
+                  </ChoiceBox>
+                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="info" text="+" StackPane.alignment="CENTER_RIGHT">
+                     <StackPane.margin>
+                        <Insets right="10.0" top="-35.0" />
+                     </StackPane.margin>
+                  </Button>
+                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="menu" text="&lt;" StackPane.alignment="TOP_RIGHT">
+                     <StackPane.margin>
+                        <Insets right="45.0" top="5.0" />
+                     </StackPane.margin>
+                  </Button>
+                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="menu" text="&gt;" StackPane.alignment="TOP_RIGHT">
+                     <StackPane.margin>
+                        <Insets right="10.0" top="5.0" />
+                     </StackPane.margin>
+                  </Button>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="2.0" top="2.0" />
+               </BorderPane.margin>
+            </StackPane>
+         </center>
+      </BorderPane>
+   </children>
+   <stylesheets>
+      <URL value="@../css/bootstrap3.css" />
+      <URL value="@../css/styles.css" />
+   </stylesheets>
+</AnchorPane>
