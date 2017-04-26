@@ -736,6 +736,8 @@ public class patientMainController extends controllers.mapScene {
     public void logInButton_Clicked() {
 
         controllers.MapOverlay.setZoom(1.0);
+        controllers.MapOverlay.setHeightRatio(1.0);
+        controllers.MapOverlay.setWidthRatio(1.0);
 
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminLoginMainView.fxml");
         adminLoginMain.adminLoginMainController controller = loader.getController();
