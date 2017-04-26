@@ -176,7 +176,7 @@ public class MapOverlay {
                                 sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 1);
                             }
                         });
-                        MenuItem editOption = new MenuItem("Edit");
+                        MenuItem editOption = new MenuItem("Edit Information");
                         editOption.setOnAction(new EventHandler<ActionEvent>() {
                             @Override public void handle(ActionEvent e) {
                                 sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 2);
@@ -206,8 +206,14 @@ public class MapOverlay {
                                 sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 6);
                             }
                         });
+                        MenuItem editPositionOption = new MenuItem("Edit Position");
+                        editPositionOption.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 7);
+                            }
+                        });
                         // Add MenuItem to ContextMenu
-                        contextMenu.getItems().addAll(removeOption, editOption, autoGenEdgeOption,
+                        contextMenu.getItems().addAll(removeOption, editOption, editPositionOption, autoGenEdgeOption,
                                 addEdgeOption, addMultiEdgeOption, removeAllEdgeOption);
                         contextMenu.show(location, event.getScreenX(), event.getScreenY());
                     }
