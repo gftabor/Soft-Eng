@@ -272,7 +272,7 @@
                         </Button>
                      </children>
                   </HBox>
-                  <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1500.0" prefWidth="987.0">
+                  <StackPane fx:id="mapStack" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1500.0" prefWidth="987.0">
                      <children>
                         <ScrollPane fx:id="scrollPane" prefHeight="601.0" prefWidth="987.0">
                            <content>

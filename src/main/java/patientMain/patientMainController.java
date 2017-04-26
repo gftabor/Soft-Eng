@@ -5,6 +5,7 @@ package patientMain;
  */
 import DBController.DatabaseController;
 import controllers.*;
+import controllers.Node;
 import emergency.SmsSender;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ChangeListener;
@@ -13,16 +14,21 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
+import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import org.controlsfx.control.textfield.TextFields;
 
+import javax.sound.sampled.Clip;
+import java.net.StandardSocketOptions;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
@@ -118,6 +124,9 @@ public class patientMainController extends controllers.mapScene {
     @FXML
     private ScrollPane scrollPane;
 
+    @FXML
+    private StackPane mapStack;
+
     int c_language = 0;
 
     int first_Time = 0;
@@ -159,6 +168,8 @@ public class patientMainController extends controllers.mapScene {
     double heightRatio = (1000.0/489.0);
     double widthRatio = (1600.0/920.0);
 
+    double dragNewX, dragNewY, dragOldX, dragOldY;
+    javafx.scene.Node selected;
 
     //ArrayList<Edge> zoomPath;
 
@@ -207,6 +218,42 @@ public class patientMainController extends controllers.mapScene {
         scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
             mapScroll(event);
             event.consume();
+        });
+
+        scrollPane.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                dragOldX = event.getX();
+                dragOldY = event.getY();
+                System.out.println("not nuts");
+            }
+        });
+
+        //final Bounds stackBounds = scrollPane.localToScene(scrollPane.getBoundsInLocal());
+
+        map_viewer.setOnMouseDragged(event ->  {
+            //if (event.getSceneX() > stackBounds.getMinX() && event.getSceneX() < stackBounds.getMaxX() && event.getSceneY() > stackBounds.getMinY() && event.getSceneY() < stackBounds.getMaxY()) {
+                System.out.println("nuts");
+                dragNewX = event.getX();
+                dragNewY = event.getY();
+                if (dragOldX == 0) {
+                    dragOldX = .01;
+                }
+                if (dragOldY == 0) {
+                    dragOldY = 0.01;
+                }
+                double deltaX = ((dragNewX / dragOldX) - 1.0) / 2;
+                double deltaY = ((dragNewY / dragOldY) - 1.0) / 2;
+
+                System.out.println(scrollPane.getHvalue() + "  " + scrollPane.getVvalue());
+
+
+                scrollPane.setHvalue(scrollPane.getHvalue() + deltaX);
+                scrollPane.setVvalue(scrollPane.getVvalue() + deltaY);
+
+                dragOldX = event.getX();
+                dragOldY = event.getY();
+            //}
         });
     }
 
@@ -982,8 +1029,8 @@ public class patientMainController extends controllers.mapScene {
     public void mapScroll(ScrollEvent event) {
             zoom = MapOverlay.getZoom();
             if (event.getDeltaY() < 0) {
-                if (zoom < 1.6) {
-                    zoom += 0.05;
+                if (zoom < 1.3) {
+                    zoom += 0.03;
                     controllers.MapOverlay.setZoom(zoom);
                     node_Plane.setPrefWidth(origPaneWidth*zoom*widthRatio);
                     node_Plane.setPrefHeight(origPaneHeight*zoom*heightRatio);
@@ -995,7 +1042,7 @@ public class patientMainController extends controllers.mapScene {
                 }
             } else if (event.getDeltaY() > 0) {
                 if (zoom > 1.0) {
-                    zoom = zoom - 0.05;
+                    zoom = zoom - 0.03;
                     controllers.MapOverlay.setZoom(zoom);
                     node_Plane.setPrefWidth(origPaneWidth*zoom*widthRatio);
                     node_Plane.setPrefHeight(origPaneHeight*zoom*heightRatio);
