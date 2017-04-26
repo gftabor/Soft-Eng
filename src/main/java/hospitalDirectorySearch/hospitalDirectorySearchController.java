@@ -192,7 +192,7 @@ public class hospitalDirectorySearchController extends controllers.AbsController
                 controller.multiFloorPathfind();
             } else {
                 //no multifloor pathfinding (simple)
-                pathfinder.generatePath(start, end);
+                pathfinder.generatePath(start, end, 0);
                 controller.setUserString("");
                 controller.createEdgeLines(pathfinder.getPath());
             }
