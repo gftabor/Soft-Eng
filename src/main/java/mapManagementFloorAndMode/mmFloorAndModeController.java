@@ -193,16 +193,13 @@ public class mmFloorAndModeController extends controllers.mapScene{
         AnchorPane anchorpane = new AnchorPane();
         Button buttonSave = new Button("Save");
         Button buttonCancel = new Button("Cancel");
-        TextField nodeName = new TextField();
-        TextField nodeType = new TextField();
-        TextField nodeRoom = new TextField();
+        TextField nodeName = new PersistentPromptTextField("", "Name");
+        TextField nodeType = new PersistentPromptTextField("", "Type");
+        TextField nodeRoom = new PersistentPromptTextField("", "Room Number");
         CheckBox isHidden = new CheckBox("Hidden");
         CheckBox isEnabled = new CheckBox("Enabled");
         isHidden.setSelected(false);
         isEnabled.setSelected(true);
-        nodeName.setPromptText("Name");
-        nodeType.setPromptText("Type");
-        nodeRoom.setPromptText("Room Number");
 
         GridPane grid = new GridPane();
         grid.setHgap(10);
