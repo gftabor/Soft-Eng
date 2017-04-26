@@ -269,6 +269,7 @@ public class MapController {
         //edgeListToText(pathfinder.getPath());
         nodeListToText(pathfinder.getNodePath());
         try {
+            Process p = Runtime.getRuntime().exec("./robot");
             Runtime.getRuntime().exec(new String[] { "pathfinder3D.exe"});
         } catch (IOException e) {
             e.printStackTrace();
