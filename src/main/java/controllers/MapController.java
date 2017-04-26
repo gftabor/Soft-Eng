@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 //import main.java.controllers.CollectionOfNodes;
 
@@ -21,6 +22,8 @@ public class MapController {
     private int startNodeY;
     private int endNodeX;
     private int endNodeY;
+
+    private final double surroundingRadius = 50.0;
 
     private int floorForNode1;
     private int floorForNode2;
@@ -74,7 +77,7 @@ public class MapController {
         System.out.println("new map copy loading...");
         try {
             //instantiate all node objects and add to collection
-            int x, y, floor;
+            int x, y, floor, permissionLevel;
             boolean hidden;
             boolean enabled;
 
@@ -89,7 +92,8 @@ public class MapController {
                 floor = nodeRset.getInt("FLOOR");
                 type = nodeRset.getString("TYPE");
                 roomnum = nodeRset.getString("ROOMNUM");
-                node = new Node(x, y, floor, hidden, enabled, type, name, roomnum);
+                permissionLevel = nodeRset.getInt("PERMISSIONS");
+                node = new Node(x, y, floor, hidden, enabled, type, name, roomnum, permissionLevel);
                 collectionOfNodes.addNode(node);
                 //System.out.println("MAPCONTROLLER: requestMapCopy(): Added a node from the rset to collection of nodes");
             }
@@ -103,7 +107,6 @@ public class MapController {
         try {
             //instantiate edges and add to corresponding nodes
             int x1, y1, x2, y2, floor1, floor2;
-            Edge myEdge;
             while (edgeRset.next()) {
                 //get info from each query tuple
                 x1 = edgeRset.getInt("XPOS1");
@@ -163,10 +166,62 @@ public class MapController {
         }
     }
 
+    public void attachSurroundingNodes(int x, int y, int floor) {
+        Node myNode = collectionOfNodes.getNode(x,y,floor);
+        //exit if could not get node for whatever reason
+        if (myNode == null) {
+            return;
+        }
+
+        //get list of current edges attached to myNode
+        ArrayList<Edge> currentConnectedEdges = new ArrayList<>();
+        for (Edge e: edgeCollection) {
+            if (e.getStartNode() == myNode || e.getEndNode() == myNode) {
+                currentConnectedEdges.add(e);
+            }
+        }
+
+
+        //get appropriate hash map
+        HashMap<Integer, Node> myMap = collectionOfNodes.getMap(floor);
+        for (Node n: myMap.values()) {
+            double sld = sld(x, y, n.getPosX(), n.getPosY());
+            if (myNode != n && sld < surroundingRadius) {
+                //create an edge between them
+                //check that edge does not already exist
+                if (!edgeInList(currentConnectedEdges, myNode, n)) {
+                    //if not there, add an edge
+                    databaseController.newEdge(x, y, floor, n.getPosX(), n.getPosY(), n.getFloor());
+                }
+
+            }
+        }
+    }
+
+    //check if potential edge exists in list
+    private boolean edgeInList(ArrayList<Edge> edgeList, Node baseN, Node tryNode) {
+        for (Edge e: edgeList) {
+            //check floor
+            Node temp = e.getNeighbor(baseN);
+            if (temp == tryNode) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //get straight line distance
+    private double sld(int x1, int y1, int x2, int y2) {
+        double squareX = Math.pow((x1 - x2),2);
+        double squareY = Math.pow((y1 - y2),2);
+        return Math.sqrt(squareX + squareY);
+    }
+
     //used for pathfinding
     //creates a pathfinder and runs pathfinding on the startnode and the end node.
     //  returns: 0 if success, 1 if error
-    public ArrayList<Edge> requestPath() {
+    public ArrayList<Edge> requestPath(int permissionLevel) {
         Node startNode, endNode;
 
         //instantiates the collection if nothing is there yet
@@ -200,7 +255,7 @@ public class MapController {
         */
 
         pathfinder.algorithmSwitch(algorithm);
-        pathfinder.generatePath(startNode, endNode);
+        pathfinder.generatePath(startNode, endNode, permissionLevel);
         return pathfinder.getPath();
 
     }
