@@ -6,7 +6,6 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -17,7 +16,6 @@ import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 
 /**
  * Created by Griffin on 4/5/2017.
@@ -230,7 +228,7 @@ public class MapOverlay {
                 public void handle(MouseEvent event) {
                     Object o = event.getSource();
                     Circle c = (Circle) o;
-                    sceneController.showStairMenu(nodeX, nodeY, c);
+                    sceneController.showMultifloorMenu(nodeX, nodeY, c);
                 }
             });
         }
