@@ -20,12 +20,13 @@ public class Node implements Comparable<Node>{
     private double costToReach;
     private double totalCost;
     private Edge parentEdge;
+    private int permissionLevel;
 
     private ArrayList<Edge> edges = new ArrayList<Edge>();
 
     //Basic Constructor
     //  - must fill in all fields manually
-    public Node(int posX, int posY, int floor, boolean hidden, boolean enabled, String type, String name, String roomNum) {
+    public Node(int posX, int posY, int floor, boolean hidden, boolean enabled, String type, String name, String roomNum, int permissionLevel) {
         this.posX = posX;
         this.posY = posY;
         this.isHidden = hidden;
@@ -37,6 +38,7 @@ public class Node implements Comparable<Node>{
         this.costToReach = Integer.MAX_VALUE;
         this.totalCost = Integer.MAX_VALUE; //costToReach + hueristic
         this.parentEdge = null; //instantiate reference to null
+        this.permissionLevel = permissionLevel;
     }
 
 //    //Quick Constructor
@@ -153,6 +155,19 @@ public class Node implements Comparable<Node>{
 
     public String getRoomNum() {
         return this.roomNum;
+    }
+
+    public int getPermissionLevel() {
+        return permissionLevel;
+    }
+
+    public boolean setPermissionLevel(int level) {
+        if (level <= 2 && level >= 0) {
+            permissionLevel = level;
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

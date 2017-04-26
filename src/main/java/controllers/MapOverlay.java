@@ -51,7 +51,7 @@ public class MapOverlay {
 
     //takes in a Hashtable when scene is switched and calls setNodes
 
-    public void setMapAndNodes(HashMap<Integer, Node> nodeMap, boolean devMode, int floor) {
+    public void setMapAndNodes(HashMap<Integer, Node> nodeMap, boolean devMode, int floor, int permissionLevel) {
 
         if (devMode) {
             System.out.println("DEVMODE active");
@@ -78,7 +78,7 @@ public class MapOverlay {
                 } else {
                     //if not dev mode:
                     //show only if enabled and not hidden
-                    if (current.getIsHidden() == false && current.getEnabled() == true) {
+                    if (current.getIsHidden() == false && current.getEnabled() == true && permissionLevel >= current.getPermissionLevel()) {
                         create_Button(current.getPosX(), current.getPosY(), false, true, floor, devMode, false);
                     }
                 }
@@ -96,10 +96,19 @@ public class MapOverlay {
 
         Node current = MapController.getInstance().getCollectionOfNodes().getNode(nodeX, nodeY, floor);
         final String infoString;
-        infoString = "x: " + nodeX + " y: " + nodeY + " Floor: " + floor + "\n" +
-                "Name: " + current.getName() + "\n" +
-                "Room: " + current.getRoomNum() + "\n" +
-                "Type: " + current.getType();
+        //have less info presented to the visitors
+        if (devmode) {
+            infoString = "x: " + nodeX + " y: " + nodeY + " Floor: " + floor + "\n" +
+                    "Name: " + current.getName() + "\n" +
+                    "Room: " + current.getRoomNum() + "\n" +
+                    "Type: " + current.getType() + "\n" +
+                    "Permission Level: " + current.getPermissionLevel();
+        } else {
+            infoString = "Name: " + current.getName() + "\n" +
+                    "Room: " + current.getRoomNum() + "\n" +
+                    "Type: " + current.getType() + "\n" +
+                    "Floor: " + floor;
+        }
 
 
             location = new Circle(labelRadius);
