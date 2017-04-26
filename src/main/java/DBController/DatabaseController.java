@@ -306,6 +306,32 @@ public class DatabaseController {
 
         return false;
     }
+
+    public ArrayList<String> getNodeTypes(){
+        ResultSet resultSet = null;
+        String type;
+        ArrayList<String> types = new ArrayList<>();
+        System.out.println(
+                String.format(
+                        "Getting all node types as a list"));
+        try{
+            String query = "SELECT TYPE FROM NODE";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                type = resultSet.getString("TYPE");
+                if (!types.contains(type)) {
+                    types.add(type);
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return types;
+    }
     /*******************************************************************************
      * EDGE actions
      *

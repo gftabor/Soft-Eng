@@ -46,6 +46,8 @@ public class MapOverlay {
     private ArrayList<Line> lineList = new ArrayList<Line>();
 
     private static double zoom = 1;
+    private static double heightRatio = 1;
+    private static double widthRatio = 1;
 
     private static int pathfinding = 0;
 
@@ -145,8 +147,8 @@ public class MapOverlay {
 
         // this code sets node's x and y pos to be on the plane holding the graph
         currentPane.getChildren().add(location);
-        location.setLayoutX(nodeX * zoom);
-        location.setLayoutY(nodeY * zoom);
+        location.setLayoutX(nodeX * zoom * widthRatio);
+        location.setLayoutY(nodeY * zoom * heightRatio);
         location.toFront();
 
         if (!enabled) {
@@ -314,10 +316,10 @@ public class MapOverlay {
 
             //add to pane
             currentPane.getChildren().add(lne);
-            lne.setStartX(thisEdge.getStartNode().getPosX() * zoom);
-            lne.setStartY(thisEdge.getStartNode().getPosY() * zoom);
-            lne.setEndX(thisEdge.getEndNode().getPosX() * zoom);
-            lne.setEndY(thisEdge.getEndNode().getPosY() * zoom);
+            lne.setStartX(thisEdge.getStartNode().getPosX() * zoom * widthRatio);
+            lne.setStartY(thisEdge.getStartNode().getPosY() * zoom * heightRatio);
+            lne.setEndX(thisEdge.getEndNode().getPosX() * zoom * widthRatio);
+            lne.setEndY(thisEdge.getEndNode().getPosY() * zoom * heightRatio);
             //show
             lne.toFront();
             //add to list
@@ -363,5 +365,21 @@ public class MapOverlay {
 
     public static void setPathfinding(int newpath) {
         pathfinding = newpath;
+    }
+
+    public static void setHeightRatio(double ratio) {
+         heightRatio = ratio;
+    }
+
+    public static double getHeightRatio() {
+        return heightRatio;
+    }
+
+    public static void setWidthRatio(double ratio) {
+        widthRatio = ratio;
+    }
+
+    public static double getWidthRatio() {
+        return widthRatio;
     }
 }
