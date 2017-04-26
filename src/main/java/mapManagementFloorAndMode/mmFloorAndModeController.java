@@ -159,18 +159,27 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
         // creates a node when clicking the map
         map_viewer.setOnMouseClicked((MouseEvent e) -> {
-            if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)){
-                admin_FloorPane.getChildren().remove(temporaryButton[0]);
-            }
-            btK = new Circle(labelRadius);//new Button();
-            btK.setLayoutX(e.getX());
-            btK.setLayoutY(e.getY());
-            admin_FloorPane.getChildren().add(btK);
-            temporaryButton[0] = btK;
+            //clear on any selection stuff for the rest of the map
+            addSingleEdgeMode = false;
+            if (addMultiEdgeMode) {
+                //dont try to add node if just trying to click out of multi-edge selection
+                addMultiEdgeMode = false;
+            } else {
+                graph.wipeEdgeLines();
 
-            PopOver pop = new PopOver();
-            createPop(pop, btK, "Create");
-            pop.show(btK);
+                if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)){
+                    admin_FloorPane.getChildren().remove(temporaryButton[0]);
+                }
+                btK = new Circle(labelRadius);//new Button();
+                btK.setLayoutX(e.getX());
+                btK.setLayoutY(e.getY());
+                admin_FloorPane.getChildren().add(btK);
+                temporaryButton[0] = btK;
+
+                PopOver pop = new PopOver();
+                createPop(pop, btK, "Create");
+                pop.show(btK);
+            }
         });
     }
 
@@ -306,6 +315,10 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     }
 
+    public void showStairMenu(int x, int y, Circle c) {
+        //SHOW MULTIFLOOR STUFF HERE
+    }
+
     public void rightClickEvent(int x, int y, Circle c, int mode) {
         //CODE TO HANDLE RIGHT CLICK MENU STUFF GOES HERE:
         switch (mode) {
@@ -354,6 +367,29 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 break;
             case 5:
                 addMultiEdgeMode = true;
+                firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
+                        .getNode(x, y, currentFloor);
+                if (firstNode == null) {
+                    System.out.println("RIP trying to get node");
+                    resetScreen();
+                    clearButton_Clicked();
+                    break;
+                }
+                graph.createEdgeLines(firstNode.getEdgeList(), true, false);
+                break;
+            case 6:
+                Node thisNode = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
+                //handle errors
+                if (thisNode == null) {
+                    break;
+                }
+                for (controllers.Edge thisEdge : thisNode.getEdgeList()) {
+                    thisEdge.getNeighbor(thisNode).getEdgeList().remove(thisEdge);
+                    DBController.DatabaseController.getInstance().deleteEdge(thisEdge.getStartNode().getPosX(),
+                            thisEdge.getStartNode().getPosY(), thisEdge.getStartNode().getFloor(), thisEdge.getEndNode().getPosX(),
+                            thisEdge.getEndNode().getPosY(), thisEdge.getEndNode().getFloor());
+                }
+                resetScreen();
                 break;
             default:
                 System.out.println("default. This probably should not have been possible...");
@@ -374,10 +410,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
     }
 
     public void sceneEvent(int x, int y, Circle c) {
-        edgesSelected++;
 
-        //add edge from menu
-        if (edgesSelected == 1 && addSingleEdgeMode) {
+        //add edge from menu (both multi and single)
+        if (addSingleEdgeMode || addMultiEdgeMode) {
             System.out.println("adding edge...");
             nodeEdgeX2 = (int) x;
             nodeEdgeY2 = (int) y;
@@ -398,43 +433,61 @@ public class mmFloorAndModeController extends controllers.mapScene{
             return;
         }
 
-        //display edges already associated with selected node
-        if (edgesSelected == 1 || mode_ChoiceBox.getValue().equals("Edit Node")
-                || mode_ChoiceBox.getValue().equals("Remove Node")) {
-            System.out.println("Edge stage 1");
-            //display edges already associated with selected node
-            nodeEdgeX1 = (int) x;
-            nodeEdgeY1 = (int) y;
-            System.out.println(nodeEdgeX1 + "     " + nodeEdgeY1);
-            firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
-                    .getNode(nodeEdgeX1, nodeEdgeY1, currentFloor);
-            graph.createEdgeLines(firstNode.getEdgeList(), true, true);
 
-            //color the node as well
-            if (lastColoredStart !=  null) {
-                lastColoredStart.setStroke(lastColoredStart.getFill());
-                lastColoredStart.setStrokeWidth(1);
-            }
-            lastColoredStart = c;
-            c.setStrokeWidth(2.5);
-            c.setStroke(Color.ROYALBLUE);
+        //highlight the node
+        nodeEdgeX1 = (int) x;
+        nodeEdgeY1 = (int) y;
+        System.out.println(nodeEdgeX1 + "     " + nodeEdgeY1);
+        firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
+                .getNode(nodeEdgeX1, nodeEdgeY1, currentFloor);
+        graph.createEdgeLines(firstNode.getEdgeList(), true, true);
 
-            //log the floor
-            floor1 = currentFloor;
-        } else if (edgesSelected == 2) {
-            System.out.println("Edge stage 2");
-            //create edge between the two nodes
-            nodeEdgeX2 = (int) x;
-            nodeEdgeY2 = (int) y;
-
-            //color the node
-            lastColoredEnd = c;
-            c.setStrokeWidth(2.5);
-            c.setStroke(Color.FUCHSIA);
-
-            //log the floor
-            floor2 = currentFloor;
+        //color the node as well
+        if (lastColoredStart !=  null) {
+            lastColoredStart.setStroke(lastColoredStart.getFill());
+            lastColoredStart.setStrokeWidth(1);
         }
+        lastColoredStart = c;
+        c.setStrokeWidth(6.5);
+        c.setStroke(Color.ROYALBLUE);
+
+//        //display edges already associated with selected node
+//        if (edgesSelected == 1 || mode_ChoiceBox.getValue().equals("Edit Node")
+//                || mode_ChoiceBox.getValue().equals("Remove Node")) {
+//            System.out.println("Edge stage 1");
+//            //display edges already associated with selected node
+//            nodeEdgeX1 = (int) x;
+//            nodeEdgeY1 = (int) y;
+//            System.out.println(nodeEdgeX1 + "     " + nodeEdgeY1);
+//            firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
+//                    .getNode(nodeEdgeX1, nodeEdgeY1, currentFloor);
+//            graph.createEdgeLines(firstNode.getEdgeList(), true, true);
+//
+//            //color the node as well
+//            if (lastColoredStart !=  null) {
+//                lastColoredStart.setStroke(lastColoredStart.getFill());
+//                lastColoredStart.setStrokeWidth(1);
+//            }
+//            lastColoredStart = c;
+//            c.setStrokeWidth(2.5);
+//            c.setStroke(Color.ROYALBLUE);
+//
+//            //log the floor
+//            floor1 = currentFloor;
+//        } else if (edgesSelected == 2) {
+//            System.out.println("Edge stage 2");
+//            //create edge between the two nodes
+//            nodeEdgeX2 = (int) x;
+//            nodeEdgeY2 = (int) y;
+//
+//            //color the node
+//            lastColoredEnd = c;
+//            c.setStrokeWidth(2.5);
+//            c.setStroke(Color.FUCHSIA);
+//
+//            //log the floor
+//            floor2 = currentFloor;
+//        }
         String type = "", name = "", room = "";
         boolean hidden = false, enabled = false;
         ResultSet rset = databaseController.getNode(x, y, currentFloor);

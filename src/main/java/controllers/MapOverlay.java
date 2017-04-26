@@ -128,6 +128,9 @@ public class MapOverlay {
             location.setFill(Color.RED);
         } else if(hidden) {
             location.setFill(Color.GRAY);
+        }else if (current.getName().equals("Kiosk")){
+            System.out.println("Found Kiosk");
+            location.setFill(Color.ORANGE);
         }
 
         if (devmode) {
@@ -172,11 +175,29 @@ public class MapOverlay {
                                 sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 5);
                             }
                         });
+                        MenuItem removeAllEdgeOption = new MenuItem("Remove All Edges");
+                        removeAllEdgeOption.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 6);
+                            }
+                        });
                         // Add MenuItem to ContextMenu
                         contextMenu.getItems().addAll(removeOption, editOption, autoGenEdgeOption,
-                                addEdgeOption, addMultiEdgeOption);
+                                addEdgeOption, addMultiEdgeOption, removeAllEdgeOption);
                         contextMenu.show(location, event.getScreenX(), event.getScreenY());
                     }
+                }
+            });
+        }
+        //get node type
+        String type = current.getType();
+        if (devmode && (type.equalsIgnoreCase("Elevator") || type.equalsIgnoreCase("Stair"))) {
+            location.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    Object o = event.getSource();
+                    Circle c = (Circle) o;
+                    sceneController.showStairMenu(nodeX, nodeY, c);
                 }
             });
         }
@@ -197,7 +218,6 @@ public class MapOverlay {
     public void createEdgeLines(ArrayList<controllers.Edge> edgeList, boolean highlighted, boolean devmode) {
         //for-each loop through arraylist
         wipeEdgeLines();
-        System.out.println("creating edge lines...");
         for(controllers.Edge thisEdge: edgeList) {
             lne = new Line();
 
