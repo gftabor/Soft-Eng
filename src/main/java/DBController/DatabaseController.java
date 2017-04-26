@@ -1242,5 +1242,34 @@ public class DatabaseController {
         }
         return rooms;
     }
+    /*******************************************************************************
+     * Misc.
+     *
+     ******************************************************************************/
 
+    public int GetKioskFloor(){
+        ResultSet resultSet;
+
+        System.out.println("Getting kiosk floor.");
+        try{
+            String query = "SELECT * FROM NODE WHERE NAME = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, "Kiosk");
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return -1;
+        }
+
+        try {
+            while(resultSet.next()){
+                System.out.println("Kiosk Floor: " + resultSet.getString("FLOOR"));
+                return resultSet.getInt("FLOOR");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }
