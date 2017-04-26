@@ -21,6 +21,7 @@ public class testNode {
     String type = "TEST";
     String name = "TEST";
     String roomnum = "TEST";
+    static int permissionLevel = 0;
 
 
     @BeforeClass
@@ -36,7 +37,7 @@ public class testNode {
 
     @Test
     public void testAddDelete(){
-        assertTrue(databaseController.newNode(x, y, floor, ishidden, enabled, type, name, roomnum));
+        assertTrue(databaseController.newNode(x, y, floor, ishidden, enabled, type, name, roomnum, 0));
         ResultSet resultSet = databaseController.getNode(x, y, floor);
         try{
             resultSet.next();
@@ -48,6 +49,7 @@ public class testNode {
             assertEquals(resultSet.getString("TYPE"), type);
             assertEquals(resultSet.getString("NAME"), name);
             assertEquals(resultSet.getString("ROOMNUM"), roomnum);
+            assertEquals(resultSet.getInt("PERMISSIONS"),0);
             databaseController.closeResultSet(resultSet);
         } catch (SQLException e){
             e.printStackTrace();
@@ -68,7 +70,8 @@ public class testNode {
 
     @Test
     public void testKey(){
-        Node exampleNode = new Node(150, 220, 4, false, true, "Restroom", "Bathroom 1", "417");
+        Node exampleNode = new Node(150, 220, 4, false, true, "Restroom", "Bathroom 1",
+                "417", permissionLevel);
         int correctKey = 1500220;
         int keyGotten = exampleNode.getKey();
         System.out.println(keyGotten);

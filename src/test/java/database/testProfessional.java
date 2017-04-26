@@ -23,13 +23,14 @@ public class testProfessional {
     static String name = "TEST";
     static String roomnum = "TEST";
     static String department = "TEST";
+    static int permissionLevel = 0;
 
 
     @BeforeClass
     public static void setUp(){
         databaseController.setDbName("./TestDb");
         databaseController.startDB();
-        assertTrue(databaseController.newNode(x, y, floor, ishidden, enabled, type, name, roomnum));
+        assertTrue(databaseController.newNode(x, y, floor, ishidden, enabled, type, name, roomnum, permissionLevel));
     }
 
     @AfterClass

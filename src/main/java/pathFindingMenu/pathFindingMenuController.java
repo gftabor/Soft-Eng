@@ -106,6 +106,8 @@ public class pathFindingMenuController extends controllers.mapScene{
     private int fragPathPos; //position on the global frag list
     private ArrayList<Integer> globalFloorSequence;
 
+    private int permissionLevel = 0;
+
     //flags for the english/spanish feature
     int c_language = 0;
 
@@ -149,7 +151,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         //we will use floor 1 as default
         currentFloor = 1;
         currentFloor_Label.setText("1");
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor, permissionLevel);
 
         //set continue button invisible when not needed
         continue_Button.setVisible(false);
@@ -164,7 +166,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         selectionState = 0;
         //Remove colored dots from map
 
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor, permissionLevel);
         currentFloor_Label.setText(Integer.toString(currentFloor));
 
         //wipe line from map
@@ -195,12 +197,12 @@ public class pathFindingMenuController extends controllers.mapScene{
                 multiFloorPathfind();
             } else {
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                ArrayList<Edge> path = mapController.requestPath();
+                ArrayList<Edge> path = mapController.requestPath(permissionLevel);
                 if (path == null) { //can't find path, reset
                     System.out.println("Could not pathfind. Resetting now...");
                     cancelButton_Clicked();
                 } else {
-                    graph.createEdgeLines(path, true);
+                    graph.createEdgeLines(path, true, false);
                     textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
                 }
 
@@ -242,7 +244,7 @@ public class pathFindingMenuController extends controllers.mapScene{
 
         //reset for next pathfinding session
         MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-        ArrayList<Edge> reqPath = mapController.requestPath();
+        ArrayList<Edge> reqPath = mapController.requestPath(permissionLevel);
         if (reqPath == null) { //can't find path, reset
             System.out.println("Could not pathfind. Resetting now...");
             cancelButton_Clicked();
@@ -262,7 +264,7 @@ public class pathFindingMenuController extends controllers.mapScene{
                 //todo -> highlight
 
             } else {
-                graph.createEdgeLines(fragPath.get(0), true);
+                graph.createEdgeLines(fragPath.get(0), true, false);
             }
 
             //set the globals so you can send to the continue button
@@ -313,6 +315,11 @@ public class pathFindingMenuController extends controllers.mapScene{
             }
         }
     }
+
+    public void rightClickEvent(int x, int y, Circle c, int mode) {}
+    public void edgeClickRemove(int x1, int y1, int x2, int y2){}
+
+    public void showStairMenu(int x, int y, Circle c) {}
 
     public void sceneEvent(int x, int y, Circle c){
         System.out.println("Node at (" + x + ", " + y + ") selected during state: " + selectionState);
@@ -437,7 +444,7 @@ public class pathFindingMenuController extends controllers.mapScene{
                 newMapImage.display(map_viewer);
 
                 currentFloor_Label.setText(Integer.toString(currentFloor));
-                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
+                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor, permissionLevel);
 
                 //draw edges
                 graph.drawFloorEdges(currentFloor);
@@ -451,7 +458,7 @@ public class pathFindingMenuController extends controllers.mapScene{
     }
 
     public void createEdgeLines(ArrayList<Edge> path) {
-        graph.createEdgeLines(path, true);
+        graph.createEdgeLines(path, true, false);
     }
 
     public void continueButton_Clicked() {
@@ -498,7 +505,7 @@ public class pathFindingMenuController extends controllers.mapScene{
         graph.wipeEdgeLines();
         floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
         System.out.println("creating edge lines for fp pos: " + fragPathPos);
-        graph.createEdgeLines(globalFragList.get(fragPathPos), true);
+        graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
     }
 
 //    public void previousButton_Clicked() {
