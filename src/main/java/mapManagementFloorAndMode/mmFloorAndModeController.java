@@ -226,12 +226,32 @@ public class mmFloorAndModeController extends controllers.mapScene{
         hbCancelSave.getChildren().addAll(buttonCancel, buttonSave);
         hbCheckBox.getChildren().addAll(isHidden, isEnabled);
         hbCheckBox.setSpacing(25);
+
         vb.getChildren().addAll(nameLabel, nodeName,
                 typeLabel, nodeType, roomLabel, nodeRoom, hbCheckBox, hbCancelSave);
         anchorpane.getChildren().addAll(grid,vb);   // Add grid from Example 1-5
         AnchorPane.setBottomAnchor(vb, 8.0);
         AnchorPane.setRightAnchor(vb, 5.0);
         AnchorPane.setTopAnchor(grid, 10.0);
+
+        if (mode.equals("Edit")){
+            ResultSet rset = databaseController.getNode((int) btK.getLayoutX(), (int) btK.getLayoutY(), currentFloor);
+            try {
+                while (rset.next()){
+                    nodeName.setText(rset.getString("NAME"));
+                    nodeType.setText(rset.getString("TYPE"));
+                    nodeRoom.setText(rset.getString("ROOMNUM"));
+                    if(rset.getBoolean("ISHIDDEN")){
+                        isHidden.setSelected(true);
+                    }
+                    if (rset.getBoolean("ENABLED")){
+                        isEnabled.setSelected(true);
+                    }
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
 
 
         pop.setDetachable(true);
