@@ -62,12 +62,12 @@ public class MapOverlay {
                 //  - node can be disabled and show in dev mode
                 //devs can see everything and interact with everything
                 if (devMode == true) {
-                    create_Button(current.getPosX(), current.getPosY(), current.getIsHidden(), current.getEnabled(), floor);
+                    create_Button(current, floor);
                 } else {
                     //if not dev mode:
                     //show only if enabled and not hidden
                     if (current.getIsHidden() == false && current.getEnabled() == true) {
-                        create_Button(current.getPosX(), current.getPosY(), false, true, floor);
+                        create_Button(current, floor);
                     }
                 }
                 //else skip displaying the node
@@ -77,9 +77,11 @@ public class MapOverlay {
         }
 
 
-    public void create_Button(int nodeX, int nodeY, boolean hidden, boolean enabled, int floor){
-        //System.out.println("checking button");
-        //System.out.println("make button");
+    public void create_Button(Node button, int floor){
+        int nodeX = button.getPosX();
+        int nodeY = button.getPosY();
+        boolean hidden = button.getIsHidden();
+        boolean enabled = button.getEnabled();
 
         Node current = MapController.getInstance().getCollectionOfNodes().getNode(nodeX, nodeY, floor);
         final String infoString;
@@ -124,6 +126,9 @@ public class MapOverlay {
             location.setFill(Color.RED);
         } else if(hidden) {
             location.setFill(Color.GRAY);
+        }else if (button.getName().equals("Kiosk")){
+            System.out.println("Found Kiosk");
+            location.setFill(Color.ORANGE);
         }
 
         location.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
