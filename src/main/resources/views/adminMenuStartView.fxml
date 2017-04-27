@@ -101,6 +101,20 @@
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
+                  <HBox layoutX="10.0" layoutY="220.0">
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="pathFinding_Button" mnemonicParsing="false" onAction="#pathFinding_Button_Clicked" onMouseClicked="#mapManagementButton_Clicked" prefHeight="90.0" prefWidth="350.0" text="Pathfinding">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />

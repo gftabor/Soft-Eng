@@ -49,23 +49,51 @@ public class adminLoginMainController extends controllers.AbsController{
         System.out.println(password);
 
         if(loginManage.verifyCredentials(username, password) == 1){
-            System.out.println("correct Password");
+            System.out.println("Correct Password");
 
-            FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
-            adminMenuStart.adminMenuStartController controller = loader.getController();
-            //Set the correct username for the next scene
-            controller.setUsername_Admin("Admin: "+ username_TextField.getText());
-            //sets the current language
-            controller.setCurrentLanguage(c_language);
-            //set up english labels
-            if(c_language == 0){
-                controller.englishButtons_Labels();
+            //LOG IN ADMIN
+            //*************************************************
+            if(loginManage.getPermissions(username) == 2){
+                System.out.println("Logging in Admin");
+                FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
+                adminMenuStart.adminMenuStartController controller = loader.getController();
+                //Set the correct username for the next scene
+                controller.setUsername_Admin("Admin: "+ username_TextField.getText());
+                //sets the current language
+                controller.setCurrentLanguage(c_language);
+                //set up english labels
+                if(c_language == 0){
+                    controller.englishButtons_Labels();
 
-                //set up spanish labels
-            }else if(c_language == 1){
-                controller.spanishButtons_Labels();
+                    //set up spanish labels
+                }else if(c_language == 1){
+                    controller.spanishButtons_Labels();
+                }
+                controller.setLanguageChoices();
+
+                //LOG IN EMPLOYEE
+                //*************************************************
+            }else if(loginManage.getPermissions(username) == 1){
+                System.out.println("Logging in Employee");
+                FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
+                //patientMenuStart.patientMenuStartController controller = loader.getController();
+                patientMain.patientMainController controller = loader.getController();
+                //sets the current language
+                controller.setCurrentLanguage(c_language);
+                //set up english labels
+                if(c_language == 0){
+                    controller.englishButtons_Labels();
+                    //set up spanish labels
+                }else if(c_language == 1){
+                    controller.spanishButtons_Labels();
+                }
+                controller.setPermissionLevel(1);
+                controller.setWelcome("Employee: " + username);
+            }else{
+                System.out.println("Logging in Regular User. What??");
             }
-            controller.setLanguageChoices();
+
+
 
 
             //Check is the username/passwords inputs are empty
@@ -87,7 +115,8 @@ public class adminLoginMainController extends controllers.AbsController{
     public void mainMenuButton_Clicked(){
         System.out.println("The user has clicked the main menu Button");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
-        patientMenuStart.patientMenuStartController controller = loader.getController();
+        //patientMenuStart.patientMenuStartController controller = loader.getController();
+        patientMain.patientMainController controller = loader.getController();
         //sets the current language
         controller.setCurrentLanguage(c_language);
         //set up english labels
