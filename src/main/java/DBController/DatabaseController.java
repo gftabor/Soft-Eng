@@ -1392,6 +1392,26 @@ public class DatabaseController {
         }
         return rooms;
     }
+
+    public ArrayList<String> getFilteredRoomList() {
+        ArrayList<String> rooms = new ArrayList<>();
+        String roomName, roomNum;
+        String room;
+        ResultSet rset = databaseController.getFilteredRoomNames();
+        try {
+            while (rset.next()) {
+                roomName = rset.getString("NAME");
+                roomNum = rset.getString("ROOMNUM");
+                if (!rooms.contains(roomNum)) {
+                    room = "" + roomName + ", " + roomNum;
+                    rooms.add(room);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rooms;
+    }
     /*******************************************************************************
      * Misc.
      *
