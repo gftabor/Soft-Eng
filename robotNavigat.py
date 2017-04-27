@@ -5,6 +5,7 @@ import csv
 from geometry_msgs.msg import Pose
 from geometry_msgs.msg import PoseStamped
 from tf.transformations import euler_from_quaternion
+from numpy import interp
 
 
 def navToPose(x,y):
@@ -15,9 +16,11 @@ def navToPose(x,y):
     global theta
     global move_pub
     #get desired positions from goal from rviz click
+
+
     goalPose = PoseStamped()
-    goalPose.pose.position.x = 1
-    goalPose.pose.position.y = 0
+    goalPose.pose.position.x = 1 #interp(x,[189,735],[1,2])
+    goalPose.pose.position.y = 0 #interp(y,[312,64],[1,2])
     goalPose.pose.orientation.x = goalPose.pose.orientation.y = goalPose.pose.orientation.z = 0
     goalPose.pose.orientation.w = 1
     goalPose.header.frame_id="map"
@@ -83,12 +86,12 @@ if __name__ == '__main__':
     
     with open('path.txt') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='|')
-        for row in spamreader:
+        for row in reader:
             print('-'.join(row))
             navToPose(row[0],row[1])
     
-    while (not rospy.is_shutdown()):
+    #while (not rospy.is_shutdown()):
      
-        rospy.sleep(1)
+    #rospy.sleep(1)
 
     print "Lab 2 complete!"
