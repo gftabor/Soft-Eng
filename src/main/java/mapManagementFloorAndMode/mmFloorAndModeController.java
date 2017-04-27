@@ -122,6 +122,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
     Node dragNode;
 
     private Circle lastColoredStart;
+    private boolean selectedNode;
     private Circle lastColoredEnd;
 
     private Circle btK;
@@ -130,6 +131,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
     private boolean dragMode;
 
     private int permissionLevel;
+
+    final Circle[] temporaryButton = {null};
 
 
     //Set to english by default
@@ -147,7 +150,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
         setTitleChoices();
         addSingleEdgeMode = false;
         addMultiEdgeMode = false;
-        final Circle[] temporaryButton = {null};
+        selectedNode = false;
+
 
         //set default floor to start
         //we will use floor 1 for now
@@ -175,6 +179,15 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 dragMode = false;
                 dragModeUpdate();
 
+            } else if (selectedNode) {
+                selectedNode = false;
+                graph.wipeEdgeLines();
+                //color the node as well
+                if (lastColoredStart !=  null) {
+                    lastColoredStart.setStroke(lastColoredStart.getFill());
+                    lastColoredStart.setStrokeWidth(1);
+                    lastColoredStart = null;
+                }
             } else {
                 graph.wipeEdgeLines();
 
@@ -580,6 +593,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 }
                 System.out.println("test old: x= " + dragNode.getPosX() + ", y= " + dragNode.getPosY());
 
+                //wipe edge lines from screen to not clutter stuff up
+                graph.wipeEdgeLines();
                 //This code is for placing nodes
                 c.setOnMouseDragged(e -> {
                     if (e.getSceneX() > paneBounds.getMinX() && e.getSceneX() < paneBounds.getMaxX()
@@ -588,9 +603,6 @@ public class mmFloorAndModeController extends controllers.mapScene{
                         c.setLayoutY((e.getSceneY() - paneBounds.getMinY()));
                     }
                 });
-                break;
-            default:
-                System.out.println("default. This probably should not have been possible...");
                 break;
             case 8: //  click on stair/elevator node
                 Node selectedNode2 = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
@@ -608,6 +620,10 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 PopOver pop2 = new PopOver();
                 createMultiFloorPop(pop2, c, floors, selectedNode2);
                 pop2.show(c);
+                break;
+            default:
+                System.out.println("default. This probably should not have been possible...");
+                break;
         }
     }
 
@@ -656,6 +672,15 @@ public class mmFloorAndModeController extends controllers.mapScene{
         if (dragMode) {
             return;
         }
+
+        //set the selected node switch
+        selectedNode = true;
+
+        //remove any temporary nodes
+        if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)){
+            admin_FloorPane.getChildren().remove(temporaryButton[0]);
+        }
+
         //highlight the node
         nodeEdgeX1 = (int) x;
         nodeEdgeY1 = (int) y;
@@ -668,6 +693,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         if (lastColoredStart !=  null) {
             lastColoredStart.setStroke(lastColoredStart.getFill());
             lastColoredStart.setStrokeWidth(1);
+            lastColoredStart = null;
         }
         lastColoredStart = c;
         c.setStrokeWidth(6.5);
