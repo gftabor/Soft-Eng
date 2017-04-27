@@ -845,6 +845,33 @@ public class DatabaseController {
         }
         return resultSet;
     }
+    public int getPermission(String username){
+        ResultSet resultSet = null;
+        int permissions;
+        try{
+            String query = "SELECT PERMISSIONS FROM ADMIN WHERE USERNAME = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, username);
+            // run statement and query
+
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return 0;
+        }
+        try {
+            if(!resultSet.next()){
+                return 0;
+            }
+            permissions = resultSet.getInt("PERMISSIONS");
+            closeResultSet(resultSet);
+            return permissions;
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
 
     public String getPassword(String username){
         ResultSet resultSet = null;

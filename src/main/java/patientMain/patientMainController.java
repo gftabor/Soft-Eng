@@ -128,6 +128,12 @@ public class patientMainController extends controllers.mapScene {
     @FXML
     private StackPane mapStack;
 
+    @FXML
+    private Label welcomeAdmin;
+
+    @FXML
+    private Button signOut_Button;
+
     int c_language = 0;
 
     int first_Time = 0;
@@ -173,13 +179,22 @@ public class patientMainController extends controllers.mapScene {
     double dragNewX, dragNewY, dragOldX, dragOldY;
     javafx.scene.Node selected;
 
-    private int permissionLevel;
+    private int permissionLevel = 0;
 
     //ArrayList<Edge> zoomPath;
 
     @FXML
     public void initialize() {
-        permissionLevel = 0;
+        if(permissionLevel == 0){
+            System.out.println("Regular User");
+        }else if (permissionLevel == 1){
+            System.out.println("Employee User");
+        }else if (permissionLevel == 2){
+            System.out.println("Admin User");
+        }
+        signOut_Button.setVisible(false);
+        //admin_Button.setVisible(true);
+        welcomeAdmin.setText("");
         graph = new controllers.MapOverlay(node_Plane, (mapScene) this);
         MapController.getInstance().requestMapCopy();
 
@@ -801,7 +816,7 @@ public class patientMainController extends controllers.mapScene {
         //change the current language to english
 
         //Change the Buttons
-        admin_Button.setText("Administrator");
+        admin_Button.setText("Log In");
         emergency_Button.setText("EMERGENCY");
         cancel_Button.setText("Clear");
         submit_Button.setText("Submit");
@@ -1091,5 +1106,37 @@ public class patientMainController extends controllers.mapScene {
             } else if (controllers.MapOverlay.getPathfinding() == 2) {
                 graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
             }
+    }
+
+    public int getPermissionLevel() {
+        return permissionLevel;
+    }
+
+    public void setPermissionLevel(int permissionLevel) {
+        this.permissionLevel = permissionLevel;
+        System.out.println("Setting permission level to: " + permissionLevel);
+        if(this.permissionLevel >= 1){
+            admin_Button.setVisible(false);
+            signOut_Button.setVisible(true);
+        }
+    }
+
+    public void setWelcome(String text){
+        welcomeAdmin.setText(text);
+    }
+    public void signOut_Button_Clicked(){
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
+        //patientMenuStart.patientMenuStartController controller = loader.getController();
+        patientMain.patientMainController controller = loader.getController();
+        //sets the current language
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
     }
 }
