@@ -314,5 +314,21 @@ public class adminMenuStartController extends controllers.AbsController{
         c_language = i;
     }
 
+    public void pathFinding_Button_Clicked(){
+        //Change to patient menu
+        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
+        patientMain.patientMainController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        controller.setPermissionLevel(2);
+        controller.setWelcome(username_Label.getText());
+    }
 
 }

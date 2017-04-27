@@ -154,7 +154,7 @@ public class MapOverlay {
         } else if(hidden) {
             location.setFill(Color.GRAY);
         }else if (current.getName().equals("Kiosk")){
-            System.out.println("Found Kiosk");
+            //System.out.println("Found Kiosk");
             location.setFill(Color.ORANGE);
         }
 
