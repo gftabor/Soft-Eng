@@ -132,10 +132,12 @@ public class mmFloorAndModeController extends controllers.mapScene{
     private boolean addSingleEdgeMode;
     private boolean addMultiEdgeMode;
     private boolean dragMode;
+    private boolean popoverShown;
 
     private int permissionLevel;
 
     final Circle[] temporaryButton = {null};
+
 
 
     //Set to english by default
@@ -153,8 +155,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         setTitleChoices();
         addSingleEdgeMode = false;
         addMultiEdgeMode = false;
-
-        final Circle[] temporaryButton = {null};
+        popoverShown = false;
 
         selectedNode = false;
 
@@ -188,10 +189,15 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 selectedNode = false;
                 graph.wipeEdgeLines();
                 //color the node as well
-                if (lastColoredStart !=  null) {
+                if (lastColoredStart != null) {
                     lastColoredStart.setStroke(lastColoredStart.getFill());
                     lastColoredStart.setStrokeWidth(1);
                     lastColoredStart = null;
+                }
+            } else if(popoverShown) {
+                popoverShown = false;
+                if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)){
+                    admin_FloorPane.getChildren().remove(temporaryButton[0]);
                 }
             } else {
                 graph.wipeEdgeLines();
@@ -204,6 +210,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 btK.setLayoutY(e.getY());
                 admin_FloorPane.getChildren().add(btK);
                 temporaryButton[0] = btK;
+
+                //set the popovershown var
+                popoverShown = true;
 
                 PopOver pop = new PopOver();
                 createPop(pop, btK, "Create");
@@ -688,8 +697,11 @@ public class mmFloorAndModeController extends controllers.mapScene{
         selectedNode = true;
 
         //remove any temporary nodes
-        if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)){
-            admin_FloorPane.getChildren().remove(temporaryButton[0]);
+        if (popoverShown){
+            if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)){
+                admin_FloorPane.getChildren().remove(temporaryButton[0]);
+            }
+
         }
         //highlight the node
         nodeEdgeX1 = (int) x;
