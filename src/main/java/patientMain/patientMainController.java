@@ -801,6 +801,8 @@ public class patientMainController extends controllers.mapScene {
 
         //hide the continue button
         continueNew_Button.setVisible(false);
+        
+        previous_Button.setVisible(false);
 
         //reset the textfields
         start_textField.setText("");
