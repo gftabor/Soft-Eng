@@ -184,7 +184,7 @@ public class NewIntroUIController extends controllers.mapScene{
         setStartEndChoices();
         setLanguage_ChoiceBox();
         //setComboBox();
-        setFilterChoices();
+        //setFilterChoices();
         //set current floor
         //we will use floor 1 as default
         currentFloor = 1;
