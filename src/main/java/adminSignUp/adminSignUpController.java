@@ -55,7 +55,7 @@ public class adminSignUpController extends controllers.AbsController{
     private TableColumn<adminTable, String> lastName_TableColumn;
 
     @FXML
-    private TableColumn<adminTable, String> password_TableColumn;
+    private TableColumn<adminTable, Integer> permissions_TableColumn;
 
     @FXML
     private Label queryStatus;
@@ -121,7 +121,7 @@ public class adminSignUpController extends controllers.AbsController{
 
     DatabaseController databaseController = DatabaseController.getInstance();
 
-    int givID;
+    int givID, givPermissions;
     String givUsername, givFirstN, givLastN, givPassword;
 
     //Deal with the clear button clicked
@@ -299,9 +299,11 @@ public class adminSignUpController extends controllers.AbsController{
         username_TableColumn.setCellValueFactory(new PropertyValueFactory<adminTable, String>("rUsername"));
         firstName_TableColumn.setCellValueFactory(new PropertyValueFactory<adminTable, String>("rFirstName"));
         lastName_TableColumn.setCellValueFactory(new PropertyValueFactory<adminTable, String>("rLastName"));
+        permissions_TableColumn.setCellValueFactory(new PropertyValueFactory<adminTable, Integer>("rPermissions"));
+        //permissions_TableColumn.setCellValueFactory(new PropertyValueFactory<adminTable, Integer>("rPermissions"));
         //password_TableColumn.setCellValueFactory(new PropertyValueFactory<adminTable, String>("rPassword"));
 
-        int id;
+        int id, permissions;
         String userName, firstName, lastName;
         ResultSet rset = databaseController.getTableSet("ADMIN");
         ObservableList<adminTable> data = FXCollections.observableArrayList();
@@ -312,9 +314,10 @@ public class adminSignUpController extends controllers.AbsController{
                 firstName = rset.getString("FIRSTNAME");
                 lastName = rset.getString("LASTNAME");
                 userName = rset.getString("USERNAME");
-                System.out.println("Name: " + firstName + lastName);
+                permissions = rset.getInt("PERMISSIONS");
+                System.out.println(String.format("%s %s %s %d", firstName, lastName, userName, permissions));
                 //Table table = new Table(id, firstName, lastName, title, department, roomNum);
-                data.add(new adminTable(id, userName, firstName, lastName));
+                data.add(new adminTable(id, userName, firstName, lastName, permissions));
             }
             rset.close();
         } catch (SQLException e){
@@ -330,11 +333,16 @@ public class adminSignUpController extends controllers.AbsController{
                     givUsername = Table_TableView.getSelectionModel().getSelectedItem().getrUsername();
                     givFirstN = Table_TableView.getSelectionModel().getSelectedItem().getrFirstName();
                     givLastN = Table_TableView.getSelectionModel().getSelectedItem().getrLastName();
+                    givPermissions = Table_TableView.getSelectionModel().getSelectedItem().getrPermissions();
+
+                    //givPermissions = Table_TableView.getSelectionModel().getSelectedItem().getrPermissions();
+                    System.out.println("Selected Permissions Value: " + givPermissions);
                     //givPassword = Table_TableView.getSelectionModel().getSelectedItem().getrPassword();
                     id_textField.setText(Integer.toString(givID));
                     userName_TextField.setText(givUsername);
                     firstName_TextField.setText(givFirstN);
                     lastName_TextField.setText(givLastN);
+                    search_textField.setText(Integer.toString(givPermissions));
                     //newPassword_TextField.setText(givPassword);
                 }
             }
@@ -403,6 +411,7 @@ public class adminSignUpController extends controllers.AbsController{
         username_TableColumn.setText("Username");
         firstName_TableColumn.setText("First Name");
         lastName_TableColumn.setText("Last Name");
+        permissions_TableColumn.setText("Permissions");
 
 
 
@@ -437,6 +446,7 @@ public class adminSignUpController extends controllers.AbsController{
         username_TableColumn.setText("Usuario");
         firstName_TableColumn.setText("Nombre");
         lastName_TableColumn.setText("Apellido");
+        permissions_TableColumn.setText("Permisos");
 
     }
 

@@ -43,9 +43,10 @@
                   <TableView fx:id="Table_TableView" fixedCellSize="0.0" prefHeight="587.0" prefWidth="976.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="ID_TableColumn" prefWidth="90.3900146484375" text="ID" />
-                      <TableColumn fx:id="username_TableColumn" prefWidth="252.547607421875" text="Username" />
-                      <TableColumn fx:id="firstName_TableColumn" minWidth="0.0" prefWidth="217.452392578125" text="First Name" />
-                        <TableColumn fx:id="lastName_TableColumn" minWidth="0.0" prefWidth="274.24737548828125" text="Last Name" />
+                      <TableColumn fx:id="username_TableColumn" prefWidth="125.26934814453125" text="Username" />
+                        <TableColumn fx:id="lastName_TableColumn" minWidth="0.0" prefWidth="108.76934814453125" text="Last Name" />
+                      <TableColumn fx:id="firstName_TableColumn" minWidth="0.0" prefWidth="159.5384521484375" text="First Name" />
+                        <TableColumn fx:id="permissions_TableColumn" prefWidth="90.3900146484375" text="Permissions" />
                     </columns>
                   </TableView>
                   <Label fx:id="queryStatus" text="Query Status: " />
