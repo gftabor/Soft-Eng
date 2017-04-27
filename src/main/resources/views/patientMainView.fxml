@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -15,17 +8,17 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="patientMain.patientMainController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="patientMain.patientMainController">
    <children>
       <BorderPane layoutX="96.0" layoutY="187.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -42,6 +35,20 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT">
                      <children>
+                        <Button fx:id="admin_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefHeight="60.0" prefWidth="170.0" text="Log In">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="signOut_Button" mnemonicParsing="false" onAction="#signOut_Button_Clicked" prefWidth="170.0" text="Sign Out">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Region prefHeight="0.0" prefWidth="467.0" />
                         <ChoiceBox fx:id="language_ChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="150.0">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -54,14 +61,6 @@
                            <font>
                               <Font size="20.0" />
                            </font>
-                        </Button>
-                        <Button fx:id="admin_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefHeight="60.0" prefWidth="170.0" text="Administrator">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin>
                         </Button>
                         <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="60.0" prefWidth="170.0" styleClass="emergency" text="EMERGENCY">
                            <font>
@@ -259,6 +258,7 @@
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </HBox.margin>
                         </Label>
+                        <Label fx:id="welcomeAdmin" prefHeight="16.0" prefWidth="157.0" />
                         <Region HBox.hgrow="ALWAYS" />
                         <Button fx:id="previous_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#previousButton_Clicked" prefHeight="60.0" prefWidth="132.0" text="Previous">
                            <HBox.margin>
