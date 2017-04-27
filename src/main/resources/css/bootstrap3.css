@@ -753,6 +753,23 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-effect: dropshadow(gaussian, #111 , 0, 0, 0, 0)
 }
 
+.adminLogin_TextField{
+    -fx-background-color: linear-gradient(to right, #ECE9E9  25%, #bdc3c7 100%,#000000 90%,white 100%,white 100%);
+    -fx-border-width: 0;
+    -fx-font-size: 16px;
+    -fx-font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    -fx-text-fill: Black;
+    /*-fx-prompt-text-fill: #5a5a5a;*/
+    -fx-background-insets: 0 0 0 0;
+}
+
+.adminLogin_Vbox{
+    -fx-background-color: lightgrey;
+    -fx-border-color: dimgrey;
+
+}
+
+
 .DirectorySubMenu{
     -fx-font-size: 25px;
     -fx-font-weight: Bold;

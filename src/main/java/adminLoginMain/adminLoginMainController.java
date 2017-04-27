@@ -2,10 +2,7 @@ package adminLoginMain;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -32,6 +29,12 @@ public class adminLoginMainController extends controllers.AbsController{
 
     @FXML
     private Label adminTitle_Label;
+
+    @FXML
+    private Label languageTitle_Label;
+
+    @FXML
+    private ChoiceBox<String> languageChoices_ChoiceBox;
 
     int c_language;
 
