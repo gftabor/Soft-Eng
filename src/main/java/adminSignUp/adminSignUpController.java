@@ -114,6 +114,9 @@ public class adminSignUpController extends controllers.AbsController{
     @FXML
     private Button submit_Button;
 
+    @FXML
+    private CheckBox isAdmin_CheckBox;
+
     private boolean selfSelected = false;
 
     int c_language = 0; //English by default
@@ -124,22 +127,13 @@ public class adminSignUpController extends controllers.AbsController{
     int givID, givPermissions;
     String givUsername, givFirstN, givLastN, givPassword;
 
-    //Deal with the clear button clicked
-    public void cancelButton_Clicked(){
-        id_textField.clear();
-        userName_TextField.clear();
-        firstName_TextField.clear();
-        lastName_TextField.clear();
-        newPassword_TextField.clear();
-
-    }
-
    public void clearInputs(){
         id_textField.clear();
         userName_TextField.clear();
         firstName_TextField.clear();
         lastName_TextField.clear();
         newPassword_TextField.clear();
+       isAdmin_CheckBox.setSelected(false);
     }
 
     //Deal with the submit button clicked
@@ -156,7 +150,6 @@ public class adminSignUpController extends controllers.AbsController{
         }else{
             System.out.println("Error with choicebox on admin page");
         }
-        //cancelButton_Clicked();
         clearInputs();
 
     }
@@ -164,7 +157,7 @@ public class adminSignUpController extends controllers.AbsController{
     public void addAdmin(){
         try {
             if (databaseController.newAdmin(firstName_TextField.getText(), lastName_TextField.getText(),
-                    userName_TextField.getText(), newPassword_TextField.getText())) {
+                    userName_TextField.getText(), newPassword_TextField.getText(), isAdmin_CheckBox.isSelected())) {
                 queryStatus.setText("Admin Added");
             } else {
                 queryStatus.setText("Error Adding Admin");
@@ -181,7 +174,7 @@ public class adminSignUpController extends controllers.AbsController{
     public void editAdmin(){
         try {
             if (databaseController.editAdmin(Integer.parseInt(id_textField.getText()), firstName_TextField.getText(), lastName_TextField.getText(),
-                    userName_TextField.getText())) {
+                    userName_TextField.getText(), isAdmin_CheckBox.isSelected())) {
                 if(newPassword_TextField.getText() != ""){
                     databaseController.editAdminPassword(Integer.parseInt(id_textField.getText()), newPassword_TextField.getText());
                 }
@@ -335,15 +328,16 @@ public class adminSignUpController extends controllers.AbsController{
                     givLastN = Table_TableView.getSelectionModel().getSelectedItem().getrLastName();
                     givPermissions = Table_TableView.getSelectionModel().getSelectedItem().getrPermissions();
 
-                    //givPermissions = Table_TableView.getSelectionModel().getSelectedItem().getrPermissions();
-                    System.out.println("Selected Permissions Value: " + givPermissions);
-                    //givPassword = Table_TableView.getSelectionModel().getSelectedItem().getrPassword();
+                    mode_ChoiceBox.setValue("Edit");
                     id_textField.setText(Integer.toString(givID));
                     userName_TextField.setText(givUsername);
                     firstName_TextField.setText(givFirstN);
                     lastName_TextField.setText(givLastN);
-                    search_textField.setText(Integer.toString(givPermissions));
-                    //newPassword_TextField.setText(givPassword);
+                    if(givPermissions == 2){
+                        isAdmin_CheckBox.setSelected(true);
+                    }else{
+                        isAdmin_CheckBox.setSelected(false);
+                    }
                 }
             }
         });
