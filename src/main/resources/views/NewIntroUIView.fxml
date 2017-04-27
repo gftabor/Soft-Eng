@@ -9,8 +9,10 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TreeView?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -38,28 +40,23 @@
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Label styleClass="mainTitle" text="Brigham and Women's Faulkner Hospital" textFill="WHITE">
+                        <Label fx:id="mainTitle_Label" styleClass="mainTitle" text="Brigham and Women's Faulkner Hospital" textFill="WHITE">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" styleClass="color-palette5" text="Set Map">
+                        <Button fx:id="about_Button" mnemonicParsing="false" prefWidth="100.0" styleClass="color-palette5" text="About">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefWidth="100.0" styleClass="color-palette5" text="About">
+                        <Button fx:id="admin_Button" mnemonicParsing="false" prefWidth="150.0" styleClass="color-palette5" text="Adminstrator">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefWidth="150.0" styleClass="color-palette5" text="Adminstrator">
-                           <HBox.margin>
-                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                           </HBox.margin>
-                        </Button>
-                        <Button mnemonicParsing="false" prefWidth="150.0" styleClass="danger" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" prefWidth="150.0" styleClass="danger" text="EMERGENCY">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
@@ -82,18 +79,18 @@
                         <HBox>
                            <children>
                               <Label />
-                              <Label prefWidth="40.0" text="From:" textFill="#797878">
+                              <Label fx:id="start_Label" prefWidth="40.0" text="From:" textFill="#797878">
                                  <HBox.margin>
                                     <Insets left="6.0" top="6.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField prefWidth="200.0" styleClass="show-hide-columns-button2">
+                              <TextField fx:id="start_textField" prefWidth="200.0" styleClass="show-hide-columns-button2">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin></TextField>
                               <Region HBox.hgrow="ALWAYS" />
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="info" text="x" textAlignment="CENTER">
+                              <Button fx:id="cancelFrom_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="info" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
@@ -104,19 +101,19 @@
                         <HBox>
                            <children>
                               <Label />
-                              <Label prefWidth="40.0" text="To:" textFill="#797878">
+                              <Label fx:id="end_Label" prefWidth="40.0" text="To:" textFill="#797878">
                                  <HBox.margin>
                                     <Insets left="6.0" top="6.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField prefWidth="210.0" styleClass="show-hide-columns-button2">
+                              <TextField fx:id="end_TextField" prefWidth="210.0" styleClass="show-hide-columns-button2">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
                               </TextField>
                               <Region HBox.hgrow="ALWAYS" />
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="info" text="x" textAlignment="CENTER">
+                              <Button fx:id="cancelTo_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="info" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
@@ -128,17 +125,17 @@
                         </HBox>
                         <HBox styleClass="color-palette3">
                            <children>
-                              <Button mnemonicParsing="false" styleClass="menu" text="Options:">
+                              <Button fx:id="options_Button" mnemonicParsing="false" styleClass="menu" text="Options:">
                                  <HBox.margin>
                                     <Insets right="2.0" top="1.0" />
                                  </HBox.margin></Button>
                               <Region HBox.hgrow="ALWAYS" />
-                              <ChoiceBox prefWidth="100.0" styleClass="menu" />
-                              <Button mnemonicParsing="false" styleClass="menu" text="&lt;&gt;">
+                              <ChoiceBox fx:id="language_ChoiceBox" prefWidth="100.0" styleClass="menu" />
+                              <Button fx:id="reverse_Button" mnemonicParsing="false" styleClass="menu" text="&lt;&gt;">
                                  <HBox.margin>
                                     <Insets right="4.0" top="1.0" />
                                  </HBox.margin></Button>
-                              <Button mnemonicParsing="false" styleClass="menu" text="Submit">
+                              <Button fx:id="submit_Button" mnemonicParsing="false" styleClass="menu" text="Submit">
                                  <HBox.margin>
                                     <Insets right="2.0" top="1.0" />
                                  </HBox.margin>
@@ -154,7 +151,7 @@
                               <TreeView prefHeight="200.0" prefWidth="200.0" />
                            </content>
                       </Tab>
-                        <Tab text="Text Directions">
+                        <Tab text="List Directions">
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="393.0" prefWidth="143.0">
                                  <children>
@@ -166,8 +163,21 @@
                               </AnchorPane>
                           </content>
                         </Tab>
+                        <Tab text="Text Directions">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="393.0" prefWidth="143.0">
+                                 <children>
+                                    <Label fx:id="phoneInfo_Label" layoutX="34.0" layoutY="324.0" styleClass="text-D" text="Send directions to my phone" />
+                                    <TextField fx:id="phoneInsert" layoutX="11.0" layoutY="345.0" prefWidth="200.0" promptText="123456789" />
+                                    <Button fx:id="phoneSend" layoutX="212.0" layoutY="345.0" mnemonicParsing="false" prefWidth="60.0" styleClass="primary" text="Send" />
+                                    <TextArea fx:id="textDescription_TextFArea" layoutX="44.0" layoutY="41.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
                     </tabs>
                   </TabPane>
+                  <Label fx:id="textD_Label" text="Text Description (STUB)" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="5.0" left="5.0" right="2.0" top="2.0" />
@@ -175,38 +185,51 @@
             </VBox>
          </left>
          <center>
-            <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <StackPane fx:id="mapStack" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                  <ScrollPane fx:id="scrollPane" prefHeight="200.0" prefWidth="200.0">
                      <content>
-                        <Pane prefHeight="701.0" prefWidth="1043.0" />
+                        <Pane fx:id="node_Plane" prefHeight="701.0" prefWidth="1043.0">
+                           <children>
+                              <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="920.0" />
+                           </children></Pane>
                      </content>
                   </ScrollPane>
-                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="info" text="-" StackPane.alignment="CENTER_RIGHT">
+                  <Button fx:id="zoomOut_button" alignment="CENTER" mnemonicParsing="false" styleClass="info" text="-" StackPane.alignment="CENTER_RIGHT">
                      <StackPane.margin>
                         <Insets right="10.0" top="35.0" />
                      </StackPane.margin>
                   </Button>
-                  <ChoiceBox prefWidth="50.0" styleClass="menu" StackPane.alignment="TOP_LEFT">
+                  <Label fx:id="floor_Label" styleClass="DirectoryLabel" text="Floor:" StackPane.alignment="TOP_LEFT">
+                     <StackPane.margin>
+                        <Insets left="60.0" top="5.0" />
+                     </StackPane.margin>
+                  </Label>
+                  <ChoiceBox fx:id="floor_ChoiceBox" prefWidth="50.0" styleClass="menu" StackPane.alignment="TOP_LEFT">
                      <StackPane.margin>
                         <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                      </StackPane.margin>
                   </ChoiceBox>
-                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="info" text="+" StackPane.alignment="CENTER_RIGHT">
+                  <Button fx:id="ZoomIn_button" alignment="CENTER" mnemonicParsing="false" styleClass="info" text="+" StackPane.alignment="CENTER_RIGHT">
                      <StackPane.margin>
                         <Insets right="10.0" top="-35.0" />
                      </StackPane.margin>
                   </Button>
-                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="menu" text="&lt;" StackPane.alignment="TOP_RIGHT">
+                  <Button fx:id="previous_Button" alignment="CENTER" mnemonicParsing="false" styleClass="menu" text="&lt;" StackPane.alignment="TOP_RIGHT">
                      <StackPane.margin>
                         <Insets right="45.0" top="5.0" />
                      </StackPane.margin>
                   </Button>
-                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="menu" text="&gt;" StackPane.alignment="TOP_RIGHT">
+                  <Button fx:id="continueNew_Button" alignment="CENTER" mnemonicParsing="false" styleClass="menu" text="&gt;" StackPane.alignment="TOP_RIGHT">
                      <StackPane.margin>
                         <Insets right="10.0" top="5.0" />
                      </StackPane.margin>
                   </Button>
+                  <Label fx:id="c_Floor_Label" styleClass="DirectoryLabel" text="1" StackPane.alignment="TOP_LEFT">
+                     <StackPane.margin>
+                        <Insets left="115.0" top="5.0" />
+                     </StackPane.margin>
+                  </Label>
                </children>
                <BorderPane.margin>
                   <Insets bottom="5.0" left="5.0" right="2.0" top="2.0" />
