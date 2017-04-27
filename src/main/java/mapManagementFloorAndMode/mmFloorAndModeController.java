@@ -187,7 +187,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         });
     }
 
-    public PopOver createMultiFloorPop(PopOver pop, Circle btK, ArrayList<Integer> floors){
+    public PopOver createMultiFloorPop(PopOver pop, Circle btK, ArrayList<Integer> floors, Node selectedNode){
 
         //ArrayList<TextField> fields = new ArrayList<>();
         AnchorPane anchorpane = new AnchorPane();
@@ -217,6 +217,22 @@ public class mmFloorAndModeController extends controllers.mapScene{
            // fields.add(new TextField(/*floor number parsed*/));
             TextField thisField = new TextField(Integer.toString(f));
             thisField.setAlignment(Pos.CENTER);
+            thisField.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue.equals("")){
+                    // get node with these button coordinates
+                    ArrayList<Edge> edges = selectedNode.getEdgeList();
+                    for (Edge e : edges){
+                        if (e.getEndNode().getFloor() == Integer.parseInt(oldValue)){
+                            databaseController.deleteEdge(e.getStartNode().getPosX(), e.getStartNode().getPosY(),
+                                    e.getStartNode().getFloor(), e.getEndNode().getPosX(), e.getEndNode().getPosY(),
+                                    e.getEndNode().getFloor());
+                        }
+                    }
+
+                }
+
+                // else here if you can create edges just by user number input RYAN
+            });
             vb.getChildren().add(thisField);
         }
 
@@ -237,6 +253,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 pop.hide();
             }
         });
+
+        TextField textField = new TextField();
+
 
         buttonSave.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
@@ -548,7 +567,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
             default:
                 System.out.println("default. This probably should not have been possible...");
                 break;
-            case 8: // double click on stair/elevator node
+            case 8: //  click on stair/elevator node
                 Node selectedNode2 = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
                 //handle errors
                 if (selectedNode2 == null) {
@@ -562,7 +581,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
                     }
                 }
                 PopOver pop2 = new PopOver();
-                createMultiFloorPop(pop2, c, floors);
+                createMultiFloorPop(pop2, c, floors, selectedNode2);
                 pop2.show(c);
         }
     }
