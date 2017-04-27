@@ -799,7 +799,6 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     -fx-collapsible: true;
     -fx-border-color: #e0dede;
-    -fx-border-style: 1px solid #ddddd;
 }
 
 

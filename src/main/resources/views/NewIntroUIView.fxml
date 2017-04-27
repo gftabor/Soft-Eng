@@ -28,11 +28,6 @@
          <top>
             <VBox BorderPane.alignment="CENTER">
                <children>
-                  <HBox>
-                     <children>
-                        <Region HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
                   <HBox styleClass="MainTitleColor">
                      <children>
                         <Button mnemonicParsing="false" styleClass="map-pin">
@@ -46,17 +41,17 @@
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="about_Button" mnemonicParsing="false" prefWidth="100.0" styleClass="color-palette5" text="About">
+                        <Button fx:id="about_Button" mnemonicParsing="false" onMouseClicked="#aboutButton_clicked" prefWidth="100.0" styleClass="color-palette5" text="About">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="admin_Button" mnemonicParsing="false" prefWidth="150.0" styleClass="color-palette5" text="Adminstrator">
+                        <Button fx:id="admin_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefWidth="150.0" styleClass="color-palette5" text="Adminstrator">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="emergency_Button" mnemonicParsing="false" prefWidth="150.0" styleClass="danger" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefWidth="150.0" styleClass="danger" text="EMERGENCY">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
@@ -90,7 +85,7 @@
                                  </HBox.margin></TextField>
                               <Region HBox.hgrow="ALWAYS" />
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button fx:id="cancelFrom_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="info" text="x" textAlignment="CENTER">
+                              <Button fx:id="cancelFirst_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="info" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
@@ -125,7 +120,7 @@
                         </HBox>
                         <HBox styleClass="color-palette3">
                            <children>
-                              <Button fx:id="options_Button" mnemonicParsing="false" styleClass="menu" text="Options:">
+                              <Button fx:id="cancel_Button" mnemonicParsing="false" onMouseClicked="#cancelButton_Clicked" styleClass="menu" text="Clear">
                                  <HBox.margin>
                                     <Insets right="2.0" top="1.0" />
                                  </HBox.margin></Button>
@@ -135,7 +130,7 @@
                                  <HBox.margin>
                                     <Insets right="4.0" top="1.0" />
                                  </HBox.margin></Button>
-                              <Button fx:id="submit_Button" mnemonicParsing="false" styleClass="menu" text="Submit">
+                              <Button fx:id="submit_Button" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" styleClass="menu" text="Submit">
                                  <HBox.margin>
                                     <Insets right="2.0" top="1.0" />
                                  </HBox.margin>
@@ -171,6 +166,7 @@
                                     <TextField fx:id="phoneInsert" layoutX="11.0" layoutY="345.0" prefWidth="200.0" promptText="123456789" />
                                     <Button fx:id="phoneSend" layoutX="212.0" layoutY="345.0" mnemonicParsing="false" prefWidth="60.0" styleClass="primary" text="Send" />
                                     <TextArea fx:id="textDescription_TextFArea" layoutX="44.0" layoutY="41.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <Label fx:id="phoneStatus" layoutX="122.0" layoutY="371.0" text="Phone Status" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -178,6 +174,7 @@
                     </tabs>
                   </TabPane>
                   <Label fx:id="textD_Label" text="Text Description (STUB)" />
+                  <ChoiceBox fx:id="filter_ChoiceBox" prefWidth="150.0" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="5.0" left="5.0" right="2.0" top="2.0" />
@@ -195,7 +192,7 @@
                            </children></Pane>
                      </content>
                   </ScrollPane>
-                  <Button fx:id="zoomOut_button" alignment="CENTER" mnemonicParsing="false" styleClass="info" text="-" StackPane.alignment="CENTER_RIGHT">
+                  <Button fx:id="zoomOut_button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#zoomOutButton_Clicked" styleClass="info" text="-" StackPane.alignment="CENTER_RIGHT">
                      <StackPane.margin>
                         <Insets right="10.0" top="35.0" />
                      </StackPane.margin>
@@ -210,17 +207,17 @@
                         <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                      </StackPane.margin>
                   </ChoiceBox>
-                  <Button fx:id="ZoomIn_button" alignment="CENTER" mnemonicParsing="false" styleClass="info" text="+" StackPane.alignment="CENTER_RIGHT">
+                  <Button fx:id="zoomIn_button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#zoomInButton_Clicked" styleClass="info" text="+" StackPane.alignment="CENTER_RIGHT">
                      <StackPane.margin>
                         <Insets right="10.0" top="-35.0" />
                      </StackPane.margin>
                   </Button>
-                  <Button fx:id="previous_Button" alignment="CENTER" mnemonicParsing="false" styleClass="menu" text="&lt;" StackPane.alignment="TOP_RIGHT">
+                  <Button fx:id="previous_Button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#previousButton_Clicked" styleClass="menu" text="&lt;" StackPane.alignment="TOP_RIGHT">
                      <StackPane.margin>
                         <Insets right="45.0" top="5.0" />
                      </StackPane.margin>
                   </Button>
-                  <Button fx:id="continueNew_Button" alignment="CENTER" mnemonicParsing="false" styleClass="menu" text="&gt;" StackPane.alignment="TOP_RIGHT">
+                  <Button fx:id="continueNew_Button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#continueNewButton_Clicked" styleClass="menu" text="&gt;" StackPane.alignment="TOP_RIGHT">
                      <StackPane.margin>
                         <Insets right="10.0" top="5.0" />
                      </StackPane.margin>
