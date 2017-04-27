@@ -317,9 +317,10 @@ public class pathFindingMenuController extends controllers.mapScene{
     }
 
     public void rightClickEvent(int x, int y, Circle c, int mode) {}
+    public void doubleClickEvent(int x, int y, Circle c, int mode) {}
     public void edgeClickRemove(int x1, int y1, int x2, int y2){}
 
-    public void showStairMenu(int x, int y, Circle c) {}
+    public void showMultifloorMenu(int x, int y, Circle c) {}
 
     public void sceneEvent(int x, int y, Circle c){
         System.out.println("Node at (" + x + ", " + y + ") selected during state: " + selectionState);
