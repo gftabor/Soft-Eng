@@ -354,7 +354,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
 //                    dragCircle.setOnMouseDragged(en -> {
 //                        //nothing
 //                    });
-                
+
             }
             resetScreen();
         }
