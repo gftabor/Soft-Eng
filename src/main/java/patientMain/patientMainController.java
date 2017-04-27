@@ -566,10 +566,10 @@ public class patientMainController extends controllers.mapScene {
         ArrayList<String> professionals = new ArrayList<>();
         ArrayList<String> all = new ArrayList<>();
 
-        roomNums = databaseController.getRoomList();
+        roomNums = databaseController.getFilteredRoomList();
         professionals = databaseController.getProfessionalList();
         all.addAll(roomNums);
-        all.addAll(databaseController.getRooms());
+        all.addAll(databaseController.getFilteredRooms());
         all.addAll(professionals);
 
 
@@ -801,6 +801,8 @@ public class patientMainController extends controllers.mapScene {
 
         //hide the continue button
         continueNew_Button.setVisible(false);
+        
+        previous_Button.setVisible(false);
 
         //reset the textfields
         start_textField.setText("");
