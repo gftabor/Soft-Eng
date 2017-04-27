@@ -26,7 +26,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/views/NewIntroUIView.fxml"));
         primaryStage.setTitle("Faulkner Hospital Pathfinder");
         
-        primaryStage.setFullScreen(true);
+        primaryStage.setFullScreen(false);
         primaryStage.setMaximized(true);
         primaryStage.setScene(new Scene(root, 1366, 768));
         //primaryStage.setMinWidth(1366);
