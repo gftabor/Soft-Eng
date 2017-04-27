@@ -1,11 +1,7 @@
 package mapManagementFloorAndMode;
 
 import DBController.DatabaseController;
-import controllers.MapController;
-import controllers.Node;
-import controllers.mapScene;
-import controllers.proxyMap;
-import controllers.mapImage;
+import controllers.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -14,11 +10,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -26,12 +21,10 @@ import javafx.scene.shape.Circle;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.textfield.TextFields;
 
-
 import javax.xml.soap.Text;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Created by AugustoR on 3/31/17.
@@ -199,6 +192,92 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 pop.show(btK);
             }
         });
+    }
+
+    
+    public PopOver createMultiFloorPop(PopOver pop, Circle btK, ArrayList<Integer> floors, Node selectedNode) {
+
+        //ArrayList<TextField> fields = new ArrayList<>();
+        AnchorPane anchorpane = new AnchorPane();
+        Button buttonSave = new Button("Save");
+        Button buttonCancel = new Button("Cancel");
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(10, 10, 5, 10));
+
+        VBox vb = new VBox();
+
+        HBox hbCancelSave = new HBox();
+
+        vb.setPadding(new Insets(10, 10, 5, 10));
+        vb.setSpacing(10);
+
+        hbCancelSave.setPadding(new Insets(0, 0, 0, 0));
+        hbCancelSave.setSpacing(60);
+        hbCancelSave.getChildren().addAll(buttonCancel, buttonSave);
+
+        //
+        // give it a list of multifloor edges for this node
+        // so it can parse through and get the floors it is connected to
+        for (int f : floors) {
+            // fields.add(new TextField(/*floor number parsed*/));
+            TextField thisField = new TextField(Integer.toString(f));
+            thisField.setAlignment(Pos.CENTER);
+            thisField.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue.equals("")) {
+                    // get node with these button coordinates
+                    ArrayList<Edge> edges = selectedNode.getEdgeList();
+                    for (Edge e : edges) {
+                        if (e.getEndNode().getFloor() == Integer.parseInt(oldValue)) {
+                            databaseController.deleteEdge(e.getStartNode().getPosX(), e.getStartNode().getPosY(),
+                                    e.getStartNode().getFloor(), e.getEndNode().getPosX(), e.getEndNode().getPosY(),
+                                    e.getEndNode().getFloor());
+                        }
+                    }
+
+                }
+
+                // else here if you can create edges just by user number input RYAN
+            });
+            vb.getChildren().add(thisField);
+        }
+
+        vb.getChildren().addAll(hbCancelSave);
+        anchorpane.getChildren().addAll(grid, vb);
+        AnchorPane.setBottomAnchor(vb, 8.0);
+        AnchorPane.setRightAnchor(vb, 5.0);
+        AnchorPane.setTopAnchor(grid, 10.0);
+
+        pop.setDetachable(true);
+        pop.setDetached(false);
+        pop.setCornerRadius(4);
+        pop.setContentNode(anchorpane);
+
+        buttonCancel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                pop.hide();
+            }
+        });
+
+        TextField textField = new TextField();
+
+
+        buttonSave.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+
+                pop.hide();
+                resetScreen();
+            }
+
+        });
+
+
+        return pop;
+
     }
 
     public void dragModeUpdate() {
@@ -372,6 +451,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     }
 
+
+
     public void clearButton_Clicked() {
         //if(mode_ChoiceBox.getValue().equals("Add Node")) {
         if ("Add Node".equals(mode_ChoiceBox.getValue())) {
@@ -408,8 +489,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     }
 
-    public void showMultifloorMenu(int x, int y, Circle c) {
-        //SHOW MULTIFLOOR STUFF HERE
+    public void doubleClickEvent(int x, int y, Circle c, int mode) {
+        // delete this later
     }
 
     public void rightClickEvent(int x, int y, Circle c, int mode) {
@@ -510,6 +591,22 @@ public class mmFloorAndModeController extends controllers.mapScene{
             default:
                 System.out.println("default. This probably should not have been possible...");
                 break;
+            case 8: //  click on stair/elevator node
+                Node selectedNode2 = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
+                //handle errors
+                if (selectedNode2 == null) {
+                    break;
+                }
+                ArrayList<Edge> edges = selectedNode2.getEdgeList();
+                ArrayList<Integer> floors = new ArrayList<>();
+                for (Edge e : edges){
+                    if (!floors.contains(e.getEndNode().getFloor())){
+                        floors.add(e.getEndNode().getFloor());
+                    }
+                }
+                PopOver pop2 = new PopOver();
+                createMultiFloorPop(pop2, c, floors, selectedNode2);
+                pop2.show(c);
         }
     }
 
@@ -523,6 +620,10 @@ public class mmFloorAndModeController extends controllers.mapScene{
             Node temp = MapController.getInstance().getCollectionOfNodes().getNode(firstNode.getPosX(), firstNode.getPosY(), firstNode.getFloor());
             graph.createEdgeLines(temp.getEdgeList(), true, true);
         }
+    }
+
+    public void showMultifloorMenu(int x, int y, Circle c) {
+        // delete later
     }
 
     public void sceneEvent(int x, int y, Circle c) {
