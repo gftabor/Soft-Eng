@@ -28,4 +28,8 @@ public class AdminLoginManager {
 
         return 0;
     }
+
+    public int getPermissions(String username){
+        return databaseController.getPermission(username);
+    }
 }
