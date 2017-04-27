@@ -569,7 +569,7 @@ public class patientMainController extends controllers.mapScene {
         roomNums = databaseController.getRoomList();
         professionals = databaseController.getProfessionalList();
         all.addAll(roomNums);
-        all.addAll(databaseController.getRooms());
+        all.addAll(databaseController.getFilteredRooms());
         all.addAll(professionals);
 
 
