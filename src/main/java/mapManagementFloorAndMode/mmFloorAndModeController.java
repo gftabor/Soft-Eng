@@ -317,40 +317,45 @@ public class mmFloorAndModeController extends controllers.mapScene{
             System.out.println("---");
             ArrayList<Node> neighborlist = new ArrayList<>();
 
-            for (controllers.Edge thisEdge : dragNode.getEdgeList()) {
-                Node temp = thisEdge.getNeighbor(dragNode);
-                neighborlist.add(temp);
-                temp.getEdgeList().remove(thisEdge);
-                DBController.DatabaseController.getInstance().deleteEdge(thisEdge.getStartNode().getPosX(),
-                        thisEdge.getStartNode().getPosY(), thisEdge.getStartNode().getFloor(), thisEdge.getEndNode().getPosX(),
-                        thisEdge.getEndNode().getPosY(), thisEdge.getEndNode().getFloor());
-            }
+            //need to see if actually moved it though.
+            if (dragNode.getPosX() != dragCircle.getLayoutX() || dragNode.getPosY() != dragCircle.getLayoutY() ||
+                    dragNode.getFloor() != currentFloor) {
 
-            databaseController.newNode((int) dragCircle.getLayoutX(), (int) dragCircle.getLayoutY(), currentFloor, dragNode.getIsHidden(),
-                    dragNode.getEnabled(), dragNode.getType(), dragNode.getName(),
-                    "SOFTENGWPIsjijflkjjfjjfklaljjjfalkjooejallajjjflijjfflRyanIsAwesome",
-                    dragNode.getPermissionLevel());
+                for (controllers.Edge thisEdge : dragNode.getEdgeList()) {
+                    Node temp = thisEdge.getNeighbor(dragNode);
+                    neighborlist.add(temp);
+                    temp.getEdgeList().remove(thisEdge);
+                    DBController.DatabaseController.getInstance().deleteEdge(thisEdge.getStartNode().getPosX(),
+                            thisEdge.getStartNode().getPosY(), thisEdge.getStartNode().getFloor(), thisEdge.getEndNode().getPosX(),
+                            thisEdge.getEndNode().getPosY(), thisEdge.getEndNode().getFloor());
+                }
 
-            databaseController.transferNodeLoc(dragNode.getPosX(), dragNode.getPosY(), dragNode.getFloor(),
-                    (int) dragCircle.getLayoutX(), (int) dragCircle.getLayoutY(), currentFloor);
+                databaseController.newNode((int) dragCircle.getLayoutX(), (int) dragCircle.getLayoutY(), currentFloor, dragNode.getIsHidden(),
+                        dragNode.getEnabled(), dragNode.getType(), dragNode.getName(),
+                        "SOFTENGWPIsjijflkjjfjjfklaljjjfalkjooejallajjjflijjfflRyanIsAwesome",
+                        dragNode.getPermissionLevel());
 
-            databaseController.deleteNode(dragNode.getPosX(), dragNode.getPosY(), currentFloor);
+                databaseController.transferNodeLoc(dragNode.getPosX(), dragNode.getPosY(), dragNode.getFloor(),
+                        (int) dragCircle.getLayoutX(), (int) dragCircle.getLayoutY(), currentFloor);
 
-            databaseController.updateNode((int) dragCircle.getLayoutX(), (int) dragCircle.getLayoutY(), currentFloor, dragNode.getIsHidden(),
-                    dragNode.getEnabled(), dragNode.getType(), dragNode.getName(),
-                    dragNode.getRoomNum(), dragNode.getPermissionLevel());
+                databaseController.deleteNode(dragNode.getPosX(), dragNode.getPosY(), currentFloor);
 
-            //add the edges to the new node
-            for (Node n: neighborlist) {
-                DatabaseController.getInstance().newEdge((int) dragCircle.getLayoutX(),
-                        (int) dragCircle.getLayoutY(), currentFloor,
-                        n.getPosX(), n.getPosY(), n.getFloor());
-            }
+                databaseController.updateNode((int) dragCircle.getLayoutX(), (int) dragCircle.getLayoutY(), currentFloor, dragNode.getIsHidden(),
+                        dragNode.getEnabled(), dragNode.getType(), dragNode.getName(),
+                        dragNode.getRoomNum(), dragNode.getPermissionLevel());
+
+                //add the edges to the new node
+                for (Node n : neighborlist) {
+                    DatabaseController.getInstance().newEdge((int) dragCircle.getLayoutX(),
+                            (int) dragCircle.getLayoutY(), currentFloor,
+                            n.getPosX(), n.getPosY(), n.getFloor());
+                }
 
 //                    dragCircle.setOnMouseDragged(en -> {
 //                        //nothing
 //                    });
-
+                
+            }
             resetScreen();
         }
     }
@@ -993,6 +998,12 @@ public class mmFloorAndModeController extends controllers.mapScene{
     public void setFloorChoices(){
         floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Outside",
                 "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4", "Belkin Basement");
+
+        //reset ui interaction
+        dragMode = false;
+        popoverShown = false;
+        selectedNode = false;
+
 
         floor_ChoiceBox.getSelectionModel().select(0);
         map_viewer.setImage(new Image("/images/cleaned1.png"));
