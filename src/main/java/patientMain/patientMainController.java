@@ -1098,4 +1098,32 @@ public class patientMainController extends controllers.mapScene {
                 graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
             }
     }
+
+    public void setMapToPath() {
+
+        double deltaX = startX - endX;
+        double deltaY = startY - endY;
+
+        double midX = startX + endX;
+        double midY = startY + endY;
+
+        if (deltaX < 0) {
+            deltaX = deltaX * -1;
+        }
+        if (deltaY < 0) {
+            deltaY = deltaY * -1;
+        }
+
+        double stackHeight = mapStack.getHeight();
+        double stackWidth = mapStack.getWidth();
+
+        scrollPane.setHvalue(midX / map_viewer.getFitWidth());
+        scrollPane.setVvalue(midY / map_viewer.getFitHeight());
+
+        
+
+
+
+    }
+
 }
