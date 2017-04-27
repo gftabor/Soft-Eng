@@ -127,6 +127,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
     private Circle btK;
     private boolean addSingleEdgeMode;
     private boolean addMultiEdgeMode;
+    private boolean dragMode;
 
     private int permissionLevel;
 
@@ -154,6 +155,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
         //set to admin level
         permissionLevel = 2;
 
+        dragMode = false;
+
         graph = new controllers.MapOverlay(admin_FloorPane,(mapScene) this);
         MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true,
@@ -168,6 +171,10 @@ public class mmFloorAndModeController extends controllers.mapScene{
             if (addMultiEdgeMode) {
                 //dont try to add node if just trying to click out of multi-edge selection
                 addMultiEdgeMode = false;
+            } else if(dragMode) {
+                dragMode = false;
+                dragModeUpdate();
+
             } else {
                 graph.wipeEdgeLines();
 
@@ -187,7 +194,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
         });
     }
 
-    public PopOver createMultiFloorPop(PopOver pop, Circle btK, ArrayList<Integer> floors, Node selectedNode){
+    
+    public PopOver createMultiFloorPop(PopOver pop, Circle btK, ArrayList<Integer> floors, Node selectedNode) {
 
         //ArrayList<TextField> fields = new ArrayList<>();
         AnchorPane anchorpane = new AnchorPane();
@@ -213,16 +221,16 @@ public class mmFloorAndModeController extends controllers.mapScene{
         //
         // give it a list of multifloor edges for this node
         // so it can parse through and get the floors it is connected to
-        for (int f : floors){
-           // fields.add(new TextField(/*floor number parsed*/));
+        for (int f : floors) {
+            // fields.add(new TextField(/*floor number parsed*/));
             TextField thisField = new TextField(Integer.toString(f));
             thisField.setAlignment(Pos.CENTER);
             thisField.textProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue.equals("")){
+                if (newValue.equals("")) {
                     // get node with these button coordinates
                     ArrayList<Edge> edges = selectedNode.getEdgeList();
-                    for (Edge e : edges){
-                        if (e.getEndNode().getFloor() == Integer.parseInt(oldValue)){
+                    for (Edge e : edges) {
+                        if (e.getEndNode().getFloor() == Integer.parseInt(oldValue)) {
                             databaseController.deleteEdge(e.getStartNode().getPosX(), e.getStartNode().getPosY(),
                                     e.getStartNode().getFloor(), e.getEndNode().getPosX(), e.getEndNode().getPosY(),
                                     e.getEndNode().getFloor());
@@ -237,7 +245,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         }
 
         vb.getChildren().addAll(hbCancelSave);
-        anchorpane.getChildren().addAll(grid,vb);
+        anchorpane.getChildren().addAll(grid, vb);
         AnchorPane.setBottomAnchor(vb, 8.0);
         AnchorPane.setRightAnchor(vb, 5.0);
         AnchorPane.setTopAnchor(grid, 10.0);
@@ -258,7 +266,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
 
         buttonSave.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+            @Override
+            public void handle(ActionEvent e) {
 
                 pop.hide();
                 resetScreen();
@@ -269,6 +278,53 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
         return pop;
 
+    }
+
+    public void dragModeUpdate() {
+        graph.wipeEdgeLines();
+        if (dragNode != null) {
+            System.out.println("drag done");
+            System.out.println("old: x= " + dragNode.getPosX() + ", y= " + dragNode.getPosY());
+            System.out.println("new: x= " + dragCircle.getLayoutX() + ", y= " + dragCircle.getLayoutY());
+            System.out.println("---");
+            ArrayList<Node> neighborlist = new ArrayList<>();
+
+            for (controllers.Edge thisEdge : dragNode.getEdgeList()) {
+                Node temp = thisEdge.getNeighbor(dragNode);
+                neighborlist.add(temp);
+                temp.getEdgeList().remove(thisEdge);
+                DBController.DatabaseController.getInstance().deleteEdge(thisEdge.getStartNode().getPosX(),
+                        thisEdge.getStartNode().getPosY(), thisEdge.getStartNode().getFloor(), thisEdge.getEndNode().getPosX(),
+                        thisEdge.getEndNode().getPosY(), thisEdge.getEndNode().getFloor());
+            }
+
+            databaseController.newNode((int) dragCircle.getLayoutX(), (int) dragCircle.getLayoutY(), currentFloor, dragNode.getIsHidden(),
+                    dragNode.getEnabled(), dragNode.getType(), dragNode.getName(),
+                    "SOFTENGWPIsjijflkjjfjjfklaljjjfalkjooejallajjjflijjfflRyanIsAwesome",
+                    dragNode.getPermissionLevel());
+
+            databaseController.transferNodeLoc(dragNode.getPosX(), dragNode.getPosY(), dragNode.getFloor(),
+                    (int) dragCircle.getLayoutX(), (int) dragCircle.getLayoutY(), currentFloor);
+
+            databaseController.deleteNode(dragNode.getPosX(), dragNode.getPosY(), currentFloor);
+
+            databaseController.updateNode((int) dragCircle.getLayoutX(), (int) dragCircle.getLayoutY(), currentFloor, dragNode.getIsHidden(),
+                    dragNode.getEnabled(), dragNode.getType(), dragNode.getName(),
+                    dragNode.getRoomNum(), dragNode.getPermissionLevel());
+
+            //add the edges to the new node
+            for (Node n: neighborlist) {
+                DatabaseController.getInstance().newEdge((int) dragCircle.getLayoutX(),
+                        (int) dragCircle.getLayoutY(), currentFloor,
+                        n.getPosX(), n.getPosY(), n.getFloor());
+            }
+
+//                    dragCircle.setOnMouseDragged(en -> {
+//                        //nothing
+//                    });
+
+            resetScreen();
+        }
     }
 
     public PopOver createPop(PopOver pop, Circle btK, String mode){
@@ -512,11 +568,13 @@ public class mmFloorAndModeController extends controllers.mapScene{
             case 7:
                 //draggable code:
                 System.out.println("draggable");
+                dragMode = true;
+                dragMode = true;
                 final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
                 dragCircle = c;
                 dragNode = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
                 if (dragNode == null) {
-                    System.out.println("fuck");
+                    System.out.println("ERROR GETTING DRAG NODE");
                     break;
                 }
                 System.out.println("test old: x= " + dragNode.getPosX() + ", y= " + dragNode.getPosY());
@@ -529,39 +587,6 @@ public class mmFloorAndModeController extends controllers.mapScene{
                         c.setLayoutY((e.getSceneY() - paneBounds.getMinY()));
                         System.out.println("dragging...");
                     }
-                });
-//                c.setOnDragDropped(new EventHandler <DragEvent>() {
-//                    public void handle(DragEvent event) {
-//                        /* data dropped */
-//                        System.out.println("onDragDropped");
-//                        System.out.println("--");
-//                        System.out.println("old: x= " + dragNode.getPosX() + ", y= " + dragNode.getPosY());
-//                        System.out.println("new: x= " + c.getLayoutX() + ", y= " + c.getLayoutY());
-//                        System.out.println("---");
-//                        event.setDropCompleted(true);
-//
-//                        event.consume();
-//                    }
-//                });
-
-                c.setOnMouseDragReleased(e -> {
-                    System.out.println("drag done");
-                    System.out.println("old: x= "+dragNode.getPosX()+", y= "+dragNode.getPosY());
-                    System.out.println("new: x= "+c.getLayoutX()+", y= "+c.getLayoutY());
-                    System.out.println("---");
-                    DatabaseController.getInstance().
-
-                    updateNode((int) c.
-
-                    getLayoutX(), (int)c.getLayoutY(),currentFloor,
-                            dragNode.getIsHidden(),dragNode.getEnabled(),dragNode.getType(),dragNode.getName(),
-                            dragNode.getRoomNum(),dragNode.getPermissionLevel());
-                    c.setOnMouseDragged(en -> {
-                        //nothing
-                    });
-
-                    resetScreen();
-
                 });
                 break;
             default:
@@ -626,7 +651,10 @@ public class mmFloorAndModeController extends controllers.mapScene{
             return;
         }
 
-
+        //don't highlight if in drag mode
+        if (dragMode) {
+            return;
+        }
         //highlight the node
         nodeEdgeX1 = (int) x;
         nodeEdgeY1 = (int) y;
@@ -643,6 +671,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         lastColoredStart = c;
         c.setStrokeWidth(6.5);
         c.setStroke(Color.ROYALBLUE);
+        c.toFront();
 
 //        //display edges already associated with selected node
 //        if (edgesSelected == 1 || mode_ChoiceBox.getValue().equals("Edit Node")
