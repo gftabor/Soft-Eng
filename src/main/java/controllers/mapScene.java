@@ -11,6 +11,7 @@ public abstract class mapScene extends AbsController {
     public abstract void edgeClickRemove(int x1, int y1, int x2, int y2);
     public abstract void showMultifloorMenu(int x, int y, Circle c);
 
-    public abstract void doubleClickEvent(int x, int y, Circle c, int mode);
+
+    //public abstract void doubleClickEvent(int x, int y, Circle c, int mode);
 
 }

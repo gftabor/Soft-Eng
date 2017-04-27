@@ -77,7 +77,7 @@ public class adminLoginMainController extends controllers.AbsController{
                 System.out.println("Logging in Employee");
                 FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
                 //patientMenuStart.patientMenuStartController controller = loader.getController();
-                patientMain.patientMainController controller = loader.getController();
+                NewIntroUI.NewIntroUIController controller = loader.getController();
                 //sets the current language
                 controller.setCurrentLanguage(c_language);
                 //set up english labels
@@ -116,7 +116,7 @@ public class adminLoginMainController extends controllers.AbsController{
         System.out.println("The user has clicked the main menu Button");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
         //patientMenuStart.patientMenuStartController controller = loader.getController();
-        patientMain.patientMainController controller = loader.getController();
+        NewIntroUI.NewIntroUIController controller = loader.getController();
         //sets the current language
         controller.setCurrentLanguage(c_language);
         //set up english labels
