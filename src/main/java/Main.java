@@ -23,7 +23,9 @@ public class Main extends Application {
 
         //Parent root = FXMLLoader.load(getClass().getResource("/views/patientMainView.fxml"));
         //TEST PURPOSES
-        Parent root = FXMLLoader.load(getClass().getResource("/views/NewIntroUIView.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("/views/NewIntroUIView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/views/NewDirectoryManagementView.fxml"));
+
         primaryStage.setTitle("Faulkner Hospital Pathfinder");
         
         primaryStage.setFullScreen(true);
