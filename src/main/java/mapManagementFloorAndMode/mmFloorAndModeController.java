@@ -504,7 +504,6 @@ public class mmFloorAndModeController extends controllers.mapScene{
                             && e.getSceneY() > paneBounds.getMinY() && e.getSceneY() < paneBounds.getMaxY()) {
                         c.setLayoutX((e.getSceneX() - paneBounds.getMinX()));
                         c.setLayoutY((e.getSceneY() - paneBounds.getMinY()));
-                        System.out.println("dragging...");
                     }
                 });
                 break;
@@ -544,6 +543,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 //must check again if firstNode is not null
                 if (firstNode != null) {
                     graph.createEdgeLines(firstNode.getEdgeList(), true, true);
+                    c.toFront();
                 }
             }
 
