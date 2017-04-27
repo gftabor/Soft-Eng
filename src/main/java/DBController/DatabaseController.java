@@ -227,6 +227,55 @@ public class DatabaseController {
         return true;
     }
 
+    public boolean transferNodeLoc(int x, int y, int floor, int dest_x, int dest_y, int dest_floor){
+        System.out.println("UPDATE NODE DEPENDENCIES");
+        //update PROLOCATION
+        try {
+            // SQL statement with "?" to be filled later
+            String query = "UPDATE PROLOCATION SET XPOS = ? , YPOS = ? , FLOOR = ? " +
+                    "WHERE XPOS = ? AND YPOS = ? AND FLOOR = ?";
+            // prepare statement by replacing each "?" with a variable
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, dest_x);
+            preparedStatement.setInt(2, dest_y);
+            preparedStatement.setInt(3, dest_floor);
+            preparedStatement.setInt(4, x);
+            preparedStatement.setInt(5, y);
+            preparedStatement.setInt(6, floor);
+            // run statement and query
+
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        //update SERVICE
+        try {
+            // SQL statement with "?" to be filled later
+            String query = "UPDATE SERVICE SET XPOS = ? , YPOS = ? , FLOOR = ? " +
+                    "WHERE XPOS = ? AND YPOS = ? AND FLOOR = ?";
+            // prepare statement by replacing each "?" with a variable
+            PreparedStatement preparedStatement1 = conn.prepareStatement(query);
+            preparedStatement1.setInt(1, dest_x);
+            preparedStatement1.setInt(2, dest_y);
+            preparedStatement1.setInt(3, dest_floor);
+            preparedStatement1.setInt(4, x);
+            preparedStatement1.setInt(5, y);
+            preparedStatement1.setInt(6, floor);
+            // run statement and query
+
+            preparedStatement1.execute();
+            preparedStatement1.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        System.out.println("updated node location dependencies successfully");
+        return true;
+    }
+
     //update node info without FeelsBadMan issues
     public boolean updateNode(int pk_x, int pk_y, int pk_floor, boolean ishidden, boolean enabled,
                               String type, String name, String roomnum, int permissionLevel) {
@@ -793,7 +842,7 @@ public class DatabaseController {
      *
      ******************************************************************************/
 
-    public boolean newAdmin(String firstName, String lastName, String userName, String password){
+    public boolean newAdmin(String firstName, String lastName, String userName, String password, Boolean isAdmin){
         String encrypted = BCrypt.hashpw(password, BCrypt.gensalt());
 
         System.out.println(
@@ -802,14 +851,19 @@ public class DatabaseController {
                         firstName, lastName, userName));
         try {
             // sql statement with "?" to be filled later
-            String query = "INSERT INTO ADMIN (FIRSTNAME, LASTNAME, USERNAME, PASSWORD)" +
-                    " values (?, ?, ?, ?)";
+            String query = "INSERT INTO ADMIN (FIRSTNAME, LASTNAME, USERNAME, PASSWORD, PERMISSIONS)" +
+                    " values (?, ?, ?, ?, ?)";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, userName);
             preparedStatement.setString(4, encrypted);
+            if(isAdmin) {
+                preparedStatement.setInt(5, 2);
+            }else{
+                preparedStatement.setInt(5, 1);
+            }
             // execute prepared statement
 
             preparedStatement.execute();
@@ -839,6 +893,33 @@ public class DatabaseController {
             return null;
         }
         return resultSet;
+    }
+    public int getPermission(String username){
+        ResultSet resultSet = null;
+        int permissions;
+        try{
+            String query = "SELECT PERMISSIONS FROM ADMIN WHERE USERNAME = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, username);
+            // run statement and query
+
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return 0;
+        }
+        try {
+            if(!resultSet.next()){
+                return 0;
+            }
+            permissions = resultSet.getInt("PERMISSIONS");
+            closeResultSet(resultSet);
+            return permissions;
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     public String getPassword(String username){
@@ -873,7 +954,7 @@ public class DatabaseController {
         }
     }
 
-    public boolean editAdmin(int ID, String firstName, String lastName, String userName){
+    public boolean editAdmin(int ID, String firstName, String lastName, String userName, Boolean isAdmin){
 
 
         System.out.println(
@@ -882,13 +963,19 @@ public class DatabaseController {
                         ID, firstName, lastName, userName));
         try {
             // sql statement with "?" to be filled later
-            String query = "UPDATE ADMIN SET FIRSTNAME = ?, LASTNAME = ?, USERNAME = ? WHERE ID = ?";
+            String query = "UPDATE ADMIN SET FIRSTNAME = ?, LASTNAME = ?, USERNAME = ?, PERMISSIONS = ? WHERE ID = ?";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, userName);
-            preparedStatement.setInt(4, ID);
+
+            if(isAdmin) {
+                preparedStatement.setInt(4, 2);
+            }else{
+                preparedStatement.setInt(4, 1);
+            }
+            preparedStatement.setInt(5, ID);
             // execute prepared statement
 
             preparedStatement.execute();
