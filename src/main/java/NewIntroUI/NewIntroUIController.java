@@ -28,6 +28,9 @@ import java.util.ArrayList;
  */
 public class NewIntroUIController extends controllers.mapScene{
     @FXML
+    private Tab textDirections_Tab;
+
+    @FXML
     private AnchorPane backgroundAnchorPane;
 
     @FXML
@@ -278,6 +281,17 @@ public class NewIntroUIController extends controllers.mapScene{
         }
     }
 
+    //Button to reverse the from and to location
+    public void reverseButton_Clicked(){
+        String start =start_textField.getText();
+        String end = end_TextField.getText();
+        if( !(start == null || start.equals("") || end == null ||end.equals("")) ){
+            start_textField.setText(end);
+            end_TextField.setText(start);
+            submitButton_Clicked();
+
+        }
+    }
     //Continue New Button Clicked
     public void continueNewButton_Clicked() {
         if (continueNew_Button.isVisible() == true) {
@@ -372,7 +386,7 @@ public class NewIntroUIController extends controllers.mapScene{
     }
 
     //Set the choices for Filter
-    public void setFilterChoices() {
+    /*public void setFilterChoices() {
         //Makes sure you only set the choices once
         //sets the choices and sets the current language as the top choice
         if (c_language == 0) {
@@ -421,8 +435,9 @@ public class NewIntroUIController extends controllers.mapScene{
                     }
 
                 });
-    }
+    }*/
 
+    //Changes the floors on the map
     public void changeFloor(Number newValue) {
         boolean outside = false;
         String currentF = "";
@@ -807,15 +822,18 @@ public class NewIntroUIController extends controllers.mapScene{
         end_Label.setText("End");
         mainTitle_Label.setText("Welcome to Brigham and Women's Faulkner Hospital");
         floor_Label.setText("Floor");
-        textD_Label.setText("Text Description");
+        //textD_Label.setText("Text Description");
         phoneInfo_Label.setText("Send Directions to my phone");
 
         //Change the textFields
         start_textField.setPromptText("Starting position");
         end_TextField.setPromptText("Ending position");
 
+        //Change Tabs
+        textDirections_Tab.setText("Directions");
+
         //Change choiceBox
-        setFilterChoices();
+        //setFilterChoices();
         setFloorChoices();
 
 
@@ -839,7 +857,7 @@ public class NewIntroUIController extends controllers.mapScene{
         end_Label.setText("Destino");
         mainTitle_Label.setText("Bienvenidos al Hospital Faulkner Brigham and Women");
         floor_Label.setText("Piso");
-        textD_Label.setText("Descripciones Escritas");
+        //textD_Label.setText("Descripciones Escritas");
         phoneInfo_Label.setText("Enviar direcciones a mi celular");
 
 
@@ -847,8 +865,11 @@ public class NewIntroUIController extends controllers.mapScene{
         start_textField.setPromptText("Nombre de inicio");
         end_TextField.setPromptText("Nombre del destino");
 
+        //Change Tabs
+        textDirections_Tab.setText("Direcciones");
+
         //Change choiceBox
-        setFilterChoices();
+        //setFilterChoices();
         setFloorChoices();
 
 
