@@ -51,7 +51,7 @@ public class adminLoginMainController extends controllers.AbsController{
         if(loginManage.verifyCredentials(username, password) == 1){
             System.out.println("Correct Password");
 
-            //LOG IN ADMIN
+            //LOG IN ADMIN afl;kdsf;aldskf
             //*************************************************
             if(loginManage.getPermissions(username) == 2){
                 System.out.println("Logging in Admin");
