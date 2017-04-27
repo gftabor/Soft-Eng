@@ -2,10 +2,7 @@ package adminLoginMain;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -33,6 +30,12 @@ public class adminLoginMainController extends controllers.AbsController{
     @FXML
     private Label adminTitle_Label;
 
+    @FXML
+    private Label languageTitle_Label;
+
+    @FXML
+    private ChoiceBox<String> languageChoices_ChoiceBox;
+
     int c_language;
 
     //logs the user in
@@ -48,7 +51,7 @@ public class adminLoginMainController extends controllers.AbsController{
         if(loginManage.verifyCredentials(username, password) == 1){
             System.out.println("Correct Password");
 
-            //LOG IN ADMIN
+            //LOG IN ADMIN afl;kdsf;aldskf
             //*************************************************
             if(loginManage.getPermissions(username) == 2){
                 System.out.println("Logging in Admin");
@@ -72,9 +75,9 @@ public class adminLoginMainController extends controllers.AbsController{
                 //*************************************************
             }else if(loginManage.getPermissions(username) == 1){
                 System.out.println("Logging in Employee");
-                FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
+                FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
                 //patientMenuStart.patientMenuStartController controller = loader.getController();
-                patientMain.patientMainController controller = loader.getController();
+                NewIntroUI.NewIntroUIController controller = loader.getController();
                 //sets the current language
                 controller.setCurrentLanguage(c_language);
                 //set up english labels
@@ -113,7 +116,7 @@ public class adminLoginMainController extends controllers.AbsController{
         System.out.println("The user has clicked the main menu Button");
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
         //patientMenuStart.patientMenuStartController controller = loader.getController();
-        patientMain.patientMainController controller = loader.getController();
+        NewIntroUI.NewIntroUIController controller = loader.getController();
         //sets the current language
         controller.setCurrentLanguage(c_language);
         //set up english labels
