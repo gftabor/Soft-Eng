@@ -1,16 +1,23 @@
 package controllers;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 /**
  * Created by Griffin on 4/5/2017.
@@ -39,12 +46,14 @@ public class MapOverlay {
     private ArrayList<Line> lineList = new ArrayList<Line>();
 
     private static double zoom = 1;
+    private static double heightRatio = 1;
+    private static double widthRatio = 1;
 
     private static int pathfinding = 0;
 
     //takes in a Hashtable when scene is switched and calls setNodes
 
-    public void setMapAndNodes(HashMap<Integer, Node> nodeMap, boolean devMode, int floor) {
+    public void setMapAndNodes(HashMap<Integer, Node> nodeMap, boolean devMode, int floor, int permissionLevel) {
 
         if (devMode) {
             System.out.println("DEVMODE active");
@@ -56,18 +65,23 @@ public class MapOverlay {
             currentPane.getChildren().remove(ButtonList.get(0));
             ButtonList.remove(0);
         }
+        boolean isStair = false;
         // Add all the nodes onto the scene as buttons
         for (controllers.Node current : nodeMap.values()) {
 
                 //  - node can be disabled and show in dev mode
                 //devs can see everything and interact with everything
                 if (devMode == true) {
-                    create_Button(current, floor);
+                    if (current.getType().equals("Stair")){
+                       isStair = true;
+                    }
+                    create_Button(current.getPosX(), current.getPosY(), current.getIsHidden(), current.getEnabled(), floor, devMode, isStair);
+                    isStair = false;
                 } else {
                     //if not dev mode:
                     //show only if enabled and not hidden
-                    if (current.getIsHidden() == false && current.getEnabled() == true) {
-                        create_Button(current, floor);
+                    if (current.getIsHidden() == false && current.getEnabled() == true && permissionLevel >= current.getPermissionLevel()) {
+                        create_Button(current.getPosX(), current.getPosY(), false, true, floor, devMode, false);
                     }
                 }
                 //else skip displaying the node
@@ -76,31 +90,46 @@ public class MapOverlay {
             wipeEdgeLines();
         }
 
+    final Image image = new Image("images/stairsImage.png");
 
-    public void create_Button(Node button, int floor){
-        int nodeX = button.getPosX();
-        int nodeY = button.getPosY();
-        boolean hidden = button.getIsHidden();
-        boolean enabled = button.getEnabled();
+    public void create_Button(int nodeX, int nodeY, boolean hidden, boolean enabled, int floor, boolean devmode, boolean isStair){
+        //System.out.println("checking button");
+        //System.out.println("make button");
 
         Node current = MapController.getInstance().getCollectionOfNodes().getNode(nodeX, nodeY, floor);
         final String infoString;
-        infoString = "x: " + nodeX + " y: " + nodeY + " Floor: " + floor + "\n" +
-                "Name: " + current.getName() + "\n" +
-                "Room: " + current.getRoomNum() + "\n" +
-                "Type: " + current.getType();
+        //have less info presented to the visitors
+        if (devmode) {
+            infoString = "x: " + nodeX + " y: " + nodeY + " Floor: " + floor + "\n" +
+                    "Name: " + current.getName() + "\n" +
+                    "Room: " + current.getRoomNum() + "\n" +
+                    "Type: " + current.getType() + "\n" +
+                    "Permission Level: " + current.getPermissionLevel();
+        } else {
+            infoString = "Name: " + current.getName() + "\n" +
+                    "Room: " + current.getRoomNum() + "\n" +
+                    "Type: " + current.getType() + "\n" +
+                    "Floor: " + floor;
+        }
 
-        location = new Circle(labelRadius);
-        location.setOnMouseClicked(e -> {
-            Object o = e.getSource();
-            Circle c = (Circle) o;
 
-            //only work for left click
-            if (e.getButton() == MouseButton.PRIMARY) {
-                sceneController.sceneEvent((int)((nodeX)), (int)((nodeY)), c);
+            location = new Circle(labelRadius);
+            if (isStair) {
+                location.setFill(new ImagePattern(image));
+//                root.getChildren().add(imageView);
+
             }
+            location.setOnMouseClicked(e -> {
+                Object o = e.getSource();
+                Circle c = (Circle) o;
 
-        });
+                //only work for left click
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    sceneController.sceneEvent((int)((nodeX)), (int)((nodeY)), c);
+                }
+
+            });
+
         location.setOnMouseEntered(e -> {
             Object o = e.getSource();
             Circle c = (Circle) o;
@@ -118,37 +147,93 @@ public class MapOverlay {
 
         // this code sets node's x and y pos to be on the plane holding the graph
         currentPane.getChildren().add(location);
-        location.setLayoutX(nodeX * zoom);
-        location.setLayoutY(nodeY * zoom);
+        location.setLayoutX(nodeX * zoom * widthRatio);
+        location.setLayoutY(nodeY * zoom * heightRatio);
         location.toFront();
 
         if (!enabled) {
             location.setFill(Color.RED);
         } else if(hidden) {
             location.setFill(Color.GRAY);
-        }else if (button.getName().equals("Kiosk")){
-            System.out.println("Found Kiosk");
+        }else if (current.getName().equals("Kiosk")){
+            //System.out.println("Found Kiosk");
             location.setFill(Color.ORANGE);
         }
 
-        location.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getButton() == MouseButton.SECONDARY){
-//                    // Create ContextMenu
-//                    ContextMenu contextMenu = new ContextMenu();
-//
-//                    MenuItem item1 = new MenuItem("Remove");
-//                    MenuItem item2 = new MenuItem("Edit");
-//                    // Add MenuItem to ContextMenu
-//                    contextMenu.getItems().addAll(item1, item2);
-//                    contextMenu.show(location, event.getScreenX(), event.getScreenY());
+        if (devmode) {
+            location.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (event.getButton() == MouseButton.SECONDARY) {
+                        Object o = event.getSource();
+                        Circle c = (Circle) o;
+
+                        // Create ContextMenu
+                        ContextMenu contextMenu = new ContextMenu();
+                        contextMenu.setImpl_showRelativeToWindow(true);
+                        MenuItem removeOption = new MenuItem("Remove");
+                        removeOption.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                currentPane.getChildren().remove(c);
+                                sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 1);
+                            }
+                        });
+                        MenuItem editOption = new MenuItem("Edit Information");
+                        editOption.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 2);
+                            }
+                        });
+                        MenuItem autoGenEdgeOption = new MenuItem("Autogenerate Edges");
+                        autoGenEdgeOption.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 3);
+                            }
+                        });
+                        MenuItem addEdgeOption = new MenuItem("Add Single Edge");
+                        addEdgeOption.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 4);
+                            }
+                        });
+                        MenuItem addMultiEdgeOption = new MenuItem("Add Multiple Edges");
+                        addMultiEdgeOption.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 5);
+                            }
+                        });
+                        MenuItem removeAllEdgeOption = new MenuItem("Remove All Edges");
+                        removeAllEdgeOption.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 6);
+                            }
+                        });
+                        MenuItem editPositionOption = new MenuItem("Edit Position");
+                        editPositionOption.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 7);
+                            }
+                        });
+                        // Add MenuItem to ContextMenu
+                        contextMenu.getItems().addAll(removeOption, editOption, editPositionOption, autoGenEdgeOption,
+                                addEdgeOption, addMultiEdgeOption, removeAllEdgeOption);
+                        contextMenu.show(location, event.getScreenX(), event.getScreenY());
+                    }
+                }
+            });
+        }
+        //get node type
+        String type = current.getType();
+        if (devmode && (type.equalsIgnoreCase("Elevator") || type.equalsIgnoreCase("Stair"))) {
+            location.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
                     Object o = event.getSource();
                     Circle c = (Circle) o;
-                    sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c);
+                    sceneController.showStairMenu(nodeX, nodeY, c);
                 }
-            }
-        });
+            });
+        }
 
         ButtonList.add(location);
     }
@@ -181,7 +266,20 @@ public class MapOverlay {
                         Object o = e.getSource();
                         Line lne = (Line) o;
                         //sceneController.EdgeEvent(lne.getStartX(), lne.getStartY());
-                        sceneController.edgeClickRemove((int)lne.getStartX(), (int)lne.getStartY(), (int)lne.getEndX(), (int)lne.getEndY());
+                        // Create ContextMenu
+                        ContextMenu contextMenu = new ContextMenu();
+                        MenuItem removeOption = new MenuItem("Remove Edge");
+                        removeOption.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                sceneController.edgeClickRemove((int)lne.getStartX(), (int)lne.getStartY(),
+                                        (int)lne.getEndX(), (int)lne.getEndY());
+                            }
+                        });
+
+                        //show menu
+                        contextMenu.getItems().addAll(removeOption);
+                        contextMenu.show(location, e.getScreenX(), e.getScreenY());
+
                     }
                 });
 
@@ -218,10 +316,10 @@ public class MapOverlay {
 
             //add to pane
             currentPane.getChildren().add(lne);
-            lne.setStartX(thisEdge.getStartNode().getPosX() * zoom);
-            lne.setStartY(thisEdge.getStartNode().getPosY() * zoom);
-            lne.setEndX(thisEdge.getEndNode().getPosX() * zoom);
-            lne.setEndY(thisEdge.getEndNode().getPosY() * zoom);
+            lne.setStartX(thisEdge.getStartNode().getPosX() * zoom * widthRatio);
+            lne.setStartY(thisEdge.getStartNode().getPosY() * zoom * heightRatio);
+            lne.setEndX(thisEdge.getEndNode().getPosX() * zoom * widthRatio);
+            lne.setEndY(thisEdge.getEndNode().getPosY() * zoom * heightRatio);
             //show
             lne.toFront();
             //add to list
@@ -267,5 +365,21 @@ public class MapOverlay {
 
     public static void setPathfinding(int newpath) {
         pathfinding = newpath;
+    }
+
+    public static void setHeightRatio(double ratio) {
+         heightRatio = ratio;
+    }
+
+    public static double getHeightRatio() {
+        return heightRatio;
+    }
+
+    public static void setWidthRatio(double ratio) {
+        widthRatio = ratio;
+    }
+
+    public static double getWidthRatio() {
+        return widthRatio;
     }
 }

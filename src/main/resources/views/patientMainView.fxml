@@ -8,13 +8,13 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -35,6 +35,20 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT">
                      <children>
+                        <Button fx:id="admin_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefHeight="60.0" prefWidth="170.0" text="Log In">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="signOut_Button" mnemonicParsing="false" onAction="#signOut_Button_Clicked" prefWidth="170.0" text="Sign Out">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Region prefHeight="0.0" prefWidth="467.0" />
                         <ChoiceBox fx:id="language_ChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="150.0">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -47,14 +61,6 @@
                            <font>
                               <Font size="20.0" />
                            </font>
-                        </Button>
-                        <Button fx:id="admin_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefHeight="60.0" prefWidth="170.0" text="Administrator">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </HBox.margin>
                         </Button>
                         <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefHeight="60.0" prefWidth="170.0" styleClass="emergency" text="EMERGENCY">
                            <font>
@@ -227,9 +233,9 @@
             </HBox>
          </bottom>
          <center>
-            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <VBox fx:id="mapVbox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox alignment="CENTER">
+                  <HBox fx:id="mapHbox" alignment="CENTER">
                      <children>
                         <ChoiceBox fx:id="floor_ChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="50.0">
                            <HBox.margin>
@@ -252,6 +258,7 @@
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </HBox.margin>
                         </Label>
+                        <Label fx:id="welcomeAdmin" prefHeight="16.0" prefWidth="157.0" />
                         <Region HBox.hgrow="ALWAYS" />
                         <Button fx:id="previous_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#previousButton_Clicked" prefHeight="60.0" prefWidth="132.0" text="Previous">
                            <HBox.margin>
@@ -263,22 +270,30 @@
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="zoom_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#zoomButton_Clicked" prefHeight="60.0" prefWidth="132.0" text="Zoom" />
                      </children>
                   </HBox>
-                  <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
-                     <content>
-                        <Pane fx:id="node_Plane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                           <children>
-                              <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="920.0">
-                                 <image>
-                                    <Image url="@../images/4.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </Pane>
-                     </content>
-                  </ScrollPane>
+                  <StackPane fx:id="mapStack" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1500.0" prefWidth="987.0">
+                     <children>
+                        <ScrollPane fx:id="scrollPane" prefHeight="601.0" prefWidth="987.0">
+                           <content>
+                              <Pane fx:id="node_Plane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="601.0" prefWidth="987.0">
+                                 <children>
+                                    <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="920.0" />
+                                 </children>
+                              </Pane>
+                           </content>
+                        </ScrollPane>
+                        <Button fx:id="zoomIn_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#zoomInButton_Clicked" prefHeight="60.0" prefWidth="132.0" text="Zoom In" StackPane.alignment="TOP_LEFT">
+                           <StackPane.margin>
+                              <Insets left="10.0" top="50.0" />
+                           </StackPane.margin></Button>
+                        <Button fx:id="zoomOut_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#zoomOutButton_Clicked" prefHeight="60.0" prefWidth="132.0" stylesheets="@../css/bootstrap3.css" text="Zoom Out" StackPane.alignment="TOP_LEFT">
+                           <StackPane.margin>
+                              <Insets left="10.0" top="10.0" />
+                           </StackPane.margin>
+                        </Button>
+                     </children>
+                  </StackPane>
                </children>
             </VBox>
          </center>
