@@ -818,8 +818,8 @@ public class NewIntroUIController extends controllers.mapScene{
 
 
         //Change the labels
-        start_Label.setText("Start");
-        end_Label.setText("End");
+        start_Label.setText("From:");
+        end_Label.setText("To:");
         mainTitle_Label.setText("Welcome to Brigham and Women's Faulkner Hospital");
         floor_Label.setText("Floor");
         //textD_Label.setText("Text Description");
@@ -853,8 +853,8 @@ public class NewIntroUIController extends controllers.mapScene{
         about_Button.setText("Acerca");
 
         //change the Labels
-        start_Label.setText("Inicio");
-        end_Label.setText("Destino");
+        start_Label.setText("Inicio:");
+        end_Label.setText("Destino:");
         mainTitle_Label.setText("Bienvenidos al Hospital Faulkner Brigham and Women");
         floor_Label.setText("Piso");
         //textD_Label.setText("Descripciones Escritas");
