@@ -5,20 +5,31 @@ package patientMain;
  */
 import DBController.DatabaseController;
 import controllers.*;
+import controllers.Node;
 import emergency.SmsSender;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
+import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import org.controlsfx.control.textfield.TextFields;
 
+import javax.sound.sampled.Clip;
+import java.net.StandardSocketOptions;
+import javax.xml.transform.Result;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
@@ -106,7 +117,22 @@ public class patientMainController extends controllers.mapScene {
     private Button continueNew_Button;
 
     @FXML
-    private Button zoom_button;
+    private Button zoomIn_button;
+
+    @FXML
+    private Button zoomOut_button;
+
+    @FXML
+    private ScrollPane scrollPane;
+
+    @FXML
+    private StackPane mapStack;
+
+    @FXML
+    private Label welcomeAdmin;
+
+    @FXML
+    private Button signOut_Button;
 
     int c_language = 0;
 
@@ -147,11 +173,28 @@ public class patientMainController extends controllers.mapScene {
     private double origPaneWidth;
     private double origPaneHeight;
     double zoom;
+    double heightRatio = (1000.0/489.0);
+    double widthRatio = (1600.0/920.0);
+
+    double dragNewX, dragNewY, dragOldX, dragOldY;
+    javafx.scene.Node selected;
+
+    private int permissionLevel = 0;
 
     //ArrayList<Edge> zoomPath;
 
     @FXML
     public void initialize() {
+        if(permissionLevel == 0){
+            System.out.println("Regular User");
+        }else if (permissionLevel == 1){
+            System.out.println("Employee User");
+        }else if (permissionLevel == 2){
+            System.out.println("Admin User");
+        }
+        signOut_Button.setVisible(false);
+        //admin_Button.setVisible(true);
+        welcomeAdmin.setText("");
         graph = new controllers.MapOverlay(node_Plane, (mapScene) this);
         MapController.getInstance().requestMapCopy();
 
@@ -167,7 +210,20 @@ public class patientMainController extends controllers.mapScene {
         c_Floor_Label.setText("1");
         usingMap = false;
 
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), false, currentFloor);
+        System.out.println("width/height ratios: " + widthRatio + "/" + heightRatio);
+
+        node_Plane.setMaxWidth(2000.0);
+        node_Plane.setMaxHeight(2000.0);
+        node_Plane.setPrefHeight(489.0*heightRatio);
+        node_Plane.setPrefWidth(920.0*widthRatio);
+        map_viewer.setFitHeight(489.0*heightRatio);
+        map_viewer.setFitWidth(920.0*widthRatio);
+
+        MapOverlay.setWidthRatio(widthRatio);
+        MapOverlay.setHeightRatio(heightRatio);
+
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), false,
+                currentFloor, permissionLevel);
         //set continue button invisible when not needed
         continueNew_Button.setVisible(false);
         previous_Button.setVisible(false);
@@ -178,9 +234,51 @@ public class patientMainController extends controllers.mapScene {
 
         //draw edges
         //graph.drawFloorEdges(currentFloor);
-
         origPaneHeight = 489;
         origPaneWidth = 920;
+
+        //detects scrolling for zoom while keeping scrollpane from panning with mousewheel
+        scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
+            mapScroll(event);
+            event.consume();
+        });
+
+
+        //Code used to pan around map. Works well with single click to pan. Has bugs when clicking again after
+        //already panning. It may have to do with how event handlers work because it seems as though calculations
+        //are being done for the setOnMouseDragged method before setOnMousePressed can update the dragOld values
+        scrollPane.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                dragOldX = event.getX();
+                dragOldY = event.getY();
+                System.out.println("not nuts");
+            }
+        });
+
+        map_viewer.setOnMouseDragged(event ->  {
+            //if (event.getSceneX() > stackBounds.getMinX() && event.getSceneX() < stackBounds.getMaxX() && event.getSceneY() > stackBounds.getMinY() && event.getSceneY() < stackBounds.getMaxY()) {
+                System.out.println("nuts");
+                dragNewX = event.getX();
+                dragNewY = event.getY();
+                if (dragOldX == 0) {
+                    dragOldX = .01;
+                }
+                if (dragOldY == 0) {
+                    dragOldY = 0.01;
+                }
+                double deltaX = (dragNewX - dragOldX)/1000;
+                double deltaY = (dragNewY - dragOldY)/1000;
+
+                System.out.println(scrollPane.getHvalue() + "  " + scrollPane.getVvalue());
+
+                scrollPane.setHvalue(scrollPane.getHvalue() - deltaX);
+                scrollPane.setVvalue(scrollPane.getVvalue() - deltaY);
+
+                dragOldX = dragNewX;
+                dragOldY = dragNewY;
+            //}
+        });
     }
 
     //get an instance of database controller
@@ -415,7 +513,8 @@ public class patientMainController extends controllers.mapScene {
             c_Floor_Label.setText("");
             floor_Label.setText(currentF);
         }
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), false, currentFloor);
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), false,
+                currentFloor, permissionLevel);
 
     }
 
@@ -520,7 +619,7 @@ public class patientMainController extends controllers.mapScene {
                 multiFloorPathfind();
             } else {
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                path = mapController.requestPath();
+                path = mapController.requestPath(permissionLevel);
                 graph.createEdgeLines(path, true, false);
                 //zoomPath = path;
                 controllers.MapOverlay.setPathfinding(1);
@@ -568,7 +667,7 @@ public class patientMainController extends controllers.mapScene {
                     //no multifloor pathfinding (simple)
 
                     MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                    ArrayList<Edge> path = mapController.requestPath();
+                    ArrayList<Edge> path = mapController.requestPath(permissionLevel);
                     graph.createEdgeLines(path, true, false);
                     textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
                 }
@@ -602,10 +701,6 @@ public class patientMainController extends controllers.mapScene {
             floor_ChoiceBox.getSelectionModel().select(startfloor - 1);
         }
 
-
-
-
-
         //maintain consistency of colors
         ArrayList<Circle> tempCircleList;
         tempCircleList = graph.getButtonList();
@@ -615,7 +710,7 @@ public class patientMainController extends controllers.mapScene {
 
         //reset for next pathfinding session
         MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-        ArrayList<Edge> reqPath = mapController.requestPath();
+        ArrayList<Edge> reqPath = mapController.requestPath(permissionLevel);
         if (reqPath == null) { //can't find path, reset
             System.out.println("Could not pathfind. Resetting now...");
             cancelButton_Clicked();
@@ -656,6 +751,8 @@ public class patientMainController extends controllers.mapScene {
     public void logInButton_Clicked() {
 
         controllers.MapOverlay.setZoom(1.0);
+        controllers.MapOverlay.setHeightRatio(1.0);
+        controllers.MapOverlay.setWidthRatio(1.0);
 
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminLoginMainView.fxml");
         adminLoginMain.adminLoginMainController controller = loader.getController();
@@ -694,7 +791,8 @@ public class patientMainController extends controllers.mapScene {
 
         //Remove colored dots from map
 
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false, currentFloor);
+        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false,
+                currentFloor, permissionLevel);
         c_Floor_Label.setText(Integer.toString(currentFloor));
 
         //wipe line from map
@@ -718,7 +816,7 @@ public class patientMainController extends controllers.mapScene {
         //change the current language to english
 
         //Change the Buttons
-        admin_Button.setText("Administrator");
+        admin_Button.setText("Log In");
         emergency_Button.setText("EMERGENCY");
         cancel_Button.setText("Clear");
         submit_Button.setText("Submit");
@@ -784,11 +882,11 @@ public class patientMainController extends controllers.mapScene {
     }
 
 
-    public void rightClickEvent(int x, int y, Circle c) {
+    public void rightClickEvent(int x, int y, Circle c, int mode) {
         System.out.println("Right click event");
     }
-
     public void edgeClickRemove(int x1, int y1, int x2, int y2){}
+    public void showStairMenu(int x, int y, Circle c) {}
 
     public void sceneEvent(int x, int y, Circle c){
         //set selectionstate
@@ -941,37 +1039,104 @@ public class patientMainController extends controllers.mapScene {
         controllers.MapOverlay.setPathfinding(2);
     }
 
-    public void zoomButton_Clicked() {
+    public void changeZoom(){
+        controllers.MapOverlay.setZoom(zoom);
+        node_Plane.setPrefWidth(origPaneWidth*zoom*widthRatio);
+        node_Plane.setPrefHeight(origPaneHeight*zoom*heightRatio);
+        map_viewer.setFitWidth(origPaneWidth*zoom*widthRatio);
+        map_viewer.setFitHeight(origPaneHeight*zoom*heightRatio);
+    }
+
+    public void zoomInButton_Clicked() {
         zoom = controllers.MapOverlay.getZoom();
         System.out.println(zoom);
-        if (zoom < 1.6) {
-            zoom += 0.3;
-            controllers.MapOverlay.setZoom(zoom);
-            node_Plane.setPrefWidth(origPaneWidth*zoom);
-            node_Plane.setPrefHeight(origPaneHeight*zoom);
-            map_viewer.setFitWidth(origPaneWidth*zoom);
-            map_viewer.setFitHeight(origPaneHeight*zoom);
+        if (zoom < 1.3) {
+            zoom += 0.03;
+            changeZoom();
 
-
-
-        } else {
-            System.out.println("set to 1.0");
-            zoom = 1.0;
-            controllers.MapOverlay.setZoom(1);
-            node_Plane.setPrefWidth(origPaneWidth);
-            node_Plane.setPrefHeight(origPaneHeight);
-            map_viewer.setFitWidth(origPaneWidth);
-            map_viewer.setFitHeight(origPaneHeight);
-
-
+            graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
+                    false, currentFloor, permissionLevel);
         }
-        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
-                false, currentFloor);
         if (controllers.MapOverlay.getPathfinding() == 1) {
             graph.createEdgeLines(path, true, false);
         } else if (controllers.MapOverlay.getPathfinding() == 2) {
             graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
         }
 
+    }
+
+    public void zoomOutButton_Clicked() {
+        zoom = controllers.MapOverlay.getZoom();
+        System.out.println(zoom);
+        if (zoom > 1.0) {
+            zoom = zoom - 0.03;
+            changeZoom();
+        }
+
+        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
+                false, currentFloor, permissionLevel);
+        if (controllers.MapOverlay.getPathfinding() == 1) {
+            graph.createEdgeLines(path, true, false);
+        } else if (controllers.MapOverlay.getPathfinding() == 2) {
+            graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
+        }
+    }
+
+    public void mapScroll(ScrollEvent event) {
+            zoom = MapOverlay.getZoom();
+            if (event.getDeltaY() > 0) {
+                if (zoom < 1.3) {
+                    zoom += 0.03;
+                    changeZoom();
+
+                    graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
+                            false, currentFloor, permissionLevel);
+                }
+            } else if (event.getDeltaY() < 0) {
+                if (zoom > 1.0) {
+                    zoom = zoom - 0.03;
+                    changeZoom();
+
+                    graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
+                            false, currentFloor, permissionLevel);
+                }
+            }
+            if (controllers.MapOverlay.getPathfinding() == 1) {
+                graph.createEdgeLines(path, true, false);
+            } else if (controllers.MapOverlay.getPathfinding() == 2) {
+                graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
+            }
+    }
+
+    public int getPermissionLevel() {
+        return permissionLevel;
+    }
+
+    public void setPermissionLevel(int permissionLevel) {
+        this.permissionLevel = permissionLevel;
+        System.out.println("Setting permission level to: " + permissionLevel);
+        if(this.permissionLevel >= 1){
+            admin_Button.setVisible(false);
+            signOut_Button.setVisible(true);
+        }
+    }
+
+    public void setWelcome(String text){
+        welcomeAdmin.setText(text);
+    }
+    public void signOut_Button_Clicked(){
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
+        //patientMenuStart.patientMenuStartController controller = loader.getController();
+        patientMain.patientMainController controller = loader.getController();
+        //sets the current language
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
     }
 }
