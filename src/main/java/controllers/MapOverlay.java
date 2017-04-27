@@ -212,11 +212,23 @@ public class MapOverlay {
                                 sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 7);
                             }
                         });
-                        // Add MenuItem to ContextMenu
-                        contextMenu.getItems().addAll(removeOption, editOption, editPositionOption, autoGenEdgeOption,
-                                addEdgeOption, addMultiEdgeOption, removeAllEdgeOption);
+                        if (current.getType().equalsIgnoreCase("Elevator") ||
+                                current.getType().equalsIgnoreCase("Stair")) {
+                            MenuItem editFloorsConnectedTo = new MenuItem("Show Connected Floors");
+                            editFloorsConnectedTo.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent e) {
+                                    sceneController.rightClickEvent((int) ((nodeX)), (int) ((nodeY)), c, 8);
+                                }
+                            });
+                            contextMenu.getItems().addAll(removeOption, editOption, editPositionOption, autoGenEdgeOption,
+                                    addEdgeOption, addMultiEdgeOption, removeAllEdgeOption, editFloorsConnectedTo);
+                        } else {
+                            contextMenu.getItems().addAll(removeOption, editOption, editPositionOption, autoGenEdgeOption,
+                                    addEdgeOption, addMultiEdgeOption, removeAllEdgeOption);
+                        }
                         contextMenu.show(location, event.getScreenX(), event.getScreenY());
-                    }
+                        }
                 }
             });
         }
