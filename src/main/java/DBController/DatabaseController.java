@@ -227,6 +227,55 @@ public class DatabaseController {
         return true;
     }
 
+    public boolean transferNodeLoc(int x, int y, int floor, int dest_x, int dest_y, int dest_floor){
+        System.out.println("UPDATE NODE DEPENDENCIES");
+        //update PROLOCATION
+        try {
+            // SQL statement with "?" to be filled later
+            String query = "UPDATE PROLOCATION SET XPOS = ? , YPOS = ? , FLOOR = ? " +
+                    "WHERE XPOS = ? AND YPOS = ? AND FLOOR = ?";
+            // prepare statement by replacing each "?" with a variable
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, dest_x);
+            preparedStatement.setInt(2, dest_y);
+            preparedStatement.setInt(3, dest_floor);
+            preparedStatement.setInt(4, x);
+            preparedStatement.setInt(5, y);
+            preparedStatement.setInt(6, floor);
+            // run statement and query
+
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        //update SERVICE
+        try {
+            // SQL statement with "?" to be filled later
+            String query = "UPDATE SERVICE SET XPOS = ? , YPOS = ? , FLOOR = ? " +
+                    "WHERE XPOS = ? AND YPOS = ? AND FLOOR = ?";
+            // prepare statement by replacing each "?" with a variable
+            PreparedStatement preparedStatement1 = conn.prepareStatement(query);
+            preparedStatement1.setInt(1, dest_x);
+            preparedStatement1.setInt(2, dest_y);
+            preparedStatement1.setInt(3, dest_floor);
+            preparedStatement1.setInt(4, x);
+            preparedStatement1.setInt(5, y);
+            preparedStatement1.setInt(6, floor);
+            // run statement and query
+
+            preparedStatement1.execute();
+            preparedStatement1.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        System.out.println("updated node location dependencies successfully");
+        return true;
+    }
+
     //update node info without FeelsBadMan issues
     public boolean updateNode(int pk_x, int pk_y, int pk_floor, boolean ishidden, boolean enabled,
                               String type, String name, String roomnum, int permissionLevel) {
