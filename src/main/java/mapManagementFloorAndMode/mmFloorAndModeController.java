@@ -4,6 +4,7 @@ import DBController.DatabaseController;
 import controllers.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -353,6 +354,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
         Label nameLabel = new Label("Name");
         Label typeLabel = new Label("Type");
         Label roomLabel = new Label("Room Number");
+        Label permissionLabel = new Label("Permission");
+        ChoiceBox permissionBox = new ChoiceBox(FXCollections.observableArrayList(
+                "Visitor", "Employee", "Admin"));
         TextField nodeName = new TextField();
         TextField nodeType = new TextField();
         ArrayList<String> types = new ArrayList<>();
@@ -375,6 +379,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         VBox vb = new VBox();
         HBox hbCancelSave = new HBox();
         HBox hbCheckBox = new HBox();
+        HBox hbPermission = new HBox();
         vb.setPadding(new Insets(10, 10, 5, 10));
         vb.setSpacing(10);
         hbCancelSave.setPadding(new Insets(0, 0, 0, 0));
@@ -382,9 +387,13 @@ public class mmFloorAndModeController extends controllers.mapScene{
         hbCancelSave.getChildren().addAll(buttonCancel, buttonSave);
         hbCheckBox.getChildren().addAll(isHidden, isEnabled);
         hbCheckBox.setSpacing(25);
+        hbPermission.setPadding(new Insets(0, 0, 0, 0));
+        hbPermission.getChildren().addAll(permissionLabel, permissionBox);
+        hbPermission.setSpacing(10);
 
         vb.getChildren().addAll(nameLabel, nodeName,
-                typeLabel, nodeType, roomLabel, nodeRoom, hbCheckBox, hbCancelSave);
+                typeLabel, nodeType, roomLabel, nodeRoom, hbCheckBox,
+                hbPermission, hbCancelSave);
         anchorpane.getChildren().addAll(grid,vb);   // Add grid from Example 1-5
         AnchorPane.setBottomAnchor(vb, 8.0);
         AnchorPane.setRightAnchor(vb, 5.0);
