@@ -842,7 +842,7 @@ public class DatabaseController {
      *
      ******************************************************************************/
 
-    public boolean newAdmin(String firstName, String lastName, String userName, String password){
+    public boolean newAdmin(String firstName, String lastName, String userName, String password, Boolean isAdmin){
         String encrypted = BCrypt.hashpw(password, BCrypt.gensalt());
 
         System.out.println(
@@ -851,14 +851,19 @@ public class DatabaseController {
                         firstName, lastName, userName));
         try {
             // sql statement with "?" to be filled later
-            String query = "INSERT INTO ADMIN (FIRSTNAME, LASTNAME, USERNAME, PASSWORD)" +
-                    " values (?, ?, ?, ?)";
+            String query = "INSERT INTO ADMIN (FIRSTNAME, LASTNAME, USERNAME, PASSWORD, PERMISSIONS)" +
+                    " values (?, ?, ?, ?, ?)";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, userName);
             preparedStatement.setString(4, encrypted);
+            if(isAdmin) {
+                preparedStatement.setInt(5, 2);
+            }else{
+                preparedStatement.setInt(5, 1);
+            }
             // execute prepared statement
 
             preparedStatement.execute();
@@ -888,6 +893,33 @@ public class DatabaseController {
             return null;
         }
         return resultSet;
+    }
+    public int getPermission(String username){
+        ResultSet resultSet = null;
+        int permissions;
+        try{
+            String query = "SELECT PERMISSIONS FROM ADMIN WHERE USERNAME = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, username);
+            // run statement and query
+
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return 0;
+        }
+        try {
+            if(!resultSet.next()){
+                return 0;
+            }
+            permissions = resultSet.getInt("PERMISSIONS");
+            closeResultSet(resultSet);
+            return permissions;
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     public String getPassword(String username){
@@ -922,7 +954,7 @@ public class DatabaseController {
         }
     }
 
-    public boolean editAdmin(int ID, String firstName, String lastName, String userName){
+    public boolean editAdmin(int ID, String firstName, String lastName, String userName, Boolean isAdmin){
 
 
         System.out.println(
@@ -931,13 +963,19 @@ public class DatabaseController {
                         ID, firstName, lastName, userName));
         try {
             // sql statement with "?" to be filled later
-            String query = "UPDATE ADMIN SET FIRSTNAME = ?, LASTNAME = ?, USERNAME = ? WHERE ID = ?";
+            String query = "UPDATE ADMIN SET FIRSTNAME = ?, LASTNAME = ?, USERNAME = ?, PERMISSIONS = ? WHERE ID = ?";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, userName);
-            preparedStatement.setInt(4, ID);
+
+            if(isAdmin) {
+                preparedStatement.setInt(4, 2);
+            }else{
+                preparedStatement.setInt(4, 1);
+            }
+            preparedStatement.setInt(5, ID);
             // execute prepared statement
 
             preparedStatement.execute();
