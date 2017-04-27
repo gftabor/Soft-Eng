@@ -197,7 +197,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
     
     public PopOver createMultiFloorPop(PopOver pop, Circle btK, ArrayList<Integer> floors, Node selectedNode) {
 
-        //ArrayList<TextField> fields = new ArrayList<>();
+        ArrayList<Edge> deleteThese = new ArrayList<>();
         AnchorPane anchorpane = new AnchorPane();
         Button buttonSave = new Button("Save");
         Button buttonCancel = new Button("Cancel");
@@ -231,9 +231,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
                     ArrayList<Edge> edges = selectedNode.getEdgeList();
                     for (Edge e : edges) {
                         if (e.getEndNode().getFloor() == Integer.parseInt(oldValue)) {
-                            databaseController.deleteEdge(e.getStartNode().getPosX(), e.getStartNode().getPosY(),
-                                    e.getStartNode().getFloor(), e.getEndNode().getPosX(), e.getEndNode().getPosY(),
-                                    e.getEndNode().getFloor());
+                            deleteThese.add(e);
                         }
                     }
 
@@ -268,14 +266,17 @@ public class mmFloorAndModeController extends controllers.mapScene{
         buttonSave.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                for (Edge ed : deleteThese) {
+                    databaseController.deleteEdge(ed.getStartNode().getPosX(), ed.getStartNode().getPosY(),
+                            ed.getStartNode().getFloor(), ed.getEndNode().getPosX(), ed.getEndNode().getPosY(),
+                            ed.getEndNode().getFloor());
+                }
 
                 pop.hide();
                 resetScreen();
             }
 
         });
-
-
         return pop;
 
     }
