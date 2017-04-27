@@ -103,7 +103,7 @@
                         <HBox>
                            <children>
                               <Label />
-                              <Label fx:id="end_Label" prefWidth="65.0" text="Destino:" textFill="#797878">
+                              <Label fx:id="end_Label" prefWidth="65.0" text="To:" textFill="#797878">
                                  <HBox.margin>
                                     <Insets left="6.0" top="6.0" />
                                  </HBox.margin>
