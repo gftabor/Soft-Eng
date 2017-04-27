@@ -415,6 +415,16 @@ public class mmFloorAndModeController extends controllers.mapScene{
                     nodeName.setText(rset.getString("NAME"));
                     nodeType.setText(rset.getString("TYPE"));
                     nodeRoom.setText(rset.getString("ROOMNUM"));
+                    if (rset.getInt("PERMISSIONS") == 0){
+                        permissionBox.getSelectionModel().select(0);
+                        System.out.println("Permission from db: " + "0");
+                    } else if (rset.getInt("PERMISSIONS") == 1){
+                        permissionBox.getSelectionModel().select(1);
+                        System.out.println("Permission from db: " + "1");
+                    } else {
+                        permissionBox.getSelectionModel().select(2);
+                        System.out.println("Permission from db: " + "2");
+                    }
                     if(rset.getBoolean("ISHIDDEN")){
                         isHidden.setSelected(true);
                     }
@@ -439,17 +449,27 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 String thisNodeType = nodeType.getText();
                 String thisNodeRoom = nodeRoom.getText();
                 if (!thisNodeName.equals("") && !thisNodeType.equals("") && !thisNodeRoom.equals("")) {
+                    int permission;
+                    if (permissionBox.getValue().toString().equals("Admin")){
+                        permission = 2;
+                    } else if (permissionBox.getValue().toString().equals("Employee")){
+                        permission = 1;
+                    } else {
+                        permission = 0;
+                    }
                     if (mode.equals("Edit")) {
                         DBController.DatabaseController.getInstance().updateNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom, 0);
+                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom, permission);
                         pop.hide();
                         admin_FloorPane.getChildren().remove(btK);
                         resetScreen();
                     } else if (mode.equals("Create")){
+
+
                         Node newNode = new Node((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom, 0);
+                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom, permission);
                         DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom, 0);
+                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom, permission);
                         pop.hide();
                         admin_FloorPane.getChildren().remove(btK);
                         resetScreen();
