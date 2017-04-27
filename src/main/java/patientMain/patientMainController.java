@@ -128,6 +128,12 @@ public class patientMainController{
     @FXML
     private StackPane mapStack;
 
+    @FXML
+    private Label welcomeAdmin;
+
+    @FXML
+    private Button signOut_Button;
+
 //    int c_language = 0;
 //
 //    int first_Time = 0;
@@ -173,13 +179,22 @@ public class patientMainController{
 //    double dragNewX, dragNewY, dragOldX, dragOldY;
 //    javafx.scene.Node selected;
 //
-//    private int permissionLevel;
-
-    //ArrayList<Edge> zoomPath;
-
+//    private int permissionLevel = 0;
+//
+//    //ArrayList<Edge> zoomPath;
+//
 //    @FXML
 //    public void initialize() {
-//        permissionLevel = 0;
+//        if(permissionLevel == 0){
+//            System.out.println("Regular User");
+//        }else if (permissionLevel == 1){
+//            System.out.println("Employee User");
+//        }else if (permissionLevel == 2){
+//            System.out.println("Admin User");
+//        }
+//        signOut_Button.setVisible(false);
+//        //admin_Button.setVisible(true);
+//        welcomeAdmin.setText("");
 //        graph = new controllers.MapOverlay(node_Plane, (mapScene) this);
 //        MapController.getInstance().requestMapCopy();
 //
@@ -551,10 +566,10 @@ public class patientMainController{
 //        ArrayList<String> professionals = new ArrayList<>();
 //        ArrayList<String> all = new ArrayList<>();
 //
-//        roomNums = databaseController.getRoomList();
+//        roomNums = databaseController.getFilteredRoomList();
 //        professionals = databaseController.getProfessionalList();
 //        all.addAll(roomNums);
-//        all.addAll(databaseController.getRooms());
+//        all.addAll(databaseController.getFilteredRooms());
 //        all.addAll(professionals);
 //
 //
@@ -787,6 +802,8 @@ public class patientMainController{
 //        //hide the continue button
 //        continueNew_Button.setVisible(false);
 //
+//        previous_Button.setVisible(false);
+//
 //        //reset the textfields
 //        start_textField.setText("");
 //        end_TextField.setText("");
@@ -801,7 +818,7 @@ public class patientMainController{
 //        //change the current language to english
 //
 //        //Change the Buttons
-//        admin_Button.setText("Administrator");
+//        admin_Button.setText("Log In");
 //        emergency_Button.setText("EMERGENCY");
 //        cancel_Button.setText("Clear");
 //        submit_Button.setText("Submit");
@@ -870,8 +887,12 @@ public class patientMainController{
 //    public void rightClickEvent(int x, int y, Circle c, int mode) {
 //        System.out.println("Right click event");
 //    }
+//
+//    public void doubleClickEvent(int x, int y, Circle c, int mode) {
+//        System.out.println("Right click event");
+//    }
 //    public void edgeClickRemove(int x1, int y1, int x2, int y2){}
-//    public void showStairMenu(int x, int y, Circle c) {}
+//    public void showMultifloorMenu(int x, int y, Circle c) {}
 //
 //    public void sceneEvent(int x, int y, Circle c){
 //        //set selectionstate
@@ -1091,5 +1112,37 @@ public class patientMainController{
 //            } else if (controllers.MapOverlay.getPathfinding() == 2) {
 //                graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
 //            }
-// }
+//    }
+//
+//    public int getPermissionLevel() {
+//        return permissionLevel;
+//    }
+//
+//    public void setPermissionLevel(int permissionLevel) {
+//        this.permissionLevel = permissionLevel;
+//        System.out.println("Setting permission level to: " + permissionLevel);
+//        if(this.permissionLevel >= 1){
+//            admin_Button.setVisible(false);
+//            signOut_Button.setVisible(true);
+//        }
+//    }
+//
+//    public void setWelcome(String text){
+//        welcomeAdmin.setText(text);
+//    }
+//    public void signOut_Button_Clicked(){
+//        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
+//        //patientMenuStart.patientMenuStartController controller = loader.getController();
+//        patientMain.patientMainController controller = loader.getController();
+//        //sets the current language
+//        controller.setCurrentLanguage(c_language);
+//        //set up english labels
+//        if(c_language == 0){
+//            controller.englishButtons_Labels();
+//
+//            //set up spanish labels
+//        }else if(c_language == 1){
+//            controller.spanishButtons_Labels();
+//        }
+//    }
 }

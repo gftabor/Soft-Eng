@@ -559,10 +559,10 @@ public class NewIntroUIController extends controllers.mapScene{
         ArrayList<String> professionals = new ArrayList<>();
         ArrayList<String> all = new ArrayList<>();
 
-        roomNums = databaseController.getRoomList();
+        roomNums = databaseController.getFilteredRoomList();
         professionals = databaseController.getProfessionalList();
         all.addAll(roomNums);
-        all.addAll(databaseController.getRooms());
+        all.addAll(databaseController.getFilteredRooms());
         all.addAll(professionals);
 
 
@@ -818,8 +818,8 @@ public class NewIntroUIController extends controllers.mapScene{
 
 
         //Change the labels
-        start_Label.setText("Start");
-        end_Label.setText("End");
+        start_Label.setText("From:");
+        end_Label.setText("To:");
         mainTitle_Label.setText("Welcome to Brigham and Women's Faulkner Hospital");
         floor_Label.setText("Floor");
         //textD_Label.setText("Text Description");
@@ -853,8 +853,8 @@ public class NewIntroUIController extends controllers.mapScene{
         about_Button.setText("Acerca");
 
         //change the Labels
-        start_Label.setText("Inicio");
-        end_Label.setText("Destino");
+        start_Label.setText("Inicio:");
+        end_Label.setText("Destino:");
         mainTitle_Label.setText("Bienvenidos al Hospital Faulkner Brigham and Women");
         floor_Label.setText("Piso");
         //textD_Label.setText("Descripciones Escritas");
@@ -885,7 +885,7 @@ public class NewIntroUIController extends controllers.mapScene{
         System.out.println("Right click event");
     }
     public void edgeClickRemove(int x1, int y1, int x2, int y2){}
-    public void showStairMenu(int x, int y, Circle c) {}
+    public  void showMultifloorMenu(int x, int y, Circle c){}
 
     public void sceneEvent(int x, int y, Circle c){
         //set selectionstate
@@ -1105,6 +1105,25 @@ public class NewIntroUIController extends controllers.mapScene{
         } else if (controllers.MapOverlay.getPathfinding() == 2) {
             graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
         }
+    }
+
+    public int getPermissionLevel() {
+        return permissionLevel;
+    }
+
+    public void setPermissionLevel(int permissionLevel) {
+        this.permissionLevel = permissionLevel;
+        System.out.println("Setting permission level to: " + permissionLevel);
+        if(this.permissionLevel >= 1){
+            admin_Button.setVisible(false);
+            //TODO FIX THIS
+            //signOut_Button.setVisible(true);
+        }
+    }
+
+    public void setWelcome(String text){
+        //TODO FIX THIS
+        //welcomeAdmin.setText(text);
     }
 }
 

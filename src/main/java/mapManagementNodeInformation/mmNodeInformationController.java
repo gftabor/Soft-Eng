@@ -571,7 +571,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         ArrayList<String> departments = new ArrayList<>();
         ArrayList<String> titles = new ArrayList<>();
 
-        rooms = databaseController.getRooms();
+        rooms = databaseController.getFilteredRooms();
         titles = databaseController.getTitles();
 
         // rooms not affected by language

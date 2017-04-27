@@ -15,7 +15,7 @@ public class aboutPageController extends controllers.AbsController{
 
     @FXML
     void mainMenu_Clicked() {
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
         patientMain.patientMainController controller = loader.getController();
 
     }
