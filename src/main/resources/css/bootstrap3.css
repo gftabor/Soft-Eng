@@ -701,6 +701,7 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-effect: innershadow(gaussian, #e4e4e4, 4, 0, 0, 1);
 }
 
+/***MOST OF MY WORK***/
 .color-palette2{
     -fx-background-color: #e0dede;
 }
@@ -737,7 +738,6 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-border-color: #333;
     -fx-font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     -fx-text-fill: white;
-
 }
 .color-palette5:hover{
     -fx-background-color: #111;
@@ -752,6 +752,57 @@ VBox > .split-menu-button.last > .arrow-button {
 .color-palette5:focused{
     -fx-effect: dropshadow(gaussian, #111 , 0, 0, 0, 0)
 }
+
+.DirectorySubMenu{
+    -fx-font-size: 25px;
+    -fx-font-weight: Bold;
+    -fx-font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+
+.Directory_TextField{
+    -fx-border-width: 0;
+    -fx-font-size: 16px;
+    -fx-font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    -fx-text-fill: Black;
+    -fx-background-color: white;
+    /*-fx-prompt-text-fill: #5a5a5a;*/
+    -fx-background-insets: 0 0 0 0;
+}
+
+.Directory_TextField:focused{
+    -fx-effect: dropshadow(gaussian, #787878, 0, 0, 0, 0);
+}
+
+.Directory_VBox, .DirectoryButton{
+    -fx-background-color: white;
+    -fx-border-color: white;
+    -fx-text-fill: Black;
+}
+.DirectoryButton:hover{
+    -fx-background-color: #e0dede;
+    -fx-border-color: #e0dede;
+}
+.DirectoryButton:focused{
+    -fx-effect: dropshadow(gaussian, #787878 , 0, 0, 0, 0)
+}
+
+.DirectoryLabel{
+    -fx-font-size: 18px;
+    -fx-text-fill: Black;
+    -fx-font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    -fx-font-weight: bold;
+}
+
+.DirectoryTableView{
+    -fx-font-size: 16px;
+    -fx-font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    -fx-collapsible: true;
+    -fx-border-color: #e0dede;
+    -fx-border-style: 1px solid #ddddd;
+}
+
+
 
 /*.show-hide-columns-button2 {
     -fx-border-width: 0;
