@@ -69,7 +69,7 @@
          <left>
             <VBox minWidth="-Infinity" prefHeight="655.0" prefWidth="314.0" styleClass="color-palette" BorderPane.alignment="CENTER">
                <children>
-                  <Label fx:id="LogInPerson_Label" text="Current LogIn" />
+                  <Label fx:id="LogInPerson_Label" text="Current LogIn (Empty)" />
                   <VBox minWidth="-Infinity" prefHeight="100.0" prefWidth="283.0" styleClass="color-palette2">
                      <children>
                         <HBox>
@@ -86,7 +86,7 @@
                                  </HBox.margin></TextField>
                               <Region HBox.hgrow="ALWAYS" />
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button fx:id="cancelFirst_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" onMouseClicked="#canceFromButton_Clicked" prefWidth="28.0" styleClass="info" text="x" textAlignment="CENTER">
+                              <Button fx:id="cancelFirst_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" onMouseClicked="#cancelFromButton_Clicked" prefWidth="28.0" styleClass="info" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>

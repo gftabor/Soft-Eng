@@ -43,7 +43,7 @@
                   <Label fx:id="invalidLogInputs" wrapText="true" />
                   <HBox>
                      <children>
-                        <Button fx:id="mainMenu_Button" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="26.0" prefWidth="300.0" styleClass="warning" text="Return">
+                        <Button fx:id="mainMenu_Button" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefHeight="26.0" prefWidth="300.0" styleClass="warning" text="Main Menu">
                            <HBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </HBox.margin>
@@ -78,12 +78,6 @@
                </padding>
             </VBox>
          </center>
-         <top>
-            <Region prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-         </top>
-         <bottom>
-            <Region prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-         </bottom>
       </BorderPane>
    </children>
 </AnchorPane>
