@@ -247,13 +247,13 @@ public class NewIntroUIController extends controllers.mapScene{
             public void handle(MouseEvent event) {
                 dragOldX = event.getX();
                 dragOldY = event.getY();
-                System.out.println("not nuts");
+                //System.out.println("not nuts");
             }
         });
 
         map_viewer.setOnMouseDragged(event ->  {
             //if (event.getSceneX() > stackBounds.getMinX() && event.getSceneX() < stackBounds.getMaxX() && event.getSceneY() > stackBounds.getMinY() && event.getSceneY() < stackBounds.getMaxY()) {
-            System.out.println("nuts");
+            //System.out.println("nuts");
             dragNewX = event.getX();
             dragNewY = event.getY();
             if (dragOldX == 0) {
@@ -265,7 +265,7 @@ public class NewIntroUIController extends controllers.mapScene{
             double deltaX = (dragNewX - dragOldX)/1000;
             double deltaY = (dragNewY - dragOldY)/1000;
 
-            System.out.println(scrollPane.getHvalue() + "  " + scrollPane.getVvalue());
+            //System.out.println(scrollPane.getHvalue() + "  " + scrollPane.getVvalue());
 
             scrollPane.setHvalue(scrollPane.getHvalue() - deltaX);
             scrollPane.setVvalue(scrollPane.getVvalue() - deltaY);
@@ -615,83 +615,83 @@ public class NewIntroUIController extends controllers.mapScene{
         continueNew_Button.setVisible(false);
         previous_Button.setVisible(false);
 
-        if (selectionState == 2) {
-            //submit stuff
-            //createEdgeLines
+//        if (selectionState == 2) {
+//            //submit stuff
+//            //createEdgeLines
+//
+//            //set the node if the 1st kiosk location is set
+//            if (!(start_textField.getText().equals(""))) {
+//                if (start_textField.getText().equals("Kiosk")){
+//                    startN = mapController.getCollectionOfNodes().getNodeWithName("Kiosk");
+//                } else {
+//                    startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
+//                }
+//                MapController.getInstance().markNode(startN.getPosX(), startN.getPosY(), 1, startN.getFloor());
+//            }
+//
+//            //check for multifloor
+//            if (mapController.areDifferentFloors()) {
+//                System.out.println("Multi-floor pathfinding detected!");
+//
+//                //use the multifloor pathfinding function
+//                multiFloorPathfind();
+//            } else {
+//                MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
+//                path = mapController.requestPath(permissionLevel);
+//                graph.createEdgeLines(path, true, false);
+//                //zoomPath = path;
+//                controllers.MapOverlay.setPathfinding(1);
+//                textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
+//
+//            }
+//
+//        } else {
+//
 
-            //set the node if the 1st kiosk location is set
-            if (!(start_textField.getText().equals(""))) {
-                if (start_textField.getText().equals("Kiosk")){
-                    startN = mapController.getCollectionOfNodes().getNodeWithName("Kiosk");
-                } else {
-                    startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
-                }
-                MapController.getInstance().markNode(startN.getPosX(), startN.getPosY(), 1, startN.getFloor());
+        //check that the txt fields are filled
+        if(!(start_textField.getText().equals("")) && !(end_TextField.getText().equals(""))) {
+            if (start_textField.getText().equals("Kiosk")){
+                startN = mapController.getCollectionOfNodes().getNodeWithName("Kiosk");
+            } else if (start_textField.getText().contains(",")){
+                startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
+            } else {
+                startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText());
             }
 
-            //check for multifloor
-            if (mapController.areDifferentFloors()) {
-                System.out.println("Multi-floor pathfinding detected!");
+            if (end_TextField.getText().contains(",")){
+                endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText().split(", ")[1]);
+            } else {
+                endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText());
+            }
 
-                //use the multifloor pathfinding function
+            //set up for colors :)
+            startX = startN.getPosX();
+            startY = startN.getPosY();
+            endX = endN.getPosX();
+            endY = endN.getPosY();
+
+            //mark the nodes
+            MapController.getInstance().markNode(startN.getPosX(), startN.getPosY(), 1, startN.getFloor());
+            MapController.getInstance().markNode(endN.getPosX(), endN.getPosY(), 2, endN.getFloor());
+
+            //detect multiflooring
+            if (startN.getFloor() != endN.getFloor()) {
+                //multifloor pathfinding detected
+                System.out.println("directory -> multifloor pathfinding");
+
+
                 multiFloorPathfind();
             } else {
+                //no multifloor pathfinding (simple)
+
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                path = mapController.requestPath(permissionLevel);
+                ArrayList<Edge> path = mapController.requestPath(permissionLevel);
                 graph.createEdgeLines(path, true, false);
-                //zoomPath = path;
-                controllers.MapOverlay.setPathfinding(1);
                 textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
-
             }
-
-        } else { //not the map :)
-
-
-            //check that the txt fields are filled
-            if(!(start_textField.getText().equals("")) && !(end_TextField.getText().equals(""))) {
-                if (start_textField.getText().equals("Kiosk")){
-                    startN = mapController.getCollectionOfNodes().getNodeWithName("Kiosk");
-                } else if (start_textField.getText().contains(",")){
-                    startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
-                } else {
-                    startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText());
-                }
-
-                if (end_TextField.getText().contains(",")){
-                    endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText().split(", ")[1]);
-                } else {
-                    endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText());
-                }
-
-                //set up for colors :)
-                startX = startN.getPosX();
-                startY = startN.getPosY();
-                endX = endN.getPosX();
-                endY = endN.getPosY();
-
-                //mark the nodes
-                MapController.getInstance().markNode(startN.getPosX(), startN.getPosY(), 1, startN.getFloor());
-                MapController.getInstance().markNode(endN.getPosX(), endN.getPosY(), 2, endN.getFloor());
-
-                //detect multiflooring
-                if (startN.getFloor() != endN.getFloor()) {
-                    //multifloor pathfinding detected
-                    System.out.println("directory -> multifloor pathfinding");
-
-
-                    multiFloorPathfind();
-                } else {
-                    //no multifloor pathfinding (simple)
-
-                    MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                    ArrayList<Edge> path = mapController.requestPath(permissionLevel);
-                    graph.createEdgeLines(path, true, false);
-                    textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
-                }
-            }
-
         }
+
+        //}
         selectionState=0;
         System.out.println("The user has clicked the submit Button");
     }
@@ -860,6 +860,8 @@ public class NewIntroUIController extends controllers.mapScene{
         start_textField.setText("");
         end_TextField.setText("");
 
+        //reset any colors
+
         //reset the usingMap
         usingMap = false;
     }
@@ -949,20 +951,19 @@ public class NewIntroUIController extends controllers.mapScene{
 
     public void sceneEvent(int x, int y, Circle c){
         //set selectionstate
-        if (!usingMap) {
-            System.out.println("not using map");
-            if (!(start_textField.getText().equals(""))) {
-                //reset the map display
-                resetMapNodeColors(c);
-                graph.wipeEdgeLines();
 
-                //set the correct selection state
-                selectionState = 1;
-            } else {
-                usingMap = true;
-                selectionState = 0;
-            }
+
+        if (!(start_textField.getText().equals(""))) {
+            //reset the map display
+            graph.wipeEdgeLines();
+
+            //set the correct selection state
+            selectionState = 1;
+        } else {
+
+            selectionState = 0;
         }
+
         System.out.println("Node at (" + x + ", " + y + ") selected during state: " + selectionState);
         if (selectionState == 0) {
             //place the black marker at the starting location
@@ -975,7 +976,7 @@ public class NewIntroUIController extends controllers.mapScene{
             selectionState++;
 
             //reset the colors
-            resetMapNodeColors(c);
+            resetMapNodeColors(1);
 
             graph.wipeEdgeLines();
             controllers.MapOverlay.setPathfinding(0);
@@ -1010,7 +1011,10 @@ public class NewIntroUIController extends controllers.mapScene{
             Node myNode = mapController.getCollectionOfNodes().getNode(x, y, currentFloor);
             end_TextField.setText(myNode.getRoomNum());
 
-            selectionState++;
+            //reset the colors
+            resetMapNodeColors(2);
+
+            //selectionState++;
             end = c;
             //color
             c.setStrokeWidth(strokeRatio);
@@ -1035,26 +1039,29 @@ public class NewIntroUIController extends controllers.mapScene{
     }
 
     //resets node fill colors on the map
-    public void resetMapNodeColors(Circle c) {
-        if(start != null) {
-            start.setStroke(Color.BLACK);
-            if(c.getFill().equals(kioskColor)){
-                c.setFill(kioskColor);
-            }else {
-                c.setFill(Color.BLACK);
+    public void resetMapNodeColors(int mode) {
+        System.out.println("resetting colors");
+        if (mode == 1 || mode == 3) {
+            if (start != null) {
+                System.out.println("start....");
+                start.setStroke(Color.BLACK);
+                if (!(start.getFill().equals(kioskColor))) {
+                    start.setFill(Color.BLACK);
+                }
+                start.setStrokeWidth(1);
+                start.setRadius(graph.getLabelRadius());
             }
-            start.setStrokeWidth(1);
-            start.setRadius(graph.getLabelRadius());
         }
-        if(end != null) {
-            end.setStroke(Color.BLACK);
-            if(c.getFill().equals(kioskColor)){
-                c.setFill(kioskColor);
-            }else {
-                c.setFill(Color.BLACK);
+        if (mode == 2 || mode == 3) {
+            if (end != null) {
+                System.out.println("end....");
+                end.setStroke(Color.BLACK);
+                if (!(end.getFill().equals(kioskColor))) {
+                    end.setFill(Color.BLACK);
+                }
+                end.setStrokeWidth(1);
+                end.setRadius(graph.getLabelRadius());
             }
-            end.setStrokeWidth(1);
-            end.setRadius(graph.getLabelRadius());
         }
     }
 

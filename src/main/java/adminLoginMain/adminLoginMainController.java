@@ -1,5 +1,6 @@
 package adminLoginMain;
 
+import NewMainMapManagement.NewMainMapManagementController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -58,11 +59,16 @@ public class adminLoginMainController extends controllers.AbsController{
             if(loginManage.getPermissions(username) == 2){
                 System.out.println("Logging in Admin");
                 FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewMainMapManagementView.fxml");
-                adminMenuStart.adminMenuStartController controller = loader.getController();
+                NewMainMapManagement.NewMainMapManagementController controller = loader.getController();
                 //Set the correct username for the next scene
-                controller.setUsername_Admin("Admin: "+ username_TextField.getText());
+
+
+                //  TODO FIX THIS:
+                //controller.setUsername_Admin("Admin: "+ username_TextField.getText());
+
+
                 //sets the current language
-                controller.setCurrentLanguage(c_language);
+                controller.setC_language(c_language);
                 //set up english labels
                 if(c_language == 0){
                     controller.englishButtons_Labels();
@@ -72,7 +78,9 @@ public class adminLoginMainController extends controllers.AbsController{
                     controller.spanishButtons_Labels();
                 }
                 //controller.setPermissionLevel(2);
-                controller.setLanguageChoices();
+
+                //TODO FIX THIS:
+                //controller.setLanguageChoicebox();
 
                 //LOG IN EMPLOYEE
                 //*************************************************

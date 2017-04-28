@@ -309,6 +309,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 }
             }
             resetScreen();
+
+            //if successful, highlight node and show edges
+            //TODO >??
         }
     }
 
