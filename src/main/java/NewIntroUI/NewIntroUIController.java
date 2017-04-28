@@ -22,6 +22,7 @@ import org.controlsfx.control.textfield.TextFields;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by AugustoR on 4/21/17.
@@ -885,7 +886,6 @@ public class NewIntroUIController extends controllers.mapScene{
         System.out.println("Right click event");
     }
     public void edgeClickRemove(int x1, int y1, int x2, int y2){}
-    public  void showMultifloorMenu(int x, int y, Circle c){}
 
     public void sceneEvent(int x, int y, Circle c){
         //set selectionstate
@@ -893,26 +893,7 @@ public class NewIntroUIController extends controllers.mapScene{
             System.out.println("not using map");
             if (!(start_textField.getText().equals(""))) {
                 //reset the map display
-                if(start != null) {
-                    start.setStroke(Color.BLACK);
-                    if(start.getFill().equals(kioskColor)){
-                        start.setFill(kioskColor);
-                    }else {
-                        start.setFill(Color.BLACK);
-                    }
-                    start.setStrokeWidth(1);
-                    start.setRadius(graph.getLabelRadius());
-                }
-                if(end != null) {
-                    end.setStroke(Color.BLACK);
-                    if(end.getFill().equals(kioskColor)){
-                        end.setFill(kioskColor);
-                    }else {
-                        end.setFill(Color.BLACK);
-                    }
-                    end.setStrokeWidth(1);
-                    end.setRadius(graph.getLabelRadius());
-                }
+                resetMapNodeColors(c);
                 graph.wipeEdgeLines();
 
                 //set the correct selection state
@@ -925,28 +906,17 @@ public class NewIntroUIController extends controllers.mapScene{
         System.out.println("Node at (" + x + ", " + y + ") selected during state: " + selectionState);
         if (selectionState == 0) {
             //place the black marker at the starting location
-            mapController.markNode(x, y, 1, currentFloor);
+            //mapController.markNode(x, y, 1, currentFloor);
+
+            //update the txtfield
+            Node myNode = mapController.getCollectionOfNodes().getNode(x, y, currentFloor);
+            start_textField.setText(myNode.getRoomNum());
+
             selectionState++;
-            if(start != null) {
-                start.setStroke(Color.BLACK);
-                if(c.getFill().equals(kioskColor)){
-                    c.setFill(kioskColor);
-                }else {
-                    c.setFill(Color.BLACK);
-                }
-                start.setStrokeWidth(1);
-                start.setRadius(graph.getLabelRadius());
-            }
-            if(end != null) {
-                end.setStroke(Color.BLACK);
-                if(c.getFill().equals(kioskColor)){
-                    c.setFill(kioskColor);
-                }else {
-                    c.setFill(Color.BLACK);
-                }
-                end.setStrokeWidth(1);
-                end.setRadius(graph.getLabelRadius());
-            }
+
+            //reset the colors
+            resetMapNodeColors(c);
+
             graph.wipeEdgeLines();
             controllers.MapOverlay.setPathfinding(0);
 
@@ -969,11 +939,17 @@ public class NewIntroUIController extends controllers.mapScene{
             //size
             c.setRadius(graph.getLabelRadius() * sizeUpRatio);
 
-            //hide the continue button if possible
+            //hide the continue and prev button if possible
             continueNew_Button.setVisible(false);
+            previous_Button.setVisible(false);
         } else if (selectionState == 1){
             //place the red marker at end location
-            mapController.markNode(x, y, 2, currentFloor);
+            //mapController.markNode(x, y, 2, currentFloor);
+
+            //set the text field
+            Node myNode = mapController.getCollectionOfNodes().getNode(x, y, currentFloor);
+            end_TextField.setText(myNode.getRoomNum());
+
             selectionState++;
             end = c;
             //color
@@ -995,6 +971,30 @@ public class NewIntroUIController extends controllers.mapScene{
             c.setRadius(graph.getLabelRadius() * sizeUpRatio);
         } else {
             //do nothing
+        }
+    }
+
+    //resets node fill colors on the map
+    public void resetMapNodeColors(Circle c) {
+        if(start != null) {
+            start.setStroke(Color.BLACK);
+            if(c.getFill().equals(kioskColor)){
+                c.setFill(kioskColor);
+            }else {
+                c.setFill(Color.BLACK);
+            }
+            start.setStrokeWidth(1);
+            start.setRadius(graph.getLabelRadius());
+        }
+        if(end != null) {
+            end.setStroke(Color.BLACK);
+            if(c.getFill().equals(kioskColor)){
+                c.setFill(kioskColor);
+            }else {
+                c.setFill(Color.BLACK);
+            }
+            end.setStrokeWidth(1);
+            end.setRadius(graph.getLabelRadius());
         }
     }
 
