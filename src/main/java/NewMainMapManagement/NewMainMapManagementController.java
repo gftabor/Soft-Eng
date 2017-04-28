@@ -2,9 +2,11 @@ package NewMainMapManagement;
 
 import DBController.DatabaseController;
 import controllers.*;
+import controllers.Node;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,6 +15,7 @@ import javafx.geometry.Bounds;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,6 +24,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.textfield.TextFields;
 //import sun.misc.resources.Messages_pt_BR;
@@ -115,6 +119,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
     private int permissionLevel;
 
     private final Circle[] temporaryButton = {null};
+    private ArrayList<Circle> floatingCircles;
+    private ArrayList<Node> floatingNodes;
 
 
 
@@ -159,7 +165,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                     addMultiEdgeMode = false;
                 } else if (dragMode) {
                     dragMode = false;
-                    dragModeUpdate();
+                    dragModeUpdate("SINGLE");
                 } else if (selectedNode) {
                     selectedNode = false;
                     graph.wipeEdgeLines();
@@ -175,23 +181,25 @@ public class NewMainMapManagementController extends controllers.mapScene {
                         admin_FloorPane.getChildren().remove(temporaryButton[0]);
                     }
                 } else {
-                    graph.wipeEdgeLines();
+                    if (!multiDragMode) {
+                        graph.wipeEdgeLines();
 
-                    if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)) {
-                        admin_FloorPane.getChildren().remove(temporaryButton[0]);
+                        if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)) {
+                            admin_FloorPane.getChildren().remove(temporaryButton[0]);
+                        }
+                        btK = new Circle(labelRadius);//new Button();
+                        btK.setLayoutX(e.getX());
+                        btK.setLayoutY(e.getY());
+                        admin_FloorPane.getChildren().add(btK);
+                        temporaryButton[0] = btK;
+
+                        //set the popovershown var
+                        popoverShown = true;
+
+                        PopOver pop = new PopOver();
+                        createPop(pop, btK, "Create");
+                        pop.show(btK);
                     }
-                    btK = new Circle(labelRadius);//new Button();
-                    btK.setLayoutX(e.getX());
-                    btK.setLayoutY(e.getY());
-                    admin_FloorPane.getChildren().add(btK);
-                    temporaryButton[0] = btK;
-
-                    //set the popovershown var
-                    popoverShown = true;
-
-                    PopOver pop = new PopOver();
-                    createPop(pop, btK, "Create");
-                    pop.show(btK);
                 }
             } else {
                 // show a context menu for clear and automatic edges radius
@@ -222,6 +230,13 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 draggableOption.setOnAction(new EventHandler<ActionEvent>() {
                     @Override public void handle(ActionEvent ee) {
                         // make nodes draggable here
+                        if(!multiDragMode) {
+                            clearButton_Clicked();
+                            dragMode = false;
+                            multiDragMode = true;
+                            resetScreen();
+                            unhookAllCircles();
+                        }
                     }
                 });
                 contextMenu.getItems().addAll(clearOption, radiusOption, draggableOption);
@@ -376,7 +391,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     }
 
-    private void dragModeUpdate() {
+    private void dragModeUpdate(String mode) {
         graph.wipeEdgeLines();
         if (dragNode != null) {
             System.out.println("drag done");
@@ -419,7 +434,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
                             n.getPosX(), n.getPosY(), n.getFloor());
                 }
             }
-            resetScreen();
+            if (mode.equalsIgnoreCase("SINGLE")) {
+                resetScreen();
+            }
 
             //if successful, highlight node and show edges
             //TODO >??
@@ -647,7 +664,6 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 //draggable code:
                 System.out.println("draggable");
                 dragMode = true;
-                dragMode = true;
                 final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
                 dragCircle = c;
                 dragNode = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
@@ -725,62 +741,67 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     public void sceneEvent(int x, int y, Circle c) {
 
-        //add edge from menu (both multi and single)
-        if (addSingleEdgeMode || addMultiEdgeMode) {
-            System.out.println("adding edge...");
-            nodeEdgeX2 = (int) x;
-            nodeEdgeY2 = (int) y;
-            DBController.DatabaseController.getInstance().newEdge(firstNode.getPosX(),
-                    firstNode.getPosY(), firstNode.getFloor(), nodeEdgeX2, nodeEdgeY2, currentFloor);
-            resetScreen();
-            addSingleEdgeMode = false;
-            if (firstNode != null) {
-                firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
-                        .getNode(firstNode.getPosX(), firstNode.getPosY(), firstNode.getFloor());
-                //don't know if above method is successful
-                //must check again if firstNode is not null
+        if (multiDragMode) {
+            System.out.println("clicked on a draggable node");
+        } else {
+
+            //add edge from menu (both multi and single)
+            if (addSingleEdgeMode || addMultiEdgeMode) {
+                System.out.println("adding edge...");
+                nodeEdgeX2 = (int) x;
+                nodeEdgeY2 = (int) y;
+                DBController.DatabaseController.getInstance().newEdge(firstNode.getPosX(),
+                        firstNode.getPosY(), firstNode.getFloor(), nodeEdgeX2, nodeEdgeY2, currentFloor);
+                resetScreen();
+                addSingleEdgeMode = false;
                 if (firstNode != null) {
-                    graph.createEdgeLines(firstNode.getEdgeList(), true, true);
-                    c.toFront();
+                    firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
+                            .getNode(firstNode.getPosX(), firstNode.getPosY(), firstNode.getFloor());
+                    //don't know if above method is successful
+                    //must check again if firstNode is not null
+                    if (firstNode != null) {
+                        graph.createEdgeLines(firstNode.getEdgeList(), true, true);
+                        c.toFront();
+                    }
                 }
+
+                return;
             }
 
-            return;
-        }
-
-        //don't highlight if in drag mode
-        if (dragMode) {
-            return;
-        }
-        //set the selected node switch
-        selectedNode = true;
-
-        //remove any temporary nodes
-        if (popoverShown){
-            if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)){
-                admin_FloorPane.getChildren().remove(temporaryButton[0]);
+            //don't highlight if in drag mode
+            if (dragMode) {
+                return;
             }
+            //set the selected node switch
+            selectedNode = true;
+
+            //remove any temporary nodes
+            if (popoverShown) {
+                if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)) {
+                    admin_FloorPane.getChildren().remove(temporaryButton[0]);
+                }
+
+            }
+            //highlight the node
+            nodeEdgeX1 = (int) x;
+            nodeEdgeY1 = (int) y;
+            System.out.println(nodeEdgeX1 + "     " + nodeEdgeY1);
+            firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
+                    .getNode(nodeEdgeX1, nodeEdgeY1, currentFloor);
+            graph.createEdgeLines(firstNode.getEdgeList(), true, true);
+
+            //color the node as well
+            if (lastColoredStart != null) {
+                lastColoredStart.setStroke(lastColoredStart.getFill());
+                lastColoredStart.setStrokeWidth(1);
+                lastColoredStart = null;
+            }
+            lastColoredStart = c;
+            c.setStrokeWidth(6.5);
+            c.setStroke(Color.ROYALBLUE);
+            c.toFront();
 
         }
-        //highlight the node
-        nodeEdgeX1 = (int) x;
-        nodeEdgeY1 = (int) y;
-        System.out.println(nodeEdgeX1 + "     " + nodeEdgeY1);
-        firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
-                .getNode(nodeEdgeX1, nodeEdgeY1, currentFloor);
-        graph.createEdgeLines(firstNode.getEdgeList(), true, true);
-
-        //color the node as well
-        if (lastColoredStart !=  null) {
-            lastColoredStart.setStroke(lastColoredStart.getFill());
-            lastColoredStart.setStrokeWidth(1);
-            lastColoredStart = null;
-        }
-        lastColoredStart = c;
-        c.setStrokeWidth(6.5);
-        c.setStroke(Color.ROYALBLUE);
-        c.toFront();
-
     }
 
     //Change to main Menu
@@ -938,8 +959,27 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //Manages when the user clicks the save button
     public void saveButton_Clicked(){
-        dragMode = false;
-        dragModeUpdate();
+        if (multiDragMode) {
+            multiDragMode = false;
+
+            if (floatingNodes.size() != floatingCircles.size()) {
+                System.out.println("something got really messed up, the " +
+                        "list sizes are different");
+                resetScreen();
+                return;
+            }
+            ;
+            while (!floatingCircles.isEmpty() && !floatingNodes.isEmpty()) {
+                dragCircle = floatingCircles.remove(0);
+                dragNode = floatingNodes.remove(0);
+                dragModeUpdate("MULTI");
+            }
+            System.out.println("finished.");
+            resetScreen();
+        } else {
+            dragMode = false;
+            dragModeUpdate("SINGLE");
+        }
     }
 
     //Manages when the user clicks the clear button
@@ -1034,5 +1074,39 @@ public class NewMainMapManagementController extends controllers.mapScene {
         c_language = i;
     }
 
+
+    public void unhookAllCircles() {
+        floatingCircles = new ArrayList<>();
+        floatingNodes = new ArrayList<>();
+        ObservableList<javafx.scene.Node> sceneObjects = admin_FloorPane.getChildren();
+
+        for (javafx.scene.Node n: sceneObjects) {
+            if (n instanceof Circle) {
+                floatingCircles.add((Circle) n);
+            }
+        }
+
+        //set all circles to be floating
+        for (Circle c: floatingCircles) {
+            final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
+            dragCircle = c;
+            dragNode = MapController.getInstance().getCollectionOfNodes().getNode((int) c.getLayoutX(), (int) c.getLayoutY(), currentFloor);
+            if (dragNode == null) {
+                System.out.println("ERROR GETTING DRAG NODE");
+                continue;
+            }
+            //System.out.println("test old: x= " + dragNode.getPosX() + ", y= " + dragNode.getPosY());
+            //This code is for placing nodes
+            c.setOnMouseDragged(e -> {
+                if (e.getSceneX() > paneBounds.getMinX() && e.getSceneX() < paneBounds.getMaxX()
+                        && e.getSceneY() > paneBounds.getMinY() && e.getSceneY() < paneBounds.getMaxY()) {
+                    c.setLayoutX((e.getSceneX() - paneBounds.getMinX()));
+                    c.setLayoutY((e.getSceneY() - paneBounds.getMinY()));
+                }
+            });
+
+            floatingNodes.add(dragNode);
+        }
+    }
 
 }
