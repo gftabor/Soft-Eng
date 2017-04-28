@@ -196,7 +196,7 @@ public class NewIntroUIController extends controllers.mapScene{
         //setLanguageChoices(c_language);
         setFloorChoices();
         setStartEndChoices();
-        setLanguage_ChoiceBox();
+        setLanguage_ChoiceBox(c_language);
         //setComboBox();
         //setFilterChoices();
         //set current floor
@@ -344,11 +344,11 @@ public class NewIntroUIController extends controllers.mapScene{
     }
 
     //Sets the choices for the language
-    public void setLanguage_ChoiceBox() {
+    public void setLanguage_ChoiceBox(int lang) {
         //Makes sure you only set the choices once
         //sets the choices and sets the current language as the top choice
         language_ChoiceBox.getItems().addAll("English", "Espanol");
-        language_ChoiceBox.getSelectionModel().select(0);
+        language_ChoiceBox.getSelectionModel().select(lang);
         language_ChoiceBox.setTooltip(new Tooltip("Select the language"));
 
         //Checks if the user has decided to change languages
@@ -740,7 +740,8 @@ public class NewIntroUIController extends controllers.mapScene{
         graph.setHeightRatio(1.0);
         graph.setWidthRatio(1.0);
 
-        if(admin_Button.getText().equals("Administrator") || admin_Button.getText().equals("Administrador")) {
+        if(admin_Button.getText().equals("Administrator") || admin_Button.getText().equals("Administrador")
+                || getPermissionLevel() == 0 ) {
             FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminLoginMainView.fxml");
             adminLoginMain.adminLoginMainController controller = loader.getController();
             //sends the current language the next screen
@@ -756,6 +757,7 @@ public class NewIntroUIController extends controllers.mapScene{
             //Sets the current Language choices
             controller.setLanguageChoiceBox(c_language);
 
+            //Signing out
         }else{
             FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
             //patientMenuStart.patientMenuStartController controller = loader.getController();
@@ -773,9 +775,12 @@ public class NewIntroUIController extends controllers.mapScene{
             controller.setPermissionLevel(0);
             //set label to empty
             controller.setWelcome("");
+
             //Sets the label of the button back to administrator
+            //0 In 1 out
             controller.loginOrOut(1, c_language);
         }
+
     }
 
     //Set the button correctly
@@ -783,7 +788,18 @@ public class NewIntroUIController extends controllers.mapScene{
         //The user is signing in
         if(inOrOut == 0){
 
+            if(lang == 0){
+                admin_Button.setText("Sign Out");
+            }else{
+                admin_Button.setText("Salir");
+            }
+
         }else{
+            if(lang == 0){
+                admin_Button.setText("Administrator");
+            }else{
+                admin_Button.setText("Administrador");
+            }
 
         }
 
@@ -852,7 +868,6 @@ public class NewIntroUIController extends controllers.mapScene{
         end_Label.setText("To:");
         mainTitle_Label.setText("Welcome to Brigham and Women's Faulkner Hospital");
         floor_Label.setText("Floor");
-        //textD_Label.setText("Text Description");
         phoneInfo_Label.setText("Send Directions to my phone");
 
         //Change the textFields
@@ -863,7 +878,6 @@ public class NewIntroUIController extends controllers.mapScene{
         textDirections_Tab.setText("Directions");
 
         //Change choiceBox
-        //setFilterChoices();
         setFloorChoices();
 
 
@@ -1032,6 +1046,7 @@ public class NewIntroUIController extends controllers.mapScene{
         }
     }
 
+    //Sends feedback according to the outcome of the text directions message
     public void textDirections(){
         SmsSender mySMS = new SmsSender();
         try {
@@ -1189,7 +1204,7 @@ public class NewIntroUIController extends controllers.mapScene{
         this.permissionLevel = permissionLevel;
         System.out.println("Setting permission level to: " + permissionLevel);
         if(this.permissionLevel >= 1){
-            admin_Button.setVisible(false);
+            //admin_Button.setVisible(false);
             //TODO FIX THIS
             //signOut_Button.setVisible(true);
         }

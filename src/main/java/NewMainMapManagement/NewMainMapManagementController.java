@@ -83,6 +83,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
     @FXML
     private Button save_Button;
 
+
     private int nodeEdgeX1;
     private int nodeEdgeY1;
     private int nodeEdgeX2;
@@ -119,6 +120,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //Set to english by default
     private int c_language = 0;
+
 
     private int currentFloor;
 
@@ -804,14 +806,20 @@ public class NewMainMapManagementController extends controllers.mapScene {
     }
 
     public void setUserString(String user) {
+
         LogInPerson_Label.setText(user);
     }
 
 
     //Sets the map of the desired floor
     public void setFloorChoices(){
-        floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Outside",
-                "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4", "Belkin Basement");
+        if(c_language == 0) {
+            floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Outside",
+                    "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4", "Belkin Basement");
+        }else{
+            floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Afuera",
+                    "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4", "Sotano de Belkin");
+        }
 
         //reset ui interaction
         dragMode = false;
@@ -826,8 +834,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 boolean outside = false;
                 String currentF = "";
-                //Print the floors accordingly
-                //CODE HERE!!!!!!!
+
 
                 if (newValue.intValue() == 7) {
                     //outside
@@ -862,7 +869,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //Signs the user out
     public void signOutButton_Clicked(){
-        /*FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
         //patientMenuStart.patientMenuStartController controller = loader.getController();
         NewIntroUI.NewIntroUIController controller = loader.getController();
         //sets the current language
@@ -876,17 +883,41 @@ public class NewMainMapManagementController extends controllers.mapScene {
     }
         //set permissions back
         controller.setPermissionLevel(0);
+        controller.loginOrOut(1,c_language);
         //set label to empty
-        controller.setWelcome("");*/
+        controller.setWelcome("");
     }
 
     //Manage when the directory button is clicked
     public void DirectoryManButton_Clicked(){
+        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/NewDirectoryManagementView.fxml");
+        mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
+
+        //sets the current language
+        controller.setC_language(c_language);
+
+        controller.setModeChoices();
+        controller.setRoomChoices();
+        controller.setUpTreeView();
+        controller.setUser(LogInPerson_Label.getText());
+
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        //Set permissions of admin
+        controller.setPermissionLevel(2);
+
 
     }
 
     //Manages when the admin management button is clicked
     public void AdminManButton_Clicked(){
+
 
     }
 
@@ -944,16 +975,63 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //Labels for english
     public void englishButtons_Labels(){
+        setC_language(0);
+        //Labels
+        mainTitle_Label.setText("Map Management Tool");
+
+        //Buttons
+        directoryManagement_Button.setText("Directory Management");
+        adminManagement_Button.setText("Admin Management");
+        signOut_Button.setText("Sign Out");
+        emergency_Button.setText("EMERGENCY");
+        clear_Button.setText("Clear");
+        save_Button.setText("Save");
+
+        //Choice Box
+        setFloorChoices();
 
     }
     //Labels for spanish
     public void spanishButtons_Labels(){
+        setC_language(1);
+        //Labels
+        System.out.println("FUCKING BITCHES EN ESPANOL");
+
+        mainTitle_Label.setText("Control de Mapas");
+
+        //Buttons
+        directoryManagement_Button.setText("Control del Directorio");
+        adminManagement_Button.setText("Control de Admins");
+        signOut_Button.setText("Salir");
+        emergency_Button.setText("EMERGENCIA");
+        clear_Button.setText("Borrar");
+        save_Button.setText("Guardar");
+
+        //Choice Box
+        setFloorChoices();
 
     }
 
     public void setUser(String user){
         LogInPerson_Label.setText(user);
 
+    }
+
+    //Gets the permissions
+    public int getPermissionLevel() {
+        return permissionLevel;
+    }
+
+    //Sets the permissions
+    public void setPermissionLevel(int permissionLevel) {
+        this.permissionLevel = permissionLevel;
+        System.out.println("Setting permission level to: " + permissionLevel);
+
+    }
+
+    //sets the current language given information form other screens
+    public void setCurrentLanguage(int i){
+        c_language = i;
     }
 
 
