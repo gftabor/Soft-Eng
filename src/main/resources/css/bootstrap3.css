@@ -753,6 +753,16 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-effect: dropshadow(gaussian, #111 , 0, 0, 0, 0)
 }
 
+.emergencyHBox{
+    -fx-background-color: red;
+}
+.emergencyLabel{
+    -fx-font-size: 40px;
+    -fx-font-weight: Bold;
+    -fx-font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+
+}
+
 .adminLogin_TextField{
     -fx-background-color: linear-gradient(to right, #ECE9E9  25%, #bdc3c7 100%,#000000 90%,white 100%,white 100%);
     -fx-border-width: 0;
