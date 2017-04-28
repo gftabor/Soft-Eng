@@ -23,7 +23,7 @@ public class MapController {
     private int endNodeX;
     private int endNodeY;
 
-    private final double surroundingRadius = 50.0;
+    private double surroundingRadius = 50.0;
 
     private int floorForNode1;
     private int floorForNode2;
@@ -631,5 +631,13 @@ public class MapController {
             this.algorithm = algorithm;
             System.out.println("Changing default search algorithm to: "+algorithm);
         }
+    }
+
+    public double getSurroundingRadius() {
+        return surroundingRadius;
+    }
+
+    public void setSurroundingRadius(double radius) {
+        surroundingRadius = radius;
     }
 }

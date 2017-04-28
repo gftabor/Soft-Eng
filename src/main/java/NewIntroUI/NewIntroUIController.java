@@ -207,8 +207,8 @@ public class NewIntroUIController extends controllers.mapScene{
 
         System.out.println("width/height ratios: " + widthRatio + "/" + heightRatio);
 
-        node_Plane.setMaxWidth(2000.0);
-        node_Plane.setMaxHeight(2000.0);
+        node_Plane.setMaxWidth(4000.0);
+        node_Plane.setMaxHeight(3000.0);
         node_Plane.setPrefHeight(489.0*heightRatio);
         node_Plane.setPrefWidth(920.0*widthRatio);
         map_viewer.setFitHeight(489.0*heightRatio);
@@ -237,43 +237,9 @@ public class NewIntroUIController extends controllers.mapScene{
             mapScroll(event);
             event.consume();
         });
-
-
-        //Code used to pan around map. Works well with single click to pan. Has bugs when clicking again after
-        //already panning. It may have to do with how event handlers work because it seems as though calculations
-        //are being done for the setOnMouseDragged method before setOnMousePressed can update the dragOld values
-        scrollPane.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                dragOldX = event.getX();
-                dragOldY = event.getY();
-                //System.out.println("not nuts");
-            }
-        });
-
-        map_viewer.setOnMouseDragged(event ->  {
-            //if (event.getSceneX() > stackBounds.getMinX() && event.getSceneX() < stackBounds.getMaxX() && event.getSceneY() > stackBounds.getMinY() && event.getSceneY() < stackBounds.getMaxY()) {
-            //System.out.println("nuts");
-            dragNewX = event.getX();
-            dragNewY = event.getY();
-            if (dragOldX == 0) {
-                dragOldX = .01;
-            }
-            if (dragOldY == 0) {
-                dragOldY = 0.01;
-            }
-            double deltaX = (dragNewX - dragOldX)/1000;
-            double deltaY = (dragNewY - dragOldY)/1000;
-
-            //System.out.println(scrollPane.getHvalue() + "  " + scrollPane.getVvalue());
-
-            scrollPane.setHvalue(scrollPane.getHvalue() - deltaX);
-            scrollPane.setVvalue(scrollPane.getVvalue() - deltaY);
-
-            dragOldX = dragNewX;
-            dragOldY = dragNewY;
-            //}
-        });
+        scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setPannable(true);
     }
 
     //get an instance of database controller
@@ -640,7 +606,7 @@ public class NewIntroUIController extends controllers.mapScene{
 //                path = mapController.requestPath(permissionLevel);
 //                graph.createEdgeLines(path, true, false);
 //                //zoomPath = path;
-//                controllers.MapOverlay.setPathfinding(1);
+//                graph.setPathfinding(1);
 //                textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
 //
 //            }
@@ -685,8 +651,9 @@ public class NewIntroUIController extends controllers.mapScene{
                 //no multifloor pathfinding (simple)
 
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                ArrayList<Edge> path = mapController.requestPath(permissionLevel);
+                path = mapController.requestPath(permissionLevel);
                 graph.createEdgeLines(path, true, false);
+                graph.setPathfinding(1);
                 textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
             }
         }
@@ -750,7 +717,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
             } else {
                 graph.createEdgeLines(fragPath.get(0), true, false);
-                controllers.MapOverlay.setPathfinding(2);
+                graph.setPathfinding(2);
             }
 
             //set the globals so you can send to the continue button
@@ -769,9 +736,9 @@ public class NewIntroUIController extends controllers.mapScene{
     //Handling when the logIn Button is clicked
     public void logInButton_Clicked() {
 
-        controllers.MapOverlay.setZoom(1.0);
-        controllers.MapOverlay.setHeightRatio(1.0);
-        controllers.MapOverlay.setWidthRatio(1.0);
+        graph.setZoom(1.0);
+        graph.setHeightRatio(1.0);
+        graph.setWidthRatio(1.0);
 
         if(admin_Button.getText().equals("Administrator") || admin_Button.getText().equals("Administrador")
                 || getPermissionLevel() == 0 ) {
@@ -867,7 +834,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //wipe line from map
         graph.wipeEdgeLines();
-        controllers.MapOverlay.setPathfinding(0);
+        graph.setPathfinding(0);
 
         //hide the continue button
         continueNew_Button.setVisible(false);
@@ -993,7 +960,7 @@ public class NewIntroUIController extends controllers.mapScene{
             resetMapNodeColors(1);
 
             graph.wipeEdgeLines();
-            controllers.MapOverlay.setPathfinding(0);
+            graph.setPathfinding(0);
 
             start =c;
             //color
@@ -1114,52 +1081,65 @@ public class NewIntroUIController extends controllers.mapScene{
         } else {
             floor_ChoiceBox.getSelectionModel().select(currentFloor - 1);
         }
-        controllers.MapOverlay.setPathfinding(0);
+        graph.setPathfinding(0);
         System.out.println("creating edge lines for fp pos: " + fragPathPos);
         graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
-        controllers.MapOverlay.setPathfinding(2);
+        graph.setPathfinding(2);
     }
 
     public void changeZoom(){
-        controllers.MapOverlay.setZoom(zoom);
+        graph.setZoom(zoom);
         node_Plane.setPrefWidth(origPaneWidth*zoom*widthRatio);
         node_Plane.setPrefHeight(origPaneHeight*zoom*heightRatio);
         map_viewer.setFitWidth(origPaneWidth*zoom*widthRatio);
         map_viewer.setFitHeight(origPaneHeight*zoom*heightRatio);
     }
 
+
     public void zoomInButton_Clicked() {
-        zoom = controllers.MapOverlay.getZoom();
+        zoom = graph.getZoom();
         System.out.println(zoom);
-        if (zoom < 1.3) {
+        if (zoom < 2.2) {
             zoom += 0.03;
+            if (zoom > 2.2) {
+                zoom = 2.2;
+            }
             changeZoom();
 
             graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
                     false, currentFloor, permissionLevel);
         }
-        if (controllers.MapOverlay.getPathfinding() == 1) {
+        scrollPane.setFitToHeight(false);
+        scrollPane.setFitToWidth(false);
+        if (graph.getPathfinding() == 1) {
             graph.createEdgeLines(path, true, false);
-        } else if (controllers.MapOverlay.getPathfinding() == 2) {
+        } else if (graph.getPathfinding() == 2) {
             graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
         }
 
     }
 
-    //Zoomz out the map
     public void zoomOutButton_Clicked() {
-        zoom = controllers.MapOverlay.getZoom();
+        zoom = graph.getZoom();
         System.out.println(zoom);
         if (zoom > 1.0) {
             zoom = zoom - 0.03;
+            if (zoom < 1.0) {
+                zoom = 1.0;
+                scrollPane.setFitToHeight(true);
+                scrollPane.setFitToWidth(true);
+            }
             changeZoom();
+        } else {
+            scrollPane.setFitToHeight(true);
+            scrollPane.setFitToWidth(true);
         }
 
         graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
                 false, currentFloor, permissionLevel);
-        if (controllers.MapOverlay.getPathfinding() == 1) {
+        if (graph.getPathfinding() == 1) {
             graph.createEdgeLines(path, true, false);
-        } else if (controllers.MapOverlay.getPathfinding() == 2) {
+        } else if (graph.getPathfinding() == 2) {
             graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
         }
     }
@@ -1168,26 +1148,48 @@ public class NewIntroUIController extends controllers.mapScene{
     public void mapScroll(ScrollEvent event) {
         zoom = MapOverlay.getZoom();
         if (event.getDeltaY() > 0) {
-            if (zoom < 1.3) {
+            if (zoom < 2.2) {
+                scrollPane.setFitToHeight(false);
+                scrollPane.setFitToWidth(false);
                 zoom += 0.03;
+                if (zoom > 2.2) {
+                    zoom = 2.2;
+                }
                 changeZoom();
-
                 graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
                         false, currentFloor, permissionLevel);
             }
         } else if (event.getDeltaY() < 0) {
             if (zoom > 1.0) {
                 zoom = zoom - 0.03;
+                if (zoom < 1.0) {
+                    zoom = 1.0;
+                    scrollPane.setFitToHeight(true);
+                    scrollPane.setFitToWidth(true);
+                }
                 changeZoom();
-
                 graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
                         false, currentFloor, permissionLevel);
+            } else {
+                scrollPane.setFitToHeight(true);
+                scrollPane.setFitToWidth(true);
             }
         }
-        if (controllers.MapOverlay.getPathfinding() == 1) {
+        if (graph.getPathfinding() == 1) {
             graph.createEdgeLines(path, true, false);
-        } else if (controllers.MapOverlay.getPathfinding() == 2) {
+        } else if (graph.getPathfinding() == 2) {
             graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
+        }
+
+        if (selectionState == 2) {
+
+
+            //set the end goal color
+            ArrayList<Circle> circleList;
+            circleList = graph.getButtonList();
+            drawCircleList(circleList, startX * zoom, startY * zoom, startColor);
+            drawCircleList(circleList, endX * zoom, endY * zoom, endColor);
+
         }
     }
 
@@ -1211,6 +1213,50 @@ public class NewIntroUIController extends controllers.mapScene{
     //Starts the string for the current person logged in
     public void setWelcome(String text){
         LogInPerson_Label.setText(text);
+    }
+
+    public void setMapToPath(double startNX, double startNY, double endNX, double endNY) {
+
+        double deltaX = startNX - endNX;
+        double deltaY = startNY - endNY;
+
+        System.out.println("startNX: "+ startNX + " endNX: "+endNX);
+        double midX = (startNX + endNX)/2;
+        double midY = (startNY + endNY)/2;
+
+        if (deltaX < 0) {
+            deltaX = deltaX * -1;
+        }
+        if (deltaY < 0) {
+            deltaY = deltaY * -1;
+        }
+
+        double scrollHeight = scrollPane.getHeight();
+        double scrollWidth = scrollPane.getWidth();
+
+        System.out.println("plane width: " + node_Plane.getWidth());
+        System.out.println("midX: " + midX);
+        System.out.println("Hvalue: " + midX/node_Plane.getWidth());
+        System.out.println("Vvalue: " + midY/node_Plane.getHeight());
+        System.out.println("previous Hvalue: " + scrollPane.getHvalue());
+        System.out.println("previous Vvalue: " + scrollPane.getVvalue());
+
+        if (scrollHeight/(deltaY) < scrollWidth/(deltaX)) {
+            zoom = 2.2;
+        } else {
+            zoom = 2.2;
+        }
+        changeZoom();
+
+        scrollPane.setHvalue(midX / node_Plane.getWidth());
+        scrollPane.setVvalue(midY / node_Plane.getHeight());
+
+        System.out.println("New Hvalue: " + scrollPane.getHvalue());
+    }
+
+
+    public void setZoom(double zoom) {
+        this.zoom = zoom;
     }
 }
 
