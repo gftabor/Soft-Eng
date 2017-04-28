@@ -6,7 +6,6 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -17,7 +16,6 @@ import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 
 /**
  * Created by Griffin on 4/5/2017.
@@ -214,26 +212,38 @@ public class MapOverlay {
                                 sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 7);
                             }
                         });
-                        // Add MenuItem to ContextMenu
-                        contextMenu.getItems().addAll(removeOption, editOption, editPositionOption, autoGenEdgeOption,
-                                addEdgeOption, addMultiEdgeOption, removeAllEdgeOption);
+                        if (current.getType().equalsIgnoreCase("Elevator") ||
+                                current.getType().equalsIgnoreCase("Stair")) {
+                            MenuItem editFloorsConnectedTo = new MenuItem("Show Connected Floors");
+                            editFloorsConnectedTo.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent e) {
+                                    sceneController.rightClickEvent((int) ((nodeX)), (int) ((nodeY)), c, 8);
+                                }
+                            });
+                            contextMenu.getItems().addAll(removeOption, editOption, editPositionOption, autoGenEdgeOption,
+                                    addEdgeOption, addMultiEdgeOption, removeAllEdgeOption, editFloorsConnectedTo);
+                        } else {
+                            contextMenu.getItems().addAll(removeOption, editOption, editPositionOption, autoGenEdgeOption,
+                                    addEdgeOption, addMultiEdgeOption, removeAllEdgeOption);
+                        }
                         contextMenu.show(location, event.getScreenX(), event.getScreenY());
-                    }
+                        }
                 }
             });
         }
         //get node type
-        String type = current.getType();
-        if (devmode && (type.equalsIgnoreCase("Elevator") || type.equalsIgnoreCase("Stair"))) {
-            location.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    Object o = event.getSource();
-                    Circle c = (Circle) o;
-                    sceneController.showStairMenu(nodeX, nodeY, c);
-                }
-            });
-        }
+//        String type = current.getType();
+//        if (devmode && (type.equalsIgnoreCase("Elevator") || type.equalsIgnoreCase("Stair"))) {
+//            location.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+//                @Override
+//                public void handle(MouseEvent event) {
+//                    Object o = event.getSource();
+//                    Circle c = (Circle) o;
+//                    sceneController.showMultifloorMenu(nodeX, nodeY, c);
+//                }
+//            });
+//        }
 
         ButtonList.add(location);
     }
