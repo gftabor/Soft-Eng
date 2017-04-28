@@ -23,11 +23,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.textfield.TextFields;
+import sun.misc.resources.Messages_pt_BR;
 
 import javax.swing.text.View;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by AugustoR on 4/27/17.
@@ -235,6 +237,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         TextField radiusField = new TextField();
         Label edgeRadiusLabel = new Label("Enter Automatic Edges Radius:");
         // get current edge radius and fill in the text box
+        radiusField.setText("" + MapController.getInstance().getSurroundingRadius());
 
       // radiusField.setText(currentEdgeRadius);
 
@@ -278,8 +281,11 @@ public class NewMainMapManagementController extends controllers.mapScene {
         buttonSave.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-               // set the global radius here
+                // set the global radius here
+                if (radiusField.getText() != null) {
+                    MapController.getInstance().setSurroundingRadius(Double.parseDouble(radiusField.getText()));
 
+                }
 
                 pop.hide();
                 resetScreen();
