@@ -509,12 +509,17 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 String thisNodeRoom = nodeRoom.getText();
                 if (!thisNodeName.equals("") && !thisNodeType.equals("") && !thisNodeRoom.equals("")) {
                     int permission;
-                    if (permissionBox.getValue().toString().equals("Admin")){
-                        permission = 2;
-                    } else if (permissionBox.getValue().toString().equals("Employee")){
-                        permission = 1;
-                    } else {
+                    if (permissionBox.getValue() == null) {
+                        //nothing selected
                         permission = 0;
+                    } else {
+                        if (permissionBox.getValue().toString().equals("Admin")) {
+                            permission = 2;
+                        } else if (permissionBox.getValue().toString().equals("Employee")) {
+                            permission = 1;
+                        } else {
+                            permission = 0;
+                        }
                     }
                     if (mode.equals("Edit")) {
                         DBController.DatabaseController.getInstance().updateNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
