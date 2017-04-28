@@ -228,6 +228,8 @@ public class patientMainController extends controllers.mapScene {
             event.consume();
         });
 
+        scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(true);
     }
 
     //get an instance of database controller
@@ -573,14 +575,17 @@ public class patientMainController extends controllers.mapScene {
                 //zoomPath = path;
                 controllers.MapOverlay.setPathfinding(1);
                 textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
-                /*setMapToPath(startX, startY, endX, endY);
+                setMapToPath(startX, startY, endX, endY);
+                scrollPane.setFitToHeight(false);
+                scrollPane.setFitToWidth(false);
                 graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
                         false, currentFloor, permissionLevel);
                 if (controllers.MapOverlay.getPathfinding() == 1) {
                     graph.createEdgeLines(path, true, false);
                 } else if (controllers.MapOverlay.getPathfinding() == 2) {
                     graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
-                }*/
+                }
+                System.out.println("actual Hvalue: " +scrollPane.getHvalue());
             }
 
         } else { //not the map :)
@@ -1051,6 +1056,8 @@ public class patientMainController extends controllers.mapScene {
             zoom = MapOverlay.getZoom();
             if (event.getDeltaY() > 0) {
                 if (zoom < 1.3) {
+                    scrollPane.setFitToHeight(false);
+                    scrollPane.setFitToWidth(false);
                     zoom += 0.03;
                     if (zoom > 1.3) {
                         zoom = 1.3;
@@ -1065,11 +1072,16 @@ public class patientMainController extends controllers.mapScene {
                     zoom = zoom - 0.03;
                     if (zoom < 1.0) {
                         zoom = 1.0;
+                        scrollPane.setFitToHeight(true);
+                        scrollPane.setFitToWidth(true);
                     }
                     changeZoom();
 
                     graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
                             false, currentFloor, permissionLevel);
+                } else {
+                    scrollPane.setFitToHeight(true);
+                    scrollPane.setFitToWidth(true);
                 }
             }
             if (controllers.MapOverlay.getPathfinding() == 1) {
@@ -1100,15 +1112,12 @@ public class patientMainController extends controllers.mapScene {
 
         System.out.println("plane width: " + node_Plane.getWidth());
         System.out.println("midX: " + midX);
-        System.out.println(midX/node_Plane.getWidth());
+        System.out.println("Hvalue: " + midX/node_Plane.getWidth());
+        System.out.println("Vvalue: " + midY/node_Plane.getHeight());
         System.out.println("previous Hvalue: " + scrollPane.getHvalue());
+        System.out.println("previous Vvalue: " + scrollPane.getVvalue());
 
-        scrollPane.setHvalue(midX / node_Plane.getWidth());
-        scrollPane.setVvalue(midY / node_Plane.getHeight());
-
-        System.out.println("New Hvalue: " + scrollPane.getHvalue());
-
-        if (scrollHeight/(deltaY + 50) < scrollWidth/(deltaX + 50)) {
+        if (scrollHeight/(deltaY) < scrollWidth/(deltaX)) {
             zoom = 1.3;
             ;
         } else {
@@ -1116,8 +1125,16 @@ public class patientMainController extends controllers.mapScene {
         }
         changeZoom();
 
+        //scrollPane.setHvalue(midX / node_Plane.getWidth());
+        //scrollPane.setVvalue(midY / node_Plane.getHeight());
+        scrollPane.setHvalue(1);
+        scrollPane.setVvalue(1);
 
-
+        System.out.println("New Hvalue: " + scrollPane.getHvalue());
     }
 
+
+    public void setZoom(double zoom) {
+        this.zoom = zoom;
+    }
 }
