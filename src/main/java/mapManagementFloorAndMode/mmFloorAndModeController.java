@@ -41,13 +41,6 @@ public class mmFloorAndModeController extends controllers.mapScene{
     @FXML
     private Label username_Label;
 
-    //Add the name and Room
-    @FXML
-    private TextField name_TextField;
-
-    @FXML
-    private TextField room_TextField;
-
     @FXML
     private Pane admin_FloorPane;
 
@@ -445,9 +438,6 @@ public class mmFloorAndModeController extends controllers.mapScene{
         if ("Add Node".equals(mode_ChoiceBox.getValue())) {
             admin_FloorPane.getChildren().remove(btK);
         }
-
-        name_TextField.clear();
-        room_TextField.clear();
         graph.wipeEdgeLines();
         edgesSelected = 0;
 
