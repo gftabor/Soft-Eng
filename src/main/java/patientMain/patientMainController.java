@@ -243,6 +243,8 @@ public class patientMainController extends controllers.mapScene {
             event.consume();
         });
 
+        node_Plane.setMaxWidth(4000.0);
+
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
     }
@@ -1031,16 +1033,18 @@ public class patientMainController extends controllers.mapScene {
     public void zoomInButton_Clicked() {
         zoom = controllers.MapOverlay.getZoom();
         System.out.println(zoom);
-        if (zoom < 1.3) {
+        if (zoom < 2.2) {
             zoom += 0.03;
-            if (zoom > 1.3) {
-                zoom = 1.3;
+            if (zoom > 2.2) {
+                zoom = 2.2;
             }
             changeZoom();
 
             graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
                     false, currentFloor, permissionLevel);
         }
+        scrollPane.setFitToHeight(false);
+        scrollPane.setFitToWidth(false);
         if (controllers.MapOverlay.getPathfinding() == 1) {
             graph.createEdgeLines(path, true, false);
         } else if (controllers.MapOverlay.getPathfinding() == 2) {
@@ -1056,8 +1060,13 @@ public class patientMainController extends controllers.mapScene {
             zoom = zoom - 0.03;
             if (zoom < 1.0) {
                 zoom = 1.0;
+                scrollPane.setFitToHeight(true);
+                scrollPane.setFitToWidth(true);
             }
             changeZoom();
+        } else {
+            scrollPane.setFitToHeight(true);
+            scrollPane.setFitToWidth(true);
         }
 
         graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
@@ -1070,42 +1079,51 @@ public class patientMainController extends controllers.mapScene {
     }
 
     public void mapScroll(ScrollEvent event) {
-            zoom = MapOverlay.getZoom();
-            if (event.getDeltaY() > 0) {
-                if (zoom < 1.3) {
-                    scrollPane.setFitToHeight(false);
-                    scrollPane.setFitToWidth(false);
-                    zoom += 0.03;
-                    if (zoom > 1.3) {
-                        zoom = 1.3;
-                    }
-                    changeZoom();
-
-                    graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
-                            false, currentFloor, permissionLevel);
+        zoom = MapOverlay.getZoom();
+        if (event.getDeltaY() > 0) {
+            if (zoom < 2.2) {
+                scrollPane.setFitToHeight(false);
+                scrollPane.setFitToWidth(false);
+                zoom += 0.03;
+                if (zoom > 2.2) {
+                    zoom = 2.2;
                 }
-            } else if (event.getDeltaY() < 0) {
-                if (zoom > 1.0) {
-                    zoom = zoom - 0.03;
-                    if (zoom < 1.0) {
-                        zoom = 1.0;
-                        scrollPane.setFitToHeight(true);
-                        scrollPane.setFitToWidth(true);
-                    }
-                    changeZoom();
-
+                changeZoom();
                     graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
                             false, currentFloor, permissionLevel);
-                } else {
+            }
+        } else if (event.getDeltaY() < 0) {
+            if (zoom > 1.0) {
+                zoom = zoom - 0.03;
+                if (zoom < 1.0) {
+                    zoom = 1.0;
                     scrollPane.setFitToHeight(true);
                     scrollPane.setFitToWidth(true);
                 }
+            changeZoom();
+                graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
+                        false, currentFloor, permissionLevel);
+            } else {
+                scrollPane.setFitToHeight(true);
+                scrollPane.setFitToWidth(true);
             }
-            if (controllers.MapOverlay.getPathfinding() == 1) {
-                graph.createEdgeLines(path, true, false);
-            } else if (controllers.MapOverlay.getPathfinding() == 2) {
-                graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
-            }
+        }
+        if (controllers.MapOverlay.getPathfinding() == 1) {
+            graph.createEdgeLines(path, true, false);
+        } else if (controllers.MapOverlay.getPathfinding() == 2) {
+            graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
+        }
+
+        if (selectionState == 2) {
+
+
+            //set the end goal color
+            ArrayList<Circle> circleList;
+            circleList = graph.getButtonList();
+            drawCircleList(circleList, startX * zoom, startY * zoom, startColor);
+            drawCircleList(circleList, endX * zoom, endY * zoom, endColor);
+
+        }
     }
 
     public int getPermissionLevel() {
@@ -1167,17 +1185,14 @@ public class patientMainController extends controllers.mapScene {
         System.out.println("previous Vvalue: " + scrollPane.getVvalue());
 
         if (scrollHeight/(deltaY) < scrollWidth/(deltaX)) {
-            zoom = 1.3;
-            ;
+            zoom = 1.9;
         } else {
-            zoom = 1.3;
+            zoom = 1.9;
         }
         changeZoom();
 
-        //scrollPane.setHvalue(midX / node_Plane.getWidth());
-        //scrollPane.setVvalue(midY / node_Plane.getHeight());
-        scrollPane.setHvalue(1);
-        scrollPane.setVvalue(1);
+        scrollPane.setHvalue(midX / node_Plane.getWidth());
+        scrollPane.setVvalue(midY / node_Plane.getHeight());
 
         System.out.println("New Hvalue: " + scrollPane.getHvalue());
     }
