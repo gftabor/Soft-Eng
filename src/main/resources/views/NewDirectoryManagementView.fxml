@@ -34,12 +34,12 @@
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" prefWidth="180.0" styleClass="color-palette5" text="Map Management">
+                        <Button fx:id="mapManagement_Button" mnemonicParsing="false" onMouseClicked="#mapManagementButton_Clicked" styleClass="color-palette5" text="Map Management">
                            <HBox.margin>
                               <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefWidth="180.0" styleClass="color-palette5" text="Admin Management">
+                        <Button mnemonicParsing="false" styleClass="color-palette5" text="Admin Management">
                            <HBox.margin>
                               <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>

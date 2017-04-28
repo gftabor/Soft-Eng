@@ -60,13 +60,10 @@ public class adminLoginMainController extends controllers.AbsController{
                 System.out.println("Logging in Admin");
                 FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewMainMapManagementView.fxml");
                 NewMainMapManagement.NewMainMapManagementController controller = loader.getController();
-                //Set the correct username for the next scene
-
-                //sets the current language
                 controller.setC_language(c_language);
+                //Set the correct username for the next scene
                 //set up english labels
                 if(c_language == 0){
-
                     controller.englishButtons_Labels();
 
                     //set up spanish labels
@@ -136,6 +133,8 @@ public class adminLoginMainController extends controllers.AbsController{
         }else if(c_language == 1){
             controller.spanishButtons_Labels();
         }
+
+
         //Set the permissions
         controller.setPermissionLevel(0);
 
@@ -177,6 +176,7 @@ public class adminLoginMainController extends controllers.AbsController{
 
     //Changes the buttons and labels to english
     public void englishButtons_Labels(){
+        setC_language(0);
         //Buttons
         logIn_Button.setText("Login");
         mainMenu_Button.setText("Main Menu");
@@ -192,6 +192,7 @@ public class adminLoginMainController extends controllers.AbsController{
 
     //Changes the buttons and labels to spanish
     public void spanishButtons_Labels(){
+        setC_language(1);
         //Buttons
         logIn_Button.setText("Iniciar Sesión");
         mainMenu_Button.setText("Menu Principal");

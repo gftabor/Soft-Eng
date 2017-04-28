@@ -114,6 +114,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
     //Set to english by default
     private int c_language = 0;
 
+
     private int currentFloor;
 
     private DatabaseController databaseController = DatabaseController.getInstance();
@@ -794,7 +795,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         }
         //Set permissions of admin
         controller.setPermissionLevel(2);
-        
+
 
     }
 
@@ -858,6 +859,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //Labels for english
     public void englishButtons_Labels(){
+        setC_language(0);
         //Labels
         mainTitle_Label.setText("Map Management Tool");
 
@@ -875,12 +877,15 @@ public class NewMainMapManagementController extends controllers.mapScene {
     }
     //Labels for spanish
     public void spanishButtons_Labels(){
+        setC_language(1);
         //Labels
+        System.out.println("FUCKING BITCHES EN ESPANOL");
+
         mainTitle_Label.setText("Control de Mapas");
 
         //Buttons
         directoryManagement_Button.setText("Control del Directorio");
-        adminManagement_Button.setText("Control de Administradores");
+        adminManagement_Button.setText("Control de Admins");
         signOut_Button.setText("Salir");
         emergency_Button.setText("EMERGENCIA");
         clear_Button.setText("Borrar");

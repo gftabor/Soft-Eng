@@ -196,7 +196,7 @@ public class NewIntroUIController extends controllers.mapScene{
         //setLanguageChoices(c_language);
         setFloorChoices();
         setStartEndChoices();
-        setLanguage_ChoiceBox();
+        setLanguage_ChoiceBox(c_language);
         //setComboBox();
         //setFilterChoices();
         //set current floor
@@ -378,11 +378,11 @@ public class NewIntroUIController extends controllers.mapScene{
     }
 
     //Sets the choices for the language
-    public void setLanguage_ChoiceBox() {
+    public void setLanguage_ChoiceBox(int lang) {
         //Makes sure you only set the choices once
         //sets the choices and sets the current language as the top choice
         language_ChoiceBox.getItems().addAll("English", "Espanol");
-        language_ChoiceBox.getSelectionModel().select(0);
+        language_ChoiceBox.getSelectionModel().select(lang);
         language_ChoiceBox.setTooltip(new Tooltip("Select the language"));
 
         //Checks if the user has decided to change languages
