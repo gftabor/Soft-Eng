@@ -92,7 +92,6 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     private Circle lastColoredStart;
 
-    private Circle lastColoredEnd;
 
     private int edgesSelected = 0;
 
@@ -438,6 +437,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 if (mode.equals("Create")) {
                     admin_FloorPane.getChildren().remove(btK);
                 }
+                popoverShown = false;
             }
         });
 
@@ -566,6 +566,26 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 PopOver pop2 = new PopOver();
                 createMultiFloorPop(pop2, c, floors, selectedNode2);
                 pop2.show(c);
+                break;
+            case 9:
+                //toggle enabled
+                Node eNode = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
+                if (eNode == null) {
+                    break;
+                }
+                databaseController.updateNode(x, y, currentFloor, eNode.getIsHidden(), !(eNode.getEnabled()), eNode.getType(),
+                        eNode.getName(), eNode.getRoomNum(), eNode.getPermissionLevel());
+                resetScreen();
+                break;
+            case 10:
+                //toggle hidden
+                Node hNode = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
+                if (hNode == null) {
+                    break;
+                }
+                databaseController.updateNode(x, y, currentFloor, !(hNode.getIsHidden()), hNode.getEnabled(), hNode.getType(),
+                        hNode.getName(), hNode.getRoomNum(), hNode.getPermissionLevel());
+                resetScreen();
                 break;
             default:
                 System.out.println("default. This probably should not have been possible...");
@@ -771,7 +791,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //Manages when the user clicks the save button
     public void saveButton_Clicked(){
-
+        dragMode = false;
+        dragModeUpdate();
     }
 
     //Manages when the user clicks the clear button
@@ -782,6 +803,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
         addSingleEdgeMode = false;
         addMultiEdgeMode = false;
+        popoverShown = false;
+        selectedNode = false;
+        admin_FloorPane.getChildren().remove(temporaryButton[0]);
 
         //reset last colored stroke to default
         if (lastColoredStart != null) {
@@ -789,10 +813,6 @@ public class NewMainMapManagementController extends controllers.mapScene {
             lastColoredStart.setStrokeWidth(1);
         }
 
-        if (lastColoredEnd != null) {
-            lastColoredEnd.setStroke(lastColoredEnd.getFill());
-            lastColoredEnd.setStrokeWidth(1);
-        }
     }
 
 

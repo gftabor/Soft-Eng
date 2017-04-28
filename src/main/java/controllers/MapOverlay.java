@@ -212,6 +212,18 @@ public class MapOverlay {
                                 sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 7);
                             }
                         });
+                        MenuItem toggleEnabled = new MenuItem("Toggle Node Enabled");
+                        toggleEnabled.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 9);
+                            }
+                        });
+                        MenuItem toggleHidden = new MenuItem("Toggle Node Hidden");
+                        toggleHidden.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 10);
+                            }
+                        });
                         if (current.getType().equalsIgnoreCase("Elevator") ||
                                 current.getType().equalsIgnoreCase("Stair")) {
                             MenuItem editFloorsConnectedTo = new MenuItem("Show Connected Floors");
@@ -221,10 +233,10 @@ public class MapOverlay {
                                     sceneController.rightClickEvent((int) ((nodeX)), (int) ((nodeY)), c, 8);
                                 }
                             });
-                            contextMenu.getItems().addAll(removeOption, editOption, editPositionOption, autoGenEdgeOption,
+                            contextMenu.getItems().addAll(removeOption, editOption, editPositionOption, toggleEnabled, toggleHidden, autoGenEdgeOption,
                                     addEdgeOption, addMultiEdgeOption, removeAllEdgeOption, editFloorsConnectedTo);
                         } else {
-                            contextMenu.getItems().addAll(removeOption, editOption, editPositionOption, autoGenEdgeOption,
+                            contextMenu.getItems().addAll(removeOption, editOption, editPositionOption, toggleEnabled, toggleHidden, autoGenEdgeOption,
                                     addEdgeOption, addMultiEdgeOption, removeAllEdgeOption);
                         }
                         contextMenu.show(location, event.getScreenX(), event.getScreenY());
