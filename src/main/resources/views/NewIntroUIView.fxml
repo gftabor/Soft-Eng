@@ -126,7 +126,7 @@
                                     <Insets right="2.0" top="1.0" />
                                  </HBox.margin></Button>
                               <Region HBox.hgrow="ALWAYS" />
-                              <ChoiceBox fx:id="language_ChoiceBox" prefWidth="130.0" styleClass="menu" />
+                              <ChoiceBox fx:id="language_ChoiceBox" styleClass="menu" />
                               <Button fx:id="reverse_Button" mnemonicParsing="false" onMouseClicked="#reverseButton_Clicked" styleClass="menu" text="&lt;&gt;">
                                  <HBox.margin>
                                     <Insets right="4.0" top="1.0" />
