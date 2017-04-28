@@ -31,7 +31,9 @@ public class Main extends Application {
 
         primaryStage.setTitle("Faulkner Hospital Pathfinder");
         
-        primaryStage.setFullScreen(false);
+
+        //primaryStage.setFullScreen(false);
+        primaryStage.setFullScreen(true);
         primaryStage.setMaximized(true);
         primaryStage.setScene(new Scene(root, 1366, 768));
         //primaryStage.setMinWidth(1366);
