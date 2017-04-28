@@ -62,25 +62,21 @@ public class adminLoginMainController extends controllers.AbsController{
                 NewMainMapManagement.NewMainMapManagementController controller = loader.getController();
                 //Set the correct username for the next scene
 
-
-                //  TODO FIX THIS:
-                //controller.setUsername_Admin("Admin: "+ username_TextField.getText());
-
-
                 //sets the current language
                 controller.setC_language(c_language);
                 //set up english labels
                 if(c_language == 0){
+
                     controller.englishButtons_Labels();
 
                     //set up spanish labels
                 }else if(c_language == 1){
                     controller.spanishButtons_Labels();
                 }
-                //controller.setPermissionLevel(2);
+                controller.setUserString("Admin: " + username);
+                controller.setPermissionLevel(2);
 
-                //TODO FIX THIS:
-                //controller.setLanguageChoicebox();
+
 
                 //LOG IN EMPLOYEE
                 //*************************************************
@@ -94,12 +90,14 @@ public class adminLoginMainController extends controllers.AbsController{
                 //set up english labels
                 if(c_language == 0){
                     controller.englishButtons_Labels();
+                    controller.setWelcome("Employee: " + username);
                     //set up spanish labels
                 }else if(c_language == 1){
                     controller.spanishButtons_Labels();
+                    controller.setWelcome("Empleado: " + username);
                 }
                 controller.setPermissionLevel(1);
-                controller.setWelcome("Employee: " + username);
+
             }else{
                 System.out.println("Logging in Regular User. What??");
             }

@@ -145,6 +145,8 @@ public class mmNodeInformationController extends controllers.AbsController {
     //set to english by default (english = 0, spanish = 1)
     int c_language = 0;
 
+    private int permissionLevel;
+
 
     //get an instance of database controller
     DatabaseController databaseController = DatabaseController.getInstance();
@@ -555,6 +557,7 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     //Sets the user in the scene
     public void setUser(String user) {
+
         currentAdmin_Label.setText(user);
     }
 
@@ -672,6 +675,22 @@ public class mmNodeInformationController extends controllers.AbsController {
     public void saveToDatabase(String d, String t ){
         //DB stuff
         System.out.println("DO DATABASE STUFF PLEASE");
+    }
+
+    //Gets the permissions
+    public int getPermissionLevel() {
+        return permissionLevel;
+    }
+
+    //Sets the permissions
+    public void setPermissionLevel(int permissionLevel) {
+        this.permissionLevel = permissionLevel;
+        System.out.println("Setting permission level to: " + permissionLevel);
+        if(this.permissionLevel >= 1){
+            //admin_Button.setVisible(false);
+            //TODO FIX THIS
+            //signOut_Button.setVisible(true);
+        }
     }
 
 }

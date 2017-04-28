@@ -62,6 +62,7 @@
          <left>
             <VBox minWidth="-Infinity" prefHeight="720.0" prefWidth="386.0" styleClass="color-palette" BorderPane.alignment="CENTER">
                <children>
+                  <Label fx:id="currentAdmin_Label" text="Current Admin (Info)" />
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
@@ -255,7 +256,6 @@
                         </Button>
                      </children>
                   </HBox>
-                  <Label fx:id="currentAdmin_Label" text="ADMIN STUB" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="5.0" left="5.0" right="2.0" top="2.0" />
