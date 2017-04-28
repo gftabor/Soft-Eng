@@ -65,14 +65,14 @@ public class adminMenuStartController extends controllers.AbsController{
     AutoLogout al = new AutoLogout();
 
     @FXML
-    public void initialize() {
+    public void initialize() throws InterruptedException {
         search_ChoiceBox.getItems().addAll("A*", "Depth First", "Breadth First");
         search_ChoiceBox.getSelectionModel().select(0);
         search_ChoiceBox.setValue("" + mapController.getAlgorithm());
         search_ChoiceBox.getSelectionModel()
                 .selectedItemProperty()
                 .addListener( (ObservableValue<? extends String> observable, String oldValue, String newValue) -> changeSearch(newValue) );
-
+        al.checkActivity();
     }
 
 
@@ -350,4 +350,5 @@ public class adminMenuStartController extends controllers.AbsController{
             controller.spanishButtons_Labels();
         }
     }
+
 }

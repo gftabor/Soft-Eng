@@ -8,11 +8,11 @@ import javafx.scene.input.MouseEvent;
  * Created by mylena on 4/27/17.
  */
 public class AutoLogout {
+    private adminMenuStartController c = new adminMenuStartController();
 
     public AutoLogout(){}
 
     public void autoLogout() {
-        adminMenuStartController c = new adminMenuStartController();
         c.autoLogout();
     }
 
@@ -21,11 +21,13 @@ public class AutoLogout {
         Caretaker c = new Caretaker();
 
         synchronized (c) {
-            c.wait(10);
-            if(c.isM() == false) {
-                autoLogout();
-            }
+            do {
+                c.wait(10);
+            } while(c.isM() == true);
+            autoLogout();
         }
 
     }
+
+
 }
