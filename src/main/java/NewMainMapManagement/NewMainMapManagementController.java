@@ -23,7 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.textfield.TextFields;
-import sun.misc.resources.Messages_pt_BR;
+//import sun.misc.resources.Messages_pt_BR;
 
 import javax.swing.text.View;
 import java.sql.ResultSet;
@@ -108,6 +108,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
     private boolean addSingleEdgeMode;
     private boolean addMultiEdgeMode;
     private boolean dragMode;
+    private boolean multiDragMode;
     private boolean popoverShown;
 
     private int permissionLevel;
