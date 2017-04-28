@@ -62,14 +62,17 @@ public class adminMenuStartController extends controllers.AbsController{
 
     MapController mapController = MapController.getInstance();
 
+    AutoLogout al = new AutoLogout();
+
     @FXML
-    public void initialize(){
+    public void initialize() {
         search_ChoiceBox.getItems().addAll("A*", "Depth First", "Breadth First");
         search_ChoiceBox.getSelectionModel().select(0);
         search_ChoiceBox.setValue("" + mapController.getAlgorithm());
         search_ChoiceBox.getSelectionModel()
                 .selectedItemProperty()
                 .addListener( (ObservableValue<? extends String> observable, String oldValue, String newValue) -> changeSearch(newValue) );
+
     }
 
 
@@ -331,4 +334,20 @@ public class adminMenuStartController extends controllers.AbsController{
         controller.setWelcome(username_Label.getText());
     }
 
+    public void autoLogout() {
+        System.out.println("The system has automatically logged off due to inactivity.");
+
+        //Change to patient menu
+        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
+        patientMain.patientMainController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+    }
 }
