@@ -126,6 +126,16 @@ public class NewIntroUIController extends controllers.mapScene{
     @FXML
     private Label LogInPerson_Label;
 
+    @FXML
+    private Button cancelTo_Button;
+
+    @FXML
+    private Button cancelFirst_Button;
+
+
+
+
+
     int c_language = 0;
 
     int first_Time = 0;
@@ -282,6 +292,16 @@ public class NewIntroUIController extends controllers.mapScene{
                 break;
             }
         }
+    }
+
+    //Manage the clearing of the from text field
+    public void cancelFromButton_Clicked(){
+        start_textField.setText("");
+    }
+
+    //Manage the clearing tof the to text field
+    public void cancelToButton_Clicked(){
+        end_TextField.setText("");
     }
 
     //Button to reverse the from and to location
@@ -765,6 +785,9 @@ public class NewIntroUIController extends controllers.mapScene{
             } else if (c_language == 1) {
                 controller.spanishButtons_Labels();
             }
+            //Sets the current Language choices
+            controller.setLanguageChoiceBox(c_language);
+
         }else{
             FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
             //patientMenuStart.patientMenuStartController controller = loader.getController();
