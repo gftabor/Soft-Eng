@@ -213,7 +213,7 @@ public class patientMainController extends controllers.mapScene {
         System.out.println("width/height ratios: " + widthRatio + "/" + heightRatio);
 
         node_Plane.setMaxWidth(2000.0);
-        node_Plane.setMaxHeight(2000.0);
+        node_Plane.setMaxHeight(3000.0);
         node_Plane.setPrefHeight(489.0*heightRatio);
         node_Plane.setPrefWidth(920.0*widthRatio);
         map_viewer.setFitHeight(489.0*heightRatio);
@@ -243,42 +243,6 @@ public class patientMainController extends controllers.mapScene {
             event.consume();
         });
 
-
-        //Code used to pan around map. Works well with single click to pan. Has bugs when clicking again after
-        //already panning. It may have to do with how event handlers work because it seems as though calculations
-        //are being done for the setOnMouseDragged method before setOnMousePressed can update the dragOld values
-        scrollPane.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                dragOldX = event.getX();
-                dragOldY = event.getY();
-                System.out.println("not nuts");
-            }
-        });
-
-        map_viewer.setOnMouseDragged(event ->  {
-            //if (event.getSceneX() > stackBounds.getMinX() && event.getSceneX() < stackBounds.getMaxX() && event.getSceneY() > stackBounds.getMinY() && event.getSceneY() < stackBounds.getMaxY()) {
-                System.out.println("nuts");
-                dragNewX = event.getX();
-                dragNewY = event.getY();
-                if (dragOldX == 0) {
-                    dragOldX = .01;
-                }
-                if (dragOldY == 0) {
-                    dragOldY = 0.01;
-                }
-                double deltaX = (dragNewX - dragOldX)/1000;
-                double deltaY = (dragNewY - dragOldY)/1000;
-
-                System.out.println(scrollPane.getHvalue() + "  " + scrollPane.getVvalue());
-
-                scrollPane.setHvalue(scrollPane.getHvalue() - deltaX);
-                scrollPane.setVvalue(scrollPane.getVvalue() - deltaY);
-
-                dragOldX = dragNewX;
-                dragOldY = dragNewY;
-            //}
-        });
     }
 
     //get an instance of database controller
@@ -624,7 +588,14 @@ public class patientMainController extends controllers.mapScene {
                 //zoomPath = path;
                 controllers.MapOverlay.setPathfinding(1);
                 textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
-                
+                /*setMapToPath(startX, startY, endX, endY);
+                graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
+                        false, currentFloor, permissionLevel);
+                if (controllers.MapOverlay.getPathfinding() == 1) {
+                    graph.createEdgeLines(path, true, false);
+                } else if (controllers.MapOverlay.getPathfinding() == 2) {
+                    graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
+                }*/
             }
 
         } else { //not the map :)
@@ -665,11 +636,13 @@ public class patientMainController extends controllers.mapScene {
                     multiFloorPathfind();
                 } else {
                     //no multifloor pathfinding (simple)
-
+                    System.out.println("This should be resizing the map");
                     MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
                     ArrayList<Edge> path = mapController.requestPath(permissionLevel);
                     graph.createEdgeLines(path, true, false);
                     textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
+
+
                 }
             }
 
@@ -888,11 +861,7 @@ public class patientMainController extends controllers.mapScene {
         System.out.println("Right click event");
     }
 
-    public void doubleClickEvent(int x, int y, Circle c, int mode) {
-        System.out.println("Right click event");
-    }
     public void edgeClickRemove(int x1, int y1, int x2, int y2){}
-    public void showMultifloorMenu(int x, int y, Circle c) {}
 
     public void sceneEvent(int x, int y, Circle c){
         //set selectionstate
@@ -1053,11 +1022,15 @@ public class patientMainController extends controllers.mapScene {
         map_viewer.setFitHeight(origPaneHeight*zoom*heightRatio);
     }
 
+
     public void zoomInButton_Clicked() {
         zoom = controllers.MapOverlay.getZoom();
         System.out.println(zoom);
         if (zoom < 1.3) {
             zoom += 0.03;
+            if (zoom > 1.3) {
+                zoom = 1.3;
+            }
             changeZoom();
 
             graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
@@ -1076,6 +1049,9 @@ public class patientMainController extends controllers.mapScene {
         System.out.println(zoom);
         if (zoom > 1.0) {
             zoom = zoom - 0.03;
+            if (zoom < 1.0) {
+                zoom = 1.0;
+            }
             changeZoom();
         }
 
@@ -1093,6 +1069,9 @@ public class patientMainController extends controllers.mapScene {
             if (event.getDeltaY() > 0) {
                 if (zoom < 1.3) {
                     zoom += 0.03;
+                    if (zoom > 1.3) {
+                        zoom = 1.3;
+                    }
                     changeZoom();
 
                     graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
@@ -1101,6 +1080,9 @@ public class patientMainController extends controllers.mapScene {
             } else if (event.getDeltaY() < 0) {
                 if (zoom > 1.0) {
                     zoom = zoom - 0.03;
+                    if (zoom < 1.0) {
+                        zoom = 1.0;
+                    }
                     changeZoom();
 
                     graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
@@ -1145,4 +1127,46 @@ public class patientMainController extends controllers.mapScene {
             controller.spanishButtons_Labels();
         }
     }
+
+    public void setMapToPath(double startNX, double startNY, double endNX, double endNY) {
+
+        double deltaX = startNX - endNX;
+        double deltaY = startNY - endNY;
+
+        System.out.println("startNX: "+ startNX + " endNX: "+endNX);
+        double midX = (startNX + endNX)/2;
+        double midY = (startNY + endNY)/2;
+
+        if (deltaX < 0) {
+            deltaX = deltaX * -1;
+        }
+        if (deltaY < 0) {
+            deltaY = deltaY * -1;
+        }
+
+        double scrollHeight = scrollPane.getHeight();
+        double scrollWidth = scrollPane.getWidth();
+
+        System.out.println("plane width: " + node_Plane.getWidth());
+        System.out.println("midX: " + midX);
+        System.out.println(midX/node_Plane.getWidth());
+        System.out.println("previous Hvalue: " + scrollPane.getHvalue());
+
+        scrollPane.setHvalue(midX / node_Plane.getWidth());
+        scrollPane.setVvalue(midY / node_Plane.getHeight());
+
+        System.out.println("New Hvalue: " + scrollPane.getHvalue());
+
+        if (scrollHeight/(deltaY + 50) < scrollWidth/(deltaX + 50)) {
+            zoom = 1.3;
+            ;
+        } else {
+            zoom = 1.3;
+        }
+        changeZoom();
+
+
+
+    }
+
 }
