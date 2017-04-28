@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -22,6 +23,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.textfield.TextFields;
+
+import javax.swing.text.View;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -191,19 +194,28 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 contextMenu.setImpl_showRelativeToWindow(true);
                 MenuItem clearOption = new MenuItem("Clear");
                 clearOption.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override public void handle(ActionEvent e) {
+                    @Override public void handle(ActionEvent ee) {
                         clearButton_Clicked();
                     }
                 });
                 MenuItem radiusOption = new MenuItem("Edit Automatic Edges Radius");
                 radiusOption.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override public void handle(ActionEvent e) {
-                       // set the edge here
+                    @Override public void handle(ActionEvent ee) {
+                       // set the edge radius here
+                        PopOver pop = new PopOver();
+                        Circle tempCircle = new Circle(labelRadius);//new Button();
+                        tempCircle.setLayoutX(e.getX());
+                        tempCircle.setLayoutY(e.getY());
+                        tempCircle.setVisible(false);
+                        admin_FloorPane.getChildren().add(tempCircle);
+                        createRadiusPop(pop, tempCircle);
+                        pop.show(tempCircle);
+
                     }
                 });
                 MenuItem draggableOption = new MenuItem("Make nodes draggable");
                 draggableOption.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override public void handle(ActionEvent e) {
+                    @Override public void handle(ActionEvent ee) {
                         // make nodes draggable here
                     }
                 });
@@ -215,6 +227,68 @@ public class NewMainMapManagementController extends controllers.mapScene {
         });
     }
 
+    public PopOver createRadiusPop(PopOver pop, Circle tempCircle){
+
+        AnchorPane anchorpane = new AnchorPane();
+        Button buttonSave = new Button("Save");
+        Button buttonCancel = new Button("Cancel");
+        TextField radiusField = new TextField();
+        Label edgeRadiusLabel = new Label("Enter Automatic Edges Radius:");
+        // get current edge radius and fill in the text box
+
+      // radiusField.setText(currentEdgeRadius);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(10, 10, 5, 10));
+
+        VBox vb = new VBox();
+
+        HBox hbCancelSave = new HBox();
+
+        vb.setPadding(new Insets(10, 10, 5, 10));
+        vb.setSpacing(10);
+
+        hbCancelSave.setPadding(new Insets(0, 0, 0, 0));
+        hbCancelSave.setSpacing(10);
+        hbCancelSave.getChildren().addAll(buttonCancel, buttonSave);
+        hbCancelSave.setAlignment(Pos.CENTER);
+
+        vb.getChildren().addAll(edgeRadiusLabel, radiusField, hbCancelSave);
+        anchorpane.getChildren().addAll(grid, vb);
+        AnchorPane.setBottomAnchor(vb, 8.0);
+        AnchorPane.setRightAnchor(vb, 5.0);
+        AnchorPane.setTopAnchor(grid, 10.0);
+
+        pop.setDetachable(true);
+        pop.setDetached(true);
+        pop.setCornerRadius(4);
+        pop.setContentNode(anchorpane);
+
+        buttonCancel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // don't do anything
+                pop.hide();
+                admin_FloorPane.getChildren().remove(tempCircle);
+            }
+        });
+
+        buttonSave.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+               // set the global radius here
+
+
+                pop.hide();
+                resetScreen();
+                admin_FloorPane.getChildren().remove(tempCircle);
+            }
+        });
+        return pop;
+
+    }
     public PopOver createMultiFloorPop(PopOver pop, Circle btK, ArrayList<Integer> floors, Node selectedNode) {
 
         ArrayList<Edge> deleteThese = new ArrayList<>();
