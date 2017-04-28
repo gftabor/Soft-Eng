@@ -249,6 +249,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     public PopOver createRadiusPop(PopOver pop, Circle tempCircle){
 
+        pop.setTitle("Radius");
         AnchorPane anchorpane = new AnchorPane();
         Button buttonSave = new Button("Save");
         Button buttonCancel = new Button("Cancel");
@@ -314,6 +315,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     }
     public PopOver createMultiFloorPop(PopOver pop, Circle btK, ArrayList<Integer> floors, Node selectedNode) {
+
+        pop.setTitle("Connected Floors");
 
         ArrayList<Edge> deleteThese = new ArrayList<>();
         AnchorPane anchorpane = new AnchorPane();
@@ -445,6 +448,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     public PopOver createPop(PopOver pop, Circle btK, String mode){
 
+        pop.setTitle("Create New Node");
+
         AnchorPane anchorpane = new AnchorPane();
         Button buttonSave = new Button("Save");
         Button buttonCancel = new Button("Cancel");
@@ -548,6 +553,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                         }
                     }
                     if (mode.equals("Edit")) {
+                        pop.setTitle("Edit Location");
                         DBController.DatabaseController.getInstance().updateNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
                                 currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom, permission);
                         pop.hide();
