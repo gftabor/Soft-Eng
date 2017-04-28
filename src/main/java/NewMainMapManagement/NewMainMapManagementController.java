@@ -1,4 +1,4 @@
-package mapManagementFloorAndMode;
+package NewMainMapManagement;
 
 import DBController.DatabaseController;
 import controllers.*;
@@ -26,20 +26,35 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Created by AugustoR on 3/31/17.
+ * Created by AugustoR on 4/27/17.
  */
-public class mmFloorAndModeController extends controllers.mapScene{
+public class NewMainMapManagementController extends controllers.mapScene {
     @FXML
     private AnchorPane backgroundAnchorPane;
+
+    @FXML
+    private Label mainTitle_Label;
+
+    @FXML
+    private Button directoryManagement_Button;
+
+    @FXML
+    private Button adminManagement_Button;
+
+    @FXML
+    private Button signOut_Button;
 
     @FXML
     private Button emergency_Button;
 
     @FXML
-    private ChoiceBox<String> mode_ChoiceBox;
+    private Label LogInPerson_Label;
 
     @FXML
-    private Label username_Label;
+    private StackPane mapStack;
+
+    @FXML
+    private ScrollPane scrollPane;
 
     @FXML
     private Pane admin_FloorPane;
@@ -48,7 +63,19 @@ public class mmFloorAndModeController extends controllers.mapScene{
     private ImageView map_viewer;
 
     @FXML
+    private Button zoomOut_button;
+
+    @FXML
     private ChoiceBox<String> floor_ChoiceBox;
+
+    @FXML
+    private Button zoomIn_button;
+
+    @FXML
+    private Button clear_Button;
+
+    @FXML
+    private Button save_Button;
 
     private int nodeEdgeX1;
     private int nodeEdgeY1;
@@ -92,7 +119,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
     private DatabaseController databaseController = DatabaseController.getInstance();
 
     public void initialize() {
-        setUserString(username_Label.getText());
+        setUserString(LogInPerson_Label.getText());
         addSingleEdgeMode = false;
         addMultiEdgeMode = false;
         popoverShown = false;
@@ -160,7 +187,6 @@ public class mmFloorAndModeController extends controllers.mapScene{
         });
     }
 
-    
     public PopOver createMultiFloorPop(PopOver pop, Circle btK, ArrayList<Integer> floors, Node selectedNode) {
 
         ArrayList<Edge> deleteThese = new ArrayList<>();
@@ -283,6 +309,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 }
             }
             resetScreen();
+
+            //if successful, highlight node and show edges
+            //TODO >??
         }
     }
 
@@ -413,47 +442,6 @@ public class mmFloorAndModeController extends controllers.mapScene{
         });
 
         return pop;
-    }
-
-    public void emergencyButton_Clicked() {
-
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
-        emergency.emergencyController controller = loader.getController();
-        //sends the current language to the next screen
-        controller.setCurrentLanguage(c_language);
-        //set up english labels
-        if(c_language == 0){
-            controller.englishButtons_Labels();
-            //set up spanish labels
-        }else if(c_language == 1){
-            controller.spanishButtons_Labels();
-        }
-
-    }
-
-
-
-    public void clearButton_Clicked() {
-        //if(mode_ChoiceBox.getValue().equals("Add Node")) {
-        if ("Add Node".equals(mode_ChoiceBox.getValue())) {
-            admin_FloorPane.getChildren().remove(btK);
-        }
-        graph.wipeEdgeLines();
-        edgesSelected = 0;
-
-        addSingleEdgeMode = false;
-        addMultiEdgeMode = false;
-
-        //reset last colored stroke to default
-        if (lastColoredStart != null) {
-            lastColoredStart.setStroke(lastColoredStart.getFill());
-            lastColoredStart.setStrokeWidth(1);
-        }
-
-        if (lastColoredEnd != null) {
-            lastColoredEnd.setStroke(lastColoredEnd.getFill());
-            lastColoredEnd.setStrokeWidth(1);
-        }
     }
 
     //requeries database and resets screen
@@ -655,7 +643,7 @@ public class mmFloorAndModeController extends controllers.mapScene{
         c.setStroke(Color.ROYALBLUE);
         c.toFront();
 
-}
+    }
 
     //Change to main Menu
     public void mainMenuButton_Clicked() {
@@ -663,8 +651,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
         adminMenuStart.adminMenuStartController controller = loader.getController();
         //Set the correct username for the next scene
-        controller.setUsername(username_Label.getText());
-        System.out.println(username_Label.getText());
+        controller.setUsername(LogInPerson_Label.getText());
+        System.out.println(LogInPerson_Label.getText());
 
         //sets the current language
         controller.setCurrentLanguage(c_language);
@@ -680,8 +668,9 @@ public class mmFloorAndModeController extends controllers.mapScene{
     }
 
     public void setUserString(String user) {
-        username_Label.setText(user);
+        LogInPerson_Label.setText(user);
     }
+
 
     //Sets the map of the desired floor
     public void setFloorChoices(){
@@ -734,4 +723,102 @@ public class mmFloorAndModeController extends controllers.mapScene{
     public void setC_language(int i){
         c_language = i;
     }
+
+    //Signs the user out
+    public void signOutButton_Clicked(){
+        /*FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
+        //patientMenuStart.patientMenuStartController controller = loader.getController();
+        NewIntroUI.NewIntroUIController controller = loader.getController();
+        //sets the current language
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+        controller.englishButtons_Labels();
+        //set up spanish labels
+    }else if(c_language == 1){
+        controller.spanishButtons_Labels();
+    }
+        //set permissions back
+        controller.setPermissionLevel(0);
+        //set label to empty
+        controller.setWelcome("");*/
+    }
+
+    //Manage when the directory button is clicked
+    public void DirectoryManButton_Clicked(){
+
+    }
+
+    //Manages when the admin management button is clicked
+    public void AdminManButton_Clicked(){
+
+    }
+
+    //Manages when the emergency button is clicked
+    public void emergencyButton_Clicked(){
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+        emergency.emergencyController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+    }
+
+    //Manages when the user clicks the save button
+    public void saveButton_Clicked(){
+
+    }
+
+    //Manages when the user clicks the clear button
+    public void clearButton_Clicked(){
+
+        graph.wipeEdgeLines();
+        edgesSelected = 0;
+
+        addSingleEdgeMode = false;
+        addMultiEdgeMode = false;
+
+        //reset last colored stroke to default
+        if (lastColoredStart != null) {
+            lastColoredStart.setStroke(lastColoredStart.getFill());
+            lastColoredStart.setStrokeWidth(1);
+        }
+
+        if (lastColoredEnd != null) {
+            lastColoredEnd.setStroke(lastColoredEnd.getFill());
+            lastColoredEnd.setStrokeWidth(1);
+        }
+    }
+
+
+    //Zooms the map in
+    public void zoomInButton_Clicked() {
+
+    }
+
+    //Zooms out the map
+    public void zoomOutButton_Clicked() {
+
+    }
+
+    //Labels for english
+    public void englishButtons_Labels(){
+
+    }
+    //Labels for spanish
+    public void spanishButtons_Labels(){
+
+    }
+
+    public void setUser(String user){
+        LogInPerson_Label.setText(user);
+
+    }
+
+
 }

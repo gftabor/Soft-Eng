@@ -233,17 +233,17 @@ public class MapOverlay {
             });
         }
         //get node type
-        String type = current.getType();
-        if (devmode && (type.equalsIgnoreCase("Elevator") || type.equalsIgnoreCase("Stair"))) {
-            location.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    Object o = event.getSource();
-                    Circle c = (Circle) o;
-                    sceneController.showMultifloorMenu(nodeX, nodeY, c);
-                }
-            });
-        }
+//        String type = current.getType();
+//        if (devmode && (type.equalsIgnoreCase("Elevator") || type.equalsIgnoreCase("Stair"))) {
+//            location.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+//                @Override
+//                public void handle(MouseEvent event) {
+//                    Object o = event.getSource();
+//                    Circle c = (Circle) o;
+//                    sceneController.showMultifloorMenu(nodeX, nodeY, c);
+//                }
+//            });
+//        }
 
         ButtonList.add(location);
     }
