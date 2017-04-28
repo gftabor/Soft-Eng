@@ -559,8 +559,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 ArrayList<Edge> edges = selectedNode2.getEdgeList();
                 ArrayList<Integer> floors = new ArrayList<>();
                 for (Edge e : edges){
-                    if (!floors.contains(e.getEndNode().getFloor())){
-                        floors.add(e.getEndNode().getFloor());
+                    int floor = e.getNeighbor(selectedNode2).getFloor();
+                    if ((floor != selectedNode2.getFloor()) && (!floors.contains(floor)) ){
+                        floors.add(floor);
                     }
                 }
                 PopOver pop2 = new PopOver();
