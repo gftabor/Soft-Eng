@@ -75,7 +75,7 @@ public class adminLoginMainController extends controllers.AbsController{
                 //*************************************************
             }else if(loginManage.getPermissions(username) == 1){
                 System.out.println("Logging in Employee");
-                FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
+                FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
                 //patientMenuStart.patientMenuStartController controller = loader.getController();
                 NewIntroUI.NewIntroUIController controller = loader.getController();
                 //sets the current language

@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -14,7 +15,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NewIntroUI.NewIntroUIController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NewMainMapManagement.NewMainMapManagementController">
    <children>
       <BorderPane layoutX="-1.0" layoutY="-1.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="-1.0">
          <top>
@@ -27,78 +28,86 @@
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Label styleClass="mainTitle" text="Map Management Tool" textFill="WHITE">
+                        <Label fx:id="mainTitle_Label" styleClass="mainTitle" text="Map Management Tool" textFill="WHITE">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <ChoiceBox prefWidth="150.0" styleClass="color-palette5">
-                           <HBox.margin>
-                              <Insets bottom="4.0" top="4.0" />
-                           </HBox.margin>
-                        </ChoiceBox>
-                        <Button mnemonicParsing="false" prefWidth="180.0" styleClass="color-palette5" text="Directory Management">
+                        <Button fx:id="directoryManagement_Button" mnemonicParsing="false" onMouseClicked="#DirectoryManButton_Clicked" prefWidth="180.0" styleClass="color-palette5" text="Directory Management">
                            <HBox.margin>
                               <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefWidth="180.0" styleClass="color-palette5" text="Admin Management">
+                        <Button fx:id="adminManagement_Button" mnemonicParsing="false" onMouseClicked="#AdminManButton_Clicked" prefWidth="180.0" styleClass="color-palette5" text="Admin Management">
                            <HBox.margin>
                               <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" styleClass="color-palette5" text="Sign Out">
+                        <Button fx:id="signOut_Button" mnemonicParsing="false" onMouseClicked="#signOutButton_Clicked" styleClass="color-palette5" text="Sign Out">
                            <HBox.margin>
                               <Insets bottom="4.0" right="8.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefWidth="150.0" styleClass="danger" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefWidth="150.0" styleClass="danger" text="EMERGENCY">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
                      </children>
                   </HBox>
+                  <Label fx:id="LogInPerson_Label" text="Current LogIn">
+                     <VBox.margin>
+                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                     </VBox.margin>
+                  </Label>
                </children>
             </VBox>
          </top>
          <center>
-            <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <StackPane fx:id="mapStack" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                  <ScrollPane fx:id="scrollPane" prefHeight="200.0" prefWidth="200.0">
                      <content>
-                        <Pane prefHeight="701.0" prefWidth="1043.0" />
+                        <Pane fx:id="node_Plane" prefHeight="701.0" prefWidth="1348.0">
+                           <children>
+                              <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="920.0" />
+                           </children></Pane>
                      </content>
                   </ScrollPane>
-                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="info" text="-" StackPane.alignment="CENTER_RIGHT">
+                  <Button fx:id="zoomOut_button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#zoomOutButton_Clicked" styleClass="info" text="-" StackPane.alignment="CENTER_RIGHT">
                      <StackPane.margin>
                         <Insets right="10.0" top="35.0" />
                      </StackPane.margin>
                   </Button>
-                  <ChoiceBox prefWidth="50.0" styleClass="menu" StackPane.alignment="TOP_LEFT">
+                  <ChoiceBox fx:id="floor_ChoiceBox" prefWidth="50.0" styleClass="menu" StackPane.alignment="TOP_LEFT">
                      <StackPane.margin>
                         <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                      </StackPane.margin>
                   </ChoiceBox>
-                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="info" text="+" StackPane.alignment="CENTER_RIGHT">
+                  <Button fx:id="zoomIn_button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#zoomInButton_Clicked" styleClass="info" text="+" StackPane.alignment="CENTER_RIGHT">
                      <StackPane.margin>
                         <Insets right="10.0" top="-35.0" />
                      </StackPane.margin>
                   </Button>
-                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="menu" text="&lt;" StackPane.alignment="TOP_RIGHT">
+                  <Button fx:id="previous_Button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#previousButton_Clicked" styleClass="menu" text="&lt;" StackPane.alignment="TOP_RIGHT">
                      <StackPane.margin>
                         <Insets right="45.0" top="5.0" />
                      </StackPane.margin>
                   </Button>
-                  <Button alignment="CENTER" mnemonicParsing="false" styleClass="menu" text="&gt;" StackPane.alignment="TOP_RIGHT">
+                  <Button fx:id="continueNew_Button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#continueNewButton_Clicked" styleClass="menu" text="&gt;" StackPane.alignment="TOP_RIGHT">
                      <StackPane.margin>
                         <Insets right="10.0" top="5.0" />
                      </StackPane.margin>
                   </Button>
-                  <Button alignment="CENTER" mnemonicParsing="false" prefWidth="150.0" styleClass="info" text="Clear" StackPane.alignment="BOTTOM_CENTER">
+                  <Button fx:id="clear_Button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#clearButton_Clicked" prefWidth="150.0" styleClass="info" text="Clear" StackPane.alignment="BOTTOM_CENTER">
                      <StackPane.margin>
-                        <Insets bottom="2.0" top="2.0" />
+                        <Insets bottom="10.0" right="200.0" top="2.0" />
+                     </StackPane.margin>
+                  </Button>
+                  <Button fx:id="save_Button" alignment="BOTTOM_CENTER" mnemonicParsing="false" onMouseClicked="#saveButton_Clicked" prefWidth="150.0" styleClass="info" text="Save" StackPane.alignment="BOTTOM_CENTER">
+                     <StackPane.margin>
+                        <Insets bottom="10.0" left="200.0" top="2.0" />
                      </StackPane.margin>
                   </Button>
                </children>

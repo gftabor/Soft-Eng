@@ -18,7 +18,7 @@
    <children>
       <BorderPane layoutX="421.0" layoutY="160.0" prefHeight="391.0" prefWidth="433.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
-            <VBox alignment="CENTER" maxWidth="500.0" prefHeight="568.0" prefWidth="500.0" styleClass="adminLogin_Vbox" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER" maxWidth="500.0" prefHeight="568.0" prefWidth="500.0" BorderPane.alignment="CENTER">
                <children>
                   <Label fx:id="adminTitle_Label" alignment="TOP_CENTER" styleClass="mainTitle" text="Admin Login">
                      <font>

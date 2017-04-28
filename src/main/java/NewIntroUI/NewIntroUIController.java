@@ -123,6 +123,9 @@ public class NewIntroUIController extends controllers.mapScene{
     @FXML
     private StackPane mapStack;
 
+    @FXML
+    private Label LogInPerson_Label;
+
     int c_language = 0;
 
     int first_Time = 0;
@@ -573,6 +576,7 @@ public class NewIntroUIController extends controllers.mapScene{
         selectionState = 0;
     }
 
+    //Sends the user to the about page
     public void aboutButton_clicked() {
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/aboutPageView.fxml");
         aboutPage.aboutPageController controller = loader.getController();
@@ -671,6 +675,7 @@ public class NewIntroUIController extends controllers.mapScene{
         System.out.println("The user has clicked the submit Button");
     }
 
+    //Allows the user to go through several floors while using pathfinding
     public void multiFloorPathfind() {
         //initialize reference of the global frag list to null (set up)
         globalFragList = null;
@@ -747,18 +752,50 @@ public class NewIntroUIController extends controllers.mapScene{
         controllers.MapOverlay.setHeightRatio(1.0);
         controllers.MapOverlay.setWidthRatio(1.0);
 
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminLoginMainView.fxml");
-        adminLoginMain.adminLoginMainController controller = loader.getController();
-        //sends the current language the next screen
-        controller.setC_language(c_language);
-        //set up english labels
-        if(c_language == 0){
-            controller.englishButtons_Labels();
+        if(admin_Button.getText().equals("Administrator") || admin_Button.getText().equals("Administrador")) {
+            FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminLoginMainView.fxml");
+            adminLoginMain.adminLoginMainController controller = loader.getController();
+            //sends the current language the next screen
+            controller.setC_language(c_language);
+            //set up english labels
+            if (c_language == 0) {
+                controller.englishButtons_Labels();
 
-            //set up spanish labels
-        }else if(c_language == 1){
-            controller.spanishButtons_Labels();
+                //set up spanish labels
+            } else if (c_language == 1) {
+                controller.spanishButtons_Labels();
+            }
+        }else{
+            FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
+            //patientMenuStart.patientMenuStartController controller = loader.getController();
+            NewIntroUI.NewIntroUIController controller = loader.getController();
+            //sets the current language
+            controller.setCurrentLanguage(c_language);
+            //set up english labels
+            if(c_language == 0){
+                controller.englishButtons_Labels();
+                //set up spanish labels
+            }else if(c_language == 1){
+                controller.spanishButtons_Labels();
+            }
+            //set permissions back
+            controller.setPermissionLevel(0);
+            //set label to empty
+            controller.setWelcome("");
+            //Sets the label of the button back to administrator
+            controller.loginOrOut(1, c_language);
         }
+    }
+
+    //Set the button correctly
+    public void loginOrOut(int inOrOut, int lang){
+        //The user is signing in
+        if(inOrOut == 0){
+
+        }else{
+
+        }
+
     }
 
     //Checks if the emergency button was clicked
@@ -1064,6 +1101,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
     }
 
+    //Zoomz out the map
     public void zoomOutButton_Clicked() {
         zoom = controllers.MapOverlay.getZoom();
         System.out.println(zoom);
@@ -1081,6 +1119,7 @@ public class NewIntroUIController extends controllers.mapScene{
         }
     }
 
+    //Let the user scroll through the map
     public void mapScroll(ScrollEvent event) {
         zoom = MapOverlay.getZoom();
         if (event.getDeltaY() > 0) {
@@ -1107,10 +1146,13 @@ public class NewIntroUIController extends controllers.mapScene{
         }
     }
 
+
+    //Gets the permissions
     public int getPermissionLevel() {
         return permissionLevel;
     }
 
+    //Sets the permissions
     public void setPermissionLevel(int permissionLevel) {
         this.permissionLevel = permissionLevel;
         System.out.println("Setting permission level to: " + permissionLevel);
@@ -1121,9 +1163,9 @@ public class NewIntroUIController extends controllers.mapScene{
         }
     }
 
+    //Starts the string for the current person logged in
     public void setWelcome(String text){
-        //TODO FIX THIS
-        //welcomeAdmin.setText(text);
+        LogInPerson_Label.setText(text);
     }
 }
 

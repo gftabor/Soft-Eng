@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -29,7 +22,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NewIntroUI.NewIntroUIController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NewIntroUI.NewIntroUIController">
    <children>
       <BorderPane layoutX="-1.0" layoutY="-1.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="-1.0">
          <top>
@@ -48,12 +41,12 @@
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="about_Button" mnemonicParsing="false" onMouseClicked="#aboutButton_clicked" prefWidth="100.0" styleClass="color-palette5" text="About">
+                        <Button fx:id="admin_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefWidth="130.0" styleClass="color-palette5" text="Adminstrator">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="admin_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefWidth="150.0" styleClass="color-palette5" text="Adminstrator">
+                        <Button fx:id="about_Button" mnemonicParsing="false" onMouseClicked="#aboutButton_clicked" prefWidth="100.0" styleClass="color-palette5" text="About">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
@@ -76,6 +69,7 @@
          <left>
             <VBox minWidth="-Infinity" prefHeight="655.0" prefWidth="314.0" styleClass="color-palette" BorderPane.alignment="CENTER">
                <children>
+                  <Label fx:id="LogInPerson_Label" text="Current LogIn" />
                   <VBox minWidth="-Infinity" prefHeight="100.0" prefWidth="283.0" styleClass="color-palette2">
                      <children>
                         <HBox>
@@ -92,7 +86,7 @@
                                  </HBox.margin></TextField>
                               <Region HBox.hgrow="ALWAYS" />
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button fx:id="cancelFirst_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="info" text="x" textAlignment="CENTER">
+                              <Button fx:id="cancelFirst_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" onMouseClicked="#canceFromButton_Clicked" prefWidth="28.0" styleClass="info" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
@@ -115,7 +109,7 @@
                               </TextField>
                               <Region HBox.hgrow="ALWAYS" />
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button fx:id="cancelTo_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="info" text="x" textAlignment="CENTER">
+                              <Button fx:id="cancelTo_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" onMouseClicked="#cancelToButton_Clicked" prefWidth="28.0" styleClass="info" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
