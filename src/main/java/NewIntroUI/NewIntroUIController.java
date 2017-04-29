@@ -169,8 +169,10 @@ public class NewIntroUIController extends controllers.mapScene{
     private ArrayList<Integer> globalFloorSequence;
     private ArrayList<Edge> path;
 
-    private final Color startColor = Color.GREEN;
-    private final Color endColor = Color.CRIMSON;
+//    private final Color startColor = Color.GREEN;
+//    private final Color endColor = Color.CRIMSON;
+    private final Color startColor = Color.CRIMSON;
+    private final Color endColor = Color.GREEN;
     private final Color kioskColor = Color.ORANGE;
 
     private double origPaneWidth;
