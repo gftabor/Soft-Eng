@@ -206,7 +206,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
         // creates a node when clicking the map
         map_viewer.setOnMouseClicked((MouseEvent e) -> {
-            if (isDragged != true) {
+            System.out.println("isdragged =" + isDragged);
+            if (!isDragged) {
                 if (e.getButton() == MouseButton.PRIMARY) {
                     //clear on any selection stuff for the rest of the map
                     addSingleEdgeMode = false;
@@ -217,6 +218,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                         dragMode = false;
                         scrollPane.setPannable(true);
                         dragModeUpdate("SINGLE");
+                        save_Button.setVisible(false);
                     } else if (selectedNode) {
                         selectedNode = false;
                         graph.wipeEdgeLines();
@@ -289,6 +291,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                                 dragMode = false;
                                 scrollPane.setPannable(true);
                                 multiDragMode = true;
+                                save_Button.setVisible(true);
                                 resetScreen();
                                 unhookAllCircles();
                             }
@@ -462,9 +465,19 @@ public class NewMainMapManagementController extends controllers.mapScene {
             System.out.println("---");
             ArrayList<Node> neighborlist = new ArrayList<>();
 
+            System.out.println("++++++");
+            System.out.println("drag node posx:" + dragNode.getPosX());
+            System.out.println("drag node posy:" + dragNode.getPosY());
+            System.out.println("++++++");
+            System.out.println("math:" + (dragCircle.getLayoutX()/zoom)/widthRatio);
+            System.out.println("math:" + (dragCircle.getLayoutY()/zoom)/widthRatio);
+            System.out.println("++++++");
+            System.out.println("rounded:" + (int)((dragCircle.getLayoutX()/zoom)/widthRatio));
+            System.out.println("rounded:" + (int)((dragCircle.getLayoutY()/zoom)/widthRatio));
+            System.out.println("++++++");
             //need to see if actually moved it though.
-            if (dragNode.getPosX() != (dragCircle.getLayoutX()/zoom)/widthRatio ||
-                    dragNode.getPosY() != (dragCircle.getLayoutY()/zoom)/heightRatio ||
+            if (dragNode.getPosX() != (int)((dragCircle.getLayoutX()/zoom)/widthRatio) ||
+                    dragNode.getPosY() != (int)((dragCircle.getLayoutY()/zoom)/heightRatio) ||
                     dragNode.getFloor() != currentFloor) {
 
                 for (controllers.Edge thisEdge : dragNode.getEdgeList()) {
@@ -1038,6 +1051,27 @@ public class NewMainMapManagementController extends controllers.mapScene {
         graph.setHeightRatio(1.0);
         graph.setWidthRatio(1.0);
 
+        //Change to patient menu
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewAdminManagementView.fxml");
+        adminSignUp.adminSignUpController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //Gets the current admin
+        controller.setUsername(LogInPerson_Label.getText());
+
+        //set up english labels
+
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+
+        controller.setUpTreeView();
+        controller.setModeChoices();
+
+
     }
 
     //Manages when the emergency button is clicked
@@ -1067,6 +1101,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
             if (floatingNodes.size() != floatingCircles.size()) {
                 System.out.println("something got really messed up, the " +
                         "list sizes are different");
+                save_Button.setVisible(false);
                 resetScreen();
                 return;
             }
@@ -1185,6 +1220,10 @@ public class NewMainMapManagementController extends controllers.mapScene {
         for (Circle c: floatingCircles) {
             final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
             dragCircle = c;
+//            System.out.println("---");
+//            System.out.println("x: " + ((c.getLayoutX()/zoom)/widthRatio));
+//            System.out.println("y: " + ((c.getLayoutY()/zoom)/heightRatio));
+//            System.out.println("---");
             dragNode = MapController.getInstance().getCollectionOfNodes().getNode(
                     (int) ((c.getLayoutX()/zoom)/widthRatio),
                     (int) ((c.getLayoutY()/zoom)/heightRatio), currentFloor);
@@ -1300,7 +1339,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //when the mouse is clicked and dragged on the map
     public void dragDetected() {
-        isDragged = true;
+        //isDragged = true;
         System.out.println("detected");
     }
 }

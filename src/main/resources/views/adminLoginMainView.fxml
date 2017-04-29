@@ -30,12 +30,12 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </VBox.margin>
                   </Separator>
-                  <TextField fx:id="username_TextField" promptText="username" styleClass="adminLogin_TextField">
+                  <TextField fx:id="username_TextField" promptText="username" styleClass="Directory_TextField">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </TextField>
-                  <PasswordField fx:id="password_PasswordField" onAction="#logInButton_Clicked" promptText="password" styleClass="adminLogin_TextField">
+                  <PasswordField fx:id="password_PasswordField" onAction="#logInButton_Clicked" promptText="password" styleClass="Directory_TextField">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>

@@ -57,7 +57,7 @@ public class Pathfinder {
 //            System.out.println("current perms: " + currentPermissionLevel);
 //            System.out.println("neighbor perms: " + neighbor.getPermissionLevel());
             //must be of correct permission level for the node to be used
-            if (neighbor.getPermissionLevel() < currentPermissionLevel) {
+            if (neighbor.getPermissionLevel() > currentPermissionLevel) {
                 continue;
             }
 
@@ -93,7 +93,8 @@ public class Pathfinder {
         alreadyProcessed.clear();
         path.clear();
         algorithm.resetNodes();
-        if(!(startNode.getEnabled() && endNode.getEnabled())){
+        if ((!(startNode.getEnabled() && endNode.getEnabled()))
+                && permissionLevel >= startNode.getPermissionLevel() && permissionLevel >= endNode.getPermissionLevel()){
             System.out.println("selected node not enabled");
             return -2;
         }
