@@ -899,6 +899,8 @@ public class NewIntroUIController extends controllers.mapScene{
     public void spanishButtons_Labels() {
         //change the current language to spanish
         c_language = 1;
+        FAQ_Button.setVisible(false);
+
 
         //change the Buttons
         admin_Button.setText("Administrador");

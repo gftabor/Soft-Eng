@@ -139,7 +139,7 @@ public class aboutPageController extends controllers.AbsController{
 
         subTitle_Label.setText("WPI CS 3733 Software Engineering");
         prof_Label.setText("Profesor Wilson Wong");
-        SA_Label.setText("Studiente Asistente Dominik Smreczak");
+        SA_Label.setText("Estudiante Asistente Dominik Smreczak");
 
         subTitlle2_Lable.setText("Agradecimientos Especiales A:");
         hosp_Label.setText("Hospital Faulkner Brigham and Women");

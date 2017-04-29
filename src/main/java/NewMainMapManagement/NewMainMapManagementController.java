@@ -88,6 +88,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
     @FXML
     private Button save_Button;
 
+    boolean second = false;
+
 
     private int nodeEdgeX1;
     private int nodeEdgeY1;
@@ -164,8 +166,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
                 currentFloor, permissionLevel);
-
-        setFloorChoices();
+        
 
         //Zooming code
         /*NOTES: Basic zooming works
@@ -945,9 +946,12 @@ public class NewMainMapManagementController extends controllers.mapScene {
     }
 
 
+
+
     //Sets the map of the desired floor
     public void setFloorChoices(){
         if(c_language == 0) {
+
             floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Outside",
                     "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4", "Belkin Basement");
         }else{
@@ -1100,7 +1104,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         graph.setHeightRatio(1.0);
         graph.setWidthRatio(1.0);
 
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewEmergencyView.fxml");
         emergency.emergencyController controller = loader.getController();
         //sends the current language to the next screen
         controller.setCurrentLanguage(c_language);
@@ -1111,6 +1115,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         }else if(c_language == 1){
             controller.spanishButtons_Labels();
         }
+
     }
 
     //Manages when the user clicks the save button
