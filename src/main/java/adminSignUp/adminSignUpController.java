@@ -34,6 +34,9 @@ public class adminSignUpController extends controllers.AbsController{
     private Label mainTitle_Label;
 
     @FXML
+    private Label isAdmin_Label;
+
+    @FXML
     private Label currentAdmin_Label;
 
     @FXML
@@ -52,7 +55,7 @@ public class adminSignUpController extends controllers.AbsController{
     private ChoiceBox<String> mode_ChoiceBox;
 
     @FXML
-    private Label id_textField;
+    private TextField id_textField;
 
     @FXML
     private Label username_Label;
@@ -124,17 +127,15 @@ public class adminSignUpController extends controllers.AbsController{
     int givID, givPermissions;
     String givUsername, givFirstN, givLastN, givPassword;
 
-   /*public void clearInputs(){
+   public void clearInputs(){
         id_textField.clear();
         userName_TextField.clear();
         firstName_TextField.clear();
         lastName_TextField.clear();
         newPassword_TextField.clear();
        isAdmin_CheckBox.setSelected(false);
-    }*/
-   public void clearInputs(){
-       
-   }
+    }
+
 
     //Deal with the submit button clicked
     public void submitButton_Clicked(){
@@ -378,6 +379,8 @@ public class adminSignUpController extends controllers.AbsController{
         lastName_Label.setText("Last Name:");
         password_Label.setText("New password");
         queryStatus.setText("Query Status");
+        isAdmin_Label.setText("Is Admin?");
+        mainTitle_Label.setText("Admin Management");
 
         //COLUMNS
         username_TableColumn.setText("Username");
@@ -409,14 +412,18 @@ public class adminSignUpController extends controllers.AbsController{
         username_Label.setText("Usuario:");
         firstName_Lab.setText("Nombre:");
         lastName_Label.setText("Apellido:");
-        password_Label.setText("Nueva Contrasena");
+        password_Label.setText("Contrasena:");
         queryStatus.setText("Estatus");
+        isAdmin_Label.setText("Es Admin?");
+        mainTitle_Label.setText("Control de Administradores");
 
         //Columns
         username_TableColumn.setText("Usuario");
         firstName_TableColumn.setText("Nombre");
         lastName_TableColumn.setText("Apellido");
         permissions_TableColumn.setText("Permisos");
+
+
 
     }
 
@@ -426,25 +433,7 @@ public class adminSignUpController extends controllers.AbsController{
         c_language = i;
     }
 
-    //Sends the admin back to the main menu
-    /*public void mainMenuButton_Clicked(){
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
-        adminMenuStart.adminMenuStartController controller = loader.getController();
-        //Set the correct username for the next scene
-        controller.setUsername(currentAdmin_Label.getText());
-        //sets the current language
-        controller.setCurrentLanguage(c_language);
-        //set up english labels
-        if(c_language == 0){
-            controller.englishButtons_Labels();
 
-            //set up spanish labels
-        }else if(c_language == 1){
-            controller.spanishButtons_Labels();
-        }
-        controller.setLanguageChoices();
-
-    }*/
 
 
 }
