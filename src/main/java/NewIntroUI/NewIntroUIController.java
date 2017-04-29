@@ -152,8 +152,6 @@ public class NewIntroUIController extends controllers.mapScene{
     private double endX;
     private double endY;
 
-    private boolean usingMap;
-
     private controllers.MapOverlay graph;
 
     private int selectionState;
@@ -188,6 +186,8 @@ public class NewIntroUIController extends controllers.mapScene{
     double currentHval = 0;
     double currentVval = 0;
 
+    private boolean useStairs;
+
     //ArrayList<Edge> zoomPath;
 
 
@@ -207,7 +207,7 @@ public class NewIntroUIController extends controllers.mapScene{
         //we will use floor 1 as default
         currentFloor = 1;
         c_Floor_Label.setText("1");
-        usingMap = false;
+        useStairs = false;
 
         System.out.println("width/height ratios: " + widthRatio + "/" + heightRatio);
 
@@ -663,7 +663,7 @@ public class NewIntroUIController extends controllers.mapScene{
                 //no multifloor pathfinding (simple)
 
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                path = mapController.requestPath(permissionLevel);
+                path = mapController.requestPath(permissionLevel, useStairs);
                 graph.createEdgeLines(path, true, false);
                 graph.setPathfinding(1);
                 textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
@@ -708,11 +708,12 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //reset for next pathfinding session
         MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-        ArrayList<Edge> reqPath = mapController.requestPath(permissionLevel);
-        if (reqPath == null) { //can't find path, reset
+        ArrayList<Edge> reqPath = mapController.requestPath(permissionLevel, useStairs);
+        if (reqPath == null || reqPath.size() == 0) { //can't find path, reset
             System.out.println("Could not pathfind. Resetting now...");
             cancelButton_Clicked();
         } else {
+            System.out.println("reqpath size" + reqPath.size());
             textDescription_TextFArea.setText(mapController.getTextDirections(reqPath, c_language));
 
             ArrayList<ArrayList<Edge>> fragPath;
@@ -850,6 +851,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //hide the continue button
         continueNew_Button.setVisible(false);
+        previous_Button.setVisible(false);
 
         //reset the textfields
         start_textField.setText("");
@@ -857,8 +859,6 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //reset any colors
 
-        //reset the usingMap
-        usingMap = false;
     }
 
     //switches all the labels and Buttons to english

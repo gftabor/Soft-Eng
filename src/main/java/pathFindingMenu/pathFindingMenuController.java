@@ -197,7 +197,7 @@ public class pathFindingMenuController extends controllers.mapScene{
                 multiFloorPathfind();
             } else {
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                ArrayList<Edge> path = mapController.requestPath(permissionLevel);
+                ArrayList<Edge> path = mapController.requestPath(permissionLevel, false);
                 if (path == null) { //can't find path, reset
                     System.out.println("Could not pathfind. Resetting now...");
                     cancelButton_Clicked();
@@ -244,7 +244,7 @@ public class pathFindingMenuController extends controllers.mapScene{
 
         //reset for next pathfinding session
         MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-        ArrayList<Edge> reqPath = mapController.requestPath(permissionLevel);
+        ArrayList<Edge> reqPath = mapController.requestPath(permissionLevel, false);
         if (reqPath == null) { //can't find path, reset
             System.out.println("Could not pathfind. Resetting now...");
             cancelButton_Clicked();

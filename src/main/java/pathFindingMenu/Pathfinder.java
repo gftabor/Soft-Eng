@@ -41,7 +41,7 @@ public class Pathfinder {
     }
 
     //if process node is end node return true, otherwise process and return false
-    private boolean processNode(Node currentNode, Node goalNode, int currentPermissionLevel){
+    private boolean processNode(Node currentNode, Node goalNode, int currentPermissionLevel, boolean useStairs){
         if(currentNode.equals(goalNode))
             return true;
 
@@ -59,6 +59,13 @@ public class Pathfinder {
             //must be of correct permission level for the node to be used
             if (neighbor.getPermissionLevel() > currentPermissionLevel) {
                 continue;
+            }
+
+            if (!useStairs) {
+                System.out.println("not using stairs");
+                if (neighbor.getType().equalsIgnoreCase("Stair")) {
+                    continue;
+                }
             }
 
             //System.out.println("weight" + currentEdge.getWeight());
@@ -82,7 +89,7 @@ public class Pathfinder {
     //runs A* pathfinding algorithm
     //  input: 2 nodes - a start and an end
     //  output: the total cost of the shortest path (type=double)
-    public double generatePath(Node startNode, Node endNode, int permissionLevel) {
+    public double generatePath(Node startNode, Node endNode, int permissionLevel, boolean useStairs) {
         System.out.println("PATHFINDER: generating path from node at (" + startNode.getPosX() + ", " +
                 startNode.getPosY() + ", floor: " + startNode.getFloor() + ") to node at (" + endNode.getPosX() + ", " +
                 endNode.getPosY() + ", floor: " + endNode.getFloor() + ")");
@@ -110,7 +117,7 @@ public class Pathfinder {
                 break;
             finished = processing.equals(endNode);
             if (!alreadyProcessed.contains(processing)) {
-                processNode(processing, endNode, permissionLevel);
+                processNode(processing, endNode, permissionLevel, useStairs);
                 alreadyProcessed.add(processing);
             }
             tries ++;
