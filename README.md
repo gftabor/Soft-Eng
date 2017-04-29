@@ -37,7 +37,7 @@ and 3D views of the path.
  - Face Plus Plus
  
  
-##Building
+## Building
 #### Gradle Instructions
 To clean and set up IntelliJ:  
 `gradlew cleanIdea` then `gradlew idea`
