@@ -1,6 +1,7 @@
 package NewMainMapManagement;
 
 import DBController.DatabaseController;
+import adminMenuStart.AutoLogout;
 import controllers.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -118,6 +119,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     private DatabaseController databaseController = DatabaseController.getInstance();
 
+    private AutoLogout al = new AutoLogout();
+
     public void initialize() {
         setUserString(LogInPerson_Label.getText());
         addSingleEdgeMode = false;
@@ -185,6 +188,19 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 pop.show(btK);
             }
         });
+
+        try {
+            al.wait(20);
+            fuckABitch();
+        } catch (InterruptedException e) {
+            System.out.println("FUCK");
+        }
+
+
+    }
+
+    public void fuckABitch() {
+        al.checkActivity();
     }
 
     public PopOver createMultiFloorPop(PopOver pop, Circle btK, ArrayList<Integer> floors, Node selectedNode) {
@@ -648,7 +664,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
     //Change to main Menu
     public void mainMenuButton_Clicked() {
 
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
         adminMenuStart.adminMenuStartController controller = loader.getController();
         //Set the correct username for the next scene
         controller.setUsername(LogInPerson_Label.getText());
@@ -820,5 +836,31 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     }
 
+    public void autoLogout() {
+        System.out.println("The system has automatically logged off due to inactivity.");
+        //backgroundAnchorPane = new AnchorPane();
+        //Change to patient menu
+        //if(backgroundAnchorPane == null) {
+        //    System.out.println("backgroundAnchorPane is null");
+        //} else {
+        /*
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/NewIntroUIView.fxml"));
+        if(loader.getController() == null) {
+            System.out.println("fuck");
+        }else {
+            NewIntroUI.NewIntroUIController controller = loader.getController();
+            //sends the current language to the next screen
 
+            controller.setCurrentLanguage(c_language);
+            //set up english labels
+            if (c_language == 0) {
+                controller.englishButtons_Labels();
+                //set up spanish labels
+            } else if (c_language == 1) {
+                controller.spanishButtons_Labels();
+            }
+        }
+        */
+        emergencyButton_Clicked();
+    }
 }

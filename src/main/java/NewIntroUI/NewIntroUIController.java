@@ -1,6 +1,7 @@
 package NewIntroUI;
 
 import DBController.DatabaseController;
+import adminMenuStart.AutoLogout;
 import controllers.*;
 import emergency.SmsSender;
 import javafx.beans.value.ChangeListener;
@@ -274,6 +275,8 @@ public class NewIntroUIController extends controllers.mapScene{
             dragOldY = dragNewY;
             //}
         });
+
+
     }
 
     //get an instance of database controller

@@ -1,5 +1,8 @@
 package adminMenuStart;
 
+import NewMainMapManagement.LogoutMemento;
+import NewMainMapManagement.NewMainMapManagementController;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
@@ -8,25 +11,27 @@ import javafx.scene.input.MouseEvent;
  * Created by mylena on 4/27/17.
  */
 public class AutoLogout {
-    private adminMenuStartController c = new adminMenuStartController();
 
     public AutoLogout(){}
 
-    public void autoLogout() {
-        c.autoLogout();
-    }
+    //public void autoLogout() { m.autoLogout();}
 
-    public void checkActivity() throws InterruptedException {
+    public void checkActivity() {
 
         Caretaker c = new Caretaker();
+        LogoutMemento lm = new LogoutMemento();
 
         synchronized (c) {
             do {
-                c.wait(10);
-            } while(c.isM() == true);
-            autoLogout();
-        }
+                try {
+                    c.wait(10);
+                } catch (InterruptedException e) {
+                    System.out.println("Error waitin on yo ass");
+                }
+            } while(c.isM());
 
+            lm.autoLogout();
+        }
     }
 
 

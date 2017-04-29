@@ -59,6 +59,7 @@ public class adminLoginMainController extends controllers.AbsController{
             if(loginManage.getPermissions(username) == 2){
                 System.out.println("Logging in Admin");
                 FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewMainMapManagementView.fxml");
+                
                 NewMainMapManagement.NewMainMapManagementController controller = loader.getController();
                 //Set the correct username for the next scene
 
