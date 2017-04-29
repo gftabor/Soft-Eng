@@ -60,15 +60,8 @@ public class adminLoginMainController extends controllers.AbsController{
                 System.out.println("Logging in Admin");
                 FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewMainMapManagementView.fxml");
                 NewMainMapManagement.NewMainMapManagementController controller = loader.getController();
-                //Set the correct username for the next scene
-
-
-                //  TODO FIX THIS:
-                //controller.setUsername_Admin("Admin: "+ username_TextField.getText());
-
-
-                //sets the current language
                 controller.setC_language(c_language);
+                //Set the correct username for the next scene
                 //set up english labels
                 if(c_language == 0){
                     controller.englishButtons_Labels();
@@ -77,10 +70,10 @@ public class adminLoginMainController extends controllers.AbsController{
                 }else if(c_language == 1){
                     controller.spanishButtons_Labels();
                 }
-                //controller.setPermissionLevel(2);
+                controller.setUserString("Admin: " + username);
+                controller.setPermissionLevel(2);
 
-                //TODO FIX THIS:
-                //controller.setLanguageChoicebox();
+
 
                 //LOG IN EMPLOYEE
                 //*************************************************
@@ -94,12 +87,14 @@ public class adminLoginMainController extends controllers.AbsController{
                 //set up english labels
                 if(c_language == 0){
                     controller.englishButtons_Labels();
+                    controller.setWelcome("Employee: " + username);
                     //set up spanish labels
                 }else if(c_language == 1){
                     controller.spanishButtons_Labels();
+                    controller.setWelcome("Empleado: " + username);
                 }
                 controller.setPermissionLevel(1);
-                controller.setWelcome("Employee: " + username);
+
             }else{
                 System.out.println("Logging in Regular User. What??");
             }
@@ -138,6 +133,8 @@ public class adminLoginMainController extends controllers.AbsController{
         }else if(c_language == 1){
             controller.spanishButtons_Labels();
         }
+
+
         //Set the permissions
         controller.setPermissionLevel(0);
 
@@ -179,6 +176,7 @@ public class adminLoginMainController extends controllers.AbsController{
 
     //Changes the buttons and labels to english
     public void englishButtons_Labels(){
+        setC_language(0);
         //Buttons
         logIn_Button.setText("Login");
         mainMenu_Button.setText("Main Menu");
@@ -194,6 +192,7 @@ public class adminLoginMainController extends controllers.AbsController{
 
     //Changes the buttons and labels to spanish
     public void spanishButtons_Labels(){
+        setC_language(1);
         //Buttons
         logIn_Button.setText("Iniciar Sesión");
         mainMenu_Button.setText("Menu Principal");
