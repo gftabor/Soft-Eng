@@ -201,7 +201,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         });
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
-        scrollPane.setPannable(false);
+        scrollPane.setPannable(true);
 
 
         // creates a node when clicking the map
@@ -215,6 +215,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                         addMultiEdgeMode = false;
                     } else if (dragMode) {
                         dragMode = false;
+                        scrollPane.setPannable(true);
                         dragModeUpdate("SINGLE");
                     } else if (selectedNode) {
                         selectedNode = false;
@@ -286,6 +287,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                             if (!multiDragMode) {
                                 clearButton_Clicked();
                                 dragMode = false;
+                                scrollPane.setPannable(true);
                                 multiDragMode = true;
                                 resetScreen();
                                 unhookAllCircles();
@@ -739,6 +741,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 System.out.println("draggable");
                 save_Button.setVisible(true);
                 dragMode = true;
+                scrollPane.setPannable(false);
                 final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
                 dragCircle = c;
                 dragNode = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
@@ -921,6 +924,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
         //reset ui interaction
         dragMode = false;
+        scrollPane.setPannable(true);
         popoverShown = false;
         selectedNode = false;
 
@@ -1076,6 +1080,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
             resetScreen();
         } else {
             dragMode = false;
+            scrollPane.setPannable(true);
             dragModeUpdate("SINGLE");
             save_Button.setVisible(false);
         }
