@@ -94,6 +94,7 @@ public class adminLoginMainController extends controllers.AbsController{
                     controller.setWelcome("Empleado: " + username);
                 }
                 controller.setPermissionLevel(1);
+                controller.loginOrOut(0,c_language);
 
             }else{
                 System.out.println("Logging in Regular User. What??");
@@ -194,7 +195,7 @@ public class adminLoginMainController extends controllers.AbsController{
     public void spanishButtons_Labels(){
         setC_language(1);
         //Buttons
-        logIn_Button.setText("Iniciar Sesión");
+        logIn_Button.setText("Iniciar Sesion");
         mainMenu_Button.setText("Menu Principal");
 
         //Labels
@@ -203,7 +204,7 @@ public class adminLoginMainController extends controllers.AbsController{
 
         //text fields
         username_TextField.setPromptText("usuario");
-        password_PasswordField.setPromptText("contraseña");
+        password_PasswordField.setPromptText("contrasena");
     }
 
 

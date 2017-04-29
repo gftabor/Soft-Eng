@@ -201,7 +201,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         });
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
-        scrollPane.setPannable(false);
+        scrollPane.setPannable(true);
 
 
         // creates a node when clicking the map
@@ -216,6 +216,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                         addMultiEdgeMode = false;
                     } else if (dragMode) {
                         dragMode = false;
+                        scrollPane.setPannable(true);
                         dragModeUpdate("SINGLE");
                         save_Button.setVisible(false);
                     } else if (selectedNode) {
@@ -290,7 +291,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
                             if (!multiDragMode) {
                                 clearButton_Clicked();
                                 dragMode = false;
+                                scrollPane.setPannable(true);
                                 multiDragMode = true;
+                                scrollPane.setPannable(false);
                                 save_Button.setVisible(true);
                                 resetScreen();
                                 unhookAllCircles();
@@ -771,6 +774,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 System.out.println("draggable");
                 save_Button.setVisible(true);
                 dragMode = true;
+                scrollPane.setPannable(false);
                 final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
                 dragCircle = c;
                 dragNode = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
@@ -953,6 +957,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
         //reset ui interaction
         dragMode = false;
+        scrollPane.setPannable(true);
         popoverShown = false;
         selectedNode = false;
 
@@ -1112,6 +1117,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
     public void saveButton_Clicked(){
         if (multiDragMode) {
             multiDragMode = false;
+            scrollPane.setPannable(true);
 
             if (floatingNodes.size() != floatingCircles.size()) {
                 System.out.println("something got really messed up, the " +
@@ -1130,6 +1136,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
             resetScreen();
         } else {
             dragMode = false;
+            scrollPane.setPannable(true);
             dragModeUpdate("SINGLE");
             save_Button.setVisible(false);
         }
@@ -1354,7 +1361,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
     //when the mouse is clicked and dragged on the map
     public void dragDetected() {
         //isDragged = true;
-        System.out.println("detected");
+        //System.out.println("detected");
     }
 
     private int round(double input) {
