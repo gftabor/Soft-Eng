@@ -251,7 +251,8 @@ public class NewIntroUIController extends controllers.mapScene{
 
     public void drawCircleList(ArrayList<Circle> circleList, double x, double y, Color color) {
         for (Circle c : circleList) {
-            if (c.getLayoutX() == x && c.getLayoutY() == y) {
+            System.out.println((c.getLayoutX()/zoom)/widthRatio);
+            if (MapOverlay.round((c.getLayoutX()/zoom)/widthRatio) == x && MapOverlay.round((c.getLayoutY()/zoom)/heightRatio) == y) {
                 c.setStrokeWidth(strokeRatio);
                 c.setRadius(graph.getLabelRadius() * sizeUpRatio);
                 c.setStroke(color);
@@ -1160,8 +1161,8 @@ public class NewIntroUIController extends controllers.mapScene{
     public void mapScroll(ScrollEvent event) {
         zoom = MapOverlay.getZoom();
         if (currentHval != 0) {
-            System.out.println("pre zoom currenthval: " + currentHval);
-            System.out.println("pre zoom currnetVval: " + currentVval);
+            //System.out.println("pre zoom currenthval: " + currentHval);
+            //System.out.println("pre zoom currnetVval: " + currentVval);
         }
         currentHval = scrollPane.getHvalue();
         currentVval = scrollPane.getVvalue();
@@ -1195,18 +1196,17 @@ public class NewIntroUIController extends controllers.mapScene{
         }
         if (graph.getPathfinding() == 1) {
             graph.createEdgeLines(path, true, false);
+            //set the end goal color
+            ArrayList<Circle> circleList;
+            circleList = graph.getButtonList();
+            drawCircleList(circleList, startX, startY, startColor);
+            drawCircleList(circleList, endX, endY, endColor);
+            System.out.println("drawing circles at "+startX+" and "+endX);
         } else if (graph.getPathfinding() == 2) {
             graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
         }
 
         if (selectionState == 2) {
-
-
-            //set the end goal color
-            ArrayList<Circle> circleList;
-            circleList = graph.getButtonList();
-            drawCircleList(circleList, startX * zoom, startY * zoom, startColor);
-            drawCircleList(circleList, endX * zoom, endY * zoom, endColor);
 
         }
         System.out.println("currenthval: " + currentHval);
