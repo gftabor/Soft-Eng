@@ -301,7 +301,7 @@ public class adminMenuStartController extends controllers.AbsController{
         mapManagement_Button.setText("Control de Mapa");
         SignOut_Button.setText("Salir");
         emergency_Button.setText("EMERGENCIA");
-        addAdmin_Button.setText("Administración admin");
+        addAdmin_Button.setText("Administracion admin");
         //change the Labels
         title_Label.setText("Bienvenidos al Hospital de Faulkner");
         default_Search.setText("Algoritmo Predeterminado");

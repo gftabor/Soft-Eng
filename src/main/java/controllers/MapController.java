@@ -354,10 +354,13 @@ public class MapController {
     public String getTextDirections(ArrayList<Edge> path, int c_lang) {
         String destination;
         ArrayList<String> directions = new ArrayList<>();
-        if(c_lang == 0) {
+
+        if(c_lang == 0) { //ENGLISH
             if (path.isEmpty()) {
                 return null;
             }
+
+            directions.add("You are on floor " + path.get(path.size() - 1).getStartNode().getFloor());
 
             for (int i = path.size() - 1; i > 0; i--) {
                 double angle = getAngle(path.get(i), path.get(i - 1));
@@ -366,18 +369,18 @@ public class MapController {
 
                 if (goingUp() == true) {
                     if(startFloor > endFloor) {
-                        directions.add("Go up to floor " + startFloor);
+                        directions.add("\nGo up to floor " + startFloor);
                         continue;
                     } else if(endFloor > startFloor) {
-                        directions.add("Go up to floor " + endFloor);
+                        directions.add("\nGo up to floor " + endFloor);
                         continue;
                     }
                 } else if (goingUp() == false) {
                     if(startFloor < endFloor) {
-                        directions.add("Go down to floor " + startFloor);
+                        directions.add("\nGo down to floor " + startFloor);
                         continue;
                     } else if(endFloor < startFloor) {
-                        directions.add("Go down to floor " + endFloor);
+                        directions.add("\nGo down to floor " + endFloor);
                         continue;
                     }
                 }
@@ -400,21 +403,21 @@ public class MapController {
                 }
 
                 if (angle > -135.0 && angle <= -45.0) {
-                    directions.add("Turn left at " + destination);
+                    directions.add(" > Turn left at " + destination);
                 } else if (angle >= 45.0 && angle < 135.0) {
-                    directions.add("Turn right at " + destination);
+                    directions.add(" > Turn right at " + destination);
                 } else if (angle > 10.0 && angle < 45.0) {
-                    directions.add("Make a slight right at " + destination);
+                    directions.add(" > Make a slight right at " + destination);
                 } else if (angle >= -10.0 && angle <= 10.0) {
-                    directions.add("Continue straight.");
+                    directions.add(" > Continue straight.");
                 } else if (angle > -45.0 && angle < -10.0) {
-                    directions.add("Make a slight left at " + destination);
+                    directions.add(" > Make a slight left at " + destination);
                 } else if (angle > 135.0 && angle < 180.0) {
-                    directions.add("Make a hard right at " + destination);
+                    directions.add(" > Make a hard right at " + destination);
                 } else if (angle > -180.0 && angle < -135.0) {
-                    directions.add("Make a hard left at " + destination);
+                    directions.add(" > Make a hard left at " + destination);
                 } else {
-                    directions.add("nothing");
+                    directions.add(" > nothing");
                 }
 
 
@@ -424,26 +427,30 @@ public class MapController {
 
             if (goingUp() == true) {
                 if(startFloor > endFloor) {
-                    directions.add("Go up to floor " + startFloor);
+                    directions.add("\nGo up to floor " + startFloor);
                 } else if(endFloor > startFloor) {
-                    directions.add("Go up to floor " + endFloor);
+                    directions.add("\nGo up to floor " + endFloor);
                 }
             } else if (goingUp() == false) {
                 if(startFloor < endFloor) {
-                    directions.add("Go down to floor " + startFloor);
+                    directions.add("\nGo down to floor " + startFloor);
                 } else if(endFloor < startFloor) {
-                    directions.add("Go down to floor " + endFloor);
+                    directions.add("\nGo down to floor " + endFloor);
                 }
             }
 
-            directions.add("Reached Destination");
+            directions.add("\nReached Destination");
             directions = cleanFloorToFloorDirections(directions);
             directions = cleanDirections(directions);
             return concatenateDirections(directions);
-        } else {
+        } //ELSE SPANISH
+        else
+            {
             if (path.isEmpty()) {
                 return null;
             }
+
+            directions.add("Estas en el piso " + path.get(path.size() - 1).getStartNode().getFloor());
 
             for (int i = path.size() - 1; i > 0; i--) {
                 double angle = getAngle(path.get(i), path.get(i - 1));
@@ -452,18 +459,18 @@ public class MapController {
 
                 if (goingUp() == true) {
                     if(startFloor > endFloor) {
-                        directions.add("Subir al piso " + startFloor);
+                        directions.add("\nSubir al piso " + startFloor);
                         continue;
                     } else if(endFloor > startFloor) {
-                        directions.add("Subir al piso " + endFloor);
+                        directions.add("\nSubir al piso " + endFloor);
                         continue;
                     }
                 } else if (goingUp() == false) {
                     if(startFloor < endFloor) {
-                        directions.add("Bajar al piso " + startFloor);
+                        directions.add("\nBajar al piso " + startFloor);
                         continue;
                     } else if(endFloor < startFloor) {
-                        directions.add("Bajar al piso " + endFloor);
+                        directions.add("\nBajar al piso " + endFloor);
                         continue;
                     }
                 }
@@ -487,21 +494,21 @@ public class MapController {
                 }
 
                 if (angle > -135.0 && angle <= -45.0) {
-                    directions.add("Girar a la izquierda hacia " + destination);
+                    directions.add(" > Girar a la izquierda hacia " + destination);
                 } else if (angle >= 45.0 && angle < 135.0) {
-                    directions.add("Girar a la derecha hacia " + destination);
+                    directions.add(" > Girar a la derecha hacia " + destination);
                 } else if (angle > 10.0 && angle < 45.0) {
-                    directions.add("Girar un poco a la derecha hacia " + destination);
+                    directions.add(" > Girar un poco a la derecha hacia " + destination);
                 } else if (angle >= -10.0 && angle <= 10.0) {
-                    directions.add("Sigue derecho.");
+                    directions.add(" > Sigue derecho.");
                 } else if (angle > -45.0 && angle < -10.0) {
-                    directions.add("Girar un poco a la izquierda hacia " + destination);
+                    directions.add(" > Girar un poco a la izquierda hacia " + destination);
                 } else if (angle > 135.0 && angle < 180.0) {
-                    directions.add("Haz un gran giro a la derecha hacia " + destination);
+                    directions.add(" > Haz un gran giro a la derecha hacia " + destination);
                 } else if (angle > -180.0 && angle < -135.0) {
-                    directions.add("Haz un gran giro a la izquierda hacia " + destination);
+                    directions.add(" > Haz un gran giro a la izquierda hacia " + destination);
                 } else {
-                    directions.add("nada");
+                    directions.add(" > nada");
                 }
 
 
@@ -511,19 +518,19 @@ public class MapController {
 
             if (goingUp() == true) {
                 if(startFloor > endFloor) {
-                    directions.add("Subir al piso " + startFloor);
+                    directions.add("\nSubir al piso " + startFloor);
                 } else if(endFloor > startFloor) {
-                    directions.add("Subir al piso " + endFloor);
+                    directions.add("\nSubir al piso " + endFloor);
                 }
             } else if (goingUp() == false) {
                 if(startFloor < endFloor) {
-                    directions.add("Bajar al piso " + startFloor);
+                    directions.add("\nBajar al piso " + startFloor);
                 } else if(endFloor < startFloor) {
-                    directions.add("Bajar al piso " + endFloor);
+                    directions.add("\nBajar al piso " + endFloor);
                 }
             }
 
-            directions.add("Has llegado a tu destino");
+            directions.add("\nHas llegado a tu destino");
             directions = cleanDirections(directions);
             return concatenateDirections(directions);
         }

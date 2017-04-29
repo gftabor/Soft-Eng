@@ -24,7 +24,7 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label styleClass="title" text="EMERGENCY EMERGENCIA 緊急情況" textFill="RED">
+                        <Label styleClass="title" text="EMERGENCY EMERGENCIA" textFill="RED">
                            <HBox.margin>
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                            </HBox.margin>
@@ -63,7 +63,7 @@
             <HBox BorderPane.alignment="CENTER">
                <children>
                   <Region HBox.hgrow="ALWAYS" />
-                  <Label text="©2017 Computer Science 3733 Team E">
+                  <Label text="2017 Computer Science 3733 Team E">
                      <HBox.margin>
                         <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                      </HBox.margin>
