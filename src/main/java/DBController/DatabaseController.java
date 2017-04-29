@@ -1176,13 +1176,14 @@ public class DatabaseController {
         return resultSet;
     }
 
-    public ResultSet getFilteredRoomNames(){
+    public ResultSet getFilteredRoomNames(int permissionLevel){
         System.out.println("Getting room names");
 
         ResultSet resultSet = null;
         try{
             String query = "SELECT NAME, ROOMNUM FROM NODE " +
-                    "WHERE ISHIDDEN = FALSE AND TYPE <> 'Stair' AND TYPE <> 'Elevator'";
+                    "WHERE ISHIDDEN = FALSE AND TYPE <> 'Stair' AND TYPE <> 'Elevator'" +
+                    "AND PERMISSIONS <= " + permissionLevel;
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             //preparedStatement.setString(1, "%"+roomName);
             // run statement and query
@@ -1356,10 +1357,10 @@ public class DatabaseController {
         return rooms;
     }
 
-    public ArrayList<String> getFilteredRooms(){
+    public ArrayList<String> getFilteredRooms(int permissionLevel){
         ArrayList<String> rooms = new ArrayList<>();
         String roomNum;
-        ResultSet rset = databaseController.getFilteredRoomNames();
+        ResultSet rset = databaseController.getFilteredRoomNames(permissionLevel);
         try {
             while (rset.next()) {
                 roomNum = rset.getString("ROOMNUM");
@@ -1393,11 +1394,11 @@ public class DatabaseController {
         return rooms;
     }
 
-    public ArrayList<String> getFilteredRoomList() {
+    public ArrayList<String> getFilteredRoomList(int permissionLevel) {
         ArrayList<String> rooms = new ArrayList<>();
         String roomName, roomNum;
         String room;
-        ResultSet rset = databaseController.getFilteredRoomNames();
+        ResultSet rset = databaseController.getFilteredRoomNames(permissionLevel);
         try {
             while (rset.next()) {
                 roomName = rset.getString("NAME");

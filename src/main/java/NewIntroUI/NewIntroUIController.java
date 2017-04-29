@@ -553,10 +553,10 @@ public class NewIntroUIController extends controllers.mapScene{
         ArrayList<String> professionals = new ArrayList<>();
         ArrayList<String> all = new ArrayList<>();
 
-        roomNums = databaseController.getFilteredRoomList();
+        roomNums = databaseController.getFilteredRoomList(permissionLevel);
         professionals = databaseController.getProfessionalList();
         all.addAll(roomNums);
-        all.addAll(databaseController.getFilteredRooms());
+        all.addAll(databaseController.getFilteredRooms(permissionLevel));
         all.addAll(professionals);
 
 
