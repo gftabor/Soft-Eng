@@ -225,8 +225,8 @@ public class MapOverlay {
 
         // this code sets node's x and y pos to be on the plane holding the graph
         currentPane.getChildren().add(location);
-        location.setLayoutX((int)(nodeX * zoom * widthRatio));
-        location.setLayoutY((int)(nodeY * zoom * heightRatio));
+        location.setLayoutX(round(nodeX * zoom * widthRatio));
+        location.setLayoutY(round(nodeY * zoom * heightRatio));
         location.toFront();
 
         if (!enabled) {
@@ -483,5 +483,19 @@ public class MapOverlay {
 
     public static double getWidthRatio() {
         return widthRatio;
+    }
+
+    private int round(double input) {
+        long intPart;
+        double decimalPart;
+        intPart = (long) input;
+        decimalPart = input - intPart;
+
+        if (decimalPart >= 0.5d) {
+            return (int) intPart + 1;
+        } else {
+            return (int) intPart;
+        }
+
     }
 }
