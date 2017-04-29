@@ -410,7 +410,7 @@ public class pathFindingMenuController extends controllers.mapScene{
 
         //change the Buttons
         emergency_Button.setText("EMERGENCIA");
-        mainMenu_Button.setText("Menú Principal");
+        mainMenu_Button.setText("Menu Principal");
         submit_Button.setText("Listo");
         cancel_Button.setText("Borrar");
 

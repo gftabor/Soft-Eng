@@ -450,7 +450,7 @@ public class MapController {
                 return null;
             }
 
-            directions.add("Estás en el piso " + path.get(path.size() - 1).getStartNode().getFloor());
+            directions.add("Estas en el piso " + path.get(path.size() - 1).getStartNode().getFloor());
 
             for (int i = path.size() - 1; i > 0; i--) {
                 double angle = getAngle(path.get(i), path.get(i - 1));

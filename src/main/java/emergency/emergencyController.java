@@ -112,11 +112,11 @@ public class emergencyController extends controllers.AbsController{
         c_language = 1;
 
         //change the Buttons
-        mainMenu_Button.setText("Menú Principal");
+        mainMenu_Button.setText("Menu Principal");
         call_authorities.setText("Llamar Autoridades");
 
         //change the Labels
-        start_Label.setText("Tú estás aquí");
+        start_Label.setText("Tu estas aqui");
         exit_Label.setText("Salidas");
 
 

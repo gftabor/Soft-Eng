@@ -24,7 +24,7 @@
                   <HBox styleClass="emergencyHBox">
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label fx:id="title_Label" styleClass="emergencyLabel" text="EMERGENCY EMERGENCIA 緊急情況" textFill="WHITE">
+                        <Label fx:id="title_Label" styleClass="emergencyLabel" text="EMERGENCY EMERGENCIA" textFill="WHITE">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
