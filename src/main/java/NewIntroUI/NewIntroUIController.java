@@ -664,6 +664,22 @@ public class NewIntroUIController extends controllers.mapScene{
 
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
                 path = mapController.requestPath(permissionLevel, useStairs);
+
+                int startfloor = mapController.returnOriginalFloor();
+                if(startfloor != currentFloor) {
+                    c_Floor_Label.setText(Integer.toString(startfloor));
+
+                    //switch back to the original floor using the choicebox selection
+                    if (startfloor == 0) {
+                        floor_ChoiceBox.getSelectionModel().select(7);
+                    } else if (startfloor > 7) {
+                        floor_ChoiceBox.getSelectionModel().select(startfloor);
+
+                    } else {
+                        floor_ChoiceBox.getSelectionModel().select(startfloor - 1);
+                    }
+                }
+
                 graph.createEdgeLines(path, true, false);
                 graph.setPathfinding(1);
                 textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
@@ -712,6 +728,7 @@ public class NewIntroUIController extends controllers.mapScene{
         if (reqPath == null || reqPath.size() == 0) { //can't find path, reset
             System.out.println("Could not pathfind. Resetting now...");
             cancelButton_Clicked();
+            start_textField.setText("Kiosk");
         } else {
             System.out.println("reqpath size" + reqPath.size());
             textDescription_TextFArea.setText(mapController.getTextDirections(reqPath, c_language));
