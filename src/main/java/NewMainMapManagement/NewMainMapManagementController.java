@@ -840,8 +840,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //handle a click on an edge.
     public void edgeClickRemove(int x1, int y1, int x2, int y2){
-        DBController.DatabaseController.getInstance().deleteEdge(x1,
-                y1, currentFloor, x2, y2, currentFloor);
+        DBController.DatabaseController.getInstance().deleteEdge(round((x1/zoom)/widthRatio),
+                round((y1/zoom)/heightRatio), currentFloor,
+                round((x2/zoom)/widthRatio), round((y2/zoom)/heightRatio), currentFloor);
         System.out.println("removed edge on click");
         resetScreen();
         if (firstNode != null) {
