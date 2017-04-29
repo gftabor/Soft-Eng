@@ -4,7 +4,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 
 import java.net.URISyntaxException;
 
@@ -25,6 +29,9 @@ public class emergencyController extends controllers.AbsController{
     private Button call_authorities;
 
     @FXML
+    private Pane pane;
+
+    @FXML
     private Label call_status;
 
     @FXML
@@ -33,8 +40,21 @@ public class emergencyController extends controllers.AbsController{
     @FXML
     private Label exit_Label;
 
+    @FXML
+    private ImageView map_viewer;
+
+    @FXML
+    private ScrollPane scrollPane;
+
     //English by default
     int c_language = 0;
+
+    @FXML
+    public void initialize() {
+        map_viewer.setImage(new Image("/images/4emergency.png"));
+        //map_viewer.setFitWidth(pane.getWidth());
+        //map_viewer.setFitHeight(pane.getHeight());
+    }
 
     //Return the the patient main menu
     public void mainMenuButton_Clicked() {

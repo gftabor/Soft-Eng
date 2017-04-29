@@ -82,28 +82,6 @@
                </children>
             </HBox>
          </bottom>
-         <center>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-               <children>
-                  <HBox>
-                     <children>
-                        <Region HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="515.0" prefWidth="769.0">
-                     <children>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <ImageView fitHeight="536.0" fitWidth="808.0" pickOnBounds="true">
-                           <image>
-                              <Image url="@../images/4emergency.png" />
-                           </image>
-                        </ImageView>
-                        <Region HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </center>
          <left>
             <VBox prefHeight="555.0" prefWidth="465.0" BorderPane.alignment="CENTER">
                <children>
@@ -171,6 +149,17 @@
                </children>
             </VBox>
          </left>
+         <center>
+            <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
+               <content>
+                  <Pane fx:id="pane" prefHeight="701.0" prefWidth="1043.0">
+                     <children>
+                        <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="920.0" />
+                     </children>
+                  </Pane>
+               </content>
+            </ScrollPane>
+         </center>
       </BorderPane>
    </children>
    <stylesheets>
