@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FAQ.FAQcontroller">
    <children>
       <BorderPane layoutX="-1.0" layoutY="-1.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="-1.0">
          <top>
@@ -32,18 +32,18 @@
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Label styleClass="mainTitle" text="Frequently Asked Questions" textFill="WHITE">
+                        <Label fx:id="title_label" styleClass="mainTitle" text="Frequently Asked Questions" textFill="WHITE">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" styleClass="color-palette5" text="Sign Out">
+                        <Button fx:id="main_menu_button" mnemonicParsing="false" onMouseClicked="#main_menu_clicked" styleClass="color-palette5" text="Main Menu">
                            <HBox.margin>
                               <Insets bottom="4.0" right="8.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefWidth="150.0" styleClass="danger" text="EMERGENCY">
+                        <Button fx:id="emergency_button" mnemonicParsing="false" onMouseClicked="#emergency_button_clicked" prefWidth="150.0" styleClass="danger" text="EMERGENCY">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
@@ -62,7 +62,7 @@
                            <children>
                               <Label layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="1158.0" text="The following methods all can be used to enter your destination:" />
                               <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="729.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true" />
-                              <Label layoutX="14.0" layoutY="33.0" prefHeight="26.0" prefWidth="1158.0" text="- Search for your desired location in the &quot;To&quot; search box. " />
+                              <Label layoutX="14.0" layoutY="33.0" prefHeight="26.0" prefWidth="1158.0" text="- Search for your desired location in the &quot;To:&quot; search box. " />
                               <Label layoutX="14.0" layoutY="291.0" prefHeight="26.0" prefWidth="1158.0" text="- You can search for a destination by room number (2A), room title (Radiology), or by the name of your Doctor (Christopher Bono)." />
                               <Label layoutX="14.0" layoutY="317.0" prefHeight="26.0" prefWidth="1158.0" text="- If you already have an idea of the layout of the Hospital, you can navigate through the floors and select the node representing your desired location." />
                               <Label layoutX="14.0" layoutY="343.0" prefHeight="26.0" prefWidth="1158.0" text="After entering your desired location, press the &quot;Submit&quot; button to print the highlighted path from the kiosk to your desired location." />
@@ -108,7 +108,7 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Label layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="1158.0" text="The kisok is the default starting location, however you can easily change this by simply clearing the &quot;From&quot; search bar.  You can then search for any room using any of" />
+                              <Label layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="1158.0" text="The kisok is the default starting location, however you can easily change this by simply clearing the &quot;From:&quot; search bar.  You can then search for any room using any of" />
                               <Label layoutX="14.0" layoutY="40.0" prefHeight="26.0" prefWidth="1158.0" text="the methods found above in the &quot;How can I get directions to my destination?&quot; section of the FAQ." />
                               <ImageView fitHeight="327.0" fitWidth="535.0" layoutX="7.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

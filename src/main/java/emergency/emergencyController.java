@@ -106,7 +106,7 @@ public class emergencyController extends controllers.AbsController{
 
     }
 
-    //switches all teh labels to spanish
+    //switches all the labels to spanish
     public void spanishButtons_Labels() {
         //change the current language to spanish
         c_language = 1;
