@@ -33,7 +33,7 @@ public class Main extends Application {
         
 
         //primaryStage.setFullScreen(false);
-        primaryStage.setFullScreen(true);
+        //primaryStage.setFullScreen(true);
         primaryStage.setMaximized(true);
         primaryStage.setScene(new Scene(root, 1366, 768));
         //primaryStage.setMinWidth(1366);
