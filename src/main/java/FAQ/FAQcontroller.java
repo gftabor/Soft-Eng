@@ -64,10 +64,17 @@ public class FAQcontroller extends controllers.AbsController{
             //set up spanish labels
         }
         controller.setPermissionLevel(permissionLevel);
-        controller.loginOrOut(1,c_language);
+
         if(permissionLevel == 2){
+            controller.loginOrOut(0,c_language);
             controller.AdminButtons(c_language);
+        }else if(permissionLevel == 1){
+            controller.loginOrOut(0,c_language);
+
+        }else{
+            controller.loginOrOut(1,c_language);
         }
+
 
 
     }
