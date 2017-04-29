@@ -185,6 +185,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
         map_viewer.setFitHeight(489.0*heightRatio);
         map_viewer.setFitWidth(920.0*widthRatio);
 
+        graph.setZoom(1.0);
+        zoom = graph.getZoom();
+
         System.out.println("width/height ratios: " + widthRatio + "/" + heightRatio);
 
         graph.setWidthRatio(widthRatio);
@@ -452,6 +455,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         if (dragNode != null) {
             System.out.println("drag done");
             System.out.println("old: x= " + dragNode.getPosX() + ", y= " + dragNode.getPosY());
+            System.out.println("zoom: " + zoom + " widthRatio: " + widthRatio);
             System.out.println("new: x= " + (dragCircle.getLayoutX()/zoom)/widthRatio + ", y= " + (dragCircle.getLayoutY()/zoom)/heightRatio);
             System.out.println("---");
             ArrayList<Node> neighborlist = new ArrayList<>();
