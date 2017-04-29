@@ -165,15 +165,62 @@ public class MapOverlay {
             Object o = e.getSource();
             Circle c = (Circle) o;
             c.setRadius(labelRadius * sizeUpRatio);
+            switch (current.getType()) {
+                case "Stair":
+                    c.setRadius(labelTypeRadius*1.4);
+                    break;
+                case "Elevator":
+                    c.setRadius(labelTypeRadius*1.4);
+                    break;
+                case "Doctor's Office":
+                    c.setRadius(labelTypeRadius*1.4);
+                    break;
+                case "Food Service":
+                    c.setRadius(labelTypeRadius*1.4);
+                    break;
+                case "Exit":
+                    c.setRadius(labelTypeRadius*1.4);
+                    break;
+                case "Restroom":
+                    c.setRadius(labelTypeRadius*1.4);
+                    break;
+                case "Entrance":
+                    c.setRadius(labelTypeRadius*1.4);
+                    break;
+            }
             Tooltip.install(
                     c,
                     new Tooltip(infoString)
             );
+
         });
         location.setOnMouseExited(e -> {
             Object o = e.getSource();
             Circle c = (Circle) o;
             c.setRadius(labelRadius);
+            switch (current.getType()) {
+                case "Stair":
+                    c.setRadius(labelTypeRadius);
+                    break;
+                case "Elevator":
+                    c.setRadius(labelTypeRadius);
+                    break;
+                case "Doctor's Office":
+                    c.setRadius(labelTypeRadius);
+                    break;
+                case "Food Service":
+                    c.setRadius(labelTypeRadius);
+                    break;
+                case "Exit":
+                    c.setRadius(labelTypeRadius);
+                    break;
+                case "Restroom":
+                    c.setRadius(labelTypeRadius);
+                    break;
+                case "Entrance":
+                    c.setRadius(labelTypeRadius);
+                    break;
+            }
         });
 
         // this code sets node's x and y pos to be on the plane holding the graph
