@@ -49,7 +49,7 @@ public class adminSignUpController extends controllers.AbsController{
     private Label Mode_Label;
 
     @FXML
-    private ChoiceBox<?> mode_ChoiceBox;
+    private ChoiceBox<String> mode_ChoiceBox;
 
     @FXML
     private Label id_textField;
@@ -103,7 +103,7 @@ public class adminSignUpController extends controllers.AbsController{
     private TableColumn<adminTable, String> firstName_TableColumn;
 
     @FXML
-    private TableColumn<adminTable, String> permissions_TableColumn;
+    private TableColumn<adminTable, Integer> permissions_TableColumn;
 
     @FXML
     private Label queryStatus;
@@ -113,7 +113,7 @@ public class adminSignUpController extends controllers.AbsController{
 
 
 
-    /*
+
     private boolean selfSelected = false;
 
     int c_language = 0; //English by default
@@ -124,14 +124,17 @@ public class adminSignUpController extends controllers.AbsController{
     int givID, givPermissions;
     String givUsername, givFirstN, givLastN, givPassword;
 
-   public void clearInputs(){
+   /*public void clearInputs(){
         id_textField.clear();
         userName_TextField.clear();
         firstName_TextField.clear();
         lastName_TextField.clear();
         newPassword_TextField.clear();
        isAdmin_CheckBox.setSelected(false);
-    }
+    }*/
+   public void clearInputs(){
+       
+   }
 
     //Deal with the submit button clicked
     public void submitButton_Clicked(){
@@ -421,7 +424,7 @@ public class adminSignUpController extends controllers.AbsController{
     //sets the current language given information form other screens
     public void setCurrentLanguage(int i){
         c_language = i;
-    }*/
+    }
 
     //Sends the admin back to the main menu
     /*public void mainMenuButton_Clicked(){
