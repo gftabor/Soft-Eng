@@ -201,12 +201,13 @@ public class NewMainMapManagementController extends controllers.mapScene {
         });
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
-        scrollPane.setPannable(false);
+        scrollPane.setPannable(true);
 
 
         // creates a node when clicking the map
         map_viewer.setOnMouseClicked((MouseEvent e) -> {
-            if (isDragged != true) {
+            System.out.println("isdragged =" + isDragged);
+            if (!isDragged) {
                 if (e.getButton() == MouseButton.PRIMARY) {
                     //clear on any selection stuff for the rest of the map
                     addSingleEdgeMode = false;
@@ -215,7 +216,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
                         addMultiEdgeMode = false;
                     } else if (dragMode) {
                         dragMode = false;
+                        scrollPane.setPannable(true);
                         dragModeUpdate("SINGLE");
+                        save_Button.setVisible(false);
                     } else if (selectedNode) {
                         selectedNode = false;
                         graph.wipeEdgeLines();
@@ -286,7 +289,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
                             if (!multiDragMode) {
                                 clearButton_Clicked();
                                 dragMode = false;
+                                scrollPane.setPannable(true);
                                 multiDragMode = true;
+                                save_Button.setVisible(true);
                                 resetScreen();
                                 unhookAllCircles();
                             }
@@ -749,6 +754,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 System.out.println("draggable");
                 save_Button.setVisible(true);
                 dragMode = true;
+                scrollPane.setPannable(false);
                 final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
                 dragCircle = c;
                 dragNode = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
@@ -931,6 +937,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
         //reset ui interaction
         dragMode = false;
+        scrollPane.setPannable(true);
         popoverShown = false;
         selectedNode = false;
 
@@ -1094,6 +1101,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
             if (floatingNodes.size() != floatingCircles.size()) {
                 System.out.println("something got really messed up, the " +
                         "list sizes are different");
+                save_Button.setVisible(false);
                 resetScreen();
                 return;
             }
@@ -1107,6 +1115,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
             resetScreen();
         } else {
             dragMode = false;
+            scrollPane.setPannable(true);
             dragModeUpdate("SINGLE");
             save_Button.setVisible(false);
         }
@@ -1211,6 +1220,10 @@ public class NewMainMapManagementController extends controllers.mapScene {
         for (Circle c: floatingCircles) {
             final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
             dragCircle = c;
+//            System.out.println("---");
+//            System.out.println("x: " + ((c.getLayoutX()/zoom)/widthRatio));
+//            System.out.println("y: " + ((c.getLayoutY()/zoom)/heightRatio));
+//            System.out.println("---");
             dragNode = MapController.getInstance().getCollectionOfNodes().getNode(
                     (int) ((c.getLayoutX()/zoom)/widthRatio),
                     (int) ((c.getLayoutY()/zoom)/heightRatio), currentFloor);
@@ -1326,7 +1339,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //when the mouse is clicked and dragged on the map
     public void dragDetected() {
-        isDragged = true;
+        //isDragged = true;
         System.out.println("detected");
     }
 }
