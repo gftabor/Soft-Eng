@@ -522,6 +522,7 @@ public class DatabaseController {
             e.printStackTrace();
             return false;
         }
+        System.out.println("delete from db was successfull");
         return true;
     }
 

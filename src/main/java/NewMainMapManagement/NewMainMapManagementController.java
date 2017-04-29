@@ -119,6 +119,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
     private boolean multiDragMode;
     private boolean popoverShown;
 
+    private int startfloor;
+
     private int permissionLevel;
 
     private final Circle[] temporaryButton = {null};
@@ -157,6 +159,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         //set default floor to start
         //we will use floor 1 for now
         currentFloor = 1;
+        startfloor = currentFloor;
         //set to admin level
         permissionLevel = 2;
 
@@ -732,6 +735,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 break;
             case 4:
                 addSingleEdgeMode = true;
+                startfloor = currentFloor;
 
                 firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
                         .getNode(x, y, currentFloor);
@@ -746,6 +750,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 break;
             case 5:
                 addMultiEdgeMode = true;
+                startfloor = currentFloor;
+
                 firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
                         .getNode(x, y, currentFloor);
                 if (firstNode == null) {
@@ -841,8 +847,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //handle a click on an edge.
     public void edgeClickRemove(int x1, int y1, int x2, int y2){
-        DBController.DatabaseController.getInstance().deleteEdge(x1,
-                y1, currentFloor, x2, y2, currentFloor);
+        DBController.DatabaseController.getInstance().deleteEdge(round((x1/zoom)/widthRatio),
+                round((y1/zoom)/heightRatio), currentFloor,
+                round((x2/zoom)/widthRatio), round((y2/zoom)/heightRatio), currentFloor);
         System.out.println("removed edge on click");
         resetScreen();
         if (firstNode != null) {
@@ -871,7 +878,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
                             .getNode(firstNode.getPosX(), firstNode.getPosY(), firstNode.getFloor());
                     //don't know if above method is successful
                     //must check again if firstNode is not null
-                    if (firstNode != null) {
+                    //only draw lines if on the same floor
+                    if (firstNode != null && startfloor == currentFloor) {
                         graph.createEdgeLines(firstNode.getEdgeList(), true, true);
                         c.toFront();
                     }
@@ -903,6 +911,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
             firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
                     .getNode(nodeEdgeX1, nodeEdgeY1, currentFloor);
             graph.createEdgeLines(firstNode.getEdgeList(), true, true);
+            c.toFront();
 
             //color the node as well
             if (lastColoredStart != null) {

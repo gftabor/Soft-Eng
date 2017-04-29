@@ -221,7 +221,7 @@ public class MapController {
     //used for pathfinding
     //creates a pathfinder and runs pathfinding on the startnode and the end node.
     //  returns: 0 if success, 1 if error
-    public ArrayList<Edge> requestPath(int permissionLevel) {
+    public ArrayList<Edge> requestPath(int permissionLevel, boolean useStairs) {
         Node startNode, endNode;
 
         //instantiates the collection if nothing is there yet
@@ -255,7 +255,7 @@ public class MapController {
         */
 
         pathfinder.algorithmSwitch(algorithm);
-        pathfinder.generatePath(startNode, endNode, permissionLevel);
+        double result = pathfinder.generatePath(startNode, endNode, permissionLevel, useStairs);
         return pathfinder.getPath();
 
     }

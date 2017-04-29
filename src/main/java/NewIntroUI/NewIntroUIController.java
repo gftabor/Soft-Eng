@@ -152,8 +152,6 @@ public class NewIntroUIController extends controllers.mapScene{
     private double endX;
     private double endY;
 
-    private boolean usingMap;
-
     private controllers.MapOverlay graph;
 
     private int selectionState;
@@ -188,6 +186,8 @@ public class NewIntroUIController extends controllers.mapScene{
     double currentHval = 0;
     double currentVval = 0;
 
+    private boolean useStairs;
+
     //ArrayList<Edge> zoomPath;
 
 
@@ -207,7 +207,7 @@ public class NewIntroUIController extends controllers.mapScene{
         //we will use floor 1 as default
         currentFloor = 1;
         c_Floor_Label.setText("1");
-        usingMap = false;
+        useStairs = false;
 
         System.out.println("width/height ratios: " + widthRatio + "/" + heightRatio);
 
@@ -251,7 +251,8 @@ public class NewIntroUIController extends controllers.mapScene{
 
     public void drawCircleList(ArrayList<Circle> circleList, double x, double y, Color color) {
         for (Circle c : circleList) {
-            if (c.getLayoutX() == x && c.getLayoutY() == y) {
+            System.out.println((c.getLayoutX()/zoom)/widthRatio);
+            if (round((c.getLayoutX()/zoom)/widthRatio) == x && round((c.getLayoutY()/zoom)/heightRatio) == y) {
                 c.setStrokeWidth(strokeRatio);
                 c.setRadius(graph.getLabelRadius() * sizeUpRatio);
                 c.setStroke(color);
@@ -663,7 +664,23 @@ public class NewIntroUIController extends controllers.mapScene{
                 //no multifloor pathfinding (simple)
 
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                path = mapController.requestPath(permissionLevel);
+                path = mapController.requestPath(permissionLevel, useStairs);
+
+                int startfloor = mapController.returnOriginalFloor();
+                if(startfloor != currentFloor) {
+                    c_Floor_Label.setText(Integer.toString(startfloor));
+
+                    //switch back to the original floor using the choicebox selection
+                    if (startfloor == 0) {
+                        floor_ChoiceBox.getSelectionModel().select(7);
+                    } else if (startfloor > 7) {
+                        floor_ChoiceBox.getSelectionModel().select(startfloor);
+
+                    } else {
+                        floor_ChoiceBox.getSelectionModel().select(startfloor - 1);
+                    }
+                }
+
                 graph.createEdgeLines(path, true, false);
                 graph.setPathfinding(1);
                 textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
@@ -708,11 +725,13 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //reset for next pathfinding session
         MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-        ArrayList<Edge> reqPath = mapController.requestPath(permissionLevel);
-        if (reqPath == null) { //can't find path, reset
+        ArrayList<Edge> reqPath = mapController.requestPath(permissionLevel, useStairs);
+        if (reqPath == null || reqPath.size() == 0) { //can't find path, reset
             System.out.println("Could not pathfind. Resetting now...");
             cancelButton_Clicked();
+            start_textField.setText("Kiosk");
         } else {
+            System.out.println("reqpath size" + reqPath.size());
             textDescription_TextFArea.setText(mapController.getTextDirections(reqPath, c_language));
 
             ArrayList<ArrayList<Edge>> fragPath;
@@ -850,6 +869,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //hide the continue button
         continueNew_Button.setVisible(false);
+        previous_Button.setVisible(false);
 
         //reset the textfields
         start_textField.setText("");
@@ -857,8 +877,6 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //reset any colors
 
-        //reset the usingMap
-        usingMap = false;
     }
 
     //switches all the labels and Buttons to english
@@ -1162,8 +1180,8 @@ public class NewIntroUIController extends controllers.mapScene{
     public void mapScroll(ScrollEvent event) {
         zoom = MapOverlay.getZoom();
         if (currentHval != 0) {
-            System.out.println("pre zoom currenthval: " + currentHval);
-            System.out.println("pre zoom currnetVval: " + currentVval);
+            //System.out.println("pre zoom currenthval: " + currentHval);
+            //System.out.println("pre zoom currnetVval: " + currentVval);
         }
         currentHval = scrollPane.getHvalue();
         currentVval = scrollPane.getVvalue();
@@ -1197,18 +1215,17 @@ public class NewIntroUIController extends controllers.mapScene{
         }
         if (graph.getPathfinding() == 1) {
             graph.createEdgeLines(path, true, false);
+            //set the end goal color
+            ArrayList<Circle> circleList;
+            circleList = graph.getButtonList();
+            drawCircleList(circleList, startX, startY, startColor);
+            drawCircleList(circleList, endX, endY, endColor);
+            System.out.println("drawing circles at "+startX+" and "+endX);
         } else if (graph.getPathfinding() == 2) {
             graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
         }
 
         if (selectionState == 2) {
-
-
-            //set the end goal color
-            ArrayList<Circle> circleList;
-            circleList = graph.getButtonList();
-            drawCircleList(circleList, startX * zoom, startY * zoom, startColor);
-            drawCircleList(circleList, endX * zoom, endY * zoom, endColor);
 
         }
         System.out.println("currenthval: " + currentHval);
@@ -1290,6 +1307,20 @@ public class NewIntroUIController extends controllers.mapScene{
         controller.setAdmin(LogInPerson_Label.getText());
 
         controller.setPermissionLevel(getPermissionLevel());
+    }
+
+    private int round(double input) {
+        long intPart;
+        double decimalPart;
+        intPart = (long) input;
+        decimalPart = input - intPart;
+
+        if (decimalPart >= 0.5d) {
+            return (int) intPart + 1;
+        } else {
+            return (int) intPart;
+        }
+
     }
 }
 
