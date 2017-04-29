@@ -83,8 +83,12 @@ public class aboutPageController extends controllers.AbsController{
             controller.spanishButtons_Labels();
             controller.setWelcome(loggedIn);
         }
-        controller.setPermissionLevel(1);
+        controller.setPermissionLevel(permissionLevel);
+        if(permissionLevel == 2){
+            controller.AdminButtons(c_language);
+        }
         controller.loginOrOut(1,c_language);
+
 
     }
 

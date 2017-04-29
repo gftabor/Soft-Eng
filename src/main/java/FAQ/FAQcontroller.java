@@ -65,6 +65,9 @@ public class FAQcontroller extends controllers.AbsController{
         }
         controller.setPermissionLevel(permissionLevel);
         controller.loginOrOut(1,c_language);
+        if(permissionLevel == 2){
+            controller.AdminButtons(c_language);
+        }
 
 
     }

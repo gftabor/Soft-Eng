@@ -827,7 +827,6 @@ public class NewIntroUIController extends controllers.mapScene{
     public void loginOrOut(int inOrOut, int lang){
         //The user is signing in
         if(inOrOut == 0){
-            FAQ_Button.setVisible(false);
             if(lang == 0){
                 admin_Button.setText("Sign Out");
             }else{

@@ -172,7 +172,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
                 currentFloor, permissionLevel);
-        
+
         //Zooming code
         /*NOTES: Basic zooming works
             need to do:
