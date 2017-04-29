@@ -1038,7 +1038,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewAdminManagementView.fxml");
         adminSignUp.adminSignUpController controller = loader.getController();
         //sends the current language to the next screen
-        /*controller.setCurrentLanguage(c_language);
+        controller.setCurrentLanguage(c_language);
         //Gets the current admin
         controller.setUsername(LogInPerson_Label.getText());
 
@@ -1052,7 +1052,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         }
 
         controller.setUpTreeView();
-        controller.setModeChoices();*/
+        controller.setModeChoices();
 
 
     }
