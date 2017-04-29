@@ -184,6 +184,9 @@ public class NewIntroUIController extends controllers.mapScene{
 
     private int permissionLevel;
 
+    double currentHval = 0;
+    double currentVval = 0;
+
     //ArrayList<Edge> zoomPath;
 
 
@@ -1132,6 +1135,12 @@ public class NewIntroUIController extends controllers.mapScene{
     //Let the user scroll through the map
     public void mapScroll(ScrollEvent event) {
         zoom = MapOverlay.getZoom();
+        if (currentHval != 0) {
+            System.out.println("pre zoom currenthval: " + currentHval);
+            System.out.println("pre zoom currnetVval: " + currentVval);
+        }
+        currentHval = scrollPane.getHvalue();
+        currentVval = scrollPane.getVvalue();
         if (event.getDeltaY() > 0) {
             if (zoom < 2.2) {
                 scrollPane.setFitToHeight(false);
@@ -1176,6 +1185,10 @@ public class NewIntroUIController extends controllers.mapScene{
             drawCircleList(circleList, endX * zoom, endY * zoom, endColor);
 
         }
+        System.out.println("currenthval: " + currentHval);
+        System.out.println("currnetVval: " + currentVval);
+        scrollPane.setHvalue(currentHval);
+        scrollPane.setVvalue(currentVval);
     }
 
 
