@@ -31,34 +31,10 @@ public class adminSignUpController extends controllers.AbsController{
     private AnchorPane backgroundAnchorPane;
 
     @FXML
-    private Label currentAdmin_Label;
-
-    @FXML
     private Label mainTitle_Label;
 
     @FXML
-    private Button MainMenu_Button;
-
-    @FXML
-    private TableView<adminTable> Table_TableView;
-
-    @FXML
-    private TableColumn<adminTable, Integer> ID_TableColumn;
-
-    @FXML
-    private TableColumn<adminTable, String> username_TableColumn;
-
-    @FXML
-    private TableColumn<adminTable, String> firstName_TableColumn;
-
-    @FXML
-    private TableColumn<adminTable, String> lastName_TableColumn;
-
-    @FXML
-    private TableColumn<adminTable, Integer> permissions_TableColumn;
-
-    @FXML
-    private Label queryStatus;
+    private Label currentAdmin_Label;
 
     @FXML
     private Label subTitle_Label;
@@ -73,10 +49,10 @@ public class adminSignUpController extends controllers.AbsController{
     private Label Mode_Label;
 
     @FXML
-    private ChoiceBox<String> mode_ChoiceBox;
+    private ChoiceBox<?> mode_ChoiceBox;
 
-   /* @FXML
-    private HBox ID_Label;*/
+    @FXML
+    private Label id_textField;
 
     @FXML
     private Label username_Label;
@@ -84,11 +60,8 @@ public class adminSignUpController extends controllers.AbsController{
     @FXML
     private TextField userName_TextField;
 
-   /* @FXML
-    private Label firstName_Label;*/
-
-   @FXML
-   private Label firstName_Lab;
+    @FXML
+    private Label firstName_Lab;
 
     @FXML
     private TextField firstName_TextField;
@@ -106,7 +79,7 @@ public class adminSignUpController extends controllers.AbsController{
     private PasswordField newPassword_TextField;
 
     @FXML
-    private TextField id_textField;
+    private CheckBox isAdmin_CheckBox;
 
     @FXML
     private Button cancel_Button;
@@ -115,8 +88,31 @@ public class adminSignUpController extends controllers.AbsController{
     private Button submit_Button;
 
     @FXML
-    private CheckBox isAdmin_CheckBox;
+    private TableView<adminTable> Table_TableView;
 
+    @FXML
+    private TableColumn<adminTable, Integer> ID_TableColumn;
+
+    @FXML
+    private TableColumn<adminTable, String> username_TableColumn;
+
+    @FXML
+    private TableColumn<adminTable, String> lastName_TableColumn;
+
+    @FXML
+    private TableColumn<adminTable, String> firstName_TableColumn;
+
+    @FXML
+    private TableColumn<adminTable, String> permissions_TableColumn;
+
+    @FXML
+    private Label queryStatus;
+
+    
+
+
+
+    /*
     private boolean selfSelected = false;
 
     int c_language = 0; //English by default
@@ -261,26 +257,6 @@ public class adminSignUpController extends controllers.AbsController{
     }
 
 
-    //Sends the admin back to the main menu
-    public void mainMenuButton_Clicked(){
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
-        adminMenuStart.adminMenuStartController controller = loader.getController();
-        //Set the correct username for the next scene
-        controller.setUsername(currentAdmin_Label.getText());
-        //sets the current language
-        controller.setCurrentLanguage(c_language);
-        //set up english labels
-        if(c_language == 0){
-            controller.englishButtons_Labels();
-
-            //set up spanish labels
-        }else if(c_language == 1){
-            controller.spanishButtons_Labels();
-        }
-        controller.setLanguageChoices();
-
-    }
-
     //Set the username coming from a scene
     public void setUsername(String user){
         currentAdmin_Label.setText(user);
@@ -378,7 +354,6 @@ public class adminSignUpController extends controllers.AbsController{
     public void englishButtons_Labels(){
         //Buttons
         c_language = 0;
-        MainMenu_Button.setText("Main Menu");
         cancel_Button.setText("Clear");
         submit_Button.setText("Submit");
 
@@ -392,7 +367,6 @@ public class adminSignUpController extends controllers.AbsController{
 
 
         //Labels
-        mainTitle_Label.setText("Administrators");
         subTitle_Label.setText("Manage Administrators");
         Mode_Label.setText("Mode:");
         username_Label.setText("Username:");
@@ -415,7 +389,6 @@ public class adminSignUpController extends controllers.AbsController{
     public void spanishButtons_Labels(){
         c_language = 1;
         //Buttons
-        MainMenu_Button.setText("Menu Principal");
         cancel_Button.setText("Borrar");
         submit_Button.setText("Enviar");
 
@@ -427,7 +400,6 @@ public class adminSignUpController extends controllers.AbsController{
         newPassword_TextField.setPromptText("Contrasena");
 
         //Labels
-        mainTitle_Label.setText("Administradores");
         subTitle_Label.setText("Control de Administradores");
         Mode_Label.setText("Modo:");
         username_Label.setText("Usuario:");
@@ -448,6 +420,27 @@ public class adminSignUpController extends controllers.AbsController{
     //sets the current language given information form other screens
     public void setCurrentLanguage(int i){
         c_language = i;
-    }
+    }*/
+
+    //Sends the admin back to the main menu
+    /*public void mainMenuButton_Clicked(){
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
+        adminMenuStart.adminMenuStartController controller = loader.getController();
+        //Set the correct username for the next scene
+        controller.setUsername(currentAdmin_Label.getText());
+        //sets the current language
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        controller.setLanguageChoices();
+
+    }*/
+
 
 }

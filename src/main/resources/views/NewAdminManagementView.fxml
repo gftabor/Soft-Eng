@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adminSignUp.adminSignUpController">
+   <children>
+      <BorderPane layoutX="-1.0" layoutY="-1.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="-1.0">
+         <top>
+            <VBox BorderPane.alignment="CENTER">
+               <children>
+                  <HBox styleClass="MainTitleColor">
+                     <children>
+                        <Button mnemonicParsing="false" styleClass="map-pin">
+                           <HBox.margin>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Label fx:id="mainTitle_Label" styleClass="mainTitle" text="Admin Management" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" styleClass="color-palette5" text="Map Management">
+                           <HBox.margin>
+                              <Insets bottom="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" styleClass="color-palette5" text="Admin Management">
+                           <HBox.margin>
+                              <Insets bottom="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" styleClass="color-palette5" text="Sign Out">
+                           <HBox.margin>
+                              <Insets bottom="4.0" right="8.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" prefWidth="150.0" styleClass="danger" text="EMERGENCY">
+                           <HBox.margin>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </top>
+         <left>
+            <VBox minWidth="-Infinity" prefHeight="720.0" prefWidth="386.0" styleClass="color-palette" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="currentAdmin_Label" text="Current Admin (Info)" />
+                  <HBox>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="subTitle_Label" styleClass="DirectorySubMenu" text="Manage Administrators" />
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <VBox styleClass="color-palette2">
+                     <children>
+                        <HBox>
+                           <children>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="search_textField" alignment="CENTER" prefWidth="240.0" promptText="Search" styleClass="show-hide-columns-button2">
+                                 <HBox.margin>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </HBox.margin>
+                              </TextField>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="info" text="x" textAlignment="CENTER">
+                                 <HBox.margin>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <HBox>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="error_LabelText" text="Error (Empty)" textFill="#8d2c2c" />
+                        <Region HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <VBox styleClass="Directory_VBox">
+                     <children>
+                        <HBox prefHeight="34.0" prefWidth="358.0">
+                           <children>
+                              <Label fx:id="Mode_Label" prefWidth="140.0" styleClass="DirectoryLabel" text="Mode:">
+                                 <HBox.margin>
+                                    <Insets bottom="4.0" left="4.0" right="3.0" top="6.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <ChoiceBox fx:id="mode_ChoiceBox" prefWidth="165.0" styleClass="Directory_TextField">
+                                 <HBox.margin>
+                                    <Insets bottom="1.0" right="1.0" top="1.0" />
+                                 </HBox.margin>
+                              </ChoiceBox>
+                           </children>
+                        </HBox>
+                        <Line endX="100.0" startX="-65.0" stroke="#979797">
+                           <VBox.margin>
+                              <Insets left="150.0" />
+                           </VBox.margin>
+                        </Line>
+                        <HBox>
+                           <children>
+                              <Label fx:id="id_textField" prefWidth="140.0" styleClass="DirectoryLabel" text="ID:">
+                                 <HBox.margin>
+                                    <Insets bottom="4.0" left="4.0" right="4.0" top="6.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField prefWidth="180.0" promptText="ID" styleClass="Directory_TextField">
+                                 <HBox.margin>
+                                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                                 </HBox.margin>
+                              </TextField>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                                 <HBox.margin>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <Line endX="100.0" startX="-65.0" stroke="#979797">
+                           <VBox.margin>
+                              <Insets left="150.0" />
+                           </VBox.margin>
+                        </Line>
+                        <HBox>
+                           <children>
+                              <Label fx:id="username_Label" prefWidth="140.0" styleClass="DirectoryLabel" text="Username">
+                                 <HBox.margin>
+                                    <Insets bottom="4.0" left="4.0" right="4.0" top="6.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="userName_TextField" prefWidth="180.0" promptText="Username" styleClass="Directory_TextField">
+                                 <HBox.margin>
+                                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                                 </HBox.margin>
+                              </TextField>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                                 <HBox.margin>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <Line endX="100.0" startX="-65.0" stroke="#979797">
+                           <VBox.margin>
+                              <Insets left="150.0" />
+                           </VBox.margin>
+                        </Line>
+                        <HBox>
+                           <children>
+                              <Label fx:id="firstName_Lab" prefWidth="140.0" styleClass="DirectoryLabel" text="First Name:">
+                                 <HBox.margin>
+                                    <Insets bottom="4.0" left="4.0" right="4.0" top="6.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="firstName_TextField" prefWidth="180.0" promptText="First Name" styleClass="Directory_TextField">
+                                 <HBox.margin>
+                                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                                 </HBox.margin>
+                              </TextField>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                                 <HBox.margin>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <Line endX="100.0" startX="-65.0" stroke="#979797">
+                           <VBox.margin>
+                              <Insets left="150.0" />
+                           </VBox.margin>
+                        </Line>
+                        <HBox>
+                           <children>
+                              <Label fx:id="lastName_Label" prefWidth="140.0" styleClass="DirectoryLabel" text="Last Name:">
+                                 <HBox.margin>
+                                    <Insets bottom="4.0" left="4.0" right="4.0" top="6.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="lastName_TextField" prefWidth="180.0" promptText="Last Name" styleClass="Directory_TextField">
+                                 <HBox.margin>
+                                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                                 </HBox.margin>
+                              </TextField>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                                 <HBox.margin>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <Line endX="100.0" startX="-65.0" stroke="#979797">
+                           <VBox.margin>
+                              <Insets left="150.0" />
+                           </VBox.margin>
+                        </Line>
+                        <HBox>
+                           <children>
+                              <Label fx:id="password_Label" prefWidth="140.0" styleClass="DirectoryLabel" text="New Password">
+                                 <HBox.margin>
+                                    <Insets bottom="4.0" left="4.0" right="4.0" top="6.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <PasswordField fx:id="newPassword_TextField" prefWidth="180.0" promptText="Password" styleClass="Directory_TextField">
+                                 <HBox.margin>
+                                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                                 </HBox.margin>
+                              </PasswordField>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                                 <HBox.margin>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <Line endX="100.0" startX="-65.0" stroke="#979797">
+                           <VBox.margin>
+                              <Insets bottom="4.0" left="150.0" />
+                           </VBox.margin>
+                        </Line>
+                        <HBox>
+                           <children>
+                              <Label prefWidth="140.0" styleClass="DirectoryLabel" text="Is Admin?">
+                                 <HBox.margin>
+                                    <Insets bottom="4.0" left="4.0" right="4.0" top="6.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <CheckBox fx:id="isAdmin_CheckBox" mnemonicParsing="false">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                              </CheckBox>
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <HBox>
+                     <children>
+                        <Button fx:id="cancel_Button" mnemonicParsing="false" prefWidth="80.0" styleClass="warning" text="Clear">
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="submit_Button" mnemonicParsing="false" prefWidth="80.0" styleClass="primary" text="Submit">
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="2.0" top="2.0" />
+               </BorderPane.margin>
+            </VBox>
+         </left>
+         <center>
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <TableView fx:id="Table_TableView" fixedCellSize="0.0" prefHeight="587.0" prefWidth="976.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+                     <columns>
+                        <TableColumn fx:id="ID_TableColumn" prefWidth="90.3900146484375" text="ID" />
+                        <TableColumn fx:id="username_TableColumn" prefWidth="125.26934814453125" text="Username" />
+                        <TableColumn fx:id="lastName_TableColumn" minWidth="0.0" prefWidth="108.76934814453125" text="Last Name" />
+                        <TableColumn fx:id="firstName_TableColumn" minWidth="0.0" prefWidth="159.5384521484375" text="First Name" />
+                        <TableColumn fx:id="permissions_TableColumn" prefWidth="90.3900146484375" text="Permissions" />
+                     </columns>
+                  </TableView>
+                  <Label fx:id="queryStatus" text="Query Status: " />
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+   <stylesheets>
+      <URL value="@../css/bootstrap3.css" />
+      <URL value="@../css/styles.css" />
+   </stylesheets>
+</AnchorPane>

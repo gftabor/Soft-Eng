@@ -110,7 +110,7 @@ public class adminMenuStartController extends controllers.AbsController{
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminSignUpView.fxml");
         adminSignUp.adminSignUpController controller = loader.getController();
         //sends the current language to the next screen
-        controller.setCurrentLanguage(c_language);
+        /*controller.setCurrentLanguage(c_language);
         //Gets the current admin
         controller.setUsername(username_Label.getText());
         //set up english labels
@@ -123,7 +123,7 @@ public class adminMenuStartController extends controllers.AbsController{
         }
 
         controller.setUpTreeView();
-        controller.setModeChoices();
+        controller.setModeChoices();*/
 
 
     }
