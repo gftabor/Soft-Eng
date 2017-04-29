@@ -252,7 +252,7 @@ public class NewIntroUIController extends controllers.mapScene{
     public void drawCircleList(ArrayList<Circle> circleList, double x, double y, Color color) {
         for (Circle c : circleList) {
             System.out.println((c.getLayoutX()/zoom)/widthRatio);
-            if (MapOverlay.round((c.getLayoutX()/zoom)/widthRatio) == x && MapOverlay.round((c.getLayoutY()/zoom)/heightRatio) == y) {
+            if (round((c.getLayoutX()/zoom)/widthRatio) == x && round((c.getLayoutY()/zoom)/heightRatio) == y) {
                 c.setStrokeWidth(strokeRatio);
                 c.setRadius(graph.getLabelRadius() * sizeUpRatio);
                 c.setStroke(color);
@@ -1305,6 +1305,20 @@ public class NewIntroUIController extends controllers.mapScene{
         controller.setAdmin(LogInPerson_Label.getText());
 
         controller.setPermissionLevel(getPermissionLevel());
+    }
+
+    private int round(double input) {
+        long intPart;
+        double decimalPart;
+        intPart = (long) input;
+        decimalPart = input - intPart;
+
+        if (decimalPart >= 0.5d) {
+            return (int) intPart + 1;
+        } else {
+            return (int) intPart;
+        }
+
     }
 }
 
