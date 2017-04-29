@@ -20,7 +20,7 @@ public class emergencyController extends controllers.AbsController{
     private AnchorPane backgroundAnchorPane;
 
     @FXML
-    private Label username_Label;
+    private Label title_Label;
 
     @FXML
     private Button mainMenu_Button;
@@ -29,22 +29,16 @@ public class emergencyController extends controllers.AbsController{
     private Button call_authorities;
 
     @FXML
-    private Pane pane;
-
-    @FXML
     private Label call_status;
 
     @FXML
-    private Label start_Label;
+    private ScrollPane scrollPane;
 
     @FXML
-    private Label exit_Label;
+    private Pane pane;
 
     @FXML
     private ImageView map_viewer;
-
-    @FXML
-    private ScrollPane scrollPane;
 
     //English by default
     int c_language = 0;
@@ -58,7 +52,6 @@ public class emergencyController extends controllers.AbsController{
 
     //Return the the patient main menu
     public void mainMenuButton_Clicked() {
-        System.out.println("The user clicked the main menu Button");
         //Switch screen
         //Change to patient menu
         FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
@@ -75,8 +68,6 @@ public class emergencyController extends controllers.AbsController{
         }
 
     }
-
-
 
     public void callAuthorities(){
         SmsSender mySMS = new SmsSender();
@@ -99,14 +90,12 @@ public class emergencyController extends controllers.AbsController{
         mainMenu_Button.setText("Main Menu");
         call_authorities.setText("Call Authorities");
 
-        //Change the labels
-        start_Label.setText("You are here");
-        exit_Label.setText("Exits");
+
 
 
     }
 
-    //switches all teh labels to spanish
+    //switches all the labels to spanish
     public void spanishButtons_Labels() {
         //change the current language to spanish
         c_language = 1;
@@ -114,10 +103,7 @@ public class emergencyController extends controllers.AbsController{
         //change the Buttons
         mainMenu_Button.setText("Menu Principal");
         call_authorities.setText("Llamar Autoridades");
-
-        //change the Labels
-        start_Label.setText("Tu estas aqui");
-        exit_Label.setText("Salidas");
+        
 
 
     }

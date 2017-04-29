@@ -28,12 +28,12 @@
                   </ImageView>
                   <VBox alignment="TOP_CENTER">
                      <children>
-                        <Label styleClass="DirectoryLabel" text="Developed By">
+                        <Label fx:id="developed_Label" styleClass="DirectoryLabel" text="Developed By">
                            <font>
                               <Font name="System Bold" size="27.0" />
                            </font>
                         </Label>
-                        <Label styleClass="DirectorySubMenu" text="Team E &quot;The Gray Griffins&quot;">
+                        <Label fx:id="SubTitle_Label" styleClass="DirectorySubMenu" text="Team E &quot;The Gray Griffins&quot;">
                            <font>
                               <Font size="22.0" />
                            </font>
@@ -69,7 +69,7 @@
                                  </font>
                               </Label>
                               <Label GridPane.rowIndex="4" />
-                              <Label styleClass="DirectoryLabel" text="Project Manager" GridPane.rowIndex="2">
+                              <Label fx:id="Description3_Label" styleClass="DirectoryLabel" text="Project Manager" GridPane.rowIndex="2">
                                  <font>
                                     <Font name="System Bold Italic" size="20.0" />
                                  </font>
@@ -79,7 +79,7 @@
                                     <Font size="20.0" />
                                  </font>
                               </Label>
-                              <Label styleClass="DirectoryLabel" text="Product Owner" GridPane.rowIndex="3">
+                              <Label fx:id="Description4_Label" styleClass="DirectoryLabel" text="Product Owner" GridPane.rowIndex="3">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -89,17 +89,17 @@
                                     <Font size="20.0" />
                                  </font>
                               </Label>
-                              <Label styleClass="DirectoryLabel" text="Test Engineer" GridPane.rowIndex="4">
+                              <Label fx:id="Description5_Label" styleClass="DirectoryLabel" text="Test Engineer" GridPane.rowIndex="4">
                                  <font>
                                     <Font name="System Bold Italic" size="20.0" />
                                  </font>
                               </Label>
-                              <Label styleClass="DirectoryLabel" text="Lead Software Engineer">
+                              <Label fx:id="Description1_Label" styleClass="DirectoryLabel" text="Lead Software Engineer">
                                  <font>
                                     <Font name="System Bold Italic" size="20.0" />
                                  </font>
                               </Label>
-                              <Label styleClass="DirectoryLabel" text="Assistant Lead Software Engineer" GridPane.rowIndex="1">
+                              <Label fx:id="Description2_Label" styleClass="DirectoryLabel" text="Assistant Lead Software Engineer" GridPane.rowIndex="1">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -109,7 +109,7 @@
                                     <Font size="20.0" />
                                  </font>
                               </Label>
-                              <Label styleClass="DirectoryLabel" text="Documentation Analyst" GridPane.rowIndex="5">
+                              <Label fx:id="Description6_Label" styleClass="DirectoryLabel" text="Documentation Analyst" GridPane.rowIndex="5">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -119,7 +119,7 @@
                                     <Font size="20.0" />
                                  </font>
                               </Label>
-                              <Label styleClass="DirectoryLabel" text="Software Engineers" GridPane.rowIndex="6">
+                              <Label fx:id="Description7_Label" styleClass="DirectoryLabel" text="Software Engineers" GridPane.rowIndex="6">
                                  <font>
                                     <Font name="System Bold Italic" size="20.0" />
                                  </font>
@@ -134,7 +134,7 @@
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                            </VBox.margin>
                         </GridPane>
-                        <Label alignment="CENTER" prefHeight="28.0" prefWidth="890.0" styleClass="DirectorySubMenu" text="WPI CS 3733 Software Engineering">
+                        <Label fx:id="subTitle_Label" alignment="CENTER" prefHeight="28.0" prefWidth="890.0" styleClass="DirectorySubMenu" text="WPI CS 3733 Software Engineering">
                            <font>
                               <Font name="System Bold" size="22.0" />
                            </font>
@@ -144,7 +144,7 @@
                         </Label>
                         <HBox alignment="CENTER" prefHeight="39.0" prefWidth="887.0">
                            <children>
-                              <Label styleClass="DirectoryLabel" text="Professor Wilson Wong">
+                              <Label fx:id="prof_Label" styleClass="DirectoryLabel" text="Professor Wilson Wong">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -152,7 +152,7 @@
                                     <Insets right="40.0" />
                                  </HBox.margin>
                               </Label>
-                              <Label styleClass="DirectoryLabel" text="Student Assistant Dominik Smreczak">
+                              <Label fx:id="SA_Label" styleClass="DirectoryLabel" text="Student Assistant Dominik Smreczak">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -165,21 +165,21 @@
                               <Insets bottom="50.0" />
                            </VBox.margin>
                         </HBox>
-                        <Label styleClass="DirectorySubMenu" text="Special Thanks To">
+                        <Label fx:id="subTitlle2_Lable" styleClass="DirectorySubMenu" text="Special Thanks To">
                            <font>
                               <Font name="System Bold Italic" size="22.0" />
                            </font>
                         </Label>
-                        <Label styleClass="DirectoryLabel" text="Brigham and Women's Faulkner Hospital">
+                        <Label fx:id="hosp_Label" styleClass="DirectoryLabel" text="Brigham and Women's Faulkner Hospital">
                            <font>
                               <Font size="34.0" />
                            </font>
                         </Label>
-                        <Label styleClass="DirectoryLabel" text="and">
+                        <Label fx:id="and_Label" styleClass="DirectoryLabel" text="and">
                            <font>
                               <Font size="18.0" />
                            </font></Label>
-                        <Label styleClass="DirectoryLabel" text="Andrew Shinn">
+                        <Label fx:id="hospital_Label" styleClass="DirectoryLabel" text="Andrew Shinn">
                            <font>
                               <Font size="20.0" />
                            </font>

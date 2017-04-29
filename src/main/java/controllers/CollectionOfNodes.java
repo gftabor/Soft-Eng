@@ -210,7 +210,7 @@ public class CollectionOfNodes {
                 }
             }
         }
-        System.out.println("about to return null   " +i);
+        System.out.println("about to return null   " + i);
         return null;
     }
 }
