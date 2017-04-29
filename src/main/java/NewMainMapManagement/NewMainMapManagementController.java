@@ -903,6 +903,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
             firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
                     .getNode(nodeEdgeX1, nodeEdgeY1, currentFloor);
             graph.createEdgeLines(firstNode.getEdgeList(), true, true);
+            c.toFront();
 
             //color the node as well
             if (lastColoredStart != null) {

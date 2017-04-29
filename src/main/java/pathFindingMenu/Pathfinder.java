@@ -62,7 +62,6 @@ public class Pathfinder {
             }
 
             if (!useStairs) {
-                System.out.println("not using stairs");
                 if (neighbor.getType().equalsIgnoreCase("Stair")) {
                     continue;
                 }
