@@ -460,9 +460,19 @@ public class NewMainMapManagementController extends controllers.mapScene {
             System.out.println("---");
             ArrayList<Node> neighborlist = new ArrayList<>();
 
+            System.out.println("++++++");
+            System.out.println("drag node posx:" + dragNode.getPosX());
+            System.out.println("drag node posy:" + dragNode.getPosY());
+            System.out.println("++++++");
+            System.out.println("math:" + (dragCircle.getLayoutX()/zoom)/widthRatio);
+            System.out.println("math:" + (dragCircle.getLayoutY()/zoom)/widthRatio);
+            System.out.println("++++++");
+            System.out.println("rounded:" + (int)((dragCircle.getLayoutX()/zoom)/widthRatio));
+            System.out.println("rounded:" + (int)((dragCircle.getLayoutY()/zoom)/widthRatio));
+            System.out.println("++++++");
             //need to see if actually moved it though.
-            if (dragNode.getPosX() != (dragCircle.getLayoutX()/zoom)/widthRatio ||
-                    dragNode.getPosY() != (dragCircle.getLayoutY()/zoom)/heightRatio ||
+            if (dragNode.getPosX() != (int)((dragCircle.getLayoutX()/zoom)/widthRatio) ||
+                    dragNode.getPosY() != (int)((dragCircle.getLayoutY()/zoom)/heightRatio) ||
                     dragNode.getFloor() != currentFloor) {
 
                 for (controllers.Edge thisEdge : dragNode.getEdgeList()) {
