@@ -291,6 +291,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                                 dragMode = false;
                                 scrollPane.setPannable(true);
                                 multiDragMode = true;
+                                scrollPane.setPannable(false);
                                 save_Button.setVisible(true);
                                 resetScreen();
                                 unhookAllCircles();
@@ -1097,6 +1098,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
     public void saveButton_Clicked(){
         if (multiDragMode) {
             multiDragMode = false;
+            scrollPane.setPannable(true);
 
             if (floatingNodes.size() != floatingCircles.size()) {
                 System.out.println("something got really messed up, the " +
@@ -1340,6 +1342,6 @@ public class NewMainMapManagementController extends controllers.mapScene {
     //when the mouse is clicked and dragged on the map
     public void dragDetected() {
         //isDragged = true;
-        System.out.println("detected");
+        //System.out.println("detected");
     }
 }
