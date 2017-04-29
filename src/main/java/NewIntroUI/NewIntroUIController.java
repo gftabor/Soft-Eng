@@ -136,6 +136,15 @@ public class NewIntroUIController extends controllers.mapScene{
     @FXML
     private Button FAQ_Button;
 
+    @FXML
+    private Button DirectoryMan_Button;
+
+    @FXML
+    private Button adminMan_Button;
+
+    @FXML
+    private Button MapMan_Button;
+
 
 
 
@@ -1320,6 +1329,99 @@ public class NewIntroUIController extends controllers.mapScene{
         } else {
             return (int) intPart;
         }
+
+    }
+
+    //Sets the buttons to the admin
+    public void AdminButtons(int lang){
+        if(lang == 0){
+            MapMan_Button.setText("Map Management");
+            adminMan_Button.setText("Admin Management");
+            DirectoryMan_Button.setText("Directory Management");
+        }else{
+            MapMan_Button.setText("Control de Mapa");
+            adminMan_Button.setText("Control de Admins");
+            DirectoryMan_Button.setText("Control del Directorio");
+        }
+
+        MapMan_Button.setDisable(false);
+        adminMan_Button.setDisable(false);
+        DirectoryMan_Button.setDisable(false);
+
+        MapMan_Button.setVisible(true);
+        adminMan_Button.setVisible(true);
+        DirectoryMan_Button.setVisible(true);
+    }
+
+    //sends the user to the map management
+    public void mapMan_Clicked(){
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewMainMapManagementView.fxml");
+        NewMainMapManagement.NewMainMapManagementController controller = loader.getController();
+        //Set the correct username for the next scene
+
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        controller.setUserString(LogInPerson_Label.getText());
+        controller.setPermissionLevel(2);
+
+
+    }
+
+    //sends the user to the admin management
+    public void adminMan_Clicked(){
+//Change to patient menu
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewAdminManagementView.fxml");
+        adminSignUp.adminSignUpController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //Gets the current admin
+        controller.setUsername(LogInPerson_Label.getText());
+
+        //set up english labels
+
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+
+        controller.setUpTreeView();
+        controller.setModeChoices();
+
+    }
+
+    //sends the user to the directory management
+    public void directoryMan_Clicked(){
+
+        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/NewDirectoryManagementView.fxml");
+        mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
+
+        //sets the current language
+        controller.setC_language(c_language);
+
+        controller.setModeChoices();
+        controller.setRoomChoices();
+        controller.setUpTreeView();
+        controller.setUser(LogInPerson_Label.getText());
+
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        //Set permissions of admin
+        controller.setPermissionLevel(2);
+
 
     }
 }

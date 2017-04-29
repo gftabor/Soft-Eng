@@ -44,6 +44,11 @@
                               <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
+                        <Button fx:id="pathFinding_Button" mnemonicParsing="false" onMouseClicked="#pathFindingButton_Clicked" prefWidth="150.0" styleClass="color-palette5" text="PathFinding">
+                           <HBox.margin>
+                              <Insets bottom="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
                         <Button fx:id="signOut_Button" mnemonicParsing="false" onMouseClicked="#signOutButton_Clicked" styleClass="color-palette5" text="Sign Out">
                            <HBox.margin>
                               <Insets bottom="4.0" right="8.0" top="4.0" />

@@ -40,17 +40,32 @@
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="admin_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefWidth="130.0" styleClass="color-palette5" text="Administrator">
+                        <Button fx:id="DirectoryMan_Button" disable="true" mnemonicParsing="false" onMouseClicked="#directoryMan_Clicked" styleClass="color-palette5" text="Directory Management" visible="false">
+                           <HBox.margin>
+                              <Insets bottom="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="adminMan_Button" disable="true" mnemonicParsing="false" onMouseClicked="#adminMan_Clicked" styleClass="color-palette5" text="Admin Management" visible="false">
+                           <HBox.margin>
+                              <Insets bottom="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="MapMan_Button" disable="true" mnemonicParsing="false" onMouseClicked="#mapMan_Clicked" styleClass="color-palette5" text="Map Management" visible="false">
+                           <HBox.margin>
+                              <Insets bottom="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="admin_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" styleClass="color-palette5" text="Administrator">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="about_Button" mnemonicParsing="false" onMouseClicked="#aboutButton_clicked" prefWidth="100.0" styleClass="color-palette5" text="About">
+                        <Button fx:id="about_Button" mnemonicParsing="false" onMouseClicked="#aboutButton_clicked" styleClass="color-palette5" text="About">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefWidth="150.0" styleClass="danger" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" styleClass="danger" text="EMERGENCY">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>

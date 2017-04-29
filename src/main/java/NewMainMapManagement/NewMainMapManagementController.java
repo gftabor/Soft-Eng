@@ -88,6 +88,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
     @FXML
     private Button save_Button;
 
+    @FXML
+    private Button pathFinding_Button;
+
     boolean second = false;
 
 
@@ -1391,4 +1394,30 @@ public class NewMainMapManagementController extends controllers.mapScene {
         }
 
     }
+
+
+    //Sends the person to pathfinding with admin permission
+    public void pathFindingButton_Clicked(){
+        System.out.println("Logging in Employee");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
+        //patientMenuStart.patientMenuStartController controller = loader.getController();
+        NewIntroUI.NewIntroUIController controller = loader.getController();
+        //sets the current language
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            controller.setWelcome(LogInPerson_Label.getText());
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+            controller.setWelcome(LogInPerson_Label.getText());
+        }
+        controller.setPermissionLevel(2);
+        controller.loginOrOut(0,c_language);
+        controller.AdminButtons(c_language);
+    }
+
+
+
 }
