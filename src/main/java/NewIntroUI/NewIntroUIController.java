@@ -179,9 +179,6 @@ public class NewIntroUIController extends controllers.mapScene{
     double heightRatio = (1000.0/489.0);
     double widthRatio = (1600.0/920.0);
 
-    double dragNewX, dragNewY, dragOldX, dragOldY;
-    javafx.scene.Node selected;
-
     private int permissionLevel;
 
     double currentHval = 0;
@@ -217,8 +214,8 @@ public class NewIntroUIController extends controllers.mapScene{
         map_viewer.setFitHeight(489.0*heightRatio);
         map_viewer.setFitWidth(920.0*widthRatio);
 
-        MapOverlay.setWidthRatio(widthRatio);
-        MapOverlay.setHeightRatio(heightRatio);
+        graph.setWidthRatio(widthRatio);
+        graph.setHeightRatio(heightRatio);
 
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), false,
                 currentFloor, permissionLevel);
