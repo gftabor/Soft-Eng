@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
  * Created by mylena on 4/28/17.
  */
 public class LogoutMemento {
-    private adminMenuStart.adminMenuStartController c = new adminMenuStartController();
     private NewMainMapManagementController mmc = new NewMainMapManagementController();
 
     public LogoutMemento() {}

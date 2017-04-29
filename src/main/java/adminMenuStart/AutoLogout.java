@@ -16,18 +16,14 @@ public class AutoLogout {
 
     //public void autoLogout() { m.autoLogout();}
 
-    public void checkActivity() {
+    public void checkActivity() throws InterruptedException {
 
         Caretaker c = new Caretaker();
         LogoutMemento lm = new LogoutMemento();
 
         synchronized (c) {
             do {
-                try {
                     c.wait(10);
-                } catch (InterruptedException e) {
-                    System.out.println("Error waitin on yo ass");
-                }
             } while(c.isM());
 
             lm.autoLogout();

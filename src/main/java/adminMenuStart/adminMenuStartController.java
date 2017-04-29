@@ -105,27 +105,6 @@ public class adminMenuStartController extends controllers.AbsController{
 
     }
 
-    public void autoLogout() {
-        System.out.println("The system has automatically logged off due to inactivity.");
-        //backgroundAnchorPane = new AnchorPane();
-        //Change to patient menu
-        //if(backgroundAnchorPane == null) {
-        //    System.out.println("backgroundAnchorPane is null");
-        //} else {
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/NewIntroUIView.fxml"));
-            NewIntroUI.NewIntroUIController controller = loader.getController();
-            //sends the current language to the next screen
-            controller.setCurrentLanguage(c_language);
-            //set up english labels
-            if (c_language == 0) {
-                controller.englishButtons_Labels();
-                //set up spanish labels
-            } else if (c_language == 1) {
-                controller.spanishButtons_Labels();
-            }
-        //}
-    }
 
     //Changes the scene to the admin sign up view
     public void addAdmin(){
