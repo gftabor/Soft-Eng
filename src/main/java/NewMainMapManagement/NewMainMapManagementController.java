@@ -206,7 +206,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
         // creates a node when clicking the map
         map_viewer.setOnMouseClicked((MouseEvent e) -> {
-            if (isDragged != true) {
+            System.out.println("isdragged =" + isDragged);
+            if (!isDragged) {
                 if (e.getButton() == MouseButton.PRIMARY) {
                     //clear on any selection stuff for the rest of the map
                     addSingleEdgeMode = false;
@@ -216,6 +217,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                     } else if (dragMode) {
                         dragMode = false;
                         dragModeUpdate("SINGLE");
+                        save_Button.setVisible(false);
                     } else if (selectedNode) {
                         selectedNode = false;
                         graph.wipeEdgeLines();
@@ -287,6 +289,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                                 clearButton_Clicked();
                                 dragMode = false;
                                 multiDragMode = true;
+                                save_Button.setVisible(true);
                                 resetScreen();
                                 unhookAllCircles();
                             }
@@ -1094,6 +1097,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
             if (floatingNodes.size() != floatingCircles.size()) {
                 System.out.println("something got really messed up, the " +
                         "list sizes are different");
+                save_Button.setVisible(false);
                 resetScreen();
                 return;
             }
@@ -1211,6 +1215,10 @@ public class NewMainMapManagementController extends controllers.mapScene {
         for (Circle c: floatingCircles) {
             final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
             dragCircle = c;
+//            System.out.println("---");
+//            System.out.println("x: " + ((c.getLayoutX()/zoom)/widthRatio));
+//            System.out.println("y: " + ((c.getLayoutY()/zoom)/heightRatio));
+//            System.out.println("---");
             dragNode = MapController.getInstance().getCollectionOfNodes().getNode(
                     (int) ((c.getLayoutX()/zoom)/widthRatio),
                     (int) ((c.getLayoutY()/zoom)/heightRatio), currentFloor);
@@ -1326,7 +1334,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //when the mouse is clicked and dragged on the map
     public void dragDetected() {
-        isDragged = true;
+        //isDragged = true;
         System.out.println("detected");
     }
 }
