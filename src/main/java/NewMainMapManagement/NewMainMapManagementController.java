@@ -198,7 +198,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         });
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
-        scrollPane.setPannable(true);
+        scrollPane.setPannable(false);
 
 
         // creates a node when clicking the map
@@ -224,14 +224,14 @@ public class NewMainMapManagementController extends controllers.mapScene {
                         }
                     } else if (popoverShown) {
                         popoverShown = false;
-                        if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)) {
+                        if (temporaryButton[0] != null && !databaseController.isActualLocation((int) ((temporaryButton[0].getLayoutX()/zoom)/widthRatio), (int) ((temporaryButton[0].getLayoutY()/zoom)/heightRatio), currentFloor)) {
                             admin_FloorPane.getChildren().remove(temporaryButton[0]);
                         }
                     } else {
                         if (!multiDragMode) {
                             graph.wipeEdgeLines();
 
-                            if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)) {
+                            if (temporaryButton[0] != null && !databaseController.isActualLocation((int) ((temporaryButton[0].getLayoutX()/zoom)/widthRatio), (int) ((temporaryButton[0].getLayoutY()/zoom)/heightRatio), currentFloor)) {
                                 admin_FloorPane.getChildren().remove(temporaryButton[0]);
                             }
                             btK = new Circle(labelRadius);//new Button();
@@ -452,12 +452,13 @@ public class NewMainMapManagementController extends controllers.mapScene {
         if (dragNode != null) {
             System.out.println("drag done");
             System.out.println("old: x= " + dragNode.getPosX() + ", y= " + dragNode.getPosY());
-            System.out.println("new: x= " + dragCircle.getLayoutX() + ", y= " + dragCircle.getLayoutY());
+            System.out.println("new: x= " + (dragCircle.getLayoutX()/zoom)/widthRatio + ", y= " + (dragCircle.getLayoutY()/zoom)/heightRatio);
             System.out.println("---");
             ArrayList<Node> neighborlist = new ArrayList<>();
 
             //need to see if actually moved it though.
-            if (dragNode.getPosX() != dragCircle.getLayoutX() || dragNode.getPosY() != dragCircle.getLayoutY() ||
+            if (dragNode.getPosX() != (dragCircle.getLayoutX()/zoom)/widthRatio ||
+                    dragNode.getPosY() != (dragCircle.getLayoutY()/zoom)/heightRatio ||
                     dragNode.getFloor() != currentFloor) {
 
                 for (controllers.Edge thisEdge : dragNode.getEdgeList()) {
@@ -469,24 +470,27 @@ public class NewMainMapManagementController extends controllers.mapScene {
                             thisEdge.getEndNode().getPosY(), thisEdge.getEndNode().getFloor());
                 }
 
-                databaseController.newNode((int) dragCircle.getLayoutX(), (int) dragCircle.getLayoutY(), currentFloor, dragNode.getIsHidden(),
+                databaseController.newNode((int) ((dragCircle.getLayoutX()/zoom)/widthRatio),
+                        (int) ((dragCircle.getLayoutY()/zoom)/heightRatio), currentFloor, dragNode.getIsHidden(),
                         dragNode.getEnabled(), dragNode.getType(), dragNode.getName(),
                         "SOFTENGWPIsjijflkjjfjjfklaljjjfalkjooejallajjjflijjfflRyanIsAwesome",
                         dragNode.getPermissionLevel());
 
                 databaseController.transferNodeLoc(dragNode.getPosX(), dragNode.getPosY(), dragNode.getFloor(),
-                        (int) dragCircle.getLayoutX(), (int) dragCircle.getLayoutY(), currentFloor);
+                        (int) ((dragCircle.getLayoutX()/zoom)/widthRatio),
+                        (int) ((dragCircle.getLayoutY()/zoom)/heightRatio), currentFloor);
 
                 databaseController.deleteNode(dragNode.getPosX(), dragNode.getPosY(), currentFloor);
 
-                databaseController.updateNode((int) dragCircle.getLayoutX(), (int) dragCircle.getLayoutY(), currentFloor, dragNode.getIsHidden(),
+                databaseController.updateNode((int) ((dragCircle.getLayoutX()/zoom)/widthRatio),
+                        (int) ((dragCircle.getLayoutY()/zoom)/heightRatio), currentFloor, dragNode.getIsHidden(),
                         dragNode.getEnabled(), dragNode.getType(), dragNode.getName(),
                         dragNode.getRoomNum(), dragNode.getPermissionLevel());
 
                 //add the edges to the new node
                 for (Node n : neighborlist) {
-                    DatabaseController.getInstance().newEdge((int) dragCircle.getLayoutX(),
-                            (int) dragCircle.getLayoutY(), currentFloor,
+                    DatabaseController.getInstance().newEdge((int) ((dragCircle.getLayoutX()/zoom)/widthRatio),
+                            (int) ((dragCircle.getLayoutY()/zoom)/heightRatio), currentFloor,
                             n.getPosX(), n.getPosY(), n.getFloor());
                 }
             }
@@ -555,7 +559,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
         AnchorPane.setTopAnchor(grid, 10.0);
 
         if (mode.equals("Edit")){
-            ResultSet rset = databaseController.getNode((int) btK.getLayoutX(), (int) btK.getLayoutY(), currentFloor);
+            ResultSet rset = databaseController.getNode(
+                    (int) ((btK.getLayoutX()/zoom)/widthRatio), (int) ((btK.getLayoutY()/zoom)/heightRatio), currentFloor);
             try {
                 while (rset.next()){
                     nodeName.setText(rset.getString("NAME"));
@@ -843,7 +848,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
             //remove any temporary nodes
             if (popoverShown) {
-                if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)) {
+                if (temporaryButton[0] != null && !databaseController.isActualLocation(
+                        (int) ((temporaryButton[0].getLayoutX()/zoom)/widthRatio),
+                        (int) ((temporaryButton[0].getLayoutY()/zoom)/heightRatio), currentFloor)) {
                     admin_FloorPane.getChildren().remove(temporaryButton[0]);
                 }
 
@@ -946,7 +953,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
                         currentFloor, permissionLevel);
 
                 //delete any old temp buttons
-                if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)) {
+                if (temporaryButton[0] != null && !databaseController.isActualLocation(
+                        (int) ((temporaryButton[0].getLayoutX()/zoom)/widthRatio),
+                        (int) ((temporaryButton[0].getLayoutY()/zoom)/heightRatio), currentFloor)) {
                     admin_FloorPane.getChildren().remove(temporaryButton[0]);
                 }
             }
@@ -1188,7 +1197,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
         for (Circle c: floatingCircles) {
             final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
             dragCircle = c;
-            dragNode = MapController.getInstance().getCollectionOfNodes().getNode((int) c.getLayoutX(), (int) c.getLayoutY(), currentFloor);
+            dragNode = MapController.getInstance().getCollectionOfNodes().getNode(
+                    (int) ((c.getLayoutX()/zoom)/widthRatio),
+                    (int) ((c.getLayoutY()/zoom)/heightRatio), currentFloor);
             if (dragNode == null) {
                 System.out.println("ERROR GETTING DRAG NODE");
                 continue;
@@ -1198,14 +1209,15 @@ public class NewMainMapManagementController extends controllers.mapScene {
             c.setOnMouseDragged(e -> {
                 if (e.getSceneX() > paneBounds.getMinX() && e.getSceneX() < paneBounds.getMaxX()
                         && e.getSceneY() > paneBounds.getMinY() && e.getSceneY() < paneBounds.getMaxY()) {
-                    c.setLayoutX((e.getSceneX() - paneBounds.getMinX()));
-                    c.setLayoutY((e.getSceneY() - paneBounds.getMinY()));
+                    c.setLayoutX(e.getSceneX() - paneBounds.getMinX());
+                    c.setLayoutY(e.getSceneY() - paneBounds.getMinY());
                 }
             });
 
             floatingNodes.add(dragNode);
         }
     }
+
     public void changeZoom(){
         graph.setZoom(zoom);
         admin_FloorPane.setPrefWidth(origPaneWidth*zoom*widthRatio);
