@@ -889,6 +889,11 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 //true ot see nodes false otherwise
                 graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true,
                         currentFloor, permissionLevel);
+
+                //delete any old temp buttons
+                if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)) {
+                    admin_FloorPane.getChildren().remove(temporaryButton[0]);
+                }
             }
         });
 
