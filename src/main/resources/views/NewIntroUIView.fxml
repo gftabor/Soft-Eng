@@ -56,7 +56,7 @@
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" styleClass="color-palette5" text="?">
+                        <Button fx:id="FAQ_Button" mnemonicParsing="false" styleClass="color-palette5" text="?">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
@@ -69,7 +69,7 @@
          <left>
             <VBox minWidth="-Infinity" prefHeight="655.0" prefWidth="314.0" styleClass="color-palette" BorderPane.alignment="CENTER">
                <children>
-                  <Label fx:id="LogInPerson_Label" text="Current LogIn (Empty)" />
+                  <Label fx:id="LogInPerson_Label" />
                   <VBox minWidth="-Infinity" prefHeight="100.0" prefWidth="283.0" styleClass="color-palette2">
                      <children>
                         <HBox>
@@ -131,7 +131,7 @@
                                  <HBox.margin>
                                     <Insets right="4.0" top="1.0" />
                                  </HBox.margin></Button>
-                              <Button fx:id="submit_Button" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" style="-fx-background-color: ;" styleClass="menu" text="Submit">
+                              <Button fx:id="submit_Button" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" styleClass="menu" text="Submit">
                                  <HBox.margin>
                                     <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                  </HBox.margin>

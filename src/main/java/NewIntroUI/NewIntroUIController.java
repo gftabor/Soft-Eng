@@ -133,6 +133,8 @@ public class NewIntroUIController extends controllers.mapScene{
     @FXML
     private Button cancelFirst_Button;
 
+    @FXML
+    private Button FAQ_Button;
 
 
 
@@ -569,7 +571,15 @@ public class NewIntroUIController extends controllers.mapScene{
     public void aboutButton_clicked() {
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/aboutPageView.fxml");
         aboutPage.aboutPageController controller = loader.getController();
-        //controller.setC_language(c_language);
+        controller.//sets the current language given information form other screens
+        setCurrentLanguage(c_language);
+        if(c_language == 0){
+            controller.englishLabels();
+        }else{
+            controller.spanishLabels();
+        }
+        controller.setPermissionLevel(getPermissionLevel());
+        controller.setAdmin(LogInPerson_Label.getText());
 
     }
 
@@ -789,7 +799,7 @@ public class NewIntroUIController extends controllers.mapScene{
     public void loginOrOut(int inOrOut, int lang){
         //The user is signing in
         if(inOrOut == 0){
-
+            FAQ_Button.setVisible(false);
             if(lang == 0){
                 admin_Button.setText("Sign Out");
             }else{
@@ -810,7 +820,7 @@ public class NewIntroUIController extends controllers.mapScene{
     //Checks if the emergency button was clicked
     public void emergencyButton_Clicked() {
         System.out.println("The user has clicked the emergency Button");
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewEmergencyView.fxml");
         emergency.emergencyController controller = loader.getController();
         //sends the current language to the next screen
         controller.setCurrentLanguage(c_language);

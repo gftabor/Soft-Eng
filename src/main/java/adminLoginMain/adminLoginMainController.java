@@ -94,6 +94,7 @@ public class adminLoginMainController extends controllers.AbsController{
                     controller.setWelcome("Empleado: " + username);
                 }
                 controller.setPermissionLevel(1);
+                controller.loginOrOut(0,c_language);
 
             }else{
                 System.out.println("Logging in Regular User. What??");

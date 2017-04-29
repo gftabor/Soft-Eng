@@ -111,6 +111,18 @@ public class adminSignUpController extends controllers.AbsController{
     @FXML
     private Label queryStatus;
 
+    @FXML
+    private Button mapManagement_Button;
+
+    @FXML
+    private Button directoryManagement_Button;
+
+    @FXML
+    private Button signOut_Button;
+
+    @FXML
+    private Button emergency_Button;
+
 
 
 
@@ -137,6 +149,84 @@ public class adminSignUpController extends controllers.AbsController{
     }
 
 
+    //Sends the user to the emergency scene
+    public void emergencyButton_Clicked(){
+
+    }
+
+    //logs the user back to patient main view
+    public void signOutButton_Clicked(){
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
+        //patientMenuStart.patientMenuStartController controller = loader.getController();
+        NewIntroUI.NewIntroUIController controller = loader.getController();
+        //sets the current language
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        //set permissions back
+        controller.setPermissionLevel(0);
+        controller.loginOrOut(1,c_language);
+        //set label to empty
+        controller.setWelcome("");
+
+
+    }
+
+    //Sends the user to the map management scene
+    public void mapManagementButton_Clicked(){
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewMainMapManagementView.fxml");
+        NewMainMapManagement.NewMainMapManagementController controller = loader.getController();
+        controller.setC_language(c_language);
+        //Set the correct username for the next scene
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        controller.setUserString(currentAdmin_Label.getText());
+        controller.setPermissionLevel(2);
+
+    }
+
+    //Sends the user to the dircetory management scene
+    public void directoryManagementButton_Clicked(){
+        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/NewDirectoryManagementView.fxml");
+        mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
+
+        //sets the current language
+        controller.setC_language(c_language);
+
+        controller.setModeChoices();
+        controller.setRoomChoices();
+        controller.setUpTreeView();
+        controller.setUser(currentAdmin_Label.getText());
+
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        //Set permissions of admin
+        controller.setPermissionLevel(2);
+
+
+    }
+
+
+
+
+
     //Deal with the submit button clicked
     public void submitButton_Clicked(){
         if(mode_ChoiceBox.getValue().equals("Add") || mode_ChoiceBox.getValue().equals("Agregar")){
@@ -154,6 +244,7 @@ public class adminSignUpController extends controllers.AbsController{
         clearInputs();
 
     }
+
     //adds the admin into the database
     public void addAdmin(){
         try {
@@ -361,6 +452,10 @@ public class adminSignUpController extends controllers.AbsController{
         c_language = 0;
         cancel_Button.setText("Clear");
         submit_Button.setText("Submit");
+        mapManagement_Button.setText("Map Management");
+        directoryManagement_Button.setText("Directory Management");
+        signOut_Button.setText("Sign Out");
+        emergency_Button.setText("EMERGENCY");
 
 
         //TextField
@@ -398,6 +493,11 @@ public class adminSignUpController extends controllers.AbsController{
         //Buttons
         cancel_Button.setText("Borrar");
         submit_Button.setText("Enviar");
+        mapManagement_Button.setText("Control de Mapas");
+        directoryManagement_Button.setText("Control de Directorio");
+        signOut_Button.setText("Salir");
+        emergency_Button.setText("EMERGENCIA");
+
 
         //TextField
         search_textField.setPromptText("buscar");
