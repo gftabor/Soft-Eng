@@ -1230,8 +1230,13 @@ public class NewIntroUIController extends controllers.mapScene{
             drawCircleList(circleList, startX, startY, startColor);
             drawCircleList(circleList, endX, endY, endColor);
             System.out.println("drawing circles at "+startX+" and "+endX);
+
         } else if (graph.getPathfinding() == 2) {
             graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
+            Node startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
+            Node endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText().split(", ")[1]);
+
+
         }
 
         if (selectionState == 2) {
