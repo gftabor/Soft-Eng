@@ -1280,6 +1280,15 @@ public class NewIntroUIController extends controllers.mapScene{
     public void setZoom(double zoom) {
         this.zoom = zoom;
     }
+
+
+    public void FAQ_button_clicked() {
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewFAQ.fxml");
+        FAQ.FAQcontroller controller = loader.getController();
+        controller.setAdmin(LogInPerson_Label.getText());
+
+        controller.setPermissionLevel(getPermissionLevel());
+    }
 }
 
 
