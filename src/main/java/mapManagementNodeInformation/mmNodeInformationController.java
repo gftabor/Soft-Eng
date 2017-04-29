@@ -120,6 +120,9 @@ public class mmNodeInformationController extends controllers.AbsController {
     @FXML
     private Label lastName_Label;
 
+    @FXML
+    private Button mapManagement_Button;
+
 
     int ID;
 
@@ -144,6 +147,8 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     //set to english by default (english = 0, spanish = 1)
     int c_language = 0;
+
+    private int permissionLevel;
 
 
     //get an instance of database controller
@@ -555,12 +560,14 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     //Sets the user in the scene
     public void setUser(String user) {
+
         currentAdmin_Label.setText(user);
     }
 
 
     //Sets the current mode whene refreshing the scene
     public void setCurrentMode(int i) {
+
         mode_ChoiceBox.getSelectionModel().select(i);
     }
 
@@ -600,11 +607,12 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     //Changes the buttons and labels to english
     public void englishButtons_Labels(){
+        setC_language(0);
         //Buttons
-        mainMenu_Button.setText("Main Menu");
         emergency_Button.setText("EMERGENCY");
         submit_Button.setText("Submit");
         cancel_Button.setText("Clear");
+        mapManagement_Button.setText("Map Management");
 
         //Labels
         title_Label.setText("Directory Management");
@@ -621,7 +629,6 @@ public class mmNodeInformationController extends controllers.AbsController {
         room_TextField.setPromptText("room");
         Firstname_TextField.setPromptText("First Name");
         lastName_TextField.setPromptText("Last Name");
-        //department_TextField.setPromptText("Department");
         id_TextField.setPromptText("ID");
 
         //Table columns
@@ -635,12 +642,12 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     //Changes the buttons and labels to spanish
     public void spanishButtons_Labels(){
-
+        setC_language(1);
         //Buttons
-        mainMenu_Button.setText("Menú Principal ");
         emergency_Button.setText("EMERGENCIA");
         submit_Button.setText("Listo");
         cancel_Button.setText("Borrar");
+        mapManagement_Button.setText("Control de Mapas");
 
         //Labels
         title_Label.setText("Directorio");
@@ -672,6 +679,42 @@ public class mmNodeInformationController extends controllers.AbsController {
     public void saveToDatabase(String d, String t ){
         //DB stuff
         System.out.println("DO DATABASE STUFF PLEASE");
+    }
+
+    //Gets the permissions
+    public int getPermissionLevel() {
+
+        return permissionLevel;
+    }
+
+    //Sets the permissions
+    public void setPermissionLevel(int permissionLevel) {
+        this.permissionLevel = permissionLevel;
+        System.out.println("Setting permission level to: " + permissionLevel);
+        if(this.permissionLevel >= 1){
+            //admin_Button.setVisible(false);
+            //TODO FIX THIS
+            //signOut_Button.setVisible(true);
+        }
+    }
+
+    //Changes scene bakc to map management
+    public void mapManagementButton_Clicked(){
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewMainMapManagementView.fxml");
+        NewMainMapManagement.NewMainMapManagementController controller = loader.getController();
+        //Set the correct username for the next scene
+
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        controller.setUserString("Admin: " + currentAdmin_Label.getText());
+        controller.setPermissionLevel(2);
+
     }
 
 }

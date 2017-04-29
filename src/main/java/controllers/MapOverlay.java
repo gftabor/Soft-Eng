@@ -32,6 +32,7 @@ public class MapOverlay {
     private Line lne;
     private Circle location;
     private static final double labelRadius = 6.8;
+    private static final double labelTypeRadius = 15;
     private final double sizeUpRatio = 1.9;
 
     private final double lineHighlightedStrokeW = 4.5;
@@ -70,16 +71,14 @@ public class MapOverlay {
                 //  - node can be disabled and show in dev mode
                 //devs can see everything and interact with everything
                 if (devMode == true) {
-                    if (current.getType().equals("Stair")){
-                       isStair = true;
-                    }
-                    create_Button(current.getPosX(), current.getPosY(), current.getIsHidden(), current.getEnabled(), floor, devMode, isStair);
-                    isStair = false;
+
+                    create_Button(current.getPosX(), current.getPosY(), current.getIsHidden(), current.getEnabled(), floor, devMode, current.getType());
+
                 } else {
                     //if not dev mode:
                     //show only if enabled and not hidden
                     if (current.getIsHidden() == false && current.getEnabled() == true && permissionLevel >= current.getPermissionLevel()) {
-                        create_Button(current.getPosX(), current.getPosY(), false, true, floor, devMode, false);
+                        create_Button(current.getPosX(), current.getPosY(), false, true, floor, devMode, current.getType());
                     }
                 }
                 //else skip displaying the node
@@ -88,9 +87,18 @@ public class MapOverlay {
             wipeEdgeLines();
         }
 
-    final Image image = new Image("images/stairsImage.png");
+    final Image stairImage = new Image("images/stairsImage.png");
+    final Image elevatorImage = new Image("images/elevator.jpg");
+    final Image foodImage = new Image("images/ coffee.png");
+    final Image entranceImage = new Image("images/entrance.png");
+    final Image exitImage = new Image("images/exit.jpg");
+    final Image officeImage = new Image("images/office.png");
+    final Image restroomImage = new Image("images/restroom.png");
 
-    public void create_Button(int nodeX, int nodeY, boolean hidden, boolean enabled, int floor, boolean devmode, boolean isStair){
+
+
+
+    public void create_Button(int nodeX, int nodeY, boolean hidden, boolean enabled, int floor, boolean devmode, String type){
         //System.out.println("checking button");
         //System.out.println("make button");
 
@@ -112,10 +120,35 @@ public class MapOverlay {
 
 
             location = new Circle(labelRadius);
-            if (isStair) {
-                location.setFill(new ImagePattern(image));
-//                root.getChildren().add(imageView);
-
+            switch (current.getType()) {
+                case "Stair":
+                    location.setFill(new ImagePattern(stairImage));
+                    location.setRadius(labelTypeRadius);
+                    break;
+                case "Elevator":
+                    location.setFill(new ImagePattern(elevatorImage));
+                    location.setRadius(labelTypeRadius);
+                    break;
+                case "Doctor's Office":
+                    location.setFill(new ImagePattern(officeImage));
+                    location.setRadius(labelTypeRadius);
+                    break;
+                case "Food Service":
+                    location.setFill(new ImagePattern(foodImage));
+                    location.setRadius(labelTypeRadius);
+                    break;
+                case "Exit":
+                    location.setFill(new ImagePattern(exitImage));
+                    location.setRadius(labelTypeRadius);
+                    break;
+                case "Restroom":
+                    location.setFill(new ImagePattern(restroomImage));
+                    location.setRadius(labelTypeRadius);
+                    break;
+                case "Entrance":
+                    location.setFill(new ImagePattern(entranceImage));
+                    location.setRadius(labelTypeRadius);
+                    break;
             }
             location.setOnMouseClicked(e -> {
                 Object o = e.getSource();
@@ -212,6 +245,18 @@ public class MapOverlay {
                                 sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 7);
                             }
                         });
+                        MenuItem toggleEnabled = new MenuItem("Toggle Node Enabled");
+                        toggleEnabled.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 9);
+                            }
+                        });
+                        MenuItem toggleHidden = new MenuItem("Toggle Node Hidden");
+                        toggleHidden.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                sceneController.rightClickEvent((int)((nodeX)), (int)((nodeY)), c, 10);
+                            }
+                        });
                         if (current.getType().equalsIgnoreCase("Elevator") ||
                                 current.getType().equalsIgnoreCase("Stair")) {
                             MenuItem editFloorsConnectedTo = new MenuItem("Show Connected Floors");
@@ -221,10 +266,10 @@ public class MapOverlay {
                                     sceneController.rightClickEvent((int) ((nodeX)), (int) ((nodeY)), c, 8);
                                 }
                             });
-                            contextMenu.getItems().addAll(removeOption, editOption, editPositionOption, autoGenEdgeOption,
+                            contextMenu.getItems().addAll(removeOption, editOption, editPositionOption, toggleEnabled, toggleHidden, autoGenEdgeOption,
                                     addEdgeOption, addMultiEdgeOption, removeAllEdgeOption, editFloorsConnectedTo);
                         } else {
-                            contextMenu.getItems().addAll(removeOption, editOption, editPositionOption, autoGenEdgeOption,
+                            contextMenu.getItems().addAll(removeOption, editOption, editPositionOption, toggleEnabled, toggleHidden, autoGenEdgeOption,
                                     addEdgeOption, addMultiEdgeOption, removeAllEdgeOption);
                         }
                         contextMenu.show(location, event.getScreenX(), event.getScreenY());
