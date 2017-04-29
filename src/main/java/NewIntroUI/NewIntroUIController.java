@@ -952,7 +952,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
             //update the txtfield
             Node myNode = mapController.getCollectionOfNodes().getNode(x, y, currentFloor);
-            start_textField.setText(myNode.getRoomNum());
+            start_textField.setText(myNode.getName() + ", " + myNode.getRoomNum());
 
             selectionState++;
 
@@ -990,7 +990,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
             //set the text field
             Node myNode = mapController.getCollectionOfNodes().getNode(x, y, currentFloor);
-            end_TextField.setText(myNode.getRoomNum());
+            end_TextField.setText(myNode.getName() + ", " + myNode.getRoomNum());
 
             //reset the colors
             resetMapNodeColors(2);
