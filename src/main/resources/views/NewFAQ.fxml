@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FAQ.FAQcontroller">
+   <children>
+      <BorderPane layoutX="-1.0" layoutY="-1.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="-1.0">
+         <top>
+            <VBox BorderPane.alignment="CENTER">
+               <children>
+                  <HBox styleClass="MainTitleColor">
+                     <children>
+                        <Button mnemonicParsing="false" styleClass="map-pin">
+                           <HBox.margin>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Label fx:id="title_label" styleClass="mainTitle" text="Frequently Asked Questions" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="main_menu_button" mnemonicParsing="false" onMouseClicked="#main_menu_clicked" styleClass="color-palette5" text="Main Menu">
+                           <HBox.margin>
+                              <Insets bottom="4.0" right="8.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="emergency_button" mnemonicParsing="false" onMouseClicked="#emergency_button_clicked" prefWidth="150.0" styleClass="danger" text="EMERGENCY">
+                           <HBox.margin>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </top>
+         <center>
+            <Accordion BorderPane.alignment="CENTER">
+              <panes>
+                <TitledPane animated="false" text="How can I get directions to my destination?">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="424.0" prefWidth="1364.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="1158.0" text="The following methods all can be used to enter your destination:" />
+                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="729.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true" />
+                              <Label layoutX="14.0" layoutY="33.0" prefHeight="26.0" prefWidth="1158.0" text="- Search for your desired location in the &quot;To:&quot; search box. " />
+                              <Label layoutX="14.0" layoutY="291.0" prefHeight="26.0" prefWidth="1158.0" text="- You can search for a destination by room number (2A), room title (Radiology), or by the name of your Doctor (Christopher Bono)." />
+                              <Label layoutX="14.0" layoutY="317.0" prefHeight="26.0" prefWidth="1158.0" text="- If you already have an idea of the layout of the Hospital, you can navigate through the floors and select the node representing your desired location." />
+                              <Label layoutX="14.0" layoutY="343.0" prefHeight="26.0" prefWidth="1158.0" text="After entering your desired location, press the &quot;Submit&quot; button to print the highlighted path from the kiosk to your desired location." />
+                              <ImageView fitHeight="231.0" fitWidth="447.0" layoutX="14.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../../../../../../../map%20images/toSearchBar.PNG" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </TitledPane>
+                <TitledPane animated="false" text="What if I want to switch my starting and ending location for directions back to my starting point?">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="1158.0" text="Once you've recieved your directions from your starting point to your destination, you can press the &quot;&lt;&gt;&quot; button to swap your starting and ending locations.  You can now press &quot;submit&quot; again to" />
+                              <Label layoutX="14.0" layoutY="40.0" prefHeight="26.0" prefWidth="1158.0" text="show the reversed path from your ending location to your starting point and the subsequent directions." />
+                              <ImageView fitHeight="269.0" fitWidth="442.0" layoutX="14.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../../../../../../../map%20images/reversed.PNG" />
+                                 </image>
+                              </ImageView>
+                           </children></AnchorPane>
+                  </content>
+                </TitledPane>
+                <TitledPane animated="false" text="What happens if I'm traveling outside the hospital?">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="1158.0" text="The kiosk allows for pathfinding inside Faulkner Hospital, the sattellite Belkin House, and the outside path connecting the two.  Any rooms in the Belkin House may be entered as a " />
+                              <Label layoutX="14.0" layoutY="40.0" prefHeight="26.0" prefWidth="1158.0" text="destination.  If you are traveling from the hospital to the Belkin house (or vice versa) a path will be printed highlighting the route you should take to travel between the buildings." />
+                              <ImageView fitHeight="198.0" fitWidth="288.0" layoutX="14.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="276.0" fitWidth="536.0" layoutX="21.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../../../../../../../map%20images/outsideView.PNG" />
+                                 </image>
+                              </ImageView>
+                           </children></AnchorPane>
+                  </content>
+                </TitledPane>
+                  <TitledPane animated="false" text="What if I don't want to travel from the kiosk?">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="1158.0" text="The kisok is the default starting location, however you can easily change this by simply clearing the &quot;From:&quot; search bar.  You can then search for any room using any of" />
+                              <Label layoutX="14.0" layoutY="40.0" prefHeight="26.0" prefWidth="1158.0" text="the methods found above in the &quot;How can I get directions to my destination?&quot; section of the FAQ." />
+                              <ImageView fitHeight="327.0" fitWidth="535.0" layoutX="7.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../../../../../../../map%20images/clearButton.PNG" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="263.0" fitWidth="530.0" layoutX="593.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../../../../../../../map%20images/fromSearchBar.PNG" />
+                                 </image>
+                              </ImageView>
+                           </children></AnchorPane>
+                     </content>
+                  </TitledPane>
+                  <TitledPane animated="false" text="What if I can't remember the directions to my destination?">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="1158.0" text="After submitting your starting and ending location textual directions will appear on the screen under the &quot;Directions&quot; tab.  If the directions to your desired location" />
+                              <Label layoutX="14.0" layoutY="40.0" prefHeight="26.0" prefWidth="1158.0" text="are too confusing or large, you can have the textual directions sent to your mobile device.  Under the listed textual directions, you can enter your phone number " />
+                              <Label layoutX="14.0" layoutY="66.0" prefHeight="26.0" prefWidth="1158.0" text="and press submit.  You will shortly recieve a text containing the directions to your location." />
+                              <ImageView fitHeight="342.0" fitWidth="406.0" layoutX="14.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../../../../../../../map%20images/phoneNumber.PNG" />
+                                 </image>
+                              </ImageView>
+                           </children></AnchorPane>
+                     </content>
+                  </TitledPane>
+                  <TitledPane animated="false" text="What does the 'emergency' button do? What constitutes an emergency?">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="1158.0" text="The emergency button at the top right of your screen is to be used in case of an emergency at the hospital.  When pressed, a map containing all paths from the kiosk" />
+                              <Label layoutX="14.0" layoutY="40.0" prefHeight="26.0" prefWidth="1158.0" text="to hospital exits is printed.  When pressed, the security guards on duty are alerted that the emergency button was pressed and should respond immediately.Additionally, " />
+                              <Label layoutX="14.0" layoutY="66.0" prefHeight="26.0" prefWidth="1158.0" text="there is an option to 'Call Authorities' if the emergency situation calls for help from the police.  ANY situation that puts  patients or hospital-goers in danger should call " />
+                              <Label layoutX="14.0" layoutY="92.0" prefHeight="26.0" prefWidth="1158.0" text="for the emergency button to be pressed." />
+                           </children></AnchorPane>
+                     </content>
+                  </TitledPane>
+              </panes>
+            </Accordion>
+         </center>
+      </BorderPane>
+   </children>
+   <stylesheets>
+      <URL value="@../css/bootstrap3.css" />
+      <URL value="@../css/styles.css" />
+   </stylesheets>
+</AnchorPane>

@@ -70,7 +70,7 @@
             <HBox BorderPane.alignment="CENTER">
                <children>
                   <Region HBox.hgrow="ALWAYS" />
-                  <Label text="©2017 Computer Science 3733 Team E" textAlignment="CENTER">
+                  <Label text="2017 Computer Science 3733 Team E" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </HBox.margin>

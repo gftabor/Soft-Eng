@@ -222,8 +222,8 @@ public class mmNodeInformationController extends controllers.AbsController {
 //            /*if (!(spanish_departments.contains(cDepartment))) {
 //                TextInputDialog dialog = new TextInputDialog("");
 //                dialog.setTitle("Agrega un Nuevo Departamento");
-//                dialog.setHeaderText("Has ingresado un departamento desconocido! Por favor agrega la versión en Inglés.");
-//                dialog.setContentText("Departamento en Inglés:");
+//                dialog.setHeaderText("Has ingresado un departamento desconocido! Por favor agrega la version en Ingles.");
+//                dialog.setContentText("Departamento en Ingles:");
 //                // The Java 8 way to get the response value (with lambda expression).
 //                // Traditional way to get the response value.
 //                Optional<String> result = dialog.showAndWait();
@@ -239,9 +239,9 @@ public class mmNodeInformationController extends controllers.AbsController {
 //                // translation)
 //                //Get englsih translation of new title
 //                TextInputDialog dialogTitle = new TextInputDialog("");
-//                dialogTitle.setTitle("Agrega un Nuevo Título");
-//                dialogTitle.setHeaderText("Has ingresado un título desconocido! Por favor agrega la versión en Inglés.");
-//                dialogTitle.setContentText("Título en Inglés:");
+//                dialogTitle.setTitle("Agrega un Nuevo Titulo");
+//                dialogTitle.setHeaderText("Has ingresado un titulo desconocido! Por favor agrega la version en Ingles.");
+//                dialogTitle.setContentText("Titulo en Ingles:");
 //                Optional<String> result = dialogTitle.showAndWait();
 //                result.ifPresent(name -> enTitle = name);
 //                title = enTitle;
@@ -578,7 +578,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         ArrayList<String> departments = new ArrayList<>();
         ArrayList<String> titles = new ArrayList<>();
 
-        rooms = databaseController.getFilteredRooms();
+        rooms = databaseController.getFilteredRooms(permissionLevel);
         titles = databaseController.getTitles();
 
         // rooms not affected by language
@@ -653,15 +653,15 @@ public class mmNodeInformationController extends controllers.AbsController {
         title_Label.setText("Directorio");
         subTitle_Label.setText("Control de Directorio");
         Mode_Label.setText("Modo:");
-        docTitle_Label.setText("Título");
+        docTitle_Label.setText("Titulo");
         //department_Label.setText("Departamento:");
-        room_Label.setText("Habitación:");
+        room_Label.setText("Habitacion:");
         firstName_Label.setText("Nombre");
         lastName_Label.setText("Apellido");
 
         //text fields
         search_textField.setPromptText("busca");
-        room_TextField.setPromptText("Habitación");
+        room_TextField.setPromptText("Habitacion");
         Firstname_TextField.setPromptText("Nombre");
         lastName_TextField.setPromptText("Apellido");
         //department_TextField.setPromptText("Departamento");
@@ -670,9 +670,9 @@ public class mmNodeInformationController extends controllers.AbsController {
         //Table columns
         firstName_TableColumn.setText("Nombre");
         lastName_TableColumn.setText("Apellido");
-        title_TableColumn.setText("Título");
+        title_TableColumn.setText("Titulo");
         department_TableColumn.setText("Departamento");
-        room_TableColumn.setText("Habitación");
+        room_TableColumn.setText("Habitacion");
     }
 
     //Adds the information to the database and adds the professional

@@ -392,6 +392,14 @@ public class DatabaseController {
     public boolean newEdge(int x1, int y1, int floor1, int x2, int y2, int floor2){
         int firstXInsert, firstYInsert, firstFloorInsert, secondXInsert, secondYInsert, secondFloorInsert;
 
+        System.out.println("x1: " + x1);
+        System.out.println("x2: " + x2);
+        System.out.println("y1: " + y1);
+        System.out.println("y2: " + y2);
+        System.out.println("f1: " + floor1);
+        System.out.println("f2: " + floor2);
+
+
         if(x1 < x2){
             firstXInsert = x1;
             firstYInsert = y1;
@@ -421,6 +429,13 @@ public class DatabaseController {
                 secondXInsert = x1;
                 secondYInsert = y1;
                 secondFloorInsert = floor1;
+            }else if(y1 == y2 && floor1 != floor2) {
+                firstXInsert = x1;
+                firstYInsert = y1;
+                firstFloorInsert = floor1;
+                secondXInsert = x2;
+                secondYInsert = y2;
+                secondFloorInsert = floor2;
             }else{
                 System.out.println("Something went wrong with newEdge");
                 return false;
@@ -522,6 +537,7 @@ public class DatabaseController {
             e.printStackTrace();
             return false;
         }
+        System.out.println("delete from db was successfull");
         return true;
     }
 
@@ -1176,13 +1192,14 @@ public class DatabaseController {
         return resultSet;
     }
 
-    public ResultSet getFilteredRoomNames(){
+    public ResultSet getFilteredRoomNames(int permissionLevel){
         System.out.println("Getting room names");
 
         ResultSet resultSet = null;
         try{
             String query = "SELECT NAME, ROOMNUM FROM NODE " +
-                    "WHERE ISHIDDEN = FALSE AND TYPE <> 'Stair' AND TYPE <> 'Elevator'";
+                    "WHERE ISHIDDEN = FALSE AND TYPE <> 'Stair' AND TYPE <> 'Elevator'" +
+                    "AND PERMISSIONS <= " + permissionLevel;
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             //preparedStatement.setString(1, "%"+roomName);
             // run statement and query
@@ -1356,10 +1373,10 @@ public class DatabaseController {
         return rooms;
     }
 
-    public ArrayList<String> getFilteredRooms(){
+    public ArrayList<String> getFilteredRooms(int permissionLevel){
         ArrayList<String> rooms = new ArrayList<>();
         String roomNum;
-        ResultSet rset = databaseController.getFilteredRoomNames();
+        ResultSet rset = databaseController.getFilteredRoomNames(permissionLevel);
         try {
             while (rset.next()) {
                 roomNum = rset.getString("ROOMNUM");
@@ -1393,11 +1410,11 @@ public class DatabaseController {
         return rooms;
     }
 
-    public ArrayList<String> getFilteredRoomList() {
+    public ArrayList<String> getFilteredRoomList(int permissionLevel) {
         ArrayList<String> rooms = new ArrayList<>();
         String roomName, roomNum;
         String room;
-        ResultSet rset = databaseController.getFilteredRoomNames();
+        ResultSet rset = databaseController.getFilteredRoomNames(permissionLevel);
         try {
             while (rset.next()) {
                 roomName = rset.getString("NAME");

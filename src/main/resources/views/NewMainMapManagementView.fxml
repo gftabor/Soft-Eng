@@ -73,7 +73,7 @@
          <center>
             <StackPane fx:id="mapStack" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <ScrollPane fx:id="scrollPane" prefHeight="200.0" prefWidth="200.0">
+                  <ScrollPane fx:id="scrollPane" onDragDetected="#dragDetected" prefHeight="200.0" prefWidth="200.0">
                      <content>
                         <Pane fx:id="admin_FloorPane" prefHeight="701.0" prefWidth="1348.0">
                            <children>

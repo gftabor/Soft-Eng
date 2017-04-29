@@ -21,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -116,21 +117,31 @@ public class NewMainMapManagementController extends controllers.mapScene {
     private boolean multiDragMode;
     private boolean popoverShown;
 
+    private int startfloor;
+
     private int permissionLevel;
 
     private final Circle[] temporaryButton = {null};
     private ArrayList<Circle> floatingCircles;
     private ArrayList<Node> floatingNodes;
 
+    private double origPaneWidth = 920;
+    private double origPaneHeight = 489;
+    double zoom;
+    double heightRatio = (1000.0/489.0);
+    double widthRatio = (2000.0/920.0);
 
+    double currentHval = 0;
+    double currentVval = 0;
 
     //Set to english by default
     private int c_language = 0;
 
-
     private int currentFloor;
 
     private DatabaseController databaseController = DatabaseController.getInstance();
+
+    private boolean isDragged;
 
     public void initialize() {
         setUserString(LogInPerson_Label.getText());
@@ -140,9 +151,13 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
         selectedNode = false;
 
+        isDragged = false;
+        save_Button.setVisible(false);
+
         //set default floor to start
         //we will use floor 1 for now
         currentFloor = 1;
+        startfloor = currentFloor;
         //set to admin level
         permissionLevel = 2;
 
@@ -150,98 +165,166 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
         graph = new controllers.MapOverlay(admin_FloorPane,(mapScene) this);
         MapController.getInstance().requestMapCopy();
-        graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true,
+        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
                 currentFloor, permissionLevel);
 
         setFloorChoices();
 
+        //Zooming code
+        /*NOTES: Basic zooming works
+            need to do:
+                Add nodes relative to scaling
+                die
+                die some more
+                Don't pan when selecting a node (somehow detect you're clicking a node and setPanable(false)
+
+         */
+        admin_FloorPane.setMaxWidth(5000);
+        admin_FloorPane.setMaxHeight(5000);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+        admin_FloorPane.setPrefHeight(489.0*heightRatio);
+        admin_FloorPane.setPrefWidth(920.0*widthRatio);
+        map_viewer.setFitHeight(489.0*heightRatio);
+        map_viewer.setFitWidth(920.0*widthRatio);
+
+        graph.setZoom(1.0);
+        zoom = graph.getZoom();
+
+        System.out.println("width/height ratios: " + widthRatio + "/" + heightRatio);
+
+        graph.setWidthRatio(widthRatio);
+        graph.setHeightRatio(heightRatio);
+        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
+                currentFloor, permissionLevel);
+
+        scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
+            mapScroll(event);
+            event.consume();
+        });
+        scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setPannable(true);
+
+
         // creates a node when clicking the map
         map_viewer.setOnMouseClicked((MouseEvent e) -> {
-            if (e.getButton() == MouseButton.PRIMARY) {
-                //clear on any selection stuff for the rest of the map
-                addSingleEdgeMode = false;
-                if (addMultiEdgeMode) {
-                    //dont try to add node if just trying to click out of multi-edge selection
-                    addMultiEdgeMode = false;
-                } else if (dragMode) {
-                    dragMode = false;
-                    dragModeUpdate("SINGLE");
-                } else if (selectedNode) {
-                    selectedNode = false;
-                    graph.wipeEdgeLines();
-                    //color the node as well
-                    if (lastColoredStart != null) {
-                        lastColoredStart.setStroke(lastColoredStart.getFill());
-                        lastColoredStart.setStrokeWidth(1);
-                        lastColoredStart = null;
-                    }
-                } else if (popoverShown) {
-                    popoverShown = false;
-                    if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)) {
-                        admin_FloorPane.getChildren().remove(temporaryButton[0]);
-                    }
-                } else {
-                    if (!multiDragMode) {
+            System.out.println("isdragged =" + isDragged);
+            if (!isDragged) {
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    //clear on any selection stuff for the rest of the map
+                    addSingleEdgeMode = false;
+                    if (addMultiEdgeMode) {
+                        //dont try to add node if just trying to click out of multi-edge selection
+                        addMultiEdgeMode = false;
+                    } else if (dragMode) {
+                        dragMode = false;
+                        scrollPane.setPannable(true);
+                        dragModeUpdate("SINGLE");
+                        save_Button.setVisible(false);
+                    } else if (selectedNode) {
+                        selectedNode = false;
                         graph.wipeEdgeLines();
-
-                        if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)) {
+                        //color the node as well
+                        if (lastColoredStart != null) {
+                            lastColoredStart.setStroke(lastColoredStart.getFill());
+                            lastColoredStart.setStrokeWidth(1);
+                            lastColoredStart = null;
+                        }
+                    } else if (popoverShown) {
+                        popoverShown = false;
+                        if (temporaryButton[0] != null && !databaseController.isActualLocation(round((temporaryButton[0].getLayoutX()/zoom)/widthRatio),
+                                round((temporaryButton[0].getLayoutY()/zoom)/heightRatio), currentFloor)) {
                             admin_FloorPane.getChildren().remove(temporaryButton[0]);
                         }
-                        btK = new Circle(labelRadius);//new Button();
-                        btK.setLayoutX(e.getX());
-                        btK.setLayoutY(e.getY());
-                        admin_FloorPane.getChildren().add(btK);
-                        temporaryButton[0] = btK;
+                    } else {
+                        if (!multiDragMode) {
+                            graph.wipeEdgeLines();
 
-                        //set the popovershown var
-                        popoverShown = true;
+                            if (temporaryButton[0] != null && !databaseController.isActualLocation(round((temporaryButton[0].getLayoutX()/zoom)/widthRatio),
+                                    round((temporaryButton[0].getLayoutY()/zoom)/heightRatio), currentFloor)) {
+                                admin_FloorPane.getChildren().remove(temporaryButton[0]);
+                            }
+                            btK = new Circle(labelRadius);//new Button();
+                            btK.setLayoutX(e.getX());
+                            btK.setLayoutY(e.getY());
+                            admin_FloorPane.getChildren().add(btK);
+                            temporaryButton[0] = btK;
 
-                        PopOver pop = new PopOver();
-                        createPop(pop, btK, "Create");
-                        pop.show(btK);
-                    }
-                }
-            } else {
-                // show a context menu for clear and automatic edges radius
-                ContextMenu contextMenu = new ContextMenu();
-                contextMenu.setImpl_showRelativeToWindow(true);
-                MenuItem clearOption = new MenuItem("Clear");
-                clearOption.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override public void handle(ActionEvent ee) {
-                        clearButton_Clicked();
-                    }
-                });
-                MenuItem radiusOption = new MenuItem("Edit Automatic Edges Radius");
-                radiusOption.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override public void handle(ActionEvent ee) {
-                       // set the edge radius here
-                        PopOver pop = new PopOver();
-                        Circle tempCircle = new Circle(labelRadius);//new Button();
-                        tempCircle.setLayoutX(e.getX());
-                        tempCircle.setLayoutY(e.getY());
-                        tempCircle.setVisible(false);
-                        admin_FloorPane.getChildren().add(tempCircle);
-                        createRadiusPop(pop, tempCircle);
-                        pop.show(tempCircle);
+                            //set the popovershown var
+                            popoverShown = true;
 
-                    }
-                });
-                MenuItem draggableOption = new MenuItem("Make nodes draggable");
-                draggableOption.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override public void handle(ActionEvent ee) {
-                        // make nodes draggable here
-                        if(!multiDragMode) {
-                            clearButton_Clicked();
-                            dragMode = false;
-                            multiDragMode = true;
-                            resetScreen();
-                            unhookAllCircles();
+                            PopOver pop = new PopOver();
+                            createPop(pop, btK, "Create");
+                            pop.show(btK);
                         }
                     }
-                });
-                contextMenu.getItems().addAll(clearOption, radiusOption, draggableOption);
-                contextMenu.show(map_viewer, e.getScreenX(), e.getScreenY());
+                } else {
+                    // show a context menu for clear and automatic edges radius
+                    ContextMenu contextMenu = new ContextMenu();
+                    contextMenu.setImpl_showRelativeToWindow(true);
+                    MenuItem clearOption = new MenuItem("Clear");
+                    clearOption.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent ee) {
+                            clearButton_Clicked();
+                        }
+                    });
+                    MenuItem radiusOption = new MenuItem("Edit Automatic Edges Radius");
+                    radiusOption.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent ee) {
+                            // set the edge radius here
+                            PopOver pop = new PopOver();
+                            Circle tempCircle = new Circle(labelRadius);//new Button();
+                            tempCircle.setLayoutX(e.getX());
+                            tempCircle.setLayoutY(e.getY());
+                            tempCircle.setVisible(false);
+                            admin_FloorPane.getChildren().add(tempCircle);
+                            createRadiusPop(pop, tempCircle);
+                            pop.show(tempCircle);
 
+                        }
+                    });
+                    MenuItem draggableOption = new MenuItem("Make nodes draggable");
+                    draggableOption.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent ee) {
+                            // make nodes draggable here
+                            if (!multiDragMode) {
+                                clearButton_Clicked();
+                                dragMode = false;
+                                scrollPane.setPannable(true);
+                                multiDragMode = true;
+                                scrollPane.setPannable(false);
+                                save_Button.setVisible(true);
+                                resetScreen();
+                                unhookAllCircles();
+                            }
+                        }
+                    });
+                    MenuItem resetOption = new MenuItem("Reset Manager View");
+                    resetOption.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent ee) {
+                            clearButton_Clicked();
+                            resetScreen();
+                            dragMode = false;
+                            multiDragMode = false;
+                            save_Button.setVisible(false);
+                            Node temp = MapController.getInstance().getCollectionOfNodes().
+                                    getNodeWithName("SOFTENGWPIsjijflkjjfjjfklaljjjfalkjooejallajjjflijjfflRyanIsAwesome");
+                            if (temp != null) {
+                                DatabaseController.getInstance().deleteNode(temp.getPosX(), temp.getPosY(), temp.getFloor());
+                            }
+                        }
+                    });
+                    contextMenu.getItems().addAll(clearOption, resetOption, radiusOption, draggableOption);
+                    contextMenu.show(map_viewer, e.getScreenX(), e.getScreenY());
+
+                }
+            } else {
+                isDragged = false;
             }
 
         });
@@ -397,14 +480,27 @@ public class NewMainMapManagementController extends controllers.mapScene {
     private void dragModeUpdate(String mode) {
         graph.wipeEdgeLines();
         if (dragNode != null) {
-            System.out.println("drag done");
-            System.out.println("old: x= " + dragNode.getPosX() + ", y= " + dragNode.getPosY());
-            System.out.println("new: x= " + dragCircle.getLayoutX() + ", y= " + dragCircle.getLayoutY());
-            System.out.println("---");
+//            System.out.println("drag done");
+//            System.out.println("old: x= " + dragNode.getPosX() + ", y= " + dragNode.getPosY());
+//            System.out.println("zoom: " + zoom + " widthRatio: " + widthRatio);
+//            System.out.println("new: x= " + (dragCircle.getLayoutX()/zoom)/widthRatio + ", y= " + (dragCircle.getLayoutY()/zoom)/heightRatio);
+//            System.out.println("---");
             ArrayList<Node> neighborlist = new ArrayList<>();
 
+            System.out.println("++++++");
+            System.out.println("drag node posx:" + dragNode.getPosX());
+            System.out.println("drag node posy:" + dragNode.getPosY());
+            System.out.println("++++++");
+            System.out.println("math x:" + (dragCircle.getLayoutX()/zoom)/widthRatio);
+            System.out.println("math y:" + (dragCircle.getLayoutY()/zoom)/heightRatio);
+            System.out.println("++++++");
+            System.out.println("rounded x:" + round((dragCircle.getLayoutX()/zoom)/widthRatio));
+            System.out.println("rounded y:" + round((dragCircle.getLayoutY()/zoom)/heightRatio));
+            System.out.println("++++++");
+            System.out.println("++++++");
             //need to see if actually moved it though.
-            if (dragNode.getPosX() != dragCircle.getLayoutX() || dragNode.getPosY() != dragCircle.getLayoutY() ||
+            if (dragNode.getPosX() != round((dragCircle.getLayoutX()/zoom)/widthRatio) ||
+                    dragNode.getPosY() != round((dragCircle.getLayoutY()/zoom)/heightRatio) ||
                     dragNode.getFloor() != currentFloor) {
 
                 for (controllers.Edge thisEdge : dragNode.getEdgeList()) {
@@ -416,24 +512,27 @@ public class NewMainMapManagementController extends controllers.mapScene {
                             thisEdge.getEndNode().getPosY(), thisEdge.getEndNode().getFloor());
                 }
 
-                databaseController.newNode((int) dragCircle.getLayoutX(), (int) dragCircle.getLayoutY(), currentFloor, dragNode.getIsHidden(),
+                databaseController.newNode(round((dragCircle.getLayoutX()/zoom)/widthRatio),
+                        round((dragCircle.getLayoutY()/zoom)/heightRatio), currentFloor, dragNode.getIsHidden(),
                         dragNode.getEnabled(), dragNode.getType(), dragNode.getName(),
                         "SOFTENGWPIsjijflkjjfjjfklaljjjfalkjooejallajjjflijjfflRyanIsAwesome",
                         dragNode.getPermissionLevel());
 
                 databaseController.transferNodeLoc(dragNode.getPosX(), dragNode.getPosY(), dragNode.getFloor(),
-                        (int) dragCircle.getLayoutX(), (int) dragCircle.getLayoutY(), currentFloor);
+                        round((dragCircle.getLayoutX()/zoom)/widthRatio),
+                        round((dragCircle.getLayoutY()/zoom)/heightRatio), currentFloor);
 
                 databaseController.deleteNode(dragNode.getPosX(), dragNode.getPosY(), currentFloor);
 
-                databaseController.updateNode((int) dragCircle.getLayoutX(), (int) dragCircle.getLayoutY(), currentFloor, dragNode.getIsHidden(),
+                databaseController.updateNode(round((dragCircle.getLayoutX()/zoom)/widthRatio),
+                        round((dragCircle.getLayoutY()/zoom)/heightRatio), currentFloor, dragNode.getIsHidden(),
                         dragNode.getEnabled(), dragNode.getType(), dragNode.getName(),
                         dragNode.getRoomNum(), dragNode.getPermissionLevel());
 
                 //add the edges to the new node
                 for (Node n : neighborlist) {
-                    DatabaseController.getInstance().newEdge((int) dragCircle.getLayoutX(),
-                            (int) dragCircle.getLayoutY(), currentFloor,
+                    DatabaseController.getInstance().newEdge(round((dragCircle.getLayoutX()/zoom)/widthRatio),
+                            round((dragCircle.getLayoutY()/zoom)/heightRatio), currentFloor,
                             n.getPosX(), n.getPosY(), n.getFloor());
                 }
             }
@@ -502,7 +601,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
         AnchorPane.setTopAnchor(grid, 10.0);
 
         if (mode.equals("Edit")){
-            ResultSet rset = databaseController.getNode((int) btK.getLayoutX(), (int) btK.getLayoutY(), currentFloor);
+            ResultSet rset = databaseController.getNode(
+                    round((btK.getLayoutX()/zoom)/widthRatio), round((btK.getLayoutY()/zoom)/heightRatio), currentFloor);
             try {
                 while (rset.next()){
                     nodeName.setText(rset.getString("NAME"));
@@ -554,14 +654,20 @@ public class NewMainMapManagementController extends controllers.mapScene {
                     }
                     if (mode.equals("Edit")) {
                         pop.setTitle("Edit Location");
-                        DBController.DatabaseController.getInstance().updateNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom, permission);
+                        DBController.DatabaseController.getInstance().updateNode(
+                                round((btK.getLayoutX()/graph.getZoom())/graph.getWidthRatio()),
+                                round((btK.getLayoutY()/graph.getZoom())/graph.getHeightRatio()),
+                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType,
+                                thisNodeName, thisNodeRoom, permission);
                         pop.hide();
                         admin_FloorPane.getChildren().remove(btK);
                         resetScreen();
                     } else if (mode.equals("Create")){
-                        DBController.DatabaseController.getInstance().newNode((int) btK.getLayoutX(), (int) btK.getLayoutY(),
-                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType, thisNodeName, thisNodeRoom, permission);
+                        DBController.DatabaseController.getInstance().newNode(
+                                round((btK.getLayoutX()/graph.getZoom())/graph.getWidthRatio()),
+                                round((btK.getLayoutY()/graph.getZoom())/graph.getHeightRatio()),
+                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType,
+                                thisNodeName, thisNodeRoom, permission);
                         pop.hide();
                         admin_FloorPane.getChildren().remove(btK);
                         resetScreen();
@@ -628,6 +734,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 break;
             case 4:
                 addSingleEdgeMode = true;
+                startfloor = currentFloor;
 
                 firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
                         .getNode(x, y, currentFloor);
@@ -642,6 +749,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 break;
             case 5:
                 addMultiEdgeMode = true;
+                startfloor = currentFloor;
+
                 firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
                         .getNode(x, y, currentFloor);
                 if (firstNode == null) {
@@ -669,7 +778,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
             case 7:
                 //draggable code:
                 System.out.println("draggable");
+                save_Button.setVisible(true);
                 dragMode = true;
+                scrollPane.setPannable(false);
                 final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
                 dragCircle = c;
                 dragNode = MapController.getInstance().getCollectionOfNodes().getNode(x, y, currentFloor);
@@ -735,8 +846,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //handle a click on an edge.
     public void edgeClickRemove(int x1, int y1, int x2, int y2){
-        DBController.DatabaseController.getInstance().deleteEdge(x1,
-                y1, currentFloor, x2, y2, currentFloor);
+        DBController.DatabaseController.getInstance().deleteEdge(round((x1/zoom)/widthRatio),
+                round((y1/zoom)/heightRatio), currentFloor,
+                round((x2/zoom)/widthRatio), round((y2/zoom)/heightRatio), currentFloor);
         System.out.println("removed edge on click");
         resetScreen();
         if (firstNode != null) {
@@ -765,7 +877,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
                             .getNode(firstNode.getPosX(), firstNode.getPosY(), firstNode.getFloor());
                     //don't know if above method is successful
                     //must check again if firstNode is not null
-                    if (firstNode != null) {
+                    //only draw lines if on the same floor
+                    if (firstNode != null && startfloor == currentFloor) {
                         graph.createEdgeLines(firstNode.getEdgeList(), true, true);
                         c.toFront();
                     }
@@ -783,7 +896,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
             //remove any temporary nodes
             if (popoverShown) {
-                if (temporaryButton[0] != null && !databaseController.isActualLocation((int) temporaryButton[0].getLayoutX(), (int) temporaryButton[0].getLayoutY(), currentFloor)) {
+                if (temporaryButton[0] != null && !databaseController.isActualLocation(
+                        round((temporaryButton[0].getLayoutX()/zoom)/widthRatio),
+                        round((temporaryButton[0].getLayoutY()/zoom)/heightRatio), currentFloor)) {
                     admin_FloorPane.getChildren().remove(temporaryButton[0]);
                 }
 
@@ -795,6 +910,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
             firstNode = controllers.MapController.getInstance().getCollectionOfNodes()
                     .getNode(nodeEdgeX1, nodeEdgeY1, currentFloor);
             graph.createEdgeLines(firstNode.getEdgeList(), true, true);
+            c.toFront();
 
             //color the node as well
             if (lastColoredStart != null) {
@@ -850,6 +966,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
         //reset ui interaction
         dragMode = false;
+        scrollPane.setPannable(true);
         popoverShown = false;
         selectedNode = false;
 
@@ -884,6 +1001,13 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 //true ot see nodes false otherwise
                 graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true,
                         currentFloor, permissionLevel);
+
+                //delete any old temp buttons
+                if (temporaryButton[0] != null && !databaseController.isActualLocation(
+                        round((temporaryButton[0].getLayoutX()/zoom)/widthRatio),
+                        round((temporaryButton[0].getLayoutY()/zoom)/heightRatio), currentFloor)) {
+                    admin_FloorPane.getChildren().remove(temporaryButton[0]);
+                }
             }
         });
 
@@ -896,6 +1020,10 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //Signs the user out
     public void signOutButton_Clicked(){
+        graph.setZoom(1.0);
+        graph.setHeightRatio(1.0);
+        graph.setWidthRatio(1.0);
+
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
         //patientMenuStart.patientMenuStartController controller = loader.getController();
         NewIntroUI.NewIntroUIController controller = loader.getController();
@@ -917,6 +1045,10 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //Manage when the directory button is clicked
     public void DirectoryManButton_Clicked(){
+        graph.setZoom(1.0);
+        graph.setHeightRatio(1.0);
+        graph.setWidthRatio(1.0);
+
         FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/NewDirectoryManagementView.fxml");
         mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
 
@@ -944,12 +1076,39 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //Manages when the admin management button is clicked
     public void AdminManButton_Clicked(){
+        graph.setZoom(1.0);
+        graph.setHeightRatio(1.0);
+        graph.setWidthRatio(1.0);
+
+        //Change to patient menu
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewAdminManagementView.fxml");
+        adminSignUp.adminSignUpController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //Gets the current admin
+        controller.setUsername(LogInPerson_Label.getText());
+
+        //set up english labels
+
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+
+        controller.setUpTreeView();
+        controller.setModeChoices();
 
 
     }
 
     //Manages when the emergency button is clicked
     public void emergencyButton_Clicked(){
+        graph.setZoom(1.0);
+        graph.setHeightRatio(1.0);
+        graph.setWidthRatio(1.0);
+
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
         emergency.emergencyController controller = loader.getController();
         //sends the current language to the next screen
@@ -967,10 +1126,12 @@ public class NewMainMapManagementController extends controllers.mapScene {
     public void saveButton_Clicked(){
         if (multiDragMode) {
             multiDragMode = false;
+            scrollPane.setPannable(true);
 
             if (floatingNodes.size() != floatingCircles.size()) {
                 System.out.println("something got really messed up, the " +
                         "list sizes are different");
+                save_Button.setVisible(false);
                 resetScreen();
                 return;
             }
@@ -984,8 +1145,12 @@ public class NewMainMapManagementController extends controllers.mapScene {
             resetScreen();
         } else {
             dragMode = false;
+            scrollPane.setPannable(true);
             dragModeUpdate("SINGLE");
+            save_Button.setVisible(false);
         }
+        //hide the button when done
+        save_Button.setVisible(false);
     }
 
     //Manages when the user clicks the clear button
@@ -1005,17 +1170,6 @@ public class NewMainMapManagementController extends controllers.mapScene {
             lastColoredStart.setStroke(lastColoredStart.getFill());
             lastColoredStart.setStrokeWidth(1);
         }
-
-    }
-
-
-    //Zooms the map in
-    public void zoomInButton_Clicked() {
-
-    }
-
-    //Zooms out the map
-    public void zoomOutButton_Clicked() {
 
     }
 
@@ -1096,7 +1250,13 @@ public class NewMainMapManagementController extends controllers.mapScene {
         for (Circle c: floatingCircles) {
             final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
             dragCircle = c;
-            dragNode = MapController.getInstance().getCollectionOfNodes().getNode((int) c.getLayoutX(), (int) c.getLayoutY(), currentFloor);
+//            System.out.println("---");
+//            System.out.println("x: " + ((c.getLayoutX()/zoom)/widthRatio));
+//            System.out.println("y: " + ((c.getLayoutY()/zoom)/heightRatio));
+//            System.out.println("---");
+            dragNode = MapController.getInstance().getCollectionOfNodes().getNode(
+                    round((c.getLayoutX()/zoom)/widthRatio),
+                    round((c.getLayoutY()/zoom)/heightRatio), currentFloor);
             if (dragNode == null) {
                 System.out.println("ERROR GETTING DRAG NODE");
                 continue;
@@ -1106,8 +1266,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
             c.setOnMouseDragged(e -> {
                 if (e.getSceneX() > paneBounds.getMinX() && e.getSceneX() < paneBounds.getMaxX()
                         && e.getSceneY() > paneBounds.getMinY() && e.getSceneY() < paneBounds.getMaxY()) {
-                    c.setLayoutX((e.getSceneX() - paneBounds.getMinX()));
-                    c.setLayoutY((e.getSceneY() - paneBounds.getMinY()));
+                    c.setLayoutX(e.getSceneX() - paneBounds.getMinX());
+                    c.setLayoutY(e.getSceneY() - paneBounds.getMinY());
                 }
             });
 
@@ -1115,4 +1275,115 @@ public class NewMainMapManagementController extends controllers.mapScene {
         }
     }
 
+    public void changeZoom(){
+        graph.setZoom(zoom);
+        admin_FloorPane.setPrefWidth(origPaneWidth*zoom*widthRatio);
+        admin_FloorPane.setPrefHeight(origPaneHeight*zoom*heightRatio);
+        map_viewer.setFitWidth(origPaneWidth*zoom*widthRatio);
+        map_viewer.setFitHeight(origPaneHeight*zoom*heightRatio);
+    }
+
+
+    public void zoomInButton_Clicked() {
+        zoom = graph.getZoom();
+        System.out.println(zoom);
+        if (zoom < 2.2) {
+            zoom += 0.03;
+            if (zoom > 2.2) {
+                zoom = 2.2;
+            }
+            changeZoom();
+
+            graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
+                    currentFloor, permissionLevel);
+        }
+        scrollPane.setFitToHeight(false);
+        scrollPane.setFitToWidth(false);
+
+    }
+
+    public void zoomOutButton_Clicked() {
+        zoom = graph.getZoom();
+        System.out.println(zoom);
+        if (zoom > 1.0) {
+            zoom = zoom - 0.03;
+            if (zoom < 1.0) {
+                zoom = 1.0;
+                scrollPane.setFitToHeight(true);
+                scrollPane.setFitToWidth(true);
+            }
+            changeZoom();
+        } else {
+            scrollPane.setFitToHeight(true);
+            scrollPane.setFitToWidth(true);
+        }
+
+        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
+                currentFloor, permissionLevel);
+
+    }
+
+    //Let the user scroll through the map
+    public void mapScroll(ScrollEvent event) {
+        zoom = MapOverlay.getZoom();
+        if (currentHval != 0) {
+            System.out.println("pre zoom currenthval: " + currentHval);
+            System.out.println("pre zoom currnetVval: " + currentVval);
+        }
+        currentHval = scrollPane.getHvalue();
+        currentVval = scrollPane.getVvalue();
+        if (event.getDeltaY() > 0) {
+            if (zoom < 2.2) {
+                scrollPane.setFitToHeight(false);
+                scrollPane.setFitToWidth(false);
+                zoom += 0.03;
+                if (zoom > 2.2) {
+                    zoom = 2.2;
+                }
+                changeZoom();
+                graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
+                        currentFloor, permissionLevel);
+            }
+        } else if (event.getDeltaY() < 0) {
+            if (zoom > 1.0) {
+                zoom = zoom - 0.03;
+                if (zoom < 1.0) {
+                    zoom = 1.0;
+                    scrollPane.setFitToHeight(true);
+                    scrollPane.setFitToWidth(true);
+                }
+                changeZoom();
+                graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
+                        currentFloor, permissionLevel);
+            } else {
+                scrollPane.setFitToHeight(true);
+                scrollPane.setFitToWidth(true);
+            }
+        }
+
+        System.out.println("currenthval: " + currentHval);
+        System.out.println("currnetVval: " + currentVval);
+        scrollPane.setHvalue(currentHval);
+        scrollPane.setVvalue(currentVval);
+    }
+
+    //when the mouse is clicked and dragged on the map
+    public void dragDetected() {
+        //isDragged = true;
+        //System.out.println("detected");
+    }
+
+    private int round(double input) {
+        long intPart;
+        double decimalPart;
+        intPart = (long) input;
+        decimalPart = input - intPart;
+
+        if (decimalPart >= 0.5d) {
+            return (int) intPart + 1;
+        } else {
+            return (int) intPart;
+        }
+
+    }
 }
