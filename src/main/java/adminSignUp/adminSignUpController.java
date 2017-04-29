@@ -108,7 +108,8 @@ public class adminSignUpController extends controllers.AbsController{
     @FXML
     private Label queryStatus;
 
-    
+
+
 
 
 
