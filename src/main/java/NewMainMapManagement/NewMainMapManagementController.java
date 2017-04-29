@@ -140,6 +140,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
         selectedNode = false;
 
+        save_Button.setVisible(false);
+
         //set default floor to start
         //we will use floor 1 for now
         currentFloor = 1;
@@ -165,6 +167,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                     addMultiEdgeMode = false;
                 } else if (dragMode) {
                     dragMode = false;
+                    save_Button.setVisible(false);
                     dragModeUpdate("SINGLE");
                 } else if (selectedNode) {
                     selectedNode = false;
@@ -231,6 +234,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                     @Override public void handle(ActionEvent ee) {
                         // make nodes draggable here
                         if(!multiDragMode) {
+                            save_Button.setVisible(true);
                             clearButton_Clicked();
                             dragMode = false;
                             multiDragMode = true;
@@ -669,6 +673,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
             case 7:
                 //draggable code:
                 System.out.println("draggable");
+                save_Button.setVisible(true);
                 dragMode = true;
                 final Bounds paneBounds = admin_FloorPane.localToScene(admin_FloorPane.getBoundsInLocal());
                 dragCircle = c;
@@ -985,7 +990,10 @@ public class NewMainMapManagementController extends controllers.mapScene {
         } else {
             dragMode = false;
             dragModeUpdate("SINGLE");
+            save_Button.setVisible(false);
         }
+        //hide the button when done
+        save_Button.setVisible(false);
     }
 
     //Manages when the user clicks the clear button
