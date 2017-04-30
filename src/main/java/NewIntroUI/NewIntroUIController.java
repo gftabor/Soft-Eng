@@ -161,6 +161,9 @@ public class NewIntroUIController extends controllers.mapScene{
     @FXML
     private CheckBox stairs_CheckBox;
 
+    @FXML
+    private Button reverse_Button;
+
 
 
 
@@ -217,6 +220,7 @@ public class NewIntroUIController extends controllers.mapScene{
     private double submitHval;
     private double submitVval;
 
+
     //ArrayList<Edge> zoomPath;
 
     // list of all locations, not sorted at first
@@ -231,6 +235,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
     @FXML
     public void initialize() {
+        reverse_Button.setStyle("-fx-background-image: url('images/reverse.png')");
         permissionLevel = 0;
         graph = new controllers.MapOverlay(node_Plane, (mapScene) this);
         MapController.getInstance().requestMapCopy();
