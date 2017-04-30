@@ -212,9 +212,9 @@
                            </children></Pane>
                      </content>
                   </ScrollPane>
-                  <Button fx:id="zoomOut_button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#zoomOutButton_Clicked" styleClass="info" text="-" StackPane.alignment="CENTER_RIGHT">
+                  <Button fx:id="zoomOut_button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#zoomOutButton_Clicked" prefWidth="46.0" styleClass="zoomButtons" text="-" StackPane.alignment="CENTER_RIGHT">
                      <StackPane.margin>
-                        <Insets right="10.0" top="35.0" />
+                        <Insets right="10.0" top="60.0" />
                      </StackPane.margin>
                   </Button>
                   <Label fx:id="floor_Label" styleClass="DirectoryLabel" text="Floor:" StackPane.alignment="TOP_LEFT">
@@ -227,17 +227,17 @@
                         <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                      </StackPane.margin>
                   </ChoiceBox>
-                  <Button fx:id="zoomIn_button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#zoomInButton_Clicked" styleClass="info" text="+" StackPane.alignment="CENTER_RIGHT">
+                  <Button fx:id="zoomIn_button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#zoomInButton_Clicked" styleClass="zoomButtons" text="+" StackPane.alignment="CENTER_RIGHT">
                      <StackPane.margin>
-                        <Insets right="10.0" top="-35.0" />
+                        <Insets right="10.0" top="-60.0" />
                      </StackPane.margin>
                   </Button>
-                  <Button fx:id="previous_Button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#previousButton_Clicked" styleClass="menu" text="&lt;" StackPane.alignment="TOP_RIGHT">
+                  <Button fx:id="previous_Button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#previousButton_Clicked" prefWidth="150.0" styleClass="zoomButtons" text="Previous " StackPane.alignment="TOP_RIGHT">
                      <StackPane.margin>
-                        <Insets right="45.0" top="5.0" />
+                        <Insets right="200.0" top="5.0" />
                      </StackPane.margin>
                   </Button>
-                  <Button fx:id="continueNew_Button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#continueNewButton_Clicked" styleClass="menu" text="&gt;" StackPane.alignment="TOP_RIGHT">
+                  <Button fx:id="continueNew_Button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#continueNewButton_Clicked" prefWidth="150.0" styleClass="zoomButtons" text="Next " StackPane.alignment="TOP_RIGHT">
                      <StackPane.margin>
                         <Insets right="10.0" top="5.0" />
                      </StackPane.margin>
