@@ -62,11 +62,12 @@ public class emergencyController extends controllers.AbsController{
         //set up english labels
         if (c_language == 0) {
             controller.englishButtons_Labels();
-
             //set up spanish labels
         } else if (c_language == 1) {
             controller.spanishButtons_Labels();
         }
+        controller.setPermissionLevel(0);
+        
 
     }
 

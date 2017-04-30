@@ -664,23 +664,63 @@ public class NewMainMapManagementController extends controllers.mapScene {
                     }
                     if (mode.equals("Edit")) {
                         pop.setTitle("Edit Location");
-                        DBController.DatabaseController.getInstance().updateNode(
-                                round((btK.getLayoutX()/graph.getZoom())/graph.getWidthRatio()),
-                                round((btK.getLayoutY()/graph.getZoom())/graph.getHeightRatio()),
-                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType,
-                                thisNodeName, thisNodeRoom, permission);
-                        pop.hide();
-                        admin_FloorPane.getChildren().remove(btK);
-                        resetScreen();
+
+                        ResultSet temp = databaseController.getNodeWithName(thisNodeRoom);
+                        boolean nodeAlreadyThere = false;
+                        try {
+                            if (!temp.next()) {
+                                System.out.println("all clear");
+                                nodeAlreadyThere = false;
+                            } else {
+                                System.out.println("Node already there");
+                                nodeAlreadyThere = true;
+                            }
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                        }
+
+                        if (!nodeAlreadyThere) {
+                            DBController.DatabaseController.getInstance().updateNode(
+                                    round((btK.getLayoutX() / graph.getZoom()) / graph.getWidthRatio()),
+                                    round((btK.getLayoutY() / graph.getZoom()) / graph.getHeightRatio()),
+                                    currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType,
+                                    thisNodeName, thisNodeRoom, permission);
+                            pop.hide();
+                            admin_FloorPane.getChildren().remove(btK);
+                            resetScreen();
+                        } else {
+                            nodeRoom.setBackground(new Background(
+                                    new BackgroundFill(Color.YELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
+                        }
                     } else if (mode.equals("Create")){
-                        DBController.DatabaseController.getInstance().newNode(
-                                round((btK.getLayoutX()/graph.getZoom())/graph.getWidthRatio()),
-                                round((btK.getLayoutY()/graph.getZoom())/graph.getHeightRatio()),
-                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType,
-                                thisNodeName, thisNodeRoom, permission);
-                        pop.hide();
-                        admin_FloorPane.getChildren().remove(btK);
-                        resetScreen();
+                        System.out.println("name: " + thisNodeRoom);
+                        ResultSet temp = databaseController.getNodeWithName(thisNodeRoom);
+                        boolean nodeAlreadyThere = false;
+                        try {
+                            if (!temp.next()) {
+                                System.out.println("all clear");
+                                nodeAlreadyThere = false;
+                            } else {
+                                System.out.println("Node already there");
+                                nodeAlreadyThere = true;
+                            }
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                        }
+                        if (!nodeAlreadyThere) {
+                            DBController.DatabaseController.getInstance().newNode(
+                                    round((btK.getLayoutX() / graph.getZoom()) / graph.getWidthRatio()),
+                                    round((btK.getLayoutY() / graph.getZoom()) / graph.getHeightRatio()),
+                                    currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType,
+                                    thisNodeName, thisNodeRoom, permission);
+                            pop.hide();
+                            admin_FloorPane.getChildren().remove(btK);
+                            resetScreen();
+                        } else {
+                            nodeRoom.setText("");
+                            nodeRoom.setBackground(new Background(
+                                    new BackgroundFill(Color.YELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
+                        }
                     }
                 }
             }
@@ -1438,7 +1478,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //when the mouse is clicked and dragged on the map
     public void dragDetected() {
-        isDragged = true;
+        if (!dragMode && !multiDragMode) {
+            isDragged = true;
+        }
         //System.out.println("detected");
     }
 

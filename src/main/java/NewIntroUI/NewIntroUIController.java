@@ -161,6 +161,9 @@ public class NewIntroUIController extends controllers.mapScene{
     @FXML
     private CheckBox stairs_CheckBox;
 
+    @FXML
+    private Button reverse_Button;
+
 
 
 
@@ -217,6 +220,7 @@ public class NewIntroUIController extends controllers.mapScene{
     private double submitHval;
     private double submitVval;
 
+
     //ArrayList<Edge> zoomPath;
 
     // list of all locations, not sorted at first
@@ -231,6 +235,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
     @FXML
     public void initialize() {
+        reverse_Button.setStyle("-fx-background-image: url('images/reverse.png')");
         permissionLevel = 0;
         graph = new controllers.MapOverlay(node_Plane, (mapScene) this);
         MapController.getInstance().requestMapCopy();
@@ -420,7 +425,11 @@ public class NewIntroUIController extends controllers.mapScene{
             nameButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    end_TextField.setText(thisLocation.getRoomNum());
+                    if (start_textField.getText().equalsIgnoreCase("")) {
+                        start_textField.setText(thisLocation.getName() + ", " + thisLocation.getRoomNum());
+                    } else {
+                        end_TextField.setText(thisLocation.getName() + ", " + thisLocation.getRoomNum());
+                    }
                 }
             });
             empHBox.getChildren().addAll(nameButton);
@@ -800,7 +809,7 @@ public class NewIntroUIController extends controllers.mapScene{
         services = databaseController.getNodeTypes();
         //all.addAll(roomNums);
         all.addAll(databaseController.getFilteredRooms(permissionLevel));
-        all.addAll(services);
+        //all.addAll(services);
 
         all.addAll(professionals);
 
