@@ -88,7 +88,7 @@ public class MapOverlay {
         }
 
     final Image stairImage = new Image("images/stairsImage.png");
-    final Image elevatorImage = new Image("images/elevator.jpg");
+    final Image elevatorImage = new Image("images/elevator.png");
     final Image foodImage = new Image("images/ coffee.png");
     final Image entranceImage = new Image("images/entrance.png");
     final Image exitImage = new Image("images/exit.jpg");
