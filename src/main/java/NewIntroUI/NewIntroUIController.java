@@ -621,7 +621,7 @@ public class NewIntroUIController extends controllers.mapScene{
         System.out.println("click - pane-Vval = " + scrollPane.getVvalue());
 
         useStairs = stairs_CheckBox.isSelected();
-        
+
         //reset visibility just in case
         continueNew_Button.setVisible(false);
         previous_Button.setVisible(false);
