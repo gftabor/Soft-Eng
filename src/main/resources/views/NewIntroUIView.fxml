@@ -172,13 +172,13 @@
                      </children>
                   </VBox>
                   <HBox />
-                  <TabPane prefHeight="540.0" prefWidth="288.0" tabClosingPolicy="UNAVAILABLE">
+                  <TabPane prefHeight="547.0" prefWidth="288.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                       <Tab text="Locations">
                            <content>
                               <ScrollPane fx:id="locationsPane" prefHeight="200.0" prefWidth="200.0">
                                 <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                                  <AnchorPane />
                                 </content>
                               </ScrollPane>
                            </content>
@@ -188,10 +188,10 @@
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="393.0" prefWidth="143.0">
                                  <children>
                                     <Label fx:id="phoneInfo_Label" layoutX="34.0" layoutY="324.0" styleClass="text-D" text="Send directions to my phone" />
-                                    <TextField fx:id="phoneInsert" layoutX="11.0" layoutY="345.0" prefWidth="200.0" promptText="123456789" />
-                                    <Button fx:id="phoneSend" layoutX="212.0" layoutY="345.0" mnemonicParsing="false" prefWidth="60.0" styleClass="primary" text="Send" />
-                                    <TextArea fx:id="textDescription_TextFArea" editable="false" layoutX="44.0" layoutY="41.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                    <Label fx:id="phoneStatus" layoutX="122.0" layoutY="371.0" text="Phone Status" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" />
+                                    <TextField fx:id="phoneInsert" layoutX="11.0" layoutY="345.0" prefWidth="200.0" promptText="123456789" AnchorPane.bottomAnchor="40.0" />
+                                    <Button fx:id="phoneSend" layoutX="212.0" layoutY="345.0" mnemonicParsing="false" prefWidth="60.0" styleClass="primary" text="Send" AnchorPane.bottomAnchor="40.0" />
+                                    <TextArea fx:id="textDescription_TextFArea" editable="false" layoutX="44.0" layoutY="41.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <Label fx:id="phoneStatus" layoutX="122.0" layoutY="371.0" text="Phone Status" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" />
                                  </children>
                               </AnchorPane>
                            </content>
