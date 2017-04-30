@@ -51,6 +51,7 @@ public class FAQcontroller extends controllers.AbsController{
 
     }
 
+    // when the main menu button is clicked
     public void main_menu_clicked (){
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
         //patientMenuStart.patientMenuStartController controller = loader.getController();
@@ -64,12 +65,23 @@ public class FAQcontroller extends controllers.AbsController{
             //set up spanish labels
         }
         controller.setPermissionLevel(permissionLevel);
-        controller.loginOrOut(1,c_language);
+        controller.setLanguage_ChoiceBox(c_language);
+
+        if(permissionLevel == 2){
+            controller.loginOrOut(0,c_language);
+            controller.AdminButtons(c_language);
+        }else if(permissionLevel == 1){
+            controller.loginOrOut(0,c_language);
+
+        }else{
+            controller.loginOrOut(1,c_language);
+        }
+        controller.setLanguage_ChoiceBox(c_language);
 
 
     }
 
-
+    // when the emergency button is clicked
     public void emergency_button_clicked(){
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewEmergencyView.fxml");
         emergency.emergencyController controller = loader.getController();

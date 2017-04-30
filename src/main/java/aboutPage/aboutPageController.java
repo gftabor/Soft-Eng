@@ -83,8 +83,13 @@ public class aboutPageController extends controllers.AbsController{
             controller.spanishButtons_Labels();
             controller.setWelcome(loggedIn);
         }
-        controller.setPermissionLevel(1);
+        controller.setPermissionLevel(permissionLevel);
+        if(permissionLevel == 2){
+            controller.AdminButtons(c_language);
+        }
+        controller.setLanguage_ChoiceBox(c_language);
         controller.loginOrOut(1,c_language);
+
 
     }
 
@@ -122,6 +127,8 @@ public class aboutPageController extends controllers.AbsController{
         and_Label.setText("and");
         hospital_Label.setText("Andrew Shinn");
 
+        main_Menu.setText("Main Menu");
+
     }
 
     //sets the spanish Labels
@@ -139,12 +146,14 @@ public class aboutPageController extends controllers.AbsController{
 
         subTitle_Label.setText("WPI CS 3733 Software Engineering");
         prof_Label.setText("Profesor Wilson Wong");
-        SA_Label.setText("Studiente Asistente Dominik Smreczak");
+        SA_Label.setText("Estudiante Asistente Dominik Smreczak");
 
         subTitlle2_Lable.setText("Agradecimientos Especiales A:");
         hosp_Label.setText("Hospital Faulkner Brigham and Women");
         and_Label.setText("y");
         hospital_Label.setText("Andrew Shinn");
+
+        main_Menu.setText("Menu Principal");
 
     }
 

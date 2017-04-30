@@ -88,6 +88,11 @@ public class NewMainMapManagementController extends controllers.mapScene {
     @FXML
     private Button save_Button;
 
+    @FXML
+    private Button pathFinding_Button;
+
+    boolean second = false;
+
 
     private int nodeEdgeX1;
     private int nodeEdgeY1;
@@ -167,8 +172,6 @@ public class NewMainMapManagementController extends controllers.mapScene {
         MapController.getInstance().requestMapCopy();
         graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
                 currentFloor, permissionLevel);
-
-        setFloorChoices();
 
         //Zooming code
         /*NOTES: Basic zooming works
@@ -521,6 +524,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 databaseController.transferNodeLoc(dragNode.getPosX(), dragNode.getPosY(), dragNode.getFloor(),
                         round((dragCircle.getLayoutX()/zoom)/widthRatio),
                         round((dragCircle.getLayoutY()/zoom)/heightRatio), currentFloor);
+                System.out.println("transferred");
 
                 databaseController.deleteNode(dragNode.getPosX(), dragNode.getPosY(), currentFloor);
 
@@ -926,27 +930,27 @@ public class NewMainMapManagementController extends controllers.mapScene {
         }
     }
 
-    //Change to main Menu
-    public void mainMenuButton_Clicked() {
-
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
-        adminMenuStart.adminMenuStartController controller = loader.getController();
-        //Set the correct username for the next scene
-        controller.setUsername(LogInPerson_Label.getText());
-        System.out.println(LogInPerson_Label.getText());
-
-        //sets the current language
-        controller.setCurrentLanguage(c_language);
-        //set up english labels
-        if(c_language == 0){
-            controller.englishButtons_Labels();
-
-            //set up spanish labels
-        }else if(c_language == 1){
-            controller.spanishButtons_Labels();
-        }
-        controller.setLanguageChoices();
-    }
+//    //Change to main Menu
+//    public void mainMenuButton_Clicked() {
+//
+//        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
+//        adminMenuStart.adminMenuStartController controller = loader.getController();
+//        //Set the correct username for the next scene
+//        controller.setUsername(LogInPerson_Label.getText());
+//        System.out.println(LogInPerson_Label.getText());
+//
+//        //sets the current language
+//        controller.setCurrentLanguage(c_language);
+//        //set up english labels
+//        if(c_language == 0){
+//            controller.englishButtons_Labels();
+//
+//            //set up spanish labels
+//        }else if(c_language == 1){
+//            controller.spanishButtons_Labels();
+//        }
+//        controller.setLanguageChoices();
+//    }
 
     public void setUserString(String user) {
 
@@ -954,9 +958,12 @@ public class NewMainMapManagementController extends controllers.mapScene {
     }
 
 
+
+
     //Sets the map of the desired floor
     public void setFloorChoices(){
         if(c_language == 0) {
+
             floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Outside",
                     "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4", "Belkin Basement");
         }else{
@@ -1109,7 +1116,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         graph.setHeightRatio(1.0);
         graph.setWidthRatio(1.0);
 
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewEmergencyView.fxml");
         emergency.emergencyController controller = loader.getController();
         //sends the current language to the next screen
         controller.setCurrentLanguage(c_language);
@@ -1120,6 +1127,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         }else if(c_language == 1){
             controller.spanishButtons_Labels();
         }
+
     }
 
     //Manages when the user clicks the save button
@@ -1186,6 +1194,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         emergency_Button.setText("EMERGENCY");
         clear_Button.setText("Clear");
         save_Button.setText("Save");
+        pathFinding_Button.setText("PathFinding");
 
         //Choice Box
         setFloorChoices();
@@ -1206,6 +1215,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         emergency_Button.setText("EMERGENCIA");
         clear_Button.setText("Borrar");
         save_Button.setText("Guardar");
+        pathFinding_Button.setText("Mapa de Busqueda");
 
         //Choice Box
         setFloorChoices();
@@ -1369,7 +1379,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //when the mouse is clicked and dragged on the map
     public void dragDetected() {
-        //isDragged = true;
+        isDragged = true;
         //System.out.println("detected");
     }
 
@@ -1404,4 +1414,28 @@ public class NewMainMapManagementController extends controllers.mapScene {
         }
 
     }
+
+    //Sends the person to pathfinding with admin permission
+    public void pathFindingButton_Clicked(){
+        System.out.println("Logging in Employee");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
+        //patientMenuStart.patientMenuStartController controller = loader.getController();
+        NewIntroUI.NewIntroUIController controller = loader.getController();
+        //sets the current language
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            controller.setWelcome(LogInPerson_Label.getText());
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+            controller.setWelcome(LogInPerson_Label.getText());
+        }
+        controller.setPermissionLevel(2);
+        controller.loginOrOut(0,c_language);
+        controller.setLanguage_ChoiceBox(c_language);
+        controller.AdminButtons(c_language);
+    }
+
 }
