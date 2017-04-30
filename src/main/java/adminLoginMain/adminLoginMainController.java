@@ -1,12 +1,17 @@
 package adminLoginMain;
 
-import NewMainMapManagement.NewMainMapManagementController;
+import NewIntroUI.IdleMonitor;
+import NewIntroUI.NewIntroUIController;
+import controllers.MapController;
+import controllers.mapScene;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 
 /**
  * Created by AugustoR on 4/1/17.
@@ -41,6 +46,16 @@ public class adminLoginMainController extends controllers.AbsController{
 
     int c_language;
 
+
+    @FXML
+    public void initialize() {
+
+        NewIntroUIController mainController = new NewIntroUIController();
+        IdleMonitor idleMonitor = new IdleMonitor(Duration.seconds(10),
+                () -> backgroundAnchorPane.getChildren().setAll(mainController.backgroundAnchorPane), true);
+        idleMonitor.register(backgroundAnchorPane, Event.ANY);
+    }
+
     //logs the user in
     public void logInButton_Clicked(){
         AdminLoginManager loginManage = new AdminLoginManager();
@@ -62,6 +77,9 @@ public class adminLoginMainController extends controllers.AbsController{
                 
                 NewMainMapManagement.NewMainMapManagementController controller = loader.getController();
                 controller.setC_language(c_language);
+
+
+
                 //Set the correct username for the next scene
                 //set up english labels
                 if(c_language == 0){

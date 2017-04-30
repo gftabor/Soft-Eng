@@ -71,6 +71,8 @@ public class adminMenuStartController extends controllers.AbsController{
         search_ChoiceBox.getSelectionModel()
                 .selectedItemProperty()
                 .addListener( (ObservableValue<? extends String> observable, String oldValue, String newValue) -> changeSearch(newValue) );
+
+
     }
 
 

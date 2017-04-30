@@ -1,6 +1,7 @@
 package NewMainMapManagement;
 
 import DBController.DatabaseController;
+import NewIntroUI.NewIntroUIController;
 import controllers.*;
 import controllers.Node;
 import javafx.beans.value.ChangeListener;
@@ -12,10 +13,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,16 +24,13 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.textfield.TextFields;
 //import sun.misc.resources.Messages_pt_BR;
 
-import javax.swing.text.View;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Created by AugustoR on 4/27/17.
@@ -143,7 +139,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     private boolean isDragged;
 
-    public void initialize() {
+    private AutoLogout al = new AutoLogout();
+
+    public void initialize() throws InterruptedException {
         setUserString(LogInPerson_Label.getText());
         addSingleEdgeMode = false;
         addMultiEdgeMode = false;
@@ -328,6 +326,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
             }
 
         });
+
+        //autoLogout();
     }
 
     public PopOver createRadiusPop(PopOver pop, Circle tempCircle){
@@ -1120,6 +1120,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         }else if(c_language == 1){
             controller.spanishButtons_Labels();
         }
+
     }
 
     //Manages when the user clicks the save button
@@ -1388,20 +1389,25 @@ public class NewMainMapManagementController extends controllers.mapScene {
     }
 
     public void autoLogout() {
+        graph.setZoom(1.0);
+        graph.setHeightRatio(1.0);
+        graph.setWidthRatio(1.0);
+
+//        backgroundAnchorPane = new AnchorPane(new AnchorPane());
         System.out.println("The system has automatically logged off due to inactivity.");
-
-
-        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
-        NewIntroUI.NewIntroUIController controller = loader.getController();
-        //sends the current language to the next screen
-        controller.setCurrentLanguage(c_language);
-        //set up english labels
-        if (c_language == 0) {
-            controller.englishButtons_Labels();
-            //set up spanish labels
-        } else if (c_language == 1) {
-            controller.spanishButtons_Labels();
-        }
+//
+//        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
+//        loader.setController(new NewIntroUIController());
+//        NewIntroUI.NewIntroUIController controller = loader.getController();
+//        //sends the current language to the next screen
+//        controller.setCurrentLanguage(c_language);
+//        //set up english labels
+//        if (c_language == 0) {
+//            controller.englishButtons_Labels();
+//            //set up spanish labels
+//        } else if (c_language == 1) {
+//            controller.spanishButtons_Labels();
+//        }
 
     }
 }

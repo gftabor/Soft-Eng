@@ -5,6 +5,7 @@ import controllers.*;
 import emergency.SmsSender;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -18,6 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.net.URISyntaxException;
@@ -32,7 +34,7 @@ public class NewIntroUIController extends controllers.mapScene{
     private Tab textDirections_Tab;
 
     @FXML
-    private AnchorPane backgroundAnchorPane;
+    public AnchorPane backgroundAnchorPane;
 
     @FXML
     private Label mainTitle_Label;
@@ -188,6 +190,8 @@ public class NewIntroUIController extends controllers.mapScene{
 
     private boolean useStairs;
 
+
+
     //ArrayList<Edge> zoomPath;
 
 
@@ -196,6 +200,10 @@ public class NewIntroUIController extends controllers.mapScene{
         permissionLevel = 0;
         graph = new controllers.MapOverlay(node_Plane, (mapScene) this);
         MapController.getInstance().requestMapCopy();
+
+//        IdleMonitor idleMonitor = new IdleMonitor(Duration.seconds(10),
+//                () -> backgroundAnchorPane.getChildren().setAll(backgroundAnchorPane), true);
+//        idleMonitor.register(backgroundAnchorPane, Event.ANY);
 
         //setLanguageChoices(c_language);
         setFloorChoices();

@@ -1,6 +1,7 @@
 package mapManagementFloorAndMode;
 
 import DBController.DatabaseController;
+import NewMainMapManagement.AutoLogout;
 import controllers.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -91,6 +92,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
 
     private DatabaseController databaseController = DatabaseController.getInstance();
 
+    private AutoLogout al = new AutoLogout();
+
     public void initialize() {
         setUserString(username_Label.getText());
         addSingleEdgeMode = false;
@@ -158,6 +161,8 @@ public class mmFloorAndModeController extends controllers.mapScene{
                 pop.show(btK);
             }
         });
+
+
     }
 
     
