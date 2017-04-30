@@ -930,27 +930,27 @@ public class NewMainMapManagementController extends controllers.mapScene {
         }
     }
 
-    //Change to main Menu
-    public void mainMenuButton_Clicked() {
-
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
-        adminMenuStart.adminMenuStartController controller = loader.getController();
-        //Set the correct username for the next scene
-        controller.setUsername(LogInPerson_Label.getText());
-        System.out.println(LogInPerson_Label.getText());
-
-        //sets the current language
-        controller.setCurrentLanguage(c_language);
-        //set up english labels
-        if(c_language == 0){
-            controller.englishButtons_Labels();
-
-            //set up spanish labels
-        }else if(c_language == 1){
-            controller.spanishButtons_Labels();
-        }
-        controller.setLanguageChoices();
-    }
+//    //Change to main Menu
+//    public void mainMenuButton_Clicked() {
+//
+//        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
+//        adminMenuStart.adminMenuStartController controller = loader.getController();
+//        //Set the correct username for the next scene
+//        controller.setUsername(LogInPerson_Label.getText());
+//        System.out.println(LogInPerson_Label.getText());
+//
+//        //sets the current language
+//        controller.setCurrentLanguage(c_language);
+//        //set up english labels
+//        if(c_language == 0){
+//            controller.englishButtons_Labels();
+//
+//            //set up spanish labels
+//        }else if(c_language == 1){
+//            controller.spanishButtons_Labels();
+//        }
+//        controller.setLanguageChoices();
+//    }
 
     public void setUserString(String user) {
 
