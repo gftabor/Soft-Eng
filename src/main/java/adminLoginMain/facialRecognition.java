@@ -48,8 +48,10 @@ public class facialRecognition {
         this.nextState = state.NOTHING;
 
     }
-    public void scan(){
+    private adminLoginMainController mainScene;
+    public void scan(adminLoginMainController currentLoginScene){
         this.nextState = state.LOGIN;
+        mainScene = currentLoginScene;
     }
     public String getFaceID() {
         this.nextState = state.ADD;
@@ -153,10 +155,14 @@ public class facialRecognition {
                         if(nextState.equals(state.LOGIN)){
                             result = httpRequests.recognitionIdentify(new PostParameters().setGroupName("Faukner").setImg(temp)).getJSONArray("face").getJSONObject(0);
                             for(int i =0; i<result.getJSONArray("candidate").length(); i++){
-                                System.out.println(result.getJSONArray("candidate").getJSONObject(i).getString("person_name") + "  " +
-                                        result.getJSONArray("candidate").getJSONObject(i).getDouble("confidence"));
+                                String username = result.getJSONArray("candidate").getJSONObject(i).getString("person_name");
+                                Double confidence = result.getJSONArray("candidate").getJSONObject(i).getDouble("confidence");
+
+                                if(confidence> 25.0){
+                                    System.out.println("logging in");
+                                    mainScene.logIn(username);
+                                }
                             }
-                            System.out.println("logging in");
                         }
                         if(nextState.equals(state.ADD)) {
 
