@@ -78,6 +78,9 @@
                </padding>
             </VBox>
          </center>
+         <bottom>
+            <VBox fx:id="root" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+         </bottom>
       </BorderPane>
    </children>
 </AnchorPane>
