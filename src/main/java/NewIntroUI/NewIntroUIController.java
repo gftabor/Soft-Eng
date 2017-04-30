@@ -780,8 +780,7 @@ public class NewIntroUIController extends controllers.mapScene{
         graph.setHeightRatio(1.0);
         graph.setWidthRatio(1.0);
 
-        if(admin_Button.getText().equals("Administrator") || admin_Button.getText().equals("Administrador")
-                || getPermissionLevel() == 0 ) {
+        if(getPermissionLevel() == 0 ) {
             FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminLoginMainView.fxml");
             adminLoginMain.adminLoginMainController controller = loader.getController();
             //sends the current language the next screen
@@ -893,7 +892,12 @@ public class NewIntroUIController extends controllers.mapScene{
         //change the current language to english
 
         //Change the Buttons
-        admin_Button.setText("Administrator");
+        //change the Buttons
+        if(permissionLevel == 2) {
+            admin_Button.setText("Sign Out");
+        }else {
+            admin_Button.setText("Administrador");
+        }
         emergency_Button.setText("EMERGENCY");
         cancel_Button.setText("Clear");
         submit_Button.setText("Submit");
@@ -937,7 +941,11 @@ public class NewIntroUIController extends controllers.mapScene{
 
 
         //change the Buttons
-        admin_Button.setText("Administrador");
+        if(permissionLevel == 2) {
+            admin_Button.setText("Sign Out");
+        }else {
+            admin_Button.setText("Administrador");
+        }
         emergency_Button.setText("EMERGENCIA");
         cancel_Button.setText("Borrar");
         submit_Button.setText("Listo");
@@ -949,7 +957,6 @@ public class NewIntroUIController extends controllers.mapScene{
         end_Label.setText("Destino:");
         mainTitle_Label.setText("Bienvenidos al Hospital Faulkner Brigham and Women");
         floor_Label.setText("Piso");
-        //textD_Label.setText("Descripciones Escritas");
         phoneInfo_Label.setText("Enviar direcciones a mi celular");
 
 
