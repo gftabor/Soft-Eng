@@ -728,6 +728,18 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-background-color: #333;
     -fx-border-color: #333;
 }
+
+.choiceBoxMaps{
+    -fx-background-color: #323232;
+    -fx-font-size: 0;
+    -fx-text-fill: #323232;
+}
+.choiceBoxMaps:hover{
+    -fx-background-color: #323232;
+    -fx-font-size: 0;
+    -fx-text-fill: #323232;
+}
+
 /*Testing tables to make it prettier*/
 .color-palette5{
 
@@ -839,8 +851,6 @@ VBox > .split-menu-button.last > .arrow-button {
 /*.show-hide-columns-button2:focused{
     -fx-effect: dropshadow(gaussian, #e0dede, 0, 0, 0, 0);
 }*/
-
-
 
 
 .pagination > .pagination-control > .control-box {
@@ -1062,8 +1072,6 @@ VBox > .split-menu-button.last > .arrow-button {
 .show-hide-columns-button2:focused{
     -fx-effect: dropshadow(gaussian, #e0dede, 0, 0, 0, 0);
 }
-
-
 
 
 .column-header:hover,.show-hide-columns-button:hover {

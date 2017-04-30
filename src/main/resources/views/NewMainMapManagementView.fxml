@@ -85,7 +85,7 @@
                         <Insets right="10.0" top="35.0" />
                      </StackPane.margin>
                   </Button>
-                  <ChoiceBox fx:id="floor_ChoiceBox" prefWidth="50.0" styleClass="menu" StackPane.alignment="TOP_LEFT">
+                  <ChoiceBox fx:id="floor_ChoiceBox" prefWidth="50.0" styleClass="choiceBoxMaps" StackPane.alignment="TOP_LEFT">
                      <StackPane.margin>
                         <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                      </StackPane.margin>
