@@ -23,7 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.openimaj.image.ImageUtilities;
-import org.openimaj.image.colour.Transforms;
+import org.openimaj.*;
 import org.openimaj.image.processing.face.detection.DetectedFace;
 import org.openimaj.image.processing.face.detection.HaarCascadeDetector;
 import javax.imageio.ImageIO;
@@ -105,8 +105,7 @@ public class adminLoginMainController extends controllers.AbsController{
             while(isRunning) {
                 capture = webcam.getImage();
 
-               HaarCascadeDetector detector;
-                detector = new HaarCascadeDetector();
+               HaarCascadeDetector detector = new HaarCascadeDetector();
                 List<DetectedFace> faces = detector.detectFaces(ImageUtilities.createFImage(capture));
                 facesList.clear();
                 for(DetectedFace face : faces) {
