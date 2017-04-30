@@ -206,6 +206,8 @@ public class NewIntroUIController extends controllers.mapScene{
         graph = new controllers.MapOverlay(node_Plane, (mapScene) this);
         MapController.getInstance().requestMapCopy();
 
+        graph.setZoom(1.0);
+
         //setLanguageChoices(c_language);
         setFloorChoices();
         setStartEndChoices();
