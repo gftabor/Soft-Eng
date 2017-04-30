@@ -145,6 +145,10 @@ public class NewIntroUIController extends controllers.mapScene{
     @FXML
     private Button MapMan_Button;
 
+    @FXML
+    private CheckBox ThreeDPATH_CheckBox;
+
+
 
 
 
@@ -713,11 +717,14 @@ public class NewIntroUIController extends controllers.mapScene{
                 graph.createEdgeLines(path, true, false);
 
             }
+
+            if(ThreeDPATH_CheckBox.isSelected()){
+                mainTitle_Label.setText("3D BS");
+            }
         }
 
-        //}
-        selectionState=0;
-        System.out.println("The user has clicked the submit Button");
+
+
 
         System.out.println("finished - pane-Hval = " + scrollPane.getHvalue());
         System.out.println("finished - pane-Vval = " + scrollPane.getVvalue());

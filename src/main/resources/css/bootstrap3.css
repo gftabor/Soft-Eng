@@ -740,8 +740,9 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-text-fill: #323232;
 }
 
+
 /*Testing tables to make it prettier*/
-.color-palette5{
+.threeD, .color-palette5{
 
     -fx-border-width: 0;
     -fx-background-insets: 0 0 0 0;
@@ -750,6 +751,9 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-border-color: #333;
     -fx-font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     -fx-text-fill: white;
+}
+.threeD{
+    -fx-background-color: #111;
 }
 .color-palette5:hover{
     -fx-background-color: #111;
