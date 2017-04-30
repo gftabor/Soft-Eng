@@ -20,6 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import org.controlsfx.control.textfield.TextFields;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -719,7 +720,12 @@ public class NewIntroUIController extends controllers.mapScene{
             }
 
             if(ThreeDPATH_CheckBox.isSelected()){
-                mainTitle_Label.setText("3D BS");
+                //mapController.nodeListToText(pathfinder.getNodePath());
+                try {
+                    Runtime.getRuntime().exec(new String[] { "pathfinder3D.exe"});
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 

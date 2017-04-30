@@ -263,12 +263,15 @@ public class MapController {
         pathfinder.algorithmSwitch(algorithm);
         double result = pathfinder.generatePath(startNode, endNode, permissionLevel, useStairs);
 
+
         nodeListToText(pathfinder.getNodePath());
+        /*
         try {
             Runtime.getRuntime().exec(new String[] { "pathfinder3D.exe"});
         } catch (IOException e) {
             e.printStackTrace();
         }
+        */
 
         return pathfinder.getPath();
 
