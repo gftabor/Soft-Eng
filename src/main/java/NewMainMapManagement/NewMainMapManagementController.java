@@ -3,11 +3,13 @@ package NewMainMapManagement;
 import DBController.DatabaseController;
 import controllers.*;
 import controllers.Node;
+import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +28,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.textfield.TextFields;
 //import sun.misc.resources.Messages_pt_BR;
@@ -188,6 +191,24 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 Don't pan when selecting a node (somehow detect you're clicking a node and setPanable(false)
 
          */
+
+
+
+
+
+        PauseTransition idle = new PauseTransition(Duration.seconds(10));
+        idle.setOnFinished(e -> signOutButton_Clicked());
+        backgroundAnchorPane.addEventHandler(Event.ANY, e -> {
+            idle.playFromStart();
+        });
+
+
+
+
+
+
+
+
         admin_FloorPane.setMaxWidth(5000);
         admin_FloorPane.setMaxHeight(5000);
         scrollPane.setFitToWidth(true);
