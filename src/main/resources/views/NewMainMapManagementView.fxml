@@ -95,7 +95,7 @@
                         <Insets right="10.0" top="-35.0" />
                      </StackPane.margin>
                   </Button>
-                  <Button fx:id="clear_Button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#clearButton_Clicked" prefWidth="150.0" styleClass="info" text="Clear" StackPane.alignment="BOTTOM_CENTER">
+                  <Button fx:id="clear_Button" alignment="CENTER" disable="true" mnemonicParsing="false" onMouseClicked="#clearButton_Clicked" prefWidth="150.0" styleClass="info" text="Clear" visible="false" StackPane.alignment="BOTTOM_CENTER">
                      <StackPane.margin>
                         <Insets bottom="10.0" right="200.0" top="2.0" />
                      </StackPane.margin>
@@ -105,6 +105,16 @@
                         <Insets bottom="10.0" left="200.0" top="2.0" />
                      </StackPane.margin>
                   </Button>
+                  <Label fx:id="floor_Label" styleClass="DirectoryLabel" text="Floor:" StackPane.alignment="TOP_LEFT">
+                     <StackPane.margin>
+                        <Insets left="55.0" top="5.0" />
+                     </StackPane.margin>
+                  </Label>
+                  <Label fx:id="c_Floor_Label" styleClass="DirectoryLabel" text="1" StackPane.alignment="TOP_LEFT">
+                     <StackPane.margin>
+                        <Insets left="110.0" top="5.0" />
+                     </StackPane.margin>
+                  </Label>
                </children>
                <BorderPane.margin>
                   <Insets bottom="5.0" left="5.0" right="2.0" top="2.0" />

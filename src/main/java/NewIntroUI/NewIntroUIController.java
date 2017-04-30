@@ -148,6 +148,9 @@ public class NewIntroUIController extends controllers.mapScene{
     @FXML
     private CheckBox ThreeDPATH_CheckBox;
 
+    @FXML
+    private CheckBox stairs_CheckBox;
+
 
 
 

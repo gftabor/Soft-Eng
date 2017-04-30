@@ -91,6 +91,12 @@ public class NewMainMapManagementController extends controllers.mapScene {
     @FXML
     private Button pathFinding_Button;
 
+    @FXML
+    private Label floor_Label;
+
+    @FXML
+    private Label c_Floor_Label;
+
     boolean second = false;
 
 
@@ -962,6 +968,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //Sets the map of the desired floor
     public void setFloorChoices(){
+
         if(c_language == 0) {
 
             floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Outside",
@@ -970,6 +977,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
             floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Afuera",
                     "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4", "Sotano de Belkin");
         }
+
+
 
         //reset ui interaction
         dragMode = false;
@@ -985,7 +994,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 boolean outside = false;
                 String currentF = "";
-
+                //Print the floors accordingly
+                //CODE HERE!!!!!!!
 
                 if (newValue.intValue() == 7) {
                     //outside
@@ -996,15 +1006,61 @@ public class NewMainMapManagementController extends controllers.mapScene {
                     currentFloor = newValue.intValue() + 1;
                 }
 
+                if (currentFloor == 0) {
+                    System.out.println("outside");
+                    outside = true;
+                    if (c_language == 0) {
+                        currentF = "Outside";
+                    } else {
+                        currentF = "Afuera";
+                    }
+                }
+
+                if (currentFloor == 8) {
+                    //outside
+                    outside = true;
+                    currentF = "Belkin 1";
+
+                } else if (currentFloor == 9) {
+                    //belkin
+                    outside = true;
+                    currentF = "Belkin 2";
+
+                } else if (currentFloor == 10) {
+                    outside = true;
+                    currentF = "Belkin 3";
+
+                } else if (currentFloor == 11) {
+                    outside = true;
+                    currentF = "Belkin 4";
+
+                } else if (currentFloor == 12) {
+                    outside = true;
+                    if (c_language == 0) {
+                        currentF = "Belkin Basement";
+                    } else {
+                        currentF = "Sotano de Belkin";
+                    }
+                }
+
+                if (!outside) {
+                    c_Floor_Label.setText(Integer.toString(currentFloor));
+                    if (c_language == 0) {
+                        floor_Label.setText("Floor");
+                    } else {
+                        floor_Label.setText("Piso");
+                    }
+                } else {
+                    c_Floor_Label.setText("");
+                    floor_Label.setText(currentF);
+                }
+
+
+
+
                 mapImage newMapImage = new proxyMap(currentFloor);
                 newMapImage.display(map_viewer);
 
-                if(!outside) {
-                    //c_Floor_Label.setText(Integer.toString(currentFloor));
-                }else{
-                    //c_Floor_Label.setText("");
-                    //floor_Label.setText(currentF);
-                }
                 //true ot see nodes false otherwise
                 graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true,
                         currentFloor, permissionLevel);
@@ -1196,6 +1252,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
         save_Button.setText("Save");
         pathFinding_Button.setText("PathFinding");
 
+        floor_Label.setText("Floor");
+
         //Choice Box
         setFloorChoices();
 
@@ -1217,6 +1275,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         save_Button.setText("Guardar");
         pathFinding_Button.setText("Mapa de Busqueda");
 
+        floor_Label.setText("Piso");
         //Choice Box
         setFloorChoices();
 
