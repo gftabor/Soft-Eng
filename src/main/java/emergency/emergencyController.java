@@ -35,7 +35,7 @@ public class emergencyController extends controllers.AbsController{
     private ScrollPane scrollPane;
 
     @FXML
-    private Pane pane;
+    private AnchorPane pane;
 
     @FXML
     private ImageView map_viewer;
@@ -46,8 +46,9 @@ public class emergencyController extends controllers.AbsController{
     @FXML
     public void initialize() {
         map_viewer.setImage(new Image("/images/4emergency.png"));
-        //map_viewer.setFitWidth(pane.getWidth());
-        //map_viewer.setFitHeight(pane.getHeight());
+        map_viewer.fitHeightProperty().bind(pane.heightProperty());
+        map_viewer.fitWidthProperty().bind(pane.widthProperty());
+
     }
 
     //Return the the patient main menu
