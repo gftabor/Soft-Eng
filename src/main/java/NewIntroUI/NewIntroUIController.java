@@ -361,38 +361,32 @@ public class NewIntroUIController extends controllers.mapScene{
 
         while (iter.hasNext()) {
             Location thisLocation = iter.next();
-            VBox tempVBox = new VBox();
             HBox empHBox = new HBox();
-            empHBox.setPadding(new Insets(0, 0, 0, 3));
+            empHBox.setPadding(new Insets(2, 2, 2, 2));
             empHBox.setSpacing(2);
             Button nameButton = new Button();
 
             if (thisLocation.getAssociatedProFirst().equals("")) {
                 Text text = new Text(thisLocation.getName() + ",\n" + thisLocation.getType()+
                 ", " + thisLocation.getRoomNum());
-                //nameButton.setText(thisLocation.getName() + ",\n " + thisLocation.getType());
-                nameButton.setGraphic(text);
+
+                text.setWrappingWidth(245);
+
                 nameButton.setContentDisplay(ContentDisplay.LEFT);
-//                text.setTextAlignment(TextAlignment.LEFT);
-                nameButton.setMaxWidth(250);
-//                Button roomButton = new Button(thisLocation.getRoomNum());
+                nameButton.setPrefWidth(250);
+                nameButton.setAlignment(Pos.CENTER_LEFT);
+                nameButton.setGraphic(text);
+
+
+
                 nameButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         end_TextField.setText(thisLocation.getRoomNum());
                     }
                 });
-//                roomButton.setOnAction(new EventHandler<ActionEvent>() {
-//                    @Override
-//                    public void handle(ActionEvent event) {
-//                        end_TextField.setText(thisLocation.getRoomNum());
-//                    }
-//                });
                 empHBox.getChildren().addAll(nameButton);
-                tempVBox.setPadding(new Insets(8, 0, 0, 0));
-                tempVBox.setSpacing(4);
-                tempVBox.getChildren().addAll(empHBox);
-                root.getChildren().addAll(tempVBox);
+                root.getChildren().addAll(empHBox);
                 locationsPane.setContent(root);
 
             } else {
@@ -412,11 +406,7 @@ public class NewIntroUIController extends controllers.mapScene{
                     }
                 });
                 empHBox.getChildren().addAll(nameButton, roomButton);
-                tempVBox.setPadding(new Insets(8, 0, 0, 0));
-                tempVBox.setSpacing(0);
-                tempVBox.getChildren().addAll(empHBox);
-                root.getChildren().addAll(tempVBox);
-                //locationsPane.add(tempVBox, 0, i+5);
+                root.getChildren().addAll(empHBox);
                 locationsPane.setContent(root);
             }
         }
