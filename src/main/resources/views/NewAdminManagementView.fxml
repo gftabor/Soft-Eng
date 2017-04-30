@@ -68,7 +68,7 @@
             </VBox>
          </top>
          <left>
-            <VBox minWidth="-Infinity" prefHeight="720.0" prefWidth="386.0" styleClass="color-palette" BorderPane.alignment="CENTER">
+            <VBox minWidth="-Infinity" prefHeight="521.0" prefWidth="386.0" styleClass="color-palette" BorderPane.alignment="CENTER">
                <children>
                   <Label fx:id="currentAdmin_Label" text="Current Admin (Info)" />
                   <HBox>
@@ -285,6 +285,7 @@
                         </Button>
                      </children>
                   </HBox>
+                  <VBox fx:id="root" prefHeight="200.0" prefWidth="100.0" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="5.0" left="5.0" right="2.0" top="2.0" />

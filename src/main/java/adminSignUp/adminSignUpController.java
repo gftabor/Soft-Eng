@@ -1,5 +1,6 @@
 package adminSignUp;
 import DBController.DatabaseController;
+import adminLoginMain.facialRecognition;
 import adminSignUp.adminTable;
 import hospitalDirectorySearch.Table;
 import javafx.beans.value.ChangeListener;
@@ -17,6 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -137,8 +139,19 @@ public class adminSignUpController extends controllers.AbsController{
     @FXML
     private Button clearNP_Button;
 
+    @FXML
+    private VBox root;
+
+    public void initialize() {
+        facialRecognition.getInstance().start(root);
+    }
 
 
+
+    public FXMLLoader switch_screen(AnchorPane BGCurrentanchor, String viewPath){
+        facialRecognition.getInstance().stop();
+        return super.switch_screen(BGCurrentanchor,viewPath);
+    }
 
     private boolean selfSelected = false;
 
