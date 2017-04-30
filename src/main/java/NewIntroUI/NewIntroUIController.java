@@ -620,43 +620,11 @@ public class NewIntroUIController extends controllers.mapScene{
         System.out.println("click - pane-Hval = " + scrollPane.getHvalue());
         System.out.println("click - pane-Vval = " + scrollPane.getVvalue());
 
-
+        useStairs = stairs_CheckBox.isSelected();
+        
         //reset visibility just in case
         continueNew_Button.setVisible(false);
         previous_Button.setVisible(false);
-
-//        if (selectionState == 2) {
-//            //submit stuff
-//            //createEdgeLines
-//
-//            //set the node if the 1st kiosk location is set
-//            if (!(start_textField.getText().equals(""))) {
-//                if (start_textField.getText().equals("Kiosk")){
-//                    startN = mapController.getCollectionOfNodes().getNodeWithName("Kiosk");
-//                } else {
-//                    startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
-//                }
-//                MapController.getInstance().markNode(startN.getPosX(), startN.getPosY(), 1, startN.getFloor());
-//            }
-//
-//            //check for multifloor
-//            if (mapController.areDifferentFloors()) {
-//                System.out.println("Multi-floor pathfinding detected!");
-//
-//                //use the multifloor pathfinding function
-//                multiFloorPathfind();
-//            } else {
-//                MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-//                path = mapController.requestPath(permissionLevel);
-//                graph.createEdgeLines(path, true, false);
-//                //zoomPath = path;
-//                graph.setPathfinding(1);
-//                textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
-//
-//            }
-//
-//        } else {
-//
 
         //check that the txt fields are filled
         if(!(start_textField.getText().equals("")) && !(end_TextField.getText().equals(""))) {
@@ -765,7 +733,6 @@ public class NewIntroUIController extends controllers.mapScene{
         System.out.println("start coords: "+startX + "  " +startY);
 
 
-        //reset for next pathfinding session
         MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
         ArrayList<Edge> reqPath = mapController.requestPath(permissionLevel, useStairs);
         if (reqPath == null || reqPath.size() == 0) { //can't find path, reset
