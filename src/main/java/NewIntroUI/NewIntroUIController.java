@@ -425,7 +425,11 @@ public class NewIntroUIController extends controllers.mapScene{
             nameButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    end_TextField.setText(thisLocation.getName() + ", " + thisLocation.getRoomNum());
+                    if (start_textField.getText().equalsIgnoreCase("")) {
+                        start_textField.setText(thisLocation.getName() + ", " + thisLocation.getRoomNum());
+                    } else {
+                        end_TextField.setText(thisLocation.getName() + ", " + thisLocation.getRoomNum());
+                    }
                 }
             });
             empHBox.getChildren().addAll(nameButton);
