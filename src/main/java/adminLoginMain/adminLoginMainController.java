@@ -24,6 +24,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.openimaj.image.ImageUtilities;
 import org.openimaj.*;
+import org.openimaj.image.objectdetection.*;
 import org.openimaj.image.processing.face.detection.DetectedFace;
 import org.openimaj.image.processing.face.detection.HaarCascadeDetector;
 import javax.imageio.ImageIO;
@@ -87,7 +88,6 @@ public class adminLoginMainController extends controllers.AbsController{
         try {
             httpRequests.trainSearch(new PostParameters().setFacesetName("Admins"));
         }catch(Exception e){System.out.println("bug");}
-        VBox root = new VBox();
         root.setPadding(new Insets(20));
 
         HBox imageStrip = new HBox();
