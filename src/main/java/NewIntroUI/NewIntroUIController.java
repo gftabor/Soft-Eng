@@ -133,6 +133,8 @@ public class NewIntroUIController extends controllers.mapScene{
     @FXML
     private Button cancelFirst_Button;
 
+    @FXML
+    private Button FAQ_Button;
 
 
 
@@ -149,8 +151,6 @@ public class NewIntroUIController extends controllers.mapScene{
     private double startY;
     private double endX;
     private double endY;
-
-    private boolean usingMap;
 
     private controllers.MapOverlay graph;
 
@@ -169,7 +169,9 @@ public class NewIntroUIController extends controllers.mapScene{
     private ArrayList<Integer> globalFloorSequence;
     private ArrayList<Edge> path;
 
-    private final Color startColor = Color.RED;
+//    private final Color startColor = Color.GREEN;
+//    private final Color endColor = Color.CRIMSON;
+    private final Color startColor = Color.CRIMSON;
     private final Color endColor = Color.GREEN;
     private final Color kioskColor = Color.ORANGE;
 
@@ -179,13 +181,12 @@ public class NewIntroUIController extends controllers.mapScene{
     double heightRatio = (1000.0/489.0);
     double widthRatio = (1600.0/920.0);
 
-    double dragNewX, dragNewY, dragOldX, dragOldY;
-    javafx.scene.Node selected;
-
     private int permissionLevel;
 
     double currentHval = 0;
     double currentVval = 0;
+
+    private boolean useStairs;
 
     //ArrayList<Edge> zoomPath;
 
@@ -206,7 +207,7 @@ public class NewIntroUIController extends controllers.mapScene{
         //we will use floor 1 as default
         currentFloor = 1;
         c_Floor_Label.setText("1");
-        usingMap = false;
+        useStairs = false;
 
         System.out.println("width/height ratios: " + widthRatio + "/" + heightRatio);
 
@@ -217,8 +218,8 @@ public class NewIntroUIController extends controllers.mapScene{
         map_viewer.setFitHeight(489.0*heightRatio);
         map_viewer.setFitWidth(920.0*widthRatio);
 
-        MapOverlay.setWidthRatio(widthRatio);
-        MapOverlay.setHeightRatio(heightRatio);
+        graph.setWidthRatio(widthRatio);
+        graph.setHeightRatio(heightRatio);
 
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), false,
                 currentFloor, permissionLevel);
@@ -250,7 +251,8 @@ public class NewIntroUIController extends controllers.mapScene{
 
     public void drawCircleList(ArrayList<Circle> circleList, double x, double y, Color color) {
         for (Circle c : circleList) {
-            if (c.getLayoutX() == x && c.getLayoutY() == y) {
+            System.out.println((c.getLayoutX()/zoom)/widthRatio);
+            if (round((c.getLayoutX()/zoom)/widthRatio) == x && round((c.getLayoutY()/zoom)/heightRatio) == y) {
                 c.setStrokeWidth(strokeRatio);
                 c.setRadius(graph.getLabelRadius() * sizeUpRatio);
                 c.setStroke(color);
@@ -552,10 +554,10 @@ public class NewIntroUIController extends controllers.mapScene{
         ArrayList<String> professionals = new ArrayList<>();
         ArrayList<String> all = new ArrayList<>();
 
-        roomNums = databaseController.getFilteredRoomList();
+        roomNums = databaseController.getFilteredRoomList(permissionLevel);
         professionals = databaseController.getProfessionalList();
         all.addAll(roomNums);
-        all.addAll(databaseController.getFilteredRooms());
+        all.addAll(databaseController.getFilteredRooms(permissionLevel));
         all.addAll(professionals);
 
 
@@ -570,7 +572,15 @@ public class NewIntroUIController extends controllers.mapScene{
     public void aboutButton_clicked() {
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/aboutPageView.fxml");
         aboutPage.aboutPageController controller = loader.getController();
-        //controller.setC_language(c_language);
+        controller.//sets the current language given information form other screens
+        setCurrentLanguage(c_language);
+        if(c_language == 0){
+            controller.englishLabels();
+        }else{
+            controller.spanishLabels();
+        }
+        controller.setPermissionLevel(getPermissionLevel());
+        controller.setAdmin(LogInPerson_Label.getText());
 
     }
 
@@ -654,7 +664,23 @@ public class NewIntroUIController extends controllers.mapScene{
                 //no multifloor pathfinding (simple)
 
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                path = mapController.requestPath(permissionLevel);
+                path = mapController.requestPath(permissionLevel, useStairs);
+
+                int startfloor = mapController.returnOriginalFloor();
+                if(startfloor != currentFloor) {
+                    c_Floor_Label.setText(Integer.toString(startfloor));
+
+                    //switch back to the original floor using the choicebox selection
+                    if (startfloor == 0) {
+                        floor_ChoiceBox.getSelectionModel().select(7);
+                    } else if (startfloor > 7) {
+                        floor_ChoiceBox.getSelectionModel().select(startfloor);
+
+                    } else {
+                        floor_ChoiceBox.getSelectionModel().select(startfloor - 1);
+                    }
+                }
+
                 graph.createEdgeLines(path, true, false);
                 graph.setPathfinding(1);
                 textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
@@ -699,11 +725,13 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //reset for next pathfinding session
         MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-        ArrayList<Edge> reqPath = mapController.requestPath(permissionLevel);
-        if (reqPath == null) { //can't find path, reset
+        ArrayList<Edge> reqPath = mapController.requestPath(permissionLevel, useStairs);
+        if (reqPath == null || reqPath.size() == 0) { //can't find path, reset
             System.out.println("Could not pathfind. Resetting now...");
             cancelButton_Clicked();
+            start_textField.setText("Kiosk");
         } else {
+            System.out.println("reqpath size" + reqPath.size());
             textDescription_TextFArea.setText(mapController.getTextDirections(reqPath, c_language));
 
             ArrayList<ArrayList<Edge>> fragPath;
@@ -790,7 +818,7 @@ public class NewIntroUIController extends controllers.mapScene{
     public void loginOrOut(int inOrOut, int lang){
         //The user is signing in
         if(inOrOut == 0){
-
+            FAQ_Button.setVisible(false);
             if(lang == 0){
                 admin_Button.setText("Sign Out");
             }else{
@@ -811,7 +839,7 @@ public class NewIntroUIController extends controllers.mapScene{
     //Checks if the emergency button was clicked
     public void emergencyButton_Clicked() {
         System.out.println("The user has clicked the emergency Button");
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewEmergencyView.fxml");
         emergency.emergencyController controller = loader.getController();
         //sends the current language to the next screen
         controller.setCurrentLanguage(c_language);
@@ -841,6 +869,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //hide the continue button
         continueNew_Button.setVisible(false);
+        previous_Button.setVisible(false);
 
         //reset the textfields
         start_textField.setText("");
@@ -848,8 +877,6 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //reset any colors
 
-        //reset the usingMap
-        usingMap = false;
     }
 
     //switches all the labels and Buttons to english
@@ -955,7 +982,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
             //update the txtfield
             Node myNode = mapController.getCollectionOfNodes().getNode(x, y, currentFloor);
-            start_textField.setText(myNode.getRoomNum());
+            start_textField.setText(myNode.getName() + ", " + myNode.getRoomNum());
 
             selectionState++;
 
@@ -993,7 +1020,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
             //set the text field
             Node myNode = mapController.getCollectionOfNodes().getNode(x, y, currentFloor);
-            end_TextField.setText(myNode.getRoomNum());
+            end_TextField.setText(myNode.getName() + ", " + myNode.getRoomNum());
 
             //reset the colors
             resetMapNodeColors(2);
@@ -1151,8 +1178,8 @@ public class NewIntroUIController extends controllers.mapScene{
     public void mapScroll(ScrollEvent event) {
         zoom = MapOverlay.getZoom();
         if (currentHval != 0) {
-            System.out.println("pre zoom currenthval: " + currentHval);
-            System.out.println("pre zoom currnetVval: " + currentVval);
+            //System.out.println("pre zoom currenthval: " + currentHval);
+            //System.out.println("pre zoom currnetVval: " + currentVval);
         }
         currentHval = scrollPane.getHvalue();
         currentVval = scrollPane.getVvalue();
@@ -1186,18 +1213,17 @@ public class NewIntroUIController extends controllers.mapScene{
         }
         if (graph.getPathfinding() == 1) {
             graph.createEdgeLines(path, true, false);
+            //set the end goal color
+            ArrayList<Circle> circleList;
+            circleList = graph.getButtonList();
+            drawCircleList(circleList, startX, startY, startColor);
+            drawCircleList(circleList, endX, endY, endColor);
+            System.out.println("drawing circles at "+startX+" and "+endX);
         } else if (graph.getPathfinding() == 2) {
             graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
         }
 
         if (selectionState == 2) {
-
-
-            //set the end goal color
-            ArrayList<Circle> circleList;
-            circleList = graph.getButtonList();
-            drawCircleList(circleList, startX * zoom, startY * zoom, startColor);
-            drawCircleList(circleList, endX * zoom, endY * zoom, endColor);
 
         }
         System.out.println("currenthval: " + currentHval);
@@ -1270,6 +1296,29 @@ public class NewIntroUIController extends controllers.mapScene{
 
     public void setZoom(double zoom) {
         this.zoom = zoom;
+    }
+
+
+    public void FAQ_button_clicked() {
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewFAQ.fxml");
+        FAQ.FAQcontroller controller = loader.getController();
+        controller.setAdmin(LogInPerson_Label.getText());
+
+        controller.setPermissionLevel(getPermissionLevel());
+    }
+
+    private int round(double input) {
+        long intPart;
+        double decimalPart;
+        intPart = (long) input;
+        decimalPart = input - intPart;
+
+        if (decimalPart >= 0.5d) {
+            return (int) intPart + 1;
+        } else {
+            return (int) intPart;
+        }
+
     }
 }
 
