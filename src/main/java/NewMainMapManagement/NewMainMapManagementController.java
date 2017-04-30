@@ -1193,6 +1193,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         emergency_Button.setText("EMERGENCY");
         clear_Button.setText("Clear");
         save_Button.setText("Save");
+        pathFinding_Button.setText("PathFinding");
 
         //Choice Box
         setFloorChoices();
@@ -1213,6 +1214,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         emergency_Button.setText("EMERGENCIA");
         clear_Button.setText("Borrar");
         save_Button.setText("Guardar");
+        pathFinding_Button.setText("Mapa de Busqueda");
 
         //Choice Box
         setFloorChoices();
@@ -1414,6 +1416,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         }
         controller.setPermissionLevel(2);
         controller.loginOrOut(0,c_language);
+        controller.setLanguage_ChoiceBox(c_language);
         controller.AdminButtons(c_language);
     }
 

@@ -467,6 +467,7 @@ public class adminSignUpController extends controllers.AbsController{
         directoryManagement_Button.setText("Directory Management");
         signOut_Button.setText("Sign Out");
         emergency_Button.setText("EMERGENCY");
+        pathFinding_Button.setText("PathFinding");
 
 
         //TextField
@@ -508,6 +509,7 @@ public class adminSignUpController extends controllers.AbsController{
         directoryManagement_Button.setText("Control de Directorio");
         signOut_Button.setText("Salir");
         emergency_Button.setText("EMERGENCIA");
+        pathFinding_Button.setText("Mapa de Busqueda");
 
 
         //TextField
@@ -562,6 +564,7 @@ public class adminSignUpController extends controllers.AbsController{
             controller.setWelcome(currentAdmin_Label.getText());
         }
         controller.setPermissionLevel(2);
+        controller.setLanguage_ChoiceBox(c_language);
         controller.loginOrOut(0,c_language);
         controller.AdminButtons(c_language);
     }

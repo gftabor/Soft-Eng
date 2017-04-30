@@ -87,6 +87,7 @@ public class aboutPageController extends controllers.AbsController{
         if(permissionLevel == 2){
             controller.AdminButtons(c_language);
         }
+        controller.setLanguage_ChoiceBox(c_language);
         controller.loginOrOut(1,c_language);
 
 
@@ -126,6 +127,8 @@ public class aboutPageController extends controllers.AbsController{
         and_Label.setText("and");
         hospital_Label.setText("Andrew Shinn");
 
+        main_Menu.setText("Main Menu");
+
     }
 
     //sets the spanish Labels
@@ -149,6 +152,8 @@ public class aboutPageController extends controllers.AbsController{
         hosp_Label.setText("Hospital Faulkner Brigham and Women");
         and_Label.setText("y");
         hospital_Label.setText("Andrew Shinn");
+
+        main_Menu.setText("Menu Principal");
 
     }
 

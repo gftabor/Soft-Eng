@@ -54,7 +54,7 @@ public class adminLoginMainController extends controllers.AbsController{
         if(loginManage.verifyCredentials(username, password) == 1){
             System.out.println("Correct Password");
 
-            //LOG IN ADMIN afl;kdsf;aldskf
+            //LOG IN ADMIN
             //*************************************************
             if(loginManage.getPermissions(username) == 2){
                 System.out.println("Logging in Admin");
@@ -93,6 +93,7 @@ public class adminLoginMainController extends controllers.AbsController{
                 }
                 controller.setWelcome(username);
                 controller.setPermissionLevel(1);
+                controller.setLanguage_ChoiceBox(c_language);
                 controller.loginOrOut(0,c_language);
 
             }else{
@@ -134,7 +135,7 @@ public class adminLoginMainController extends controllers.AbsController{
             controller.spanishButtons_Labels();
         }
 
-
+        controller.setLanguage_ChoiceBox(c_language);
         //Set the permissions
         controller.setPermissionLevel(0);
 

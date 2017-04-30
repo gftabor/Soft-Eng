@@ -64,6 +64,7 @@ public class FAQcontroller extends controllers.AbsController{
             //set up spanish labels
         }
         controller.setPermissionLevel(permissionLevel);
+        controller.setLanguage_ChoiceBox(c_language);
 
         if(permissionLevel == 2){
             controller.loginOrOut(0,c_language);
@@ -74,6 +75,7 @@ public class FAQcontroller extends controllers.AbsController{
         }else{
             controller.loginOrOut(1,c_language);
         }
+        controller.setLanguage_ChoiceBox(c_language);
 
 
 

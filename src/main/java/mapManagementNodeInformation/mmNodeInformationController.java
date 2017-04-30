@@ -638,6 +638,8 @@ public class mmNodeInformationController extends controllers.AbsController {
         submit_Button.setText("Submit");
         cancel_Button.setText("Clear");
         mapManagement_Button.setText("Map Management");
+        pathFinding_Button.setText("PathFinding");
+        adminManagement_Button.setText("Admin Management");
 
         //Labels
         title_Label.setText("Directory Management");
@@ -673,6 +675,9 @@ public class mmNodeInformationController extends controllers.AbsController {
         submit_Button.setText("Listo");
         cancel_Button.setText("Borrar");
         mapManagement_Button.setText("Control de Mapas");
+        pathFinding_Button.setText("Mapa de Busqueda");
+        adminManagement_Button.setText("Control de Admins");
+
 
         //Labels
         title_Label.setText("Directorio");
@@ -761,7 +766,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         }
         controller.setPermissionLevel(2);
         controller.loginOrOut(0,c_language);
-
+        controller.setLanguage_ChoiceBox(c_language);
         controller.AdminButtons(c_language);
     }
 

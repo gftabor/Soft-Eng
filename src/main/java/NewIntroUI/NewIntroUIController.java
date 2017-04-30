@@ -361,8 +361,15 @@ public class NewIntroUIController extends controllers.mapScene{
     public void setLanguage_ChoiceBox(int lang) {
         //Makes sure you only set the choices once
         //sets the choices and sets the current language as the top choice
-        language_ChoiceBox.getItems().addAll("English", "Espanol");
-        language_ChoiceBox.getSelectionModel().select(lang);
+        if(second) {
+            language_ChoiceBox.getItems().remove(0, 2);
+            language_ChoiceBox.getItems().addAll("English", "Espanol");
+            language_ChoiceBox.getSelectionModel().select(lang);
+        }else{
+            language_ChoiceBox.getItems().addAll("English", "Espanol");
+            language_ChoiceBox.getSelectionModel().select(lang);
+
+        }
         language_ChoiceBox.setTooltip(new Tooltip("Select the language"));
 
         //Checks if the user has decided to change languages
@@ -896,7 +903,7 @@ public class NewIntroUIController extends controllers.mapScene{
         if(permissionLevel == 2) {
             admin_Button.setText("Sign Out");
         }else {
-            admin_Button.setText("Administrador");
+            admin_Button.setText("Administrator");
         }
         emergency_Button.setText("EMERGENCY");
         cancel_Button.setText("Clear");
@@ -942,7 +949,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //change the Buttons
         if(permissionLevel == 2) {
-            admin_Button.setText("Sign Out");
+            admin_Button.setText("Salir");
         }else {
             admin_Button.setText("Administrador");
         }
