@@ -434,6 +434,11 @@ public class MapOverlay {
         return labelRadius;
     }
 
+    //get method for label type radius
+    public double getLabelTypeRadius() {
+        return labelTypeRadius;
+    }
+
     //get method for the circle list (buttonList)
     public ArrayList<Circle> getButtonList() {
         return ButtonList;

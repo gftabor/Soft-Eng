@@ -267,7 +267,7 @@ public class NewIntroUIController extends controllers.mapScene{
                 c.setStroke(color);
                 if (c.getFill().equals(kioskColor)) {
                     c.setFill(kioskColor);
-                } else {
+                } else if (c.getFill() != Color.BLACK) {
                     c.setFill(color);
                 }
                 break;
@@ -1024,13 +1024,13 @@ public class NewIntroUIController extends controllers.mapScene{
             graph.wipeEdgeLines();
             graph.setPathfinding(0);
 
-            start =c;
+            start = c;
             //color
             c.setStrokeWidth(strokeRatio);
             c.setStroke(startColor);
-            if(c.getFill().equals(kioskColor)){
+            if (c.getFill().equals(kioskColor)) {
                 c.setFill(kioskColor);
-            }else {
+            } else if (c.getFill() == Color.BLACK) {
                 c.setFill(startColor);
             }
 
@@ -1064,7 +1064,7 @@ public class NewIntroUIController extends controllers.mapScene{
             c.setStroke(endColor);
             if(c.getFill().equals(kioskColor)){
                 c.setFill(kioskColor);
-            }else {
+            } else if (c.getFill() == Color.BLACK) {
                 c.setFill(endColor);
             }
 
@@ -1088,22 +1088,34 @@ public class NewIntroUIController extends controllers.mapScene{
             if (start != null) {
                 System.out.println("start....");
                 start.setStroke(Color.BLACK);
-                if (!(start.getFill().equals(kioskColor))) {
+                if ((!(start.getFill().equals(kioskColor))) && (start.getFill() == startColor)) {
                     start.setFill(Color.BLACK);
                 }
                 start.setStrokeWidth(1);
-                start.setRadius(graph.getLabelRadius());
+
+                //reset radius
+                if (start.getFill() != Color.BLACK) {
+                    start.setRadius(graph.getLabelTypeRadius());
+                } else {
+                    start.setRadius(graph.getLabelRadius());
+                }
             }
         }
         if (mode == 2 || mode == 3) {
             if (end != null) {
                 System.out.println("end....");
                 end.setStroke(Color.BLACK);
-                if (!(end.getFill().equals(kioskColor))) {
+                if ((!(end.getFill().equals(kioskColor))) && (end.getFill() == endColor)) {
                     end.setFill(Color.BLACK);
                 }
                 end.setStrokeWidth(1);
-                end.setRadius(graph.getLabelRadius());
+
+                //reset radius
+                if (end.getFill() != Color.BLACK) {
+                    end.setRadius(graph.getLabelTypeRadius());
+                } else {
+                    end.setRadius(graph.getLabelRadius());
+                }
             }
         }
     }
