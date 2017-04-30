@@ -524,6 +524,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 databaseController.transferNodeLoc(dragNode.getPosX(), dragNode.getPosY(), dragNode.getFloor(),
                         round((dragCircle.getLayoutX()/zoom)/widthRatio),
                         round((dragCircle.getLayoutY()/zoom)/heightRatio), currentFloor);
+                System.out.println("transferred");
 
                 databaseController.deleteNode(dragNode.getPosX(), dragNode.getPosY(), currentFloor);
 
@@ -1378,7 +1379,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //when the mouse is clicked and dragged on the map
     public void dragDetected() {
-        //isDragged = true;
+        isDragged = true;
         //System.out.println("detected");
     }
 
