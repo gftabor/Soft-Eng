@@ -797,7 +797,7 @@ public class NewIntroUIController extends controllers.mapScene{
         services = databaseController.getNodeTypes();
         //all.addAll(roomNums);
         all.addAll(databaseController.getFilteredRooms(permissionLevel));
-        all.addAll(services);
+        //all.addAll(services);
 
         all.addAll(professionals);
 
