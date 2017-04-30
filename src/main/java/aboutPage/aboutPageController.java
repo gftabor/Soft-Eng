@@ -74,6 +74,7 @@ public class aboutPageController extends controllers.AbsController{
         NewIntroUI.NewIntroUIController controller = loader.getController();
         //sets the current language
         controller.setCurrentLanguage(c_language);
+        controller.setPermissionLevel(permissionLevel);
         //set up english labels
         if(c_language == 0){
             controller.englishButtons_Labels();
@@ -83,12 +84,16 @@ public class aboutPageController extends controllers.AbsController{
             controller.spanishButtons_Labels();
             controller.setWelcome(loggedIn);
         }
-        controller.setPermissionLevel(permissionLevel);
+
         if(permissionLevel == 2){
             controller.AdminButtons(c_language);
+        }else if(permissionLevel == 1){
+            controller.loginOrOut(0,c_language);
+        }else{
+            controller.loginOrOut(1,c_language);
         }
         controller.setLanguage_ChoiceBox(c_language);
-        controller.loginOrOut(1,c_language);
+
 
 
     }

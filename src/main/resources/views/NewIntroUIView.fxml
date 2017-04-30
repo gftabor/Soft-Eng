@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -21,7 +28,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NewIntroUI.NewIntroUIController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NewIntroUI.NewIntroUIController">
    <children>
       <BorderPane layoutX="-1.0" layoutY="-1.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="-1.0">
          <top>
@@ -29,7 +36,7 @@
                <children>
                   <HBox styleClass="MainTitleColor">
                      <children>
-                        <Button mnemonicParsing="false" onMouseClicked="#secret_Click" styleClass="map-pin">
+                        <Button mnemonicParsing="false" onMouseClicked="#secret_Click" prefHeight="29.0" prefWidth="27.0" styleClass="map-pin">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
@@ -40,37 +47,37 @@
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="DirectoryMan_Button" disable="true" mnemonicParsing="false" onMouseClicked="#directoryMan_Clicked" styleClass="color-palette5" text="Directory Management" visible="false">
+                        <Button fx:id="DirectoryMan_Button" disable="true" minWidth="110.0" mnemonicParsing="false" onMouseClicked="#directoryMan_Clicked" styleClass="color-palette5" text="Directory Manag." visible="false">
                            <HBox.margin>
                               <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="adminMan_Button" disable="true" mnemonicParsing="false" onMouseClicked="#adminMan_Clicked" styleClass="color-palette5" text="Admin Management" visible="false">
+                        <Button fx:id="adminMan_Button" disable="true" minWidth="110.0" mnemonicParsing="false" onMouseClicked="#adminMan_Clicked" styleClass="color-palette5" text="Admin Manag." visible="false">
                            <HBox.margin>
                               <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="MapMan_Button" disable="true" mnemonicParsing="false" onMouseClicked="#mapMan_Clicked" styleClass="color-palette5" text="Map Management" visible="false">
+                        <Button fx:id="MapMan_Button" disable="true" minWidth="110.0" mnemonicParsing="false" onMouseClicked="#mapMan_Clicked" styleClass="color-palette5" text="Map Manag." visible="false">
                            <HBox.margin>
                               <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="admin_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefWidth="140.0" styleClass="color-palette5" text="Administrator">
+                        <Button fx:id="admin_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" styleClass="color-palette5" text="Administrator">
                            <HBox.margin>
-                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                              <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="about_Button" mnemonicParsing="false" onMouseClicked="#aboutButton_clicked" prefWidth="120.0" styleClass="color-palette5" text="About">
+                        <Button fx:id="about_Button" mnemonicParsing="false" onMouseClicked="#aboutButton_clicked" styleClass="color-palette5" text="About">
                            <HBox.margin>
-                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                              <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="FAQ_Button" mnemonicParsing="false" onMouseClicked="#FAQ_button_clicked" prefWidth="80.0" styleClass="color-palette5" text="FAQ">
+                        <Button fx:id="FAQ_Button" mnemonicParsing="false" onMouseClicked="#FAQ_button_clicked" styleClass="color-palette5" text="FAQ">
                            <HBox.margin>
-                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                              <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefWidth="150.0" styleClass="danger" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" styleClass="danger" text="EMERGENCY">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
@@ -145,14 +152,14 @@
                         </HBox>
                         <HBox styleClass="threeD">
                            <children>
-                              <Label text="3D path" textFill="WHITE">
+                              <Label fx:id="threeD_Label" text="3D Path" textFill="WHITE">
                                  <HBox.margin>
                                     <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                                  </HBox.margin>
                               </Label>
                               <CheckBox fx:id="ThreeDPATH_CheckBox" mnemonicParsing="false" />
                               <Region HBox.hgrow="ALWAYS" />
-                              <Label text="Allow Stairs" textFill="WHITE">
+                              <Label fx:id="stairs_Label" text="Allow Stairs" textFill="WHITE">
                                  <HBox.margin>
                                     <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                                  </HBox.margin>
@@ -170,7 +177,7 @@
                      </children></HBox>
                   <TabPane prefHeight="490.0" prefWidth="288.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
-                      <Tab text="Locations">
+                      <Tab fx:id="location_Tab" text="Locations">
                            <content>
                               <ScrollPane fx:id="locationsPane" prefHeight="445.0" prefWidth="288.0">
                                 <content>

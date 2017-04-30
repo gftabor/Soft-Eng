@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -16,7 +23,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="emergency.emergencyController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="emergency.emergencyController">
    <children>
       <BorderPane layoutX="-1.0" layoutY="-1.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="-1.0">
          <top>
@@ -177,19 +184,19 @@
                   <Region prefHeight="50.0" />
                   <HBox>
                      <children>
-                        <Button fx:id="mainMenu_Button" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefWidth="150.0" styleClass="primary" text="Main Menu">
+                        <Button fx:id="mainMenu_Button" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefWidth="180.0" styleClass="primary" text="Main Menu">
                            <HBox.margin>
                               <Insets right="20.0" />
                            </HBox.margin>
                         </Button>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="call_authorities" mnemonicParsing="false" onMouseClicked="#callAuthorities" prefWidth="150.0" styleClass="danger" text="Call Authorities" />
+                        <Button fx:id="call_authorities" mnemonicParsing="false" onMouseClicked="#callAuthorities" prefWidth="180.0" styleClass="danger" text="Call Authorities" />
                      </children>
                   </HBox>
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label fx:id="call_status" text="Status (Empty)" />
+                        <Label fx:id="call_status" />
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
@@ -204,7 +211,7 @@
                <content>
                   <Pane fx:id="pane" prefHeight="701.0" prefWidth="1043.0">
                      <children>
-                        <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="920.0" />
+                        <ImageView fx:id="map_viewer" fitHeight="709.0" fitWidth="975.0" />
                      </children>
                   </Pane>
                </content>
