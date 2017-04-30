@@ -5,24 +5,30 @@ import controllers.*;
 import emergency.SmsSender;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.*;
 import javafx.fxml.FXML;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import org.controlsfx.control.textfield.TextFields;
-
+import pathFindingMenu.Pathfinder;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Map;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by AugustoR on 4/21/17.
@@ -36,6 +42,9 @@ public class NewIntroUIController extends controllers.mapScene{
 
     @FXML
     private Label mainTitle_Label;
+
+    @FXML
+    private ScrollPane locationsPane;
 
     @FXML
     private ChoiceBox<String> language_ChoiceBox;
@@ -188,6 +197,15 @@ public class NewIntroUIController extends controllers.mapScene{
 
     //ArrayList<Edge> zoomPath;
 
+    // list of all locations, not sorted at first
+    ArrayList<Location> locations = new ArrayList<>();
+    // list of added room numbers to prevent duplication (MAYBE DELETE LATER)
+    ArrayList<String> roomNums = new ArrayList<>();
+    
+    String type, name, roomNum, firstName, lastName, title;
+    boolean isHidden, enabled;
+    int permissions;
+
 
     @FXML
     public void initialize() {
@@ -197,8 +215,9 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //setLanguageChoices(c_language);
         setFloorChoices();
-        setStartEndChoices();
+        setStartEndChoices(); // text auto fill function
         setLanguage_ChoiceBox(c_language);
+        //setLocationsForFloor("Floor 1");
         //setComboBox();
         //setFilterChoices();
         //set current floor
@@ -242,6 +261,23 @@ public class NewIntroUIController extends controllers.mapScene{
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
         scrollPane.setPannable(true);
+
+        ArrayList<Location> passLocations = grabData();
+        // sorts locations based on distance from the Kiosk
+        final ArrayList<Location> sortedPassLocations = sortCloseToKiosk(passLocations, "Kiosk");
+        // makes a list of all locations as clickable buttons
+        setLocationsListView(sortedPassLocations);
+
+
+        start_textField.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(final KeyEvent event) {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    setLocationsListView(sortCloseToKiosk(passLocations, start_textField.getText()));
+
+                }
+            }
+        });
     }
 
     //get an instance of database controller
@@ -262,6 +298,198 @@ public class NewIntroUIController extends controllers.mapScene{
             }
         }
     }
+
+    // grabs data from database to later create the location buttons
+    private ArrayList<Location> grabData(){
+        ArrayList<Location> locs = new ArrayList<>();
+        ResultSet rset2 = databaseController.getFilteredRoomNames2();
+        try {
+            while (rset2.next()){
+                name = rset2.getString("NAME");
+                roomNum = rset2.getString("ROOMNUM");
+                type = rset2.getString("TYPE");
+                permissions = rset2.getInt("PERMISSIONS");
+                if (permissions == 0){
+                    ResultSet rsetNode;
+                    int nodeFloor = 0;
+                    rsetNode = databaseController.getNodeWithName(roomNum);
+                    while (rsetNode.next()){
+                        nodeFloor = rsetNode.getInt("FLOOR");
+                    }
+                    locs.add(new Location(type, name, roomNum, "", "",
+                            "", permissions, nodeFloor));
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        ResultSet rset = databaseController.getProRoomNums();
+        try{
+            while (rset.next()){
+                title = rset.getString("TYPE");
+                roomNum = rset.getString("ROOMNUM");
+                firstName = rset.getString("FIRSTNAME");
+                lastName = rset.getString("LASTNAME");
+                permissions = rset.getInt("PERMISSIONS");
+                if (permissions == 0){
+                    ResultSet rsetNode;
+                    int nodeX = 0, nodeY = 0, nodeFloor = 0, nodePermissions = 0;
+                    String nodeName = null, nodeType = null, nodeRoom = null;
+                    boolean nodeIsHidden = false, nodeEnabled = false;
+                    rsetNode = databaseController.getNodeWithName(roomNum);
+                    while (rsetNode.next()){
+                        nodeFloor = rsetNode.getInt("FLOOR");
+                    }
+                    locs.add(new Location("Doctor's Office", "", roomNum, firstName, lastName,
+                            title, permissions, nodeFloor));
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return locs;
+    }
+
+    private void setLocationsListView(ArrayList<Location> locs){
+
+        locationsPane.setPadding(new Insets(10, 10, 5, 10));
+
+        VBox root = new VBox();
+
+        Iterator<Location> iter = locs.iterator();
+
+        while (iter.hasNext()) {
+            Location thisLocation = iter.next();
+            VBox tempVBox = new VBox();
+            HBox empHBox = new HBox();
+            empHBox.setPadding(new Insets(0, 0, 0, 3));
+            empHBox.setSpacing(2);
+            Button nameButton = new Button();
+
+            if (thisLocation.getAssociatedProFirst().equals("")) {
+                Text text = new Text(thisLocation.getName() + ",\n" + thisLocation.getType()+
+                ", " + thisLocation.getRoomNum());
+                //nameButton.setText(thisLocation.getName() + ",\n " + thisLocation.getType());
+                nameButton.setGraphic(text);
+                nameButton.setContentDisplay(ContentDisplay.LEFT);
+//                text.setTextAlignment(TextAlignment.LEFT);
+                nameButton.setMaxWidth(250);
+//                Button roomButton = new Button(thisLocation.getRoomNum());
+                nameButton.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        end_TextField.setText(thisLocation.getRoomNum());
+                    }
+                });
+//                roomButton.setOnAction(new EventHandler<ActionEvent>() {
+//                    @Override
+//                    public void handle(ActionEvent event) {
+//                        end_TextField.setText(thisLocation.getRoomNum());
+//                    }
+//                });
+                empHBox.getChildren().addAll(nameButton);
+                tempVBox.setPadding(new Insets(8, 0, 0, 0));
+                tempVBox.setSpacing(4);
+                tempVBox.getChildren().addAll(empHBox);
+                root.getChildren().addAll(tempVBox);
+                locationsPane.setContent(root);
+
+            } else {
+                nameButton.setText(thisLocation.getAssociatedProFirst() + " " +
+                        thisLocation.getAssociatedProLast() + ", " + thisLocation.getAssociatedProTitle());
+                Button roomButton = new Button(thisLocation.getRoomNum());
+                nameButton.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        start_textField.setText(roomButton.getText());
+                    }
+                });
+                roomButton.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        start_textField.setText(roomButton.getText());
+                    }
+                });
+                empHBox.getChildren().addAll(nameButton, roomButton);
+                tempVBox.setPadding(new Insets(8, 0, 0, 0));
+                tempVBox.setSpacing(0);
+                tempVBox.getChildren().addAll(empHBox);
+                root.getChildren().addAll(tempVBox);
+                //locationsPane.add(tempVBox, 0, i+5);
+                locationsPane.setContent(root);
+            }
+        }
+
+    }
+    boolean inUseFlag = false;
+
+    Pathfinder pathFind = new Pathfinder();
+    public ArrayList<Location> sortCloseToKiosk(ArrayList<Location> locs, String roomNumToFind){
+        if (!inUseFlag) {
+            inUseFlag = true;
+            System.out.println("Here zero");
+            ResultSet rset = databaseController.getNodeWithName(roomNumToFind);
+            int xpos = 0, ypos = 0, floor = 0, permissions = 0;
+            String type = "", name = "", roomNum = "";
+            boolean isHidden = false, enabled = false;
+            try {
+                while (rset.next()) {
+                    System.out.println("Here 0.1");
+                    xpos = rset.getInt("XPOS");
+                    ypos = rset.getInt("YPOS");
+                    floor = rset.getInt("FLOOR");
+                    isHidden = rset.getBoolean("ISHIDDEN");
+                    enabled = rset.getBoolean("ENABLED");
+                    type = rset.getString("TYPE");
+                    name = rset.getString("NAME");
+                    roomNum = rset.getString("ROOMNUM");
+                    permissions = rset.getInt("PERMISSIONS");
+                }
+                databaseController.closeResultSet(rset);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            Node startNode = new Node(xpos, ypos, floor, isHidden, enabled, type, name, roomNum, permissions);
+            Iterator<Location> iter = locs.iterator();
+            while (iter.hasNext()) {
+                Location thisLocation = iter.next();
+                System.out.println("Here once");
+                ResultSet rset1 = databaseController.getNodeWithName(thisLocation.getRoomNum());
+                try {
+                    while (rset1.next()) {
+                        xpos = rset1.getInt("XPOS");
+                        ypos = rset1.getInt("YPOS");
+                        floor = rset1.getInt("FLOOR");
+                        isHidden = rset1.getBoolean("ISHIDDEN");
+                        enabled = rset1.getBoolean("ENABLED");
+                        type = rset1.getString("TYPE");
+                        name = rset1.getString("NAME");
+                        roomNum = rset1.getString("ROOMNUM");
+                        permissions = rset1.getInt("PERMISSIONS");
+                    }
+                    databaseController.closeResultSet(rset1);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                Node secondNode = new Node(xpos, ypos, floor, isHidden, enabled, type, name, roomNum, permissions);
+                thisLocation.weight = pathFind.getHueristic(startNode, secondNode);
+                System.out.println("Here twice");
+            }
+            locs.sort(new Comparator<Location>() {
+                @Override
+                public int compare(Location o1, Location o2) {
+                    //Add null check
+                    return o1.weight < o2.weight ? -1
+                            : o1.weight > o2.weight ? 1
+                            : 0;
+                }
+            });
+            inUseFlag = false;
+        }
+        return locs;
+    }
+
 
     //Manage the clearing of the from text field
     public void cancelFromButton_Clicked(){
@@ -549,12 +777,15 @@ public class NewIntroUIController extends controllers.mapScene{
 
         ArrayList<String> roomNums = new ArrayList<>();
         ArrayList<String> professionals = new ArrayList<>();
+        ArrayList<String> services = new ArrayList<>();
         ArrayList<String> all = new ArrayList<>();
 
         roomNums = databaseController.getFilteredRoomList();
         professionals = databaseController.getProfessionalList();
-        all.addAll(roomNums);
+        services = databaseController.getNodeTypes();
+//        all.addAll(roomNums);
         all.addAll(databaseController.getFilteredRooms());
+        all.addAll(services);
         all.addAll(professionals);
 
 
