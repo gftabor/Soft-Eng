@@ -51,6 +51,7 @@ public class FAQcontroller extends controllers.AbsController{
 
     }
 
+    // when the main menu button is clicked
     public void main_menu_clicked (){
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
         //patientMenuStart.patientMenuStartController controller = loader.getController();
@@ -78,10 +79,9 @@ public class FAQcontroller extends controllers.AbsController{
         controller.setLanguage_ChoiceBox(c_language);
 
 
-
     }
 
-
+    // when the emergency button is clicked
     public void emergency_button_clicked(){
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewEmergencyView.fxml");
         emergency.emergencyController controller = loader.getController();
