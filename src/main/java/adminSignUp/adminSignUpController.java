@@ -34,6 +34,9 @@ public class adminSignUpController extends controllers.AbsController{
     private Label mainTitle_Label;
 
     @FXML
+    private Label isAdmin_Label;
+
+    @FXML
     private Label currentAdmin_Label;
 
     @FXML
@@ -52,7 +55,7 @@ public class adminSignUpController extends controllers.AbsController{
     private ChoiceBox<String> mode_ChoiceBox;
 
     @FXML
-    private Label id_textField;
+    private TextField id_textField;
 
     @FXML
     private Label username_Label;
@@ -108,8 +111,31 @@ public class adminSignUpController extends controllers.AbsController{
     @FXML
     private Label queryStatus;
 
+    @FXML
+    private Button mapManagement_Button;
 
+    @FXML
+    private Button directoryManagement_Button;
 
+    @FXML
+    private Button signOut_Button;
+
+    @FXML
+    private Button emergency_Button;
+
+    @FXML
+    private Button pathFinding_Button;
+
+    @FXML
+    private Button clearID_button;
+    @FXML
+    private Button clearUser_Button;
+    @FXML
+    private Button clearFN_Button;
+    @FXML
+    private Button clearLN_Button;
+    @FXML
+    private Button clearNP_Button;
 
 
 
@@ -124,17 +150,124 @@ public class adminSignUpController extends controllers.AbsController{
     int givID, givPermissions;
     String givUsername, givFirstN, givLastN, givPassword;
 
-   /*public void clearInputs(){
+    //Clears all the inputs
+   public void clearInputs(){
         id_textField.clear();
         userName_TextField.clear();
         firstName_TextField.clear();
         lastName_TextField.clear();
         newPassword_TextField.clear();
        isAdmin_CheckBox.setSelected(false);
-    }*/
-   public void clearInputs(){
-       
-   }
+    }
+
+    //CLEARS THE INPUTS for each specific text field
+    public void clearID(){
+       id_textField.setText("");
+    }
+    public void clearUser(){
+        userName_TextField.setText("");
+    }
+    public void clearFN(){
+        firstName_TextField.setText("");
+    }
+    public void clearLN(){
+        lastName_TextField.setText("");
+    }
+    public void clearNP(){
+        newPassword_TextField.setText("");
+    }
+
+
+
+
+    //Sends the user to the emergency scene
+    public void emergencyButton_Clicked(){
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewEmergencyView.fxml");
+        emergency.emergencyController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+
+    }
+
+    //logs the user back to patient main view
+    public void signOutButton_Clicked(){
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
+        //patientMenuStart.patientMenuStartController controller = loader.getController();
+        NewIntroUI.NewIntroUIController controller = loader.getController();
+        //sets the current language
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        //set permissions back
+        controller.setPermissionLevel(0);
+        controller.loginOrOut(1,c_language);
+        //set label to empty
+        controller.setWelcome("");
+
+
+    }
+
+    //Sends the user to the map management scene
+    public void mapManagementButton_Clicked(){
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewMainMapManagementView.fxml");
+        NewMainMapManagement.NewMainMapManagementController controller = loader.getController();
+        controller.setC_language(c_language);
+        //Set the correct username for the next scene
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        controller.setUserString(currentAdmin_Label.getText());
+        controller.setPermissionLevel(2);
+
+    }
+
+    //Sends the user to the dircetory management scene
+    public void directoryManagementButton_Clicked(){
+        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/NewDirectoryManagementView.fxml");
+        mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
+
+        //sets the current language
+        controller.setC_language(c_language);
+
+        controller.setModeChoices();
+        controller.setRoomChoices();
+        controller.setUpTreeView();
+        controller.setUser(currentAdmin_Label.getText());
+
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        //Set permissions of admin
+        controller.setPermissionLevel(2);
+
+
+    }
+
+
+
+
 
     //Deal with the submit button clicked
     public void submitButton_Clicked(){
@@ -153,6 +286,7 @@ public class adminSignUpController extends controllers.AbsController{
         clearInputs();
 
     }
+
     //adds the admin into the database
     public void addAdmin(){
         try {
@@ -360,6 +494,11 @@ public class adminSignUpController extends controllers.AbsController{
         c_language = 0;
         cancel_Button.setText("Clear");
         submit_Button.setText("Submit");
+        mapManagement_Button.setText("Map Management");
+        directoryManagement_Button.setText("Directory Management");
+        signOut_Button.setText("Sign Out");
+        emergency_Button.setText("EMERGENCY");
+        pathFinding_Button.setText("PathFinding");
 
 
         //TextField
@@ -378,6 +517,8 @@ public class adminSignUpController extends controllers.AbsController{
         lastName_Label.setText("Last Name:");
         password_Label.setText("New password");
         queryStatus.setText("Query Status");
+        isAdmin_Label.setText("Is Admin?");
+        mainTitle_Label.setText("Admin Management");
 
         //COLUMNS
         username_TableColumn.setText("Username");
@@ -395,6 +536,12 @@ public class adminSignUpController extends controllers.AbsController{
         //Buttons
         cancel_Button.setText("Borrar");
         submit_Button.setText("Enviar");
+        mapManagement_Button.setText("Control de Mapas");
+        directoryManagement_Button.setText("Control de Directorio");
+        signOut_Button.setText("Salir");
+        emergency_Button.setText("EMERGENCIA");
+        pathFinding_Button.setText("Mapa de Busqueda");
+
 
         //TextField
         search_textField.setPromptText("buscar");
@@ -409,14 +556,18 @@ public class adminSignUpController extends controllers.AbsController{
         username_Label.setText("Usuario:");
         firstName_Lab.setText("Nombre:");
         lastName_Label.setText("Apellido:");
-        password_Label.setText("Nueva Contrasena");
+        password_Label.setText("Contrasena:");
         queryStatus.setText("Estatus");
+        isAdmin_Label.setText("Es Admin?");
+        mainTitle_Label.setText("Control de Administradores");
 
         //Columns
         username_TableColumn.setText("Usuario");
         firstName_TableColumn.setText("Nombre");
         lastName_TableColumn.setText("Apellido");
         permissions_TableColumn.setText("Permisos");
+
+
 
     }
 
@@ -426,25 +577,30 @@ public class adminSignUpController extends controllers.AbsController{
         c_language = i;
     }
 
-    //Sends the admin back to the main menu
-    /*public void mainMenuButton_Clicked(){
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
-        adminMenuStart.adminMenuStartController controller = loader.getController();
-        //Set the correct username for the next scene
-        controller.setUsername(currentAdmin_Label.getText());
+    //Sends the person to pathfinding with admin permission
+    public void pathFindingButton_Clicked(){
+        System.out.println("Logging in Employee");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
+        //patientMenuStart.patientMenuStartController controller = loader.getController();
+        NewIntroUI.NewIntroUIController controller = loader.getController();
         //sets the current language
         controller.setCurrentLanguage(c_language);
         //set up english labels
         if(c_language == 0){
             controller.englishButtons_Labels();
-
+            controller.setWelcome(currentAdmin_Label.getText());
             //set up spanish labels
         }else if(c_language == 1){
             controller.spanishButtons_Labels();
+            controller.setWelcome(currentAdmin_Label.getText());
         }
-        controller.setLanguageChoices();
+        controller.setPermissionLevel(2);
+        controller.setLanguage_ChoiceBox(c_language);
+        controller.loginOrOut(0,c_language);
+        controller.AdminButtons(c_language);
+    }
 
-    }*/
+
 
 
 }

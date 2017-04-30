@@ -37,22 +37,27 @@
                            </HBox.margin>
                         </Label>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" styleClass="color-palette5" text="Map Management">
+                        <Button fx:id="mapManagement_Button" mnemonicParsing="false" onMouseClicked="#mapManagementButton_Clicked" styleClass="color-palette5" text="Map Management">
                            <HBox.margin>
                               <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" styleClass="color-palette5" text="Admin Management">
+                        <Button fx:id="directoryManagement_Button" mnemonicParsing="false" onMouseClicked="#directoryManagementButton_Clicked" styleClass="color-palette5" text="Directory Management">
                            <HBox.margin>
                               <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" styleClass="color-palette5" text="Sign Out">
+                        <Button fx:id="pathFinding_Button" mnemonicParsing="false" onMouseClicked="#pathFindingButton_Clicked" prefWidth="150.0" styleClass="color-palette5" text="PathFinding">
+                           <HBox.margin>
+                              <Insets bottom="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="signOut_Button" mnemonicParsing="false" onMouseClicked="#signOutButton_Clicked" styleClass="color-palette5" text="Sign Out">
                            <HBox.margin>
                               <Insets bottom="4.0" right="8.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefWidth="150.0" styleClass="danger" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefWidth="150.0" styleClass="danger" text="EMERGENCY">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
@@ -96,7 +101,7 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label fx:id="error_LabelText" text="Error (Empty)" textFill="#8d2c2c" />
+                        <Label fx:id="error_LabelText" textFill="#8d2c2c" />
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
@@ -123,18 +128,18 @@
                         </Line>
                         <HBox>
                            <children>
-                              <Label fx:id="id_textField" prefWidth="140.0" styleClass="DirectoryLabel" text="ID:">
+                              <Label prefWidth="140.0" styleClass="DirectoryLabel" text="ID:">
                                  <HBox.margin>
                                     <Insets bottom="4.0" left="4.0" right="4.0" top="6.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField prefWidth="180.0" promptText="ID" styleClass="Directory_TextField">
+                              <TextField fx:id="id_textField" editable="false" prefWidth="180.0" promptText="ID" styleClass="Directory_TextField">
                                  <HBox.margin>
                                     <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                  </HBox.margin>
                               </TextField>
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                              <Button fx:id="clearID_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" onMouseClicked="#clearID" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
@@ -159,7 +164,7 @@
                                  </HBox.margin>
                               </TextField>
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                              <Button fx:id="clearUser_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" onMouseClicked="#clearUser" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
@@ -184,7 +189,7 @@
                                  </HBox.margin>
                               </TextField>
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                              <Button fx:id="clearFN_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" onMouseClicked="#clearFN" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
@@ -209,7 +214,7 @@
                                  </HBox.margin>
                               </TextField>
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                              <Button fx:id="clearLN_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" onMouseClicked="#clearLN" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
@@ -234,7 +239,7 @@
                                  </HBox.margin>
                               </PasswordField>
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                              <Button fx:id="clearNP_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" onMouseClicked="#clearNP" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
@@ -248,7 +253,7 @@
                         </Line>
                         <HBox>
                            <children>
-                              <Label prefWidth="140.0" styleClass="DirectoryLabel" text="Is Admin?">
+                              <Label fx:id="isAdmin_Label" prefWidth="140.0" styleClass="DirectoryLabel" text="Is Admin?">
                                  <HBox.margin>
                                     <Insets bottom="4.0" left="4.0" right="4.0" top="6.0" />
                                  </HBox.margin>
@@ -267,13 +272,13 @@
                   </VBox>
                   <HBox>
                      <children>
-                        <Button fx:id="cancel_Button" mnemonicParsing="false" prefWidth="80.0" styleClass="warning" text="Clear">
+                        <Button fx:id="cancel_Button" mnemonicParsing="false" onMouseClicked="#clearInputs" prefWidth="80.0" styleClass="warning" text="Clear">
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
                         </Button>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="submit_Button" mnemonicParsing="false" prefWidth="80.0" styleClass="primary" text="Submit">
+                        <Button fx:id="submit_Button" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" prefWidth="80.0" styleClass="primary" text="Submit">
                            <HBox.margin>
                               <Insets right="20.0" />
                            </HBox.margin>
@@ -292,10 +297,10 @@
                   <TableView fx:id="Table_TableView" fixedCellSize="0.0" prefHeight="587.0" prefWidth="976.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                      <columns>
                         <TableColumn fx:id="ID_TableColumn" prefWidth="90.3900146484375" text="ID" />
-                        <TableColumn fx:id="username_TableColumn" prefWidth="125.26934814453125" text="Username" />
-                        <TableColumn fx:id="lastName_TableColumn" minWidth="0.0" prefWidth="108.76934814453125" text="Last Name" />
-                        <TableColumn fx:id="firstName_TableColumn" minWidth="0.0" prefWidth="159.5384521484375" text="First Name" />
-                        <TableColumn fx:id="permissions_TableColumn" prefWidth="90.3900146484375" text="Permissions" />
+                        <TableColumn fx:id="username_TableColumn" prefWidth="262.76513671875" text="Username" />
+                        <TableColumn fx:id="firstName_TableColumn" minWidth="0.0" prefWidth="209.23486328125" text="First Name" />
+                        <TableColumn fx:id="lastName_TableColumn" minWidth="0.0" prefWidth="281.70526123046875" text="Last Name" />
+                        <TableColumn fx:id="permissions_TableColumn" prefWidth="119.64593505859375" text="Permissions" />
                      </columns>
                   </TableView>
                   <Label fx:id="queryStatus" text="Query Status: " />

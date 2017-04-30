@@ -220,7 +220,7 @@
             <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="47.0" prefWidth="1274.0" BorderPane.alignment="CENTER">
                <children>
                   <Region prefHeight="37.0" prefWidth="408.0" />
-                  <Label text="©2017 Computer Science 3733 Team E" textAlignment="CENTER">
+                  <Label text="2017 Computer Science 3733 Team E" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -303,7 +303,7 @@
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label text="©2017 Computer Science 3733 Team E" />
+                        <Label text="2017 Computer Science 3733 Team E" />
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>

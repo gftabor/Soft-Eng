@@ -4,18 +4,19 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapManagementNodeInformation.mmNodeInformationController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="emergency.emergencyController">
    <children>
       <BorderPane layoutX="-1.0" layoutY="-1.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="-1.0">
          <top>
@@ -24,7 +25,7 @@
                   <HBox styleClass="emergencyHBox">
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label fx:id="title_Label" styleClass="emergencyLabel" text="EMERGENCY EMERGENCIA 緊急情況" textFill="WHITE">
+                        <Label fx:id="title_Label" styleClass="emergencyLabel" text="EMERGENCY EMERGENCIA" textFill="WHITE">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
@@ -42,12 +43,12 @@
                      <children>
                         <HBox>
                            <children>
-                              <Label fx:id="docTitle_Label" prefWidth="140.0" styleClass="DirectoryLabel" text="You are here:">
+                              <Label prefWidth="140.0" styleClass="DirectoryLabel" text="You are here:">
                                  <HBox.margin>
                                     <Insets bottom="4.0" left="4.0" right="4.0" top="6.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="title_TextField" editable="false" prefWidth="180.0" styleClass="Directory_TextField" text="Kiosk">
+                              <TextField editable="false" prefWidth="180.0" styleClass="Directory_TextField" text="Kiosk">
                                  <HBox.margin>
                                     <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                  </HBox.margin>
@@ -63,12 +64,12 @@
                         </Line>
                         <HBox>
                            <children>
-                              <Label fx:id="room_Label" prefWidth="140.0" styleClass="DirectoryLabel" text="Exits:">
+                              <Label prefWidth="140.0" styleClass="DirectoryLabel" text="Exits:">
                                  <HBox.margin>
                                     <Insets bottom="4.0" left="4.0" right="4.0" top="6.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="room_TextField" editable="false" prefWidth="180.0" styleClass="Directory_TextField" text="Atrium Entrance">
+                              <TextField editable="false" prefWidth="180.0" styleClass="Directory_TextField" text="Atrium Entrance">
                                  <HBox.margin>
                                     <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                  </HBox.margin>
@@ -85,12 +86,12 @@
                         <Region minHeight="50.0" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                         <HBox>
                            <children>
-                              <Label fx:id="room_Label1" prefWidth="140.0" styleClass="DirectoryLabel" text="Estas aqui:">
+                              <Label prefWidth="140.0" styleClass="DirectoryLabel" text="Estas aqui:">
                                  <HBox.margin>
                                     <Insets bottom="4.0" left="4.0" right="4.0" top="6.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="room_TextField1" editable="false" prefWidth="180.0" styleClass="Directory_TextField" text="Quiosco">
+                              <TextField editable="false" prefWidth="180.0" styleClass="Directory_TextField" text="Quiosco">
                                  <HBox.margin>
                                     <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                  </HBox.margin>
@@ -106,12 +107,12 @@
                         </Line>
                         <HBox>
                            <children>
-                              <Label fx:id="room_Label2" prefWidth="140.0" styleClass="DirectoryLabel" text="Salidas:">
+                              <Label prefWidth="140.0" styleClass="DirectoryLabel" text="Salidas:">
                                  <HBox.margin>
                                     <Insets bottom="4.0" left="4.0" right="4.0" top="6.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="room_TextField2" editable="false" prefWidth="180.0" styleClass="Directory_TextField" text="Entrada Atrium">
+                              <TextField editable="false" prefWidth="180.0" styleClass="Directory_TextField" text="Entrada Atrium">
                                  <HBox.margin>
                                     <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                  </HBox.margin>
@@ -128,12 +129,12 @@
                         <Region minHeight="50.0" prefHeight="200.0" prefWidth="200.0" />
                         <HBox>
                            <children>
-                              <Label fx:id="room_Label3" prefWidth="140.0" styleClass="DirectoryLabel" text="你在這裡:">
+                              <Label prefWidth="140.0" styleClass="DirectoryLabel" text="你在這裡:">
                                  <HBox.margin>
                                     <Insets bottom="4.0" left="4.0" right="4.0" top="6.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="room_TextField3" prefWidth="180.0" styleClass="Directory_TextField" text="亭">
+                              <TextField prefWidth="180.0" styleClass="Directory_TextField" text="亭">
                                  <HBox.margin>
                                     <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                  </HBox.margin>
@@ -149,12 +150,12 @@
                         </Line>
                         <HBox>
                            <children>
-                              <Label fx:id="room_Label4" prefWidth="140.0" styleClass="DirectoryLabel" text="退出:">
+                              <Label prefWidth="140.0" styleClass="DirectoryLabel" text="退出:">
                                  <HBox.margin>
                                     <Insets bottom="4.0" left="4.0" right="4.0" top="6.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="room_TextField4" prefWidth="180.0" styleClass="Directory_TextField" text="中庭入口">
+                              <TextField prefWidth="180.0" styleClass="Directory_TextField" text="中庭入口">
                                  <HBox.margin>
                                     <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                  </HBox.margin>
@@ -176,12 +177,19 @@
                   <Region prefHeight="50.0" />
                   <HBox>
                      <children>
-                        <Button mnemonicParsing="false" prefWidth="150.0" styleClass="primary" text="Main Menu">
+                        <Button fx:id="mainMenu_Button" mnemonicParsing="false" onMouseClicked="#mainMenuButton_Clicked" prefWidth="150.0" styleClass="primary" text="Main Menu">
                            <HBox.margin>
                               <Insets right="20.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefWidth="150.0" styleClass="danger" text="Call Authorities" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="call_authorities" mnemonicParsing="false" onMouseClicked="#callAuthorities" prefWidth="150.0" styleClass="danger" text="Call Authorities" />
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="call_status" text="Status (Empty)" />
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
@@ -192,17 +200,15 @@
             </VBox>
          </left>
          <center>
-            <HBox prefHeight="515.0" prefWidth="769.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Region HBox.hgrow="ALWAYS" />
-                  <ImageView fitHeight="710.0" fitWidth="970.0" pickOnBounds="true">
-                     <image>
-                        <Image url="@../images/4emergency.png" />
-                     </image>
-                  </ImageView>
-                  <Region HBox.hgrow="ALWAYS" />
-               </children>
-            </HBox>
+            <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
+               <content>
+                  <Pane fx:id="pane" prefHeight="701.0" prefWidth="1043.0">
+                     <children>
+                        <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="920.0" />
+                     </children>
+                  </Pane>
+               </content>
+            </ScrollPane>
          </center>
       </BorderPane>
    </children>
