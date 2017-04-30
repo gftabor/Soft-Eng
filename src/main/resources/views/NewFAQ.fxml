@@ -68,7 +68,7 @@
                               <Label layoutX="14.0" layoutY="343.0" prefHeight="26.0" prefWidth="1158.0" text="After entering your desired location, press the &quot;Submit&quot; button to print the highlighted path from the kiosk to your desired location." />
                               <ImageView fitHeight="231.0" fitWidth="447.0" layoutX="14.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../../../../../../map%20images/toSearchBar.PNG" />
+                                    <Image url="@../images/toSearchBar.PNG" />
                                  </image>
                               </ImageView>
                            </children>
@@ -83,7 +83,7 @@
                               <Label layoutX="14.0" layoutY="40.0" prefHeight="26.0" prefWidth="1158.0" text="show the reversed path from your ending location to your starting point and the subsequent directions." />
                               <ImageView fitHeight="269.0" fitWidth="442.0" layoutX="14.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../../../../../../map%20images/reversed.PNG" />
+                                    <Image url="@../images/reversed.PNG" />
                                  </image>
                               </ImageView>
                            </children></AnchorPane>
@@ -98,7 +98,7 @@
                               <ImageView fitHeight="198.0" fitWidth="288.0" layoutX="14.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true" />
                               <ImageView fitHeight="276.0" fitWidth="536.0" layoutX="21.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../../../../../../map%20images/outsideView.PNG" />
+                                    <Image url="@../images/outsideView.PNG" />
                                  </image>
                               </ImageView>
                            </children></AnchorPane>
@@ -112,12 +112,12 @@
                               <Label layoutX="14.0" layoutY="40.0" prefHeight="26.0" prefWidth="1158.0" text="the methods found above in the &quot;How can I get directions to my destination?&quot; section of the FAQ." />
                               <ImageView fitHeight="327.0" fitWidth="535.0" layoutX="7.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../../../../../../map%20images/clearButton.PNG" />
+                                    <Image url="@../images/clearButton.PNG" />
                                  </image>
                               </ImageView>
                               <ImageView fitHeight="263.0" fitWidth="530.0" layoutX="593.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../../../../../../map%20images/fromSearchBar.PNG" />
+                                    <Image url="@../images/fromSearchBar.PNG" />
                                  </image>
                               </ImageView>
                            </children></AnchorPane>
@@ -132,7 +132,7 @@
                               <Label layoutX="14.0" layoutY="66.0" prefHeight="26.0" prefWidth="1158.0" text="and press submit.  You will shortly recieve a text containing the directions to your location." />
                               <ImageView fitHeight="342.0" fitWidth="406.0" layoutX="14.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../../../../../../map%20images/phoneNumber.PNG" />
+                                    <Image url="@../images/phoneNumber.PNG" />
                                  </image>
                               </ImageView>
                            </children></AnchorPane>
