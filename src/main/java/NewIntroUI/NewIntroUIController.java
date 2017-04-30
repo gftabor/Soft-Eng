@@ -164,6 +164,14 @@ public class NewIntroUIController extends controllers.mapScene{
     @FXML
     private Button reverse_Button;
 
+    @FXML
+    private Tab location_Tab;
+
+    @FXML
+    private Label threeD_Label;
+
+    @FXML
+    private Label stairs_Label;
 
 
 
@@ -1042,6 +1050,8 @@ public class NewIntroUIController extends controllers.mapScene{
             NewIntroUI.NewIntroUIController controller = loader.getController();
             //sets the current language
             controller.setCurrentLanguage(c_language);
+            //set permissions back
+            controller.setPermissionLevel(0);
             //set up english labels
             if(c_language == 0){
                 controller.englishButtons_Labels();
@@ -1049,11 +1059,9 @@ public class NewIntroUIController extends controllers.mapScene{
             }else if(c_language == 1){
                 controller.spanishButtons_Labels();
             }
-            //set permissions back
-            controller.setPermissionLevel(0);
             //set label to empty
             controller.setWelcome("");
-
+            controller.setLanguage_ChoiceBox(c_language);
             //Sets the label of the button back to administrator
             //0 In 1 out
             controller.loginOrOut(1, c_language);
@@ -1132,27 +1140,32 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //Change the Buttons
         //change the Buttons
-        if(permissionLevel == 2) {
+        if(permissionLevel == 2 || permissionLevel == 1) {
             admin_Button.setText("Sign Out");
         }else {
             admin_Button.setText("Administrator");
         }
+        FAQ_Button.setVisible(true);
+
         emergency_Button.setText("EMERGENCY");
         cancel_Button.setText("Clear");
         submit_Button.setText("Submit");
         phoneSend.setText("Send");
         about_Button.setText("About");
-        MapMan_Button.setText("Map Management");
-        adminMan_Button.setText("Admin Management");
-        DirectoryMan_Button.setText("Directory Management");
+        MapMan_Button.setText("Map Manag.");
+        adminMan_Button.setText("Admin Manag.");
+        DirectoryMan_Button.setText("Directory Manag.");
+        reverse_Button.setText("Reverse");
 
 
         //Change the labels
         start_Label.setText("From:");
         end_Label.setText("To:");
-        mainTitle_Label.setText("Welcome to Brigham and Women's Faulkner Hospital");
+        mainTitle_Label.setText("Welcome to Brigham and Women's Faulkner");
         floor_Label.setText("Floor");
         phoneInfo_Label.setText("Send Directions to my phone");
+        threeD_Label.setText("3D Path");
+        stairs_Label.setText("Allow Stairs");
 
         //Change the textFields
         start_textField.setPromptText("Starting position");
@@ -1160,6 +1173,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //Change Tabs
         textDirections_Tab.setText("Directions");
+        location_Tab.setText("Locations");
 
         //Change choiceBox
         setFloorChoices();
@@ -1175,12 +1189,12 @@ public class NewIntroUIController extends controllers.mapScene{
 
         MapMan_Button.setText("Control de Mapa");
         adminMan_Button.setText("Control de Admins");
-        DirectoryMan_Button.setText("Control del Directorio");
+        DirectoryMan_Button.setText("Directorio");
 
 
 
         //change the Buttons
-        if(permissionLevel == 2) {
+        if(permissionLevel == 2 || permissionLevel == 1) {
             admin_Button.setText("Salir");
         }else {
             admin_Button.setText("Administrador");
@@ -1190,13 +1204,16 @@ public class NewIntroUIController extends controllers.mapScene{
         submit_Button.setText("Listo");
         phoneSend.setText("Enviar");
         about_Button.setText("Acerca");
+        reverse_Button.setText("Revertir");
 
         //change the Labels
         start_Label.setText("Inicio:");
         end_Label.setText("Destino:");
-        mainTitle_Label.setText("Bienvenidos al Hospital Faulkner Brigham and Women");
+        mainTitle_Label.setText("Bienvenidos a Faulkner Brigham and Women");
         floor_Label.setText("Piso");
         phoneInfo_Label.setText("Enviar direcciones a mi celular");
+        threeD_Label.setText("Camino 3D");
+        stairs_Label.setText("Escaleras");
 
 
         //Change the textFields
@@ -1205,6 +1222,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //Change Tabs
         textDirections_Tab.setText("Direcciones");
+        location_Tab.setText("Lugares");
 
         //Change choiceBox
         //setFilterChoices();
@@ -1678,13 +1696,13 @@ public class NewIntroUIController extends controllers.mapScene{
     //Sets the buttons to the admin
     public void AdminButtons(int lang){
         if(lang == 0){
-            MapMan_Button.setText("Map Management");
-            adminMan_Button.setText("Admin Management");
-            DirectoryMan_Button.setText("Directory Management");
+            MapMan_Button.setText("Map Manag.");
+            adminMan_Button.setText("Admin Manag.");
+            DirectoryMan_Button.setText("Directory Manag.");
         }else{
             MapMan_Button.setText("Control de Mapa");
             adminMan_Button.setText("Control de Admins");
-            DirectoryMan_Button.setText("Control del Directorio");
+            DirectoryMan_Button.setText("Directorio");
         }
 
         MapMan_Button.setDisable(false);

@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -18,7 +25,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adminSignUp.adminSignUpController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adminSignUp.adminSignUpController">
    <children>
       <BorderPane layoutX="-1.0" layoutY="-1.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="-1.0">
          <top>
@@ -47,7 +54,7 @@
                               <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="pathFinding_Button" mnemonicParsing="false" onMouseClicked="#pathFindingButton_Clicked" prefWidth="150.0" styleClass="color-palette5" text="PathFinding">
+                        <Button fx:id="pathFinding_Button" mnemonicParsing="false" onMouseClicked="#pathFindingButton_Clicked" styleClass="color-palette5" text="PathFinding">
                            <HBox.margin>
                               <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>
@@ -57,7 +64,7 @@
                               <Insets bottom="4.0" right="8.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefWidth="150.0" styleClass="danger" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" styleClass="danger" text="EMERGENCY">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
