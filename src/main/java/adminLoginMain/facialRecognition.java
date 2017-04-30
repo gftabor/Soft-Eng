@@ -45,6 +45,7 @@ public class facialRecognition {
     }
     private facialRecognition(){
 
+
         cameraThread = new Thread(() -> {
             webcam.setViewSize(new Dimension(640, 480));
             webcam.open();
@@ -93,7 +94,7 @@ public class facialRecognition {
             }
             webcam.close();
         });
-        cameraThread.start();
+        //cameraThread.start();
     }
     public void stop(){
         facialOn = false;

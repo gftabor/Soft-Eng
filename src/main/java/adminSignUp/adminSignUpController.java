@@ -150,6 +150,8 @@ public class adminSignUpController extends controllers.AbsController{
     int givID, givPermissions;
     String givUsername, givFirstN, givLastN, givPassword;
 
+    String faceId = "";
+
     //Clears all the inputs
    public void clearInputs(){
         id_textField.clear();
@@ -289,9 +291,11 @@ public class adminSignUpController extends controllers.AbsController{
 
     //adds the admin into the database
     public void addAdmin(){
+        // make sure you set the faceId before calling this
         try {
             if (databaseController.newAdmin(firstName_TextField.getText(), lastName_TextField.getText(),
-                    userName_TextField.getText(), newPassword_TextField.getText(), isAdmin_CheckBox.isSelected())) {
+                    userName_TextField.getText(), newPassword_TextField.getText(), isAdmin_CheckBox.isSelected(),
+                    faceId)) {
                 queryStatus.setText("Admin Added");
             } else {
                 queryStatus.setText("Error Adding Admin");
