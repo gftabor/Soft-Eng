@@ -135,21 +135,12 @@
                         </HBox>
                         <HBox styleClass="color-palette3">
                            <children>
-                              <Button fx:id="cancel_Button" mnemonicParsing="false" onMouseClicked="#cancelButton_Clicked" styleClass="menu" text="Clear">
-                                 <HBox.margin>
-                                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                                 </HBox.margin></Button>
-                              <Region HBox.hgrow="ALWAYS" />
                               <ChoiceBox fx:id="language_ChoiceBox" styleClass="menu" />
+                              <Region HBox.hgrow="ALWAYS" />
                               <Button fx:id="reverse_Button" mnemonicParsing="false" onMouseClicked="#reverseButton_Clicked" styleClass="menu" text="Reverse">
                                  <HBox.margin>
                                     <Insets right="4.0" top="1.0" />
                                  </HBox.margin></Button>
-                              <Button fx:id="submit_Button" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" styleClass="menu" text="Submit">
-                                 <HBox.margin>
-                                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                                 </HBox.margin>
-                              </Button>
                            </children>
                         </HBox>
                         <HBox styleClass="threeD">
@@ -171,7 +162,13 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <HBox />
+                  <HBox>
+                     <children>
+                        <Button fx:id="cancel_Button" mnemonicParsing="false" onMouseClicked="#cancelButton_Clicked" prefWidth="63.0" styleClass="warning" text="Clear" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="submit_Button" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" styleClass="primary" text="Submit" />
+                     </children></HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0" />
                   <TabPane prefHeight="547.0" prefWidth="288.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                       <Tab text="Locations">
