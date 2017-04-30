@@ -59,6 +59,7 @@ public class emergencyController extends controllers.AbsController{
         NewIntroUI.NewIntroUIController controller = loader.getController();
         //sets the current language
         controller.setCurrentLanguage(c_language);
+        controller.setLanguage_ChoiceBox(c_language);
         //set up english labels
         if (c_language == 0) {
             controller.englishButtons_Labels();
@@ -66,6 +67,7 @@ public class emergencyController extends controllers.AbsController{
         } else if (c_language == 1) {
             controller.spanishButtons_Labels();
         }
+
         controller.setPermissionLevel(0);
         
 
