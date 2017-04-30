@@ -80,11 +80,11 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Label layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="1233.0" text="Once you've recieved your directions from your starting point to your destination, you can press the &quot;&lt;&gt;&quot; button to swap your starting and ending locations.  You can now press " />
+                              <Label layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="1233.0" text="Once you've recieved your directions from your starting point to your destination, you can press the &quot;Reverse&quot; button to swap your starting and ending locations.  You can now press " />
                               <Label layoutX="14.0" layoutY="40.0" prefHeight="26.0" prefWidth="1158.0" text="&quot;submit&quot; again to show the reversed path from your ending location to your starting point and the subsequent directions." />
-                              <ImageView fitHeight="269.0" fitWidth="442.0" layoutX="14.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="236.0" fitWidth="547.0" layoutX="14.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../images/reversed.PNG" />
+                                    <Image url="@../../../../../../../../../../map%20images/reversed.PNG" />
                                  </image>
                               </ImageView>
                            </children></AnchorPane>

@@ -55,22 +55,22 @@
                               <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="admin_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" styleClass="color-palette5" text="Administrator">
+                        <Button fx:id="admin_Button" mnemonicParsing="false" onMouseClicked="#logInButton_Clicked" prefWidth="140.0" styleClass="color-palette5" text="Administrator">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="about_Button" mnemonicParsing="false" onMouseClicked="#aboutButton_clicked" styleClass="color-palette5" text="About">
+                        <Button fx:id="about_Button" mnemonicParsing="false" onMouseClicked="#aboutButton_clicked" prefWidth="120.0" styleClass="color-palette5" text="About">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="FAQ_Button" mnemonicParsing="false" onMouseClicked="#FAQ_button_clicked" styleClass="color-palette5" text="?">
+                        <Button fx:id="FAQ_Button" mnemonicParsing="false" onMouseClicked="#FAQ_button_clicked" prefWidth="80.0" styleClass="color-palette5" text="FAQ">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" styleClass="danger" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefWidth="150.0" styleClass="danger" text="EMERGENCY">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
@@ -135,21 +135,12 @@
                         </HBox>
                         <HBox styleClass="color-palette3">
                            <children>
-                              <Button fx:id="cancel_Button" mnemonicParsing="false" onMouseClicked="#cancelButton_Clicked" styleClass="menu" text="Clear">
-                                 <HBox.margin>
-                                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                                 </HBox.margin></Button>
-                              <Region HBox.hgrow="ALWAYS" />
                               <ChoiceBox fx:id="language_ChoiceBox" styleClass="menu" />
+                              <Region HBox.hgrow="ALWAYS" />
                               <Button fx:id="reverse_Button" mnemonicParsing="false" onMouseClicked="#reverseButton_Clicked" styleClass="menu" text="Reverse">
                                  <HBox.margin>
                                     <Insets right="4.0" top="1.0" />
                                  </HBox.margin></Button>
-                              <Button fx:id="submit_Button" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" styleClass="menu" text="Submit">
-                                 <HBox.margin>
-                                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                                 </HBox.margin>
-                              </Button>
                            </children>
                         </HBox>
                         <HBox styleClass="threeD">
@@ -171,12 +162,17 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <HBox />
-                  <TabPane prefHeight="547.0" prefWidth="288.0" tabClosingPolicy="UNAVAILABLE">
+                  <HBox>
+                     <children>
+                        <Button fx:id="cancel_Button" mnemonicParsing="false" onMouseClicked="#cancelButton_Clicked" prefWidth="63.0" styleClass="warning" text="Clear" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="submit_Button" mnemonicParsing="false" onMouseClicked="#submitButton_Clicked" styleClass="primary" text="Submit" />
+                     </children></HBox>
+                  <TabPane prefHeight="490.0" prefWidth="288.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                       <Tab text="Locations">
                            <content>
-                              <ScrollPane fx:id="locationsPane" prefHeight="200.0" prefWidth="200.0">
+                              <ScrollPane fx:id="locationsPane" prefHeight="445.0" prefWidth="288.0">
                                 <content>
                                   <AnchorPane />
                                 </content>
