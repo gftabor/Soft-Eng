@@ -5,6 +5,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.application.Platform;
+
 
 import javafx.scene.control.*;
 
@@ -60,6 +62,17 @@ public class adminLoginMainController extends controllers.AbsController{
     public FXMLLoader switch_screen(AnchorPane BGCurrentanchor, String viewPath){
         facialRecognition.getInstance().stop();
         return super.switch_screen(BGCurrentanchor,viewPath);
+    }
+    private String faceUserName;
+    public void alternateLogIn(String username){
+        faceUserName = username;
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                logIn(faceUserName);
+            }
+        });
+
     }
     public void logIn(String username) {
         loginManage = new AdminLoginManager();

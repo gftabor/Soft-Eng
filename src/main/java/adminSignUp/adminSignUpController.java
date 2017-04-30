@@ -301,6 +301,7 @@ public class adminSignUpController extends controllers.AbsController{
         }else{
             System.out.println("Error with choicebox on admin page");
         }
+        facialRecognition.getInstance().initFace();
         clearInputs();
 
     }
@@ -316,6 +317,7 @@ public class adminSignUpController extends controllers.AbsController{
             } else {
                 queryStatus.setText("Error Adding Admin");
             }
+
         }
         catch(Exception e){
             queryStatus.setText("ERROR: Exception");

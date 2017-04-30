@@ -157,10 +157,12 @@ public class facialRecognition {
                             for(int i =0; i<result.getJSONArray("candidate").length(); i++){
                                 String username = result.getJSONArray("candidate").getJSONObject(i).getString("person_name");
                                 Double confidence = result.getJSONArray("candidate").getJSONObject(i).getDouble("confidence");
-
                                 if(confidence> 25.0){
                                     System.out.println("logging in");
-                                    mainScene.logIn(username);
+                                    mainScene.alternateLogIn(username);
+                                    nextState = state.NOTHING;
+                                    break;
+
                                 }
                             }
                         }
