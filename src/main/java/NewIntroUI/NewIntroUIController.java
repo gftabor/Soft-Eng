@@ -433,7 +433,11 @@ public class NewIntroUIController extends controllers.mapScene{
             nameButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    end_TextField.setText(thisLocation.getName() + ", " + thisLocation.getRoomNum());
+                    if (start_textField.getText().equalsIgnoreCase("")) {
+                        start_textField.setText(thisLocation.getName() + ", " + thisLocation.getRoomNum());
+                    } else {
+                        end_TextField.setText(thisLocation.getName() + ", " + thisLocation.getRoomNum());
+                    }
                 }
             });
             empHBox.getChildren().addAll(nameButton);
@@ -889,6 +893,11 @@ public class NewIntroUIController extends controllers.mapScene{
 
 
                 multiFloorPathfind();
+//                setMapToPath();
+//                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false,
+//                        currentFloor, permissionLevel);
+//                graph.createEdgeLines(path, true, false);
+
             } else {
                 //no multifloor pathfinding (simple)
 
@@ -1399,6 +1408,8 @@ public class NewIntroUIController extends controllers.mapScene{
         System.out.println("creating edge lines for fp pos: " + fragPathPos);
         graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
         graph.setPathfinding(2);
+
+
     }
 
     public void changeZoom(){
@@ -1751,9 +1762,10 @@ public class NewIntroUIController extends controllers.mapScene{
         System.out.println("pane-Hval = " + scrollPane.getHvalue());
         System.out.println("pane-Vval = " + scrollPane.getVvalue());
 
-        scrollPane.setHvalue(submitHval);
-        scrollPane.setVvalue(submitVval);
-
+        if (submitHval != 0) {
+            scrollPane.setHvalue(submitHval);
+            scrollPane.setVvalue(submitVval);
+        }
         System.out.println(submitHval + "   " +submitVval);
         System.out.println("New Hvalue: " + scrollPane.getHvalue());
         System.out.println("New Vvalue: " + scrollPane.getVvalue());
