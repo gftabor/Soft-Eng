@@ -105,7 +105,8 @@ public class adminLoginMainController extends controllers.AbsController{
             while(isRunning) {
                 capture = webcam.getImage();
 
-               HaarCascadeDetector detector = new HaarCascadeDetector();
+               HaarCascadeDetector detector;
+                detector = new HaarCascadeDetector();
                 List<DetectedFace> faces = detector.detectFaces(ImageUtilities.createFImage(capture));
                 facesList.clear();
                 for(DetectedFace face : faces) {
