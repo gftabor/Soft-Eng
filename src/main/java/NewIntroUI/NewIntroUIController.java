@@ -268,7 +268,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
     public void drawCircleList(ArrayList<Circle> circleList, double x, double y, Color color) {
         for (Circle c : circleList) {
-            System.out.println((c.getLayoutX()/zoom)/widthRatio);
+            //System.out.println((c.getLayoutX()/zoom)/widthRatio);
             if (c.getLayoutX() == x && c.getLayoutY() == y) {
                 c.setStrokeWidth(strokeRatio);
                 c.setRadius(graph.getLabelRadius());
@@ -1185,6 +1185,7 @@ public class NewIntroUIController extends controllers.mapScene{
         node_Plane.setPrefHeight(origPaneHeight*zoom*heightRatio);
         map_viewer.setFitWidth(origPaneWidth*zoom*widthRatio);
         map_viewer.setFitHeight(origPaneHeight*zoom*heightRatio);
+        System.out.println("zooooomed");
     }
 
 
@@ -1292,7 +1293,6 @@ public class NewIntroUIController extends controllers.mapScene{
             circleList = graph.getButtonList();
             drawCircleList(circleList, round(startX*zoom*widthRatio), round(startY*zoom*heightRatio), startColor);
             drawCircleList(circleList, round(endX*zoom*widthRatio), round(endY*zoom*heightRatio), endColor);
-            System.out.println("drawing circles at "+startX+" and "+endX);
 
         } else if (graph.getPathfinding() == 2) {
             graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
@@ -1305,8 +1305,6 @@ public class NewIntroUIController extends controllers.mapScene{
         if (selectionState == 2) {
 
         }
-        System.out.println("currenthval: " + currentHval);
-        System.out.println("currnetVval: " + currentVval);
         scrollPane.setHvalue(currentHval);
         scrollPane.setVvalue(currentVval);
     }
@@ -1361,17 +1359,18 @@ public class NewIntroUIController extends controllers.mapScene{
         System.out.println("previous Hvalue: " + scrollPane.getHvalue());
         System.out.println("previous Vvalue: " + scrollPane.getVvalue());
 
-        changeZoom();
-
         currentHval = midX / 920;
         currentVval = midY / 489;
 
-        scrollPane.setHvalue(currentHval);
-        scrollPane.setVvalue(currentVval);
+        changeZoom();
+        if (graph.getZoom() > 1.0) {
+            scrollPane.setFitToWidth(false);
+            scrollPane.setFitToHeight(false);
+        }
 
-        System.out.println("New Hvalue: " + scrollPane.getHvalue());
-        System.out.println("New Vvalue: " + scrollPane.getVvalue());
 
+        System.out.println("past zoomed");
+        secret_Click();
     }
 
 
@@ -1493,6 +1492,14 @@ public class NewIntroUIController extends controllers.mapScene{
         controller.setPermissionLevel(2);
 
 
+    }
+
+    public void secret_Click() {
+        scrollPane.setHvalue(currentHval);
+        scrollPane.setVvalue(currentVval);
+
+        System.out.println("New Hvalue: " + scrollPane.getHvalue());
+        System.out.println("New Vvalue: " + scrollPane.getVvalue());
     }
 }
 
