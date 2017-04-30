@@ -221,7 +221,7 @@ public class MapController {
     //used for pathfinding
     //creates a pathfinder and runs pathfinding on the startnode and the end node.
     //  returns: 0 if success, 1 if error
-    public ArrayList<Edge> requestPath(int permissionLevel) {
+    public ArrayList<Edge> requestPath(int permissionLevel, boolean useStairs) {
         Node startNode, endNode;
 
         //instantiates the collection if nothing is there yet
@@ -255,7 +255,7 @@ public class MapController {
         */
 
         pathfinder.algorithmSwitch(algorithm);
-        pathfinder.generatePath(startNode, endNode, permissionLevel);
+        double result = pathfinder.generatePath(startNode, endNode, permissionLevel, useStairs);
         return pathfinder.getPath();
 
     }
@@ -450,7 +450,7 @@ public class MapController {
                 return null;
             }
 
-            directions.add("Estás en el piso " + path.get(path.size() - 1).getStartNode().getFloor());
+            directions.add("Estas en el piso " + path.get(path.size() - 1).getStartNode().getFloor());
 
             for (int i = path.size() - 1; i > 0; i--) {
                 double angle = getAngle(path.get(i), path.get(i - 1));

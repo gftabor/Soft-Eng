@@ -225,8 +225,8 @@ public class MapOverlay {
 
         // this code sets node's x and y pos to be on the plane holding the graph
         currentPane.getChildren().add(location);
-        location.setLayoutX((int)(nodeX * zoom * widthRatio));
-        location.setLayoutY((int)(nodeY * zoom * heightRatio));
+        location.setLayoutX(round(nodeX * zoom * widthRatio));
+        location.setLayoutY(round(nodeY * zoom * heightRatio));
         location.toFront();
 
         if (!enabled) {
@@ -373,8 +373,8 @@ public class MapOverlay {
                         MenuItem removeOption = new MenuItem("Remove Edge");
                         removeOption.setOnAction(new EventHandler<ActionEvent>() {
                             @Override public void handle(ActionEvent e) {
-                                sceneController.edgeClickRemove((int)lne.getStartX(), (int)lne.getStartY(),
-                                        (int)lne.getEndX(), (int)lne.getEndY());
+                                sceneController.edgeClickRemove(round(lne.getStartX()), round(lne.getStartY()),
+                                        round(lne.getEndX()), round(lne.getEndY()));
                             }
                         });
 
@@ -418,10 +418,10 @@ public class MapOverlay {
 
             //add to pane
             currentPane.getChildren().add(lne);
-            lne.setStartX(thisEdge.getStartNode().getPosX() * zoom * widthRatio);
-            lne.setStartY(thisEdge.getStartNode().getPosY() * zoom * heightRatio);
-            lne.setEndX(thisEdge.getEndNode().getPosX() * zoom * widthRatio);
-            lne.setEndY(thisEdge.getEndNode().getPosY() * zoom * heightRatio);
+            lne.setStartX(round(thisEdge.getStartNode().getPosX() * zoom * widthRatio));
+            lne.setStartY(round(thisEdge.getStartNode().getPosY() * zoom * heightRatio));
+            lne.setEndX(round(thisEdge.getEndNode().getPosX() * zoom * widthRatio));
+            lne.setEndY(round(thisEdge.getEndNode().getPosY() * zoom * heightRatio));
             //show
             lne.toFront();
             //add to list
@@ -432,6 +432,11 @@ public class MapOverlay {
     //get method for labelRadius
     public double getLabelRadius() {
         return labelRadius;
+    }
+
+    //get method for label type radius
+    public double getLabelTypeRadius() {
+        return labelTypeRadius;
     }
 
     //get method for the circle list (buttonList)
@@ -483,5 +488,19 @@ public class MapOverlay {
 
     public static double getWidthRatio() {
         return widthRatio;
+    }
+
+    private int round(double input) {
+        long intPart;
+        double decimalPart;
+        intPart = (long) input;
+        decimalPart = input - intPart;
+
+        if (decimalPart >= 0.5d) {
+            return (int) intPart + 1;
+        } else {
+            return (int) intPart;
+        }
+
     }
 }

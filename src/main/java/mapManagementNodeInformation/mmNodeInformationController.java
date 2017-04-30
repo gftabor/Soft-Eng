@@ -36,8 +36,6 @@ public class mmNodeInformationController extends controllers.AbsController {
     @FXML
     private Label currentAdmin_Label;
 
-    @FXML
-    private Button mainMenu_Button;
 
     @FXML
     private Button emergency_Button;
@@ -60,8 +58,6 @@ public class mmNodeInformationController extends controllers.AbsController {
     @FXML
     private ChoiceBox mode_ChoiceBox;
 
-   /* @FXML
-    private Label error_LabelText;*/
 
     @FXML
     private TextField room_TextField;
@@ -87,9 +83,6 @@ public class mmNodeInformationController extends controllers.AbsController {
     @FXML
     private TableColumn<Table, String> room_TableColumn;
 
-    /*@FXML
-    private TextField department_TextField; */
-
     @FXML
     private TextField search_textField;
 
@@ -108,9 +101,6 @@ public class mmNodeInformationController extends controllers.AbsController {
     @FXML
     private Label docTitle_Label;
 
-    /*@FXML
-    private Label department_Label;*/
-
     @FXML
     private Label room_Label;
 
@@ -122,6 +112,33 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     @FXML
     private Button mapManagement_Button;
+
+    @FXML
+    private Button adminManagement_Button;
+
+    @FXML
+    private Button signOut_Button;
+
+    @FXML
+    private Button pathFinding_Button;
+
+    @FXML
+    private Button clearTitle_Button;
+
+    @FXML
+    private Button clearRoom_Button;
+
+    @FXML
+    private Button clearID_Button;
+
+    @FXML
+    private Button clearFN_Button;
+
+    @FXML
+    private Button clearLN_Button;
+
+
+
 
 
     int ID;
@@ -154,6 +171,53 @@ public class mmNodeInformationController extends controllers.AbsController {
     //get an instance of database controller
     DatabaseController databaseController = DatabaseController.getInstance();
 
+    //Sends the user to the amdin management scene
+    public void adminManagementButton_Clicked(){
+        //Change to patient menu
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewAdminManagementView.fxml");
+        adminSignUp.adminSignUpController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //Gets the current admin
+        controller.setUsername(currentAdmin_Label.getText());
+
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+
+        controller.setUpTreeView();
+        controller.setModeChoices();
+
+
+    }
+
+    //Signs the user out (Sends them to the main patient scene)
+    public void signOutButton_Clicked(){
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
+        //patientMenuStart.patientMenuStartController controller = loader.getController();
+        NewIntroUI.NewIntroUIController controller = loader.getController();
+        //sets the current language
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            System.out.println("");
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        //set permissions back
+        controller.setPermissionLevel(0);
+        controller.loginOrOut(1,c_language);
+        //set label to empty
+        controller.setWelcome("");
+
+    }
+
     //handle the clear button
     public void cancelButton_Clicked() {
         System.out.println("The user has clicked the cancel Button");
@@ -165,8 +229,25 @@ public class mmNodeInformationController extends controllers.AbsController {
         lastName_TextField.setText("");
         title_TextField.setText("");
         mode_ChoiceBox.getSelectionModel().select(0);
-
     }
+
+    //CLEAR the text fields accordingly
+    public void clearT(){
+        title_TextField.setText("");
+    }
+    public void clearR(){
+        room_TextField.setText("");
+    }
+    public void clearID(){
+        id_TextField.setText("");
+    }
+    public void clearFN(){
+        Firstname_TextField.setText("");
+    }
+    public void clearLN(){
+        lastName_TextField.setText("");
+    }
+
 
     //Handle the submiut button clicked
     public void submitButton_Clicked(){
@@ -222,8 +303,8 @@ public class mmNodeInformationController extends controllers.AbsController {
 //            /*if (!(spanish_departments.contains(cDepartment))) {
 //                TextInputDialog dialog = new TextInputDialog("");
 //                dialog.setTitle("Agrega un Nuevo Departamento");
-//                dialog.setHeaderText("Has ingresado un departamento desconocido! Por favor agrega la versión en Inglés.");
-//                dialog.setContentText("Departamento en Inglés:");
+//                dialog.setHeaderText("Has ingresado un departamento desconocido! Por favor agrega la version en Ingles.");
+//                dialog.setContentText("Departamento en Ingles:");
 //                // The Java 8 way to get the response value (with lambda expression).
 //                // Traditional way to get the response value.
 //                Optional<String> result = dialog.showAndWait();
@@ -239,9 +320,9 @@ public class mmNodeInformationController extends controllers.AbsController {
 //                // translation)
 //                //Get englsih translation of new title
 //                TextInputDialog dialogTitle = new TextInputDialog("");
-//                dialogTitle.setTitle("Agrega un Nuevo Título");
-//                dialogTitle.setHeaderText("Has ingresado un título desconocido! Por favor agrega la versión en Inglés.");
-//                dialogTitle.setContentText("Título en Inglés:");
+//                dialogTitle.setTitle("Agrega un Nuevo Titulo");
+//                dialogTitle.setHeaderText("Has ingresado un titulo desconocido! Por favor agrega la version en Ingles.");
+//                dialogTitle.setContentText("Titulo en Ingles:");
 //                Optional<String> result = dialogTitle.showAndWait();
 //                result.ifPresent(name -> enTitle = name);
 //                title = enTitle;
@@ -324,8 +405,7 @@ public class mmNodeInformationController extends controllers.AbsController {
 
     //switches to the emergency scene
     public void emergencyButton_Clicked() {
-
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewEmergencyView.fxml");
         emergency.emergencyController controller = loader.getController();
         //sends the current language to the next screen
         controller.setCurrentLanguage(c_language);
@@ -338,26 +418,6 @@ public class mmNodeInformationController extends controllers.AbsController {
         }
     }
 
-    //switches to main menu
-    public void mainMenuButton_Clicked() {
-        System.out.println("The user has clicked the sign out Button");
-
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
-        adminMenuStart.adminMenuStartController controller = loader.getController();
-        //Set the correct username for the next scene
-        controller.setUsername(currentAdmin_Label.getText());
-        //sets the current language
-        controller.setCurrentLanguage(c_language);
-        //set up english labels
-        if(c_language == 0){
-            controller.englishButtons_Labels();
-
-            //set up spanish labels
-        }else if(c_language == 1){
-            controller.spanishButtons_Labels();
-        }
-        controller.setLanguageChoices();
-    }
 
     //sets up the tree
     public void setUpTreeView(){
@@ -578,7 +638,7 @@ public class mmNodeInformationController extends controllers.AbsController {
         ArrayList<String> departments = new ArrayList<>();
         ArrayList<String> titles = new ArrayList<>();
 
-        rooms = databaseController.getFilteredRooms();
+        rooms = databaseController.getFilteredRooms(permissionLevel);
         titles = databaseController.getTitles();
 
         // rooms not affected by language
@@ -613,6 +673,8 @@ public class mmNodeInformationController extends controllers.AbsController {
         submit_Button.setText("Submit");
         cancel_Button.setText("Clear");
         mapManagement_Button.setText("Map Management");
+        pathFinding_Button.setText("PathFinding");
+        adminManagement_Button.setText("Admin Management");
 
         //Labels
         title_Label.setText("Directory Management");
@@ -648,20 +710,23 @@ public class mmNodeInformationController extends controllers.AbsController {
         submit_Button.setText("Listo");
         cancel_Button.setText("Borrar");
         mapManagement_Button.setText("Control de Mapas");
+        pathFinding_Button.setText("Mapa de Busqueda");
+        adminManagement_Button.setText("Control de Admins");
+
 
         //Labels
         title_Label.setText("Directorio");
         subTitle_Label.setText("Control de Directorio");
         Mode_Label.setText("Modo:");
-        docTitle_Label.setText("Título");
+        docTitle_Label.setText("Titulo");
         //department_Label.setText("Departamento:");
-        room_Label.setText("Habitación:");
+        room_Label.setText("Habitacion:");
         firstName_Label.setText("Nombre");
         lastName_Label.setText("Apellido");
 
         //text fields
         search_textField.setPromptText("busca");
-        room_TextField.setPromptText("Habitación");
+        room_TextField.setPromptText("Habitacion");
         Firstname_TextField.setPromptText("Nombre");
         lastName_TextField.setPromptText("Apellido");
         //department_TextField.setPromptText("Departamento");
@@ -670,9 +735,9 @@ public class mmNodeInformationController extends controllers.AbsController {
         //Table columns
         firstName_TableColumn.setText("Nombre");
         lastName_TableColumn.setText("Apellido");
-        title_TableColumn.setText("Título");
+        title_TableColumn.setText("Titulo");
         department_TableColumn.setText("Departamento");
-        room_TableColumn.setText("Habitación");
+        room_TableColumn.setText("Habitacion");
     }
 
     //Adds the information to the database and adds the professional
@@ -712,10 +777,34 @@ public class mmNodeInformationController extends controllers.AbsController {
         }else if(c_language == 1){
             controller.spanishButtons_Labels();
         }
-        controller.setUserString("Admin: " + currentAdmin_Label.getText());
+        controller.setUserString(currentAdmin_Label.getText());
         controller.setPermissionLevel(2);
 
     }
+
+    //Sends the person to pathfinding with admin permission
+    public void pathFindingButton_Clicked(){
+        System.out.println("Logging in Employee");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
+        //patientMenuStart.patientMenuStartController controller = loader.getController();
+        NewIntroUI.NewIntroUIController controller = loader.getController();
+        //sets the current language
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            controller.setWelcome(currentAdmin_Label.getText());
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+            controller.setWelcome(currentAdmin_Label.getText());
+        }
+        controller.setPermissionLevel(2);
+        controller.loginOrOut(0,c_language);
+        controller.setLanguage_ChoiceBox(c_language);
+        controller.AdminButtons(c_language);
+    }
+
 
 }
 

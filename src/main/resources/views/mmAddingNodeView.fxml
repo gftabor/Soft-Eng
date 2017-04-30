@@ -144,7 +144,7 @@
             <HBox BorderPane.alignment="CENTER">
                <children>
                   <Region HBox.hgrow="ALWAYS" />
-                  <Label text="©2017 Computer Science 3733 Team E">
+                  <Label text="2017 Computer Science 3733 Team E">
                      <font>
                         <Font size="18.0" />
                      </font>
