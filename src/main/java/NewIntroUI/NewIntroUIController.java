@@ -261,7 +261,7 @@ public class NewIntroUIController extends controllers.mapScene{
     public void drawCircleList(ArrayList<Circle> circleList, double x, double y, Color color) {
         for (Circle c : circleList) {
             System.out.println((c.getLayoutX()/zoom)/widthRatio);
-            if (round((c.getLayoutX()/zoom)/widthRatio) == x && round((c.getLayoutY()/zoom)/heightRatio) == y) {
+            if (c.getLayoutX() == x && c.getLayoutY() == y) {
                 c.setStrokeWidth(strokeRatio);
                 c.setRadius(graph.getLabelRadius() * sizeUpRatio);
                 c.setStroke(color);
@@ -736,7 +736,8 @@ public class NewIntroUIController extends controllers.mapScene{
         ArrayList<Circle> tempCircleList;
         tempCircleList = graph.getButtonList();
 
-        drawCircleList(tempCircleList, startX, startY, startColor);
+        drawCircleList(tempCircleList, round(startX), round(startY), startColor);
+        System.out.println("start coords: "+startX + "  " +startY);
 
 
         //reset for next pathfinding session
@@ -1175,6 +1176,12 @@ public class NewIntroUIController extends controllers.mapScene{
         scrollPane.setFitToWidth(false);
         if (graph.getPathfinding() == 1) {
             graph.createEdgeLines(path, true, false);
+            //set the end goal color
+            ArrayList<Circle> circleList;
+            circleList = graph.getButtonList();
+            drawCircleList(circleList, startX, startY, startColor);
+            drawCircleList(circleList, endX, endY, endColor);
+            System.out.println("drawing circles at "+startX+" and "+endX);
         } else if (graph.getPathfinding() == 2) {
             graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
         }
@@ -1201,6 +1208,12 @@ public class NewIntroUIController extends controllers.mapScene{
                 false, currentFloor, permissionLevel);
         if (graph.getPathfinding() == 1) {
             graph.createEdgeLines(path, true, false);
+            //set the end goal color
+            ArrayList<Circle> circleList;
+            circleList = graph.getButtonList();
+            drawCircleList(circleList, startX, startY, startColor);
+            drawCircleList(circleList, endX, endY, endColor);
+            System.out.println("drawing circles at "+startX+" and "+endX);
         } else if (graph.getPathfinding() == 2) {
             graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
         }
@@ -1248,8 +1261,8 @@ public class NewIntroUIController extends controllers.mapScene{
             //set the end goal color
             ArrayList<Circle> circleList;
             circleList = graph.getButtonList();
-            drawCircleList(circleList, startX, startY, startColor);
-            drawCircleList(circleList, endX, endY, endColor);
+            drawCircleList(circleList, round(startX*zoom*widthRatio), round(startY*zoom*heightRatio), startColor);
+            drawCircleList(circleList, round(endX*zoom*widthRatio), round(endY*zoom*heightRatio), endColor);
             System.out.println("drawing circles at "+startX+" and "+endX);
 
         } else if (graph.getPathfinding() == 2) {
