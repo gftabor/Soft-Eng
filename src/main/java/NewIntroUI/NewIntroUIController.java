@@ -214,6 +214,9 @@ public class NewIntroUIController extends controllers.mapScene{
 
     private boolean useStairs;
 
+    private double submitHval;
+    private double submitVval;
+
     //ArrayList<Edge> zoomPath;
 
     // list of all locations, not sorted at first
@@ -544,7 +547,7 @@ public class NewIntroUIController extends controllers.mapScene{
                 ArrayList<Circle> circleList;
                 circleList = graph.getButtonList();
 
-                drawCircleList(circleList, endX, endY, endColor);
+                drawCircleList(circleList, round(endX*zoom*widthRatio), round(endY*zoom*heightRatio), endColor);
             }
         }
     }
@@ -797,7 +800,7 @@ public class NewIntroUIController extends controllers.mapScene{
         services = databaseController.getNodeTypes();
         //all.addAll(roomNums);
         all.addAll(databaseController.getFilteredRooms(permissionLevel));
-        all.addAll(services);
+        //all.addAll(services);
 
         all.addAll(professionals);
 
@@ -896,10 +899,17 @@ public class NewIntroUIController extends controllers.mapScene{
 
                 graph.setPathfinding(1);
                 textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
+                scrollPane.setFitToWidth(false);
+                scrollPane.setFitToHeight(false);
                 setMapToPath(startX, startY, endX, endY);
                 graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false,
                         currentFloor, permissionLevel);
                 graph.createEdgeLines(path, true, false);
+                ArrayList<Circle> circleList;
+                circleList = graph.getButtonList();
+                System.out.println(startX + "   " + startY);
+                drawCircleList(circleList, round(startX*zoom*widthRatio), round(startY*zoom*heightRatio), startColor);
+                drawCircleList(circleList, round(endX*zoom*widthRatio), round(endY*zoom*heightRatio), endColor);
 
             }
 
@@ -1374,7 +1384,6 @@ public class NewIntroUIController extends controllers.mapScene{
         node_Plane.setPrefHeight(origPaneHeight*zoom*heightRatio);
         map_viewer.setFitWidth(origPaneWidth*zoom*widthRatio);
         map_viewer.setFitHeight(origPaneHeight*zoom*heightRatio);
-        System.out.println("zooooomed");
     }
 
 
@@ -1440,7 +1449,23 @@ public class NewIntroUIController extends controllers.mapScene{
 
     //Let the user scroll through the map
     public void mapScroll(ScrollEvent event) {
+
+        double scrollStartX = 0,scrollStartY = 0,scrollEndX = 0,scrollEndY = 0;
+
+//        if (!(start_textField.getText().equals(""))) {
+//            Node startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
+//            scrollStartX = startN.getPosX();
+//            scrollStartY = startN.getPosY();
+//        }
+//        if (!end_TextField.getText().split(", ")[1].equals("")) {
+//            Node endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText().split(", ")[1]);
+//            scrollEndX = endN.getPosX();
+//            scrollEndY = endN.getPosY();
+//        }
+
         zoom = MapOverlay.getZoom();
+        ArrayList<Circle> circleList;
+        circleList = graph.getButtonList();
         if (currentHval != 0) {
             //System.out.println("pre zoom currenthval: " + currentHval);
             //System.out.println("pre zoom currnetVval: " + currentVval);
@@ -1458,6 +1483,14 @@ public class NewIntroUIController extends controllers.mapScene{
                 changeZoom();
                 graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
                         false, currentFloor, permissionLevel);
+                if (scrollStartX != 0) {
+                    drawCircleList(circleList, round(scrollStartX * zoom * widthRatio),
+                            round(scrollStartY * zoom * heightRatio), startColor);
+                }
+                if (scrollEndX != 0) {
+                    drawCircleList(circleList, round(scrollEndX * zoom * widthRatio),
+                            round(scrollEndY * zoom * heightRatio), endColor);
+                }
             }
         } else if (event.getDeltaY() < 0) {
             if (zoom > 1.0) {
@@ -1470,6 +1503,14 @@ public class NewIntroUIController extends controllers.mapScene{
                 changeZoom();
                 graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
                         false, currentFloor, permissionLevel);
+                if (scrollStartX != 0) {
+                    drawCircleList(circleList, round(scrollStartX * zoom * widthRatio),
+                            round(scrollStartY * zoom * heightRatio), startColor);
+                }
+                if (scrollEndX != 0) {
+                    drawCircleList(circleList, round(scrollEndX * zoom * widthRatio),
+                            round(scrollEndY * zoom * heightRatio), endColor);
+                }
             } else {
                 scrollPane.setFitToHeight(true);
                 scrollPane.setFitToWidth(true);
@@ -1478,8 +1519,7 @@ public class NewIntroUIController extends controllers.mapScene{
         if (graph.getPathfinding() == 1) {
             graph.createEdgeLines(path, true, false);
             //set the end goal color
-            ArrayList<Circle> circleList;
-            circleList = graph.getButtonList();
+
             drawCircleList(circleList, round(startX*zoom*widthRatio), round(startY*zoom*heightRatio), startColor);
             drawCircleList(circleList, round(endX*zoom*widthRatio), round(endY*zoom*heightRatio), endColor);
 
@@ -1522,6 +1562,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
     public void setMapToPath(double startNX, double startNY, double endNX, double endNY) {
 
+
         System.out.println("setting map to path");
         double deltaX = startNX - endNX;
         double deltaY = startNY - endNY;
@@ -1549,17 +1590,8 @@ public class NewIntroUIController extends controllers.mapScene{
         System.out.println("previous Hvalue: " + scrollPane.getHvalue());
         System.out.println("previous Vvalue: " + scrollPane.getVvalue());
 
-        currentHval = midX / 920;
-        currentVval = midY / 489;
-
-        System.out.println("before changezoom");
-        changeZoom();
-        System.out.println("after changezoom");
-        if (graph.getZoom() > 1.0) {
-            System.out.println("in if");
-            scrollPane.setFitToWidth(false);
-            scrollPane.setFitToHeight(false);
-        }
+        submitHval = midX / 920;
+        submitVval = midY / 489;
 
 
         System.out.println("past zoomed");
@@ -1689,15 +1721,17 @@ public class NewIntroUIController extends controllers.mapScene{
     }
 
     public void secret_Click() {
+
         System.out.println("in secretclick");
         System.out.println("current-Hval = " + currentHval);
         System.out.println("current-Vval = " + currentVval);
         System.out.println("pane-Hval = " + scrollPane.getHvalue());
         System.out.println("pane-Vval = " + scrollPane.getVvalue());
 
-        scrollPane.setHvalue(currentHval);
-        scrollPane.setVvalue(currentVval);
+        scrollPane.setHvalue(submitHval);
+        scrollPane.setVvalue(submitVval);
 
+        System.out.println(submitHval + "   " +submitVval);
         System.out.println("New Hvalue: " + scrollPane.getHvalue());
         System.out.println("New Vvalue: " + scrollPane.getVvalue());
     }
