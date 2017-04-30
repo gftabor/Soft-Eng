@@ -104,14 +104,17 @@ public class facialRecognition {
                 System.out.println("\ngroup/add_person");
                 personList.add(currentAdmin.getUserName());
             }
-            new PostParameters().setGroupName("Faukner").setPersonName(personList).getMultiPart().writeTo(System.out);
-            System.out.println(httpRequests.groupAddPerson(new PostParameters().setGroupName("Faukner").setPersonName(personList)));
-            //Train
-            JSONObject syncRet = null;
-            System.out.println("\ntrain/Identify");
-            syncRet = httpRequests.trainIdentify(new PostParameters().setGroupName("Faukner"));
-            System.out.println(syncRet);
-            System.out.println(httpRequests.getSessionSync(syncRet.getString("session_id")));
+            if(personList !=null && personList.size()!=0) {
+
+                new PostParameters().setGroupName("Faukner").setPersonName(personList).getMultiPart().writeTo(System.out);
+                System.out.println(httpRequests.groupAddPerson(new PostParameters().setGroupName("Faukner").setPersonName(personList)));
+                //Train
+                JSONObject syncRet = null;
+                System.out.println("\ntrain/Identify");
+                syncRet = httpRequests.trainIdentify(new PostParameters().setGroupName("Faukner"));
+                System.out.println(syncRet);
+                System.out.println(httpRequests.getSessionSync(syncRet.getString("session_id")));
+            }
         }catch(Exception e){e.printStackTrace();}
     }
 
