@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -17,7 +11,6 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -28,7 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NewIntroUI.NewIntroUIController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NewIntroUI.NewIntroUIController">
    <children>
       <BorderPane layoutX="-1.0" layoutY="-1.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="-1.0">
          <top>
@@ -146,9 +139,9 @@
                                  <HBox.margin>
                                     <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                  </HBox.margin></Button>
-                              <Button mnemonicParsing="false" text="3D" />
+                              <Region HBox.hgrow="ALWAYS" />
                               <ChoiceBox fx:id="language_ChoiceBox" styleClass="menu" />
-                              <Button fx:id="reverse_Button" mnemonicParsing="false" onMouseClicked="#reverseButton_Clicked" styleClass="menu" text="&lt;&gt;">
+                              <Button fx:id="reverse_Button" mnemonicParsing="false" onMouseClicked="#reverseButton_Clicked" styleClass="menu" text="Reverse">
                                  <HBox.margin>
                                     <Insets right="4.0" top="1.0" />
                                  </HBox.margin></Button>
@@ -159,13 +152,35 @@
                               </Button>
                            </children>
                         </HBox>
+                        <HBox styleClass="threeD">
+                           <children>
+                              <Label text="3D path" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <CheckBox fx:id="ThreeDPATH_CheckBox" mnemonicParsing="false" />
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Label text="Allow Stairs" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <CheckBox fx:id="stairs_CheckBox" mnemonicParsing="false" />
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
-                  <TabPane prefHeight="433.0" prefWidth="381.0" tabClosingPolicy="UNAVAILABLE">
+                  <HBox />
+                  <TabPane prefHeight="540.0" prefWidth="288.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                       <Tab text="Locations">
                            <content>
-                              <TreeView prefHeight="200.0" prefWidth="200.0" />
+                              <ScrollPane fx:id="locationsPane" prefHeight="200.0" prefWidth="200.0">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                                </content>
+                              </ScrollPane>
                            </content>
                       </Tab>
                         <Tab fx:id="textDirections_Tab" text="Directions">
@@ -200,9 +215,9 @@
                            </children></Pane>
                      </content>
                   </ScrollPane>
-                  <Button fx:id="zoomOut_button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#zoomOutButton_Clicked" styleClass="info" text="-" StackPane.alignment="CENTER_RIGHT">
+                  <Button fx:id="zoomOut_button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#zoomOutButton_Clicked" prefWidth="46.0" styleClass="zoomButtons" text="-" StackPane.alignment="CENTER_RIGHT">
                      <StackPane.margin>
-                        <Insets right="10.0" top="35.0" />
+                        <Insets right="10.0" top="60.0" />
                      </StackPane.margin>
                   </Button>
                   <Label fx:id="floor_Label" styleClass="DirectoryLabel" text="Floor:" StackPane.alignment="TOP_LEFT">
@@ -215,17 +230,17 @@
                         <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                      </StackPane.margin>
                   </ChoiceBox>
-                  <Button fx:id="zoomIn_button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#zoomInButton_Clicked" styleClass="info" text="+" StackPane.alignment="CENTER_RIGHT">
+                  <Button fx:id="zoomIn_button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#zoomInButton_Clicked" styleClass="zoomButtons" text="+" StackPane.alignment="CENTER_RIGHT">
                      <StackPane.margin>
-                        <Insets right="10.0" top="-35.0" />
+                        <Insets right="10.0" top="-60.0" />
                      </StackPane.margin>
                   </Button>
-                  <Button fx:id="previous_Button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#previousButton_Clicked" styleClass="menu" text="&lt;" StackPane.alignment="TOP_RIGHT">
+                  <Button fx:id="previous_Button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#previousButton_Clicked" prefWidth="150.0" styleClass="zoomButtons" text="Previous " StackPane.alignment="TOP_RIGHT">
                      <StackPane.margin>
-                        <Insets right="45.0" top="5.0" />
+                        <Insets right="200.0" top="5.0" />
                      </StackPane.margin>
                   </Button>
-                  <Button fx:id="continueNew_Button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#continueNewButton_Clicked" styleClass="menu" text="&gt;" StackPane.alignment="TOP_RIGHT">
+                  <Button fx:id="continueNew_Button" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#continueNewButton_Clicked" prefWidth="150.0" styleClass="zoomButtons" text="Next " StackPane.alignment="TOP_RIGHT">
                      <StackPane.margin>
                         <Insets right="10.0" top="5.0" />
                      </StackPane.margin>

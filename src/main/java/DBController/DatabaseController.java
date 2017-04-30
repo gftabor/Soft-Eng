@@ -1211,6 +1211,24 @@ public class DatabaseController {
         return resultSet;
     }
 
+    public ResultSet getFilteredRoomNames2(){
+        System.out.println("Getting room names");
+
+        ResultSet resultSet = null;
+        try{
+            String query = "SELECT NAME, ROOMNUM, TYPE, PERMISSIONS FROM NODE " +
+                    "WHERE ISHIDDEN = FALSE AND TYPE <> 'Stair' AND TYPE <> 'Elevator'";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            //preparedStatement.setString(1, "%"+roomName);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
     /*******************************************************************************
      * DECODELANGUAGE
      *
@@ -1292,7 +1310,8 @@ public class DatabaseController {
                 String.format(
                         "Getting all professional room numbers"));
         try{
-            String query = "SELECT P.ID, P.FIRSTNAME, P.LASTNAME, P.TYPE, N.ROOMNUM FROM PROFESSIONAL P, PROLOCATION PL, NODE N WHERE " +
+            String query = "SELECT P.ID, P.FIRSTNAME, P.LASTNAME, P.TYPE, N.ROOMNUM, N.PERMISSIONS " +
+                    "FROM PROFESSIONAL P, PROLOCATION PL, NODE N WHERE " +
                     "PL.PROID = P.ID AND N.XPOS = PL.XPOS AND N.YPOS = PL.YPOS AND " +
                     "N.FLOOR = PL.FLOOR";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -1415,6 +1434,26 @@ public class DatabaseController {
         String roomName, roomNum;
         String room;
         ResultSet rset = databaseController.getFilteredRoomNames(permissionLevel);
+        try {
+            while (rset.next()) {
+                roomName = rset.getString("NAME");
+                roomNum = rset.getString("ROOMNUM");
+                if (!rooms.contains(roomNum)) {
+                    room = "" + roomName + ", " + roomNum;
+                    rooms.add(room);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rooms;
+    }
+
+    public ArrayList<String> getFilteredRoomList2() {
+        ArrayList<String> rooms = new ArrayList<>();
+        String roomName, roomNum;
+        String room;
+        ResultSet rset = databaseController.getFilteredRoomNames2();
         try {
             while (rset.next()) {
                 roomName = rset.getString("NAME");

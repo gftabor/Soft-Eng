@@ -5,24 +5,31 @@ import controllers.*;
 import emergency.SmsSender;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.*;
 import javafx.fxml.FXML;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import org.controlsfx.control.textfield.TextFields;
-
+import pathFindingMenu.Pathfinder;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Map;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by AugustoR on 4/21/17.
@@ -36,6 +43,9 @@ public class NewIntroUIController extends controllers.mapScene{
 
     @FXML
     private Label mainTitle_Label;
+
+    @FXML
+    private ScrollPane locationsPane;
 
     @FXML
     private ChoiceBox<String> language_ChoiceBox;
@@ -145,6 +155,13 @@ public class NewIntroUIController extends controllers.mapScene{
     @FXML
     private Button MapMan_Button;
 
+    @FXML
+    private CheckBox ThreeDPATH_CheckBox;
+
+    @FXML
+    private CheckBox stairs_CheckBox;
+
+
 
 
 
@@ -202,6 +219,15 @@ public class NewIntroUIController extends controllers.mapScene{
 
     //ArrayList<Edge> zoomPath;
 
+    // list of all locations, not sorted at first
+    ArrayList<Location> locations = new ArrayList<>();
+    // list of added room numbers to prevent duplication (MAYBE DELETE LATER)
+    ArrayList<String> roomNums = new ArrayList<>();
+    
+    String type, name, roomNum, firstName, lastName, title;
+    boolean isHidden, enabled;
+    int permissions;
+
 
     @FXML
     public void initialize() {
@@ -213,8 +239,9 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //setLanguageChoices(c_language);
         setFloorChoices();
-        setStartEndChoices();
+        setStartEndChoices(); // text auto fill function
         setLanguage_ChoiceBox(c_language);
+        //setLocationsForFloor("Floor 1");
         //setComboBox();
         //setFilterChoices();
         //set current floor
@@ -260,6 +287,23 @@ public class NewIntroUIController extends controllers.mapScene{
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
         scrollPane.setPannable(true);
+
+        ArrayList<Location> passLocations = grabData();
+        // sorts locations based on distance from the Kiosk
+        final ArrayList<Location> sortedPassLocations = sortCloseToKiosk(passLocations, "Kiosk");
+        // makes a list of all locations as clickable buttons
+        setLocationsListView(sortedPassLocations);
+
+
+        start_textField.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(final KeyEvent event) {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    setLocationsListView(sortCloseToKiosk(passLocations, start_textField.getText()));
+
+                }
+            }
+        });
     }
 
     //get an instance of database controller
@@ -281,6 +325,178 @@ public class NewIntroUIController extends controllers.mapScene{
             }
         }
     }
+
+    // grabs data from database to later create the location buttons
+    private ArrayList<Location> grabData(){
+        ArrayList<Location> locs = new ArrayList<>();
+        ResultSet rset2 = databaseController.getFilteredRoomNames2();
+        try {
+            while (rset2.next()){
+                name = rset2.getString("NAME");
+                roomNum = rset2.getString("ROOMNUM");
+                type = rset2.getString("TYPE");
+                permissions = rset2.getInt("PERMISSIONS");
+                if (permissions == 0){
+                    ResultSet rsetNode;
+                    int nodeFloor = 0;
+                    rsetNode = databaseController.getNodeWithName(roomNum);
+                    while (rsetNode.next()){
+                        nodeFloor = rsetNode.getInt("FLOOR");
+                    }
+                    locs.add(new Location(type, name, roomNum, "", "",
+                            "", permissions, nodeFloor));
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        ResultSet rset = databaseController.getProRoomNums();
+        try{
+            while (rset.next()){
+                title = rset.getString("TYPE");
+                roomNum = rset.getString("ROOMNUM");
+                firstName = rset.getString("FIRSTNAME");
+                lastName = rset.getString("LASTNAME");
+                permissions = rset.getInt("PERMISSIONS");
+                if (permissions == 0){
+                    ResultSet rsetNode;
+                    int nodeX = 0, nodeY = 0, nodeFloor = 0, nodePermissions = 0;
+                    String nodeName = null, nodeType = null, nodeRoom = null;
+                    boolean nodeIsHidden = false, nodeEnabled = false;
+                    rsetNode = databaseController.getNodeWithName(roomNum);
+                    while (rsetNode.next()){
+                        nodeFloor = rsetNode.getInt("FLOOR");
+                    }
+                    locs.add(new Location("Doctor's Office", "", roomNum, firstName, lastName,
+                            title, permissions, nodeFloor));
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return locs;
+    }
+
+    private void setLocationsListView(ArrayList<Location> locs){
+
+        locationsPane.setPadding(new Insets(10, 10, 5, 10));
+
+        VBox root = new VBox();
+
+        Iterator<Location> iter = locs.iterator();
+
+        while (iter.hasNext()) {
+            Location thisLocation = iter.next();
+            HBox empHBox = new HBox();
+            empHBox.setPadding(new Insets(2, 2, 2, 2));
+            empHBox.setSpacing(2);
+            Button nameButton = new Button();
+            Text text;
+
+            if (thisLocation.getAssociatedProFirst().equals("")) {
+                text = new Text(thisLocation.getName() + ",\n" + thisLocation.getType() +
+                        ", " + thisLocation.getRoomNum());
+            }else {
+                text = new Text(thisLocation.getAssociatedProFirst() + " " +
+                        thisLocation.getAssociatedProLast() + ", " + thisLocation.getAssociatedProTitle()
+                        + "\n" + thisLocation.getRoomNum());
+                nameButton.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        start_textField.setText(thisLocation.getRoomNum());
+                    }
+                });
+            }
+
+            text.setWrappingWidth(240);
+            nameButton.setPadding(new Insets(4, 4, 4, 4));
+
+            nameButton.setContentDisplay(ContentDisplay.LEFT);
+            nameButton.setPrefWidth(250);
+            nameButton.setAlignment(Pos.CENTER_LEFT);
+            nameButton.setGraphic(text);
+            nameButton.setMaxWidth(250);
+            nameButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    end_TextField.setText(thisLocation.getRoomNum());
+                }
+            });
+            empHBox.getChildren().addAll(nameButton);
+            root.getChildren().addAll(empHBox);
+            locationsPane.setContent(root);
+
+        }
+    }
+    boolean inUseFlag = false;
+
+    Pathfinder pathFind = new Pathfinder();
+    public ArrayList<Location> sortCloseToKiosk(ArrayList<Location> locs, String roomNumToFind){
+        if (!inUseFlag) {
+            inUseFlag = true;
+            System.out.println("Here zero");
+            ResultSet rset = databaseController.getNodeWithName(roomNumToFind);
+            int xpos = 0, ypos = 0, floor = 0, permissions = 0;
+            String type = "", name = "", roomNum = "";
+            boolean isHidden = false, enabled = false;
+            try {
+                while (rset.next()) {
+                    System.out.println("Here 0.1");
+                    xpos = rset.getInt("XPOS");
+                    ypos = rset.getInt("YPOS");
+                    floor = rset.getInt("FLOOR");
+                    isHidden = rset.getBoolean("ISHIDDEN");
+                    enabled = rset.getBoolean("ENABLED");
+                    type = rset.getString("TYPE");
+                    name = rset.getString("NAME");
+                    roomNum = rset.getString("ROOMNUM");
+                    permissions = rset.getInt("PERMISSIONS");
+                }
+                databaseController.closeResultSet(rset);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            Node startNode = new Node(xpos, ypos, floor, isHidden, enabled, type, name, roomNum, permissions);
+            Iterator<Location> iter = locs.iterator();
+            while (iter.hasNext()) {
+                Location thisLocation = iter.next();
+                System.out.println("Here once");
+                ResultSet rset1 = databaseController.getNodeWithName(thisLocation.getRoomNum());
+                try {
+                    while (rset1.next()) {
+                        xpos = rset1.getInt("XPOS");
+                        ypos = rset1.getInt("YPOS");
+                        floor = rset1.getInt("FLOOR");
+                        isHidden = rset1.getBoolean("ISHIDDEN");
+                        enabled = rset1.getBoolean("ENABLED");
+                        type = rset1.getString("TYPE");
+                        name = rset1.getString("NAME");
+                        roomNum = rset1.getString("ROOMNUM");
+                        permissions = rset1.getInt("PERMISSIONS");
+                    }
+                    databaseController.closeResultSet(rset1);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                Node secondNode = new Node(xpos, ypos, floor, isHidden, enabled, type, name, roomNum, permissions);
+                thisLocation.weight = pathFind.getHueristic(startNode, secondNode);
+                System.out.println("Here twice");
+            }
+            locs.sort(new Comparator<Location>() {
+                @Override
+                public int compare(Location o1, Location o2) {
+                    //Add null check
+                    return o1.weight < o2.weight ? -1
+                            : o1.weight > o2.weight ? 1
+                            : 0;
+                }
+            });
+            inUseFlag = false;
+        }
+        return locs;
+    }
+
 
     //Manage the clearing of the from text field
     public void cancelFromButton_Clicked(){
@@ -575,12 +791,17 @@ public class NewIntroUIController extends controllers.mapScene{
 
         ArrayList<String> roomNums = new ArrayList<>();
         ArrayList<String> professionals = new ArrayList<>();
+        ArrayList<String> services = new ArrayList<>();
         ArrayList<String> all = new ArrayList<>();
 
         roomNums = databaseController.getFilteredRoomList(permissionLevel);
         professionals = databaseController.getProfessionalList();
-        all.addAll(roomNums);
+
+        services = databaseController.getNodeTypes();
+        //all.addAll(roomNums);
         all.addAll(databaseController.getFilteredRooms(permissionLevel));
+        all.addAll(services);
+
         all.addAll(professionals);
 
 
@@ -612,44 +833,15 @@ public class NewIntroUIController extends controllers.mapScene{
     public void submitButton_Clicked() {
         Node startN;
         Node endN;
+        System.out.println("submit button clicked");
+        System.out.println("click - pane-Hval = " + scrollPane.getHvalue());
+        System.out.println("click - pane-Vval = " + scrollPane.getVvalue());
 
+        useStairs = stairs_CheckBox.isSelected();
 
         //reset visibility just in case
         continueNew_Button.setVisible(false);
         previous_Button.setVisible(false);
-
-//        if (selectionState == 2) {
-//            //submit stuff
-//            //createEdgeLines
-//
-//            //set the node if the 1st kiosk location is set
-//            if (!(start_textField.getText().equals(""))) {
-//                if (start_textField.getText().equals("Kiosk")){
-//                    startN = mapController.getCollectionOfNodes().getNodeWithName("Kiosk");
-//                } else {
-//                    startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
-//                }
-//                MapController.getInstance().markNode(startN.getPosX(), startN.getPosY(), 1, startN.getFloor());
-//            }
-//
-//            //check for multifloor
-//            if (mapController.areDifferentFloors()) {
-//                System.out.println("Multi-floor pathfinding detected!");
-//
-//                //use the multifloor pathfinding function
-//                multiFloorPathfind();
-//            } else {
-//                MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-//                path = mapController.requestPath(permissionLevel);
-//                graph.createEdgeLines(path, true, false);
-//                //zoomPath = path;
-//                graph.setPathfinding(1);
-//                textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
-//
-//            }
-//
-//        } else {
-//
 
         //check that the txt fields are filled
         if(!(start_textField.getText().equals("")) && !(end_TextField.getText().equals(""))) {
@@ -720,12 +912,17 @@ public class NewIntroUIController extends controllers.mapScene{
                 drawCircleList(circleList, round(endX*zoom*widthRatio), round(endY*zoom*heightRatio), endColor);
 
             }
+
+            if(ThreeDPATH_CheckBox.isSelected()){
+                mainTitle_Label.setText("3D BS");
+            }
         }
 
-        //}
-        selectionState=0;
-        System.out.println("The user has clicked the submit Button");
 
+
+
+        System.out.println("finished - pane-Hval = " + scrollPane.getHvalue());
+        System.out.println("finished - pane-Vval = " + scrollPane.getVvalue());
     }
 
     //Allows the user to go through several floors while using pathfinding
@@ -760,7 +957,6 @@ public class NewIntroUIController extends controllers.mapScene{
         System.out.println("start coords: "+startX + "  " +startY);
 
 
-        //reset for next pathfinding session
         MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
         ArrayList<Edge> reqPath = mapController.requestPath(permissionLevel, useStairs);
         if (reqPath == null || reqPath.size() == 0) { //can't find path, reset
@@ -1366,9 +1562,8 @@ public class NewIntroUIController extends controllers.mapScene{
 
     public void setMapToPath(double startNX, double startNY, double endNX, double endNY) {
 
-        //The problem is not setting the scrollpane
 
-
+        System.out.println("setting map to path");
         double deltaX = startNX - endNX;
         double deltaY = startNY - endNY;
 
@@ -1398,8 +1593,10 @@ public class NewIntroUIController extends controllers.mapScene{
         submitHval = midX / 920;
         submitVval = midY / 489;
 
+
         System.out.println("past zoomed");
         secret_Click();
+        System.out.println("after secretclick");
     }
 
 
@@ -1524,6 +1721,13 @@ public class NewIntroUIController extends controllers.mapScene{
     }
 
     public void secret_Click() {
+
+        System.out.println("in secretclick");
+        System.out.println("current-Hval = " + currentHval);
+        System.out.println("current-Vval = " + currentVval);
+        System.out.println("pane-Hval = " + scrollPane.getHvalue());
+        System.out.println("pane-Vval = " + scrollPane.getVvalue());
+
         scrollPane.setHvalue(submitHval);
         scrollPane.setVvalue(submitVval);
 

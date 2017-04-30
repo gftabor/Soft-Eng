@@ -25,7 +25,7 @@ public class Pathfinder {
     //      - current node pathfinding is looking at
     //      - goal node pathfinding is trying to reach
     //  output: SLD (double) between input nodes as heuristic val
-    private double getHueristic(Node currentNode, Node goalNode){
+    public double getHueristic(Node currentNode, Node goalNode){
        double squareX = Math.pow((currentNode.getPosX()-goalNode.getPosX()),2);
        double squareY = Math.pow((currentNode.getPosY()-goalNode.getPosY()),2);
        return Math.sqrt(squareX + squareY) + 1000* Math.abs(currentNode.getFloor() - goalNode.getFloor());
