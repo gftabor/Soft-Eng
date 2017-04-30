@@ -32,7 +32,7 @@ import java.util.*;
 public class facialRecognition {
     JSONObject result = null;
     private static final ImageView imageView = new ImageView();
-    private static boolean isRunning = true;
+    private static boolean isRunning = false;
     private static boolean facialOn = false;
 
     HttpRequests httpRequests = new HttpRequests("4480afa9b8b364e30ba03819f3e9eff5", "Pz9VFT8AP3g_Pz8_dz84cRY_bz8_Pz8M ", true, true);
