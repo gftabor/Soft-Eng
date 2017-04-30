@@ -1363,8 +1363,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
 
         System.out.println("past zoomed");
-
-
+        secret_Click();
     }
 
 
