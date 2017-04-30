@@ -609,6 +609,9 @@ public class NewIntroUIController extends controllers.mapScene{
     public void submitButton_Clicked() {
         Node startN;
         Node endN;
+        System.out.println("submit button clicked");
+        System.out.println("click - pane-Hval = " + scrollPane.getHvalue());
+        System.out.println("click - pane-Vval = " + scrollPane.getVvalue());
 
 
         //reset visibility just in case
@@ -716,6 +719,8 @@ public class NewIntroUIController extends controllers.mapScene{
         selectionState=0;
         System.out.println("The user has clicked the submit Button");
 
+        System.out.println("finished - pane-Hval = " + scrollPane.getHvalue());
+        System.out.println("finished - pane-Vval = " + scrollPane.getVvalue());
     }
 
     //Allows the user to go through several floors while using pathfinding
@@ -1326,6 +1331,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
     public void setMapToPath(double startNX, double startNY, double endNX, double endNY) {
 
+        System.out.println("setting map to path");
         double deltaX = startNX - endNX;
         double deltaY = startNY - endNY;
 
@@ -1355,8 +1361,11 @@ public class NewIntroUIController extends controllers.mapScene{
         currentHval = midX / 920;
         currentVval = midY / 489;
 
+        System.out.println("before changezoom");
         changeZoom();
+        System.out.println("after changezoom");
         if (graph.getZoom() > 1.0) {
+            System.out.println("in if");
             scrollPane.setFitToWidth(false);
             scrollPane.setFitToHeight(false);
         }
@@ -1364,6 +1373,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
         System.out.println("past zoomed");
         secret_Click();
+        System.out.println("after secretclick");
     }
 
 
@@ -1488,6 +1498,12 @@ public class NewIntroUIController extends controllers.mapScene{
     }
 
     public void secret_Click() {
+        System.out.println("in secretclick");
+        System.out.println("current-Hval = " + currentHval);
+        System.out.println("current-Vval = " + currentVval);
+        System.out.println("pane-Hval = " + scrollPane.getHvalue());
+        System.out.println("pane-Vval = " + scrollPane.getVvalue());
+
         scrollPane.setHvalue(currentHval);
         scrollPane.setVvalue(currentVval);
 
