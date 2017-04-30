@@ -70,7 +70,7 @@ public class adminLoginMainController extends controllers.AbsController{
                 }else if(c_language == 1){
                     controller.spanishButtons_Labels();
                 }
-                controller.setUserString("Admin: " + username);
+                controller.setUserString(username);
                 controller.setPermissionLevel(2);
 
 
@@ -87,12 +87,11 @@ public class adminLoginMainController extends controllers.AbsController{
                 //set up english labels
                 if(c_language == 0){
                     controller.englishButtons_Labels();
-                    controller.setWelcome("Employee: " + username);
                     //set up spanish labels
                 }else if(c_language == 1){
                     controller.spanishButtons_Labels();
-                    controller.setWelcome("Empleado: " + username);
                 }
+                controller.setWelcome(username);
                 controller.setPermissionLevel(1);
                 controller.loginOrOut(0,c_language);
 

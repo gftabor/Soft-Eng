@@ -136,6 +136,15 @@ public class NewIntroUIController extends controllers.mapScene{
     @FXML
     private Button FAQ_Button;
 
+    @FXML
+    private Button DirectoryMan_Button;
+
+    @FXML
+    private Button adminMan_Button;
+
+    @FXML
+    private Button MapMan_Button;
+
 
 
 
@@ -151,8 +160,6 @@ public class NewIntroUIController extends controllers.mapScene{
     private double startY;
     private double endX;
     private double endY;
-
-    private boolean usingMap;
 
     private controllers.MapOverlay graph;
 
@@ -188,6 +195,8 @@ public class NewIntroUIController extends controllers.mapScene{
     double currentHval = 0;
     double currentVval = 0;
 
+    private boolean useStairs;
+
     //ArrayList<Edge> zoomPath;
 
 
@@ -207,7 +216,7 @@ public class NewIntroUIController extends controllers.mapScene{
         //we will use floor 1 as default
         currentFloor = 1;
         c_Floor_Label.setText("1");
-        usingMap = false;
+        useStairs = false;
 
         System.out.println("width/height ratios: " + widthRatio + "/" + heightRatio);
 
@@ -251,7 +260,8 @@ public class NewIntroUIController extends controllers.mapScene{
 
     public void drawCircleList(ArrayList<Circle> circleList, double x, double y, Color color) {
         for (Circle c : circleList) {
-            if (c.getLayoutX() == x && c.getLayoutY() == y) {
+            System.out.println((c.getLayoutX()/zoom)/widthRatio);
+            if (round((c.getLayoutX()/zoom)/widthRatio) == x && round((c.getLayoutY()/zoom)/heightRatio) == y) {
                 c.setStrokeWidth(strokeRatio);
                 c.setRadius(graph.getLabelRadius() * sizeUpRatio);
                 c.setStroke(color);
@@ -663,7 +673,23 @@ public class NewIntroUIController extends controllers.mapScene{
                 //no multifloor pathfinding (simple)
 
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-                path = mapController.requestPath(permissionLevel);
+                path = mapController.requestPath(permissionLevel, useStairs);
+
+                int startfloor = mapController.returnOriginalFloor();
+                if(startfloor != currentFloor) {
+                    c_Floor_Label.setText(Integer.toString(startfloor));
+
+                    //switch back to the original floor using the choicebox selection
+                    if (startfloor == 0) {
+                        floor_ChoiceBox.getSelectionModel().select(7);
+                    } else if (startfloor > 7) {
+                        floor_ChoiceBox.getSelectionModel().select(startfloor);
+
+                    } else {
+                        floor_ChoiceBox.getSelectionModel().select(startfloor - 1);
+                    }
+                }
+
                 graph.createEdgeLines(path, true, false);
                 graph.setPathfinding(1);
                 textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
@@ -708,11 +734,13 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //reset for next pathfinding session
         MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-        ArrayList<Edge> reqPath = mapController.requestPath(permissionLevel);
-        if (reqPath == null) { //can't find path, reset
+        ArrayList<Edge> reqPath = mapController.requestPath(permissionLevel, useStairs);
+        if (reqPath == null || reqPath.size() == 0) { //can't find path, reset
             System.out.println("Could not pathfind. Resetting now...");
             cancelButton_Clicked();
+            start_textField.setText("Kiosk");
         } else {
+            System.out.println("reqpath size" + reqPath.size());
             textDescription_TextFArea.setText(mapController.getTextDirections(reqPath, c_language));
 
             ArrayList<ArrayList<Edge>> fragPath;
@@ -752,8 +780,7 @@ public class NewIntroUIController extends controllers.mapScene{
         graph.setHeightRatio(1.0);
         graph.setWidthRatio(1.0);
 
-        if(admin_Button.getText().equals("Administrator") || admin_Button.getText().equals("Administrador")
-                || getPermissionLevel() == 0 ) {
+        if(getPermissionLevel() == 0 ) {
             FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminLoginMainView.fxml");
             adminLoginMain.adminLoginMainController controller = loader.getController();
             //sends the current language the next screen
@@ -799,7 +826,6 @@ public class NewIntroUIController extends controllers.mapScene{
     public void loginOrOut(int inOrOut, int lang){
         //The user is signing in
         if(inOrOut == 0){
-            FAQ_Button.setVisible(false);
             if(lang == 0){
                 admin_Button.setText("Sign Out");
             }else{
@@ -850,6 +876,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //hide the continue button
         continueNew_Button.setVisible(false);
+        previous_Button.setVisible(false);
 
         //reset the textfields
         start_textField.setText("");
@@ -857,8 +884,6 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //reset any colors
 
-        //reset the usingMap
-        usingMap = false;
     }
 
     //switches all the labels and Buttons to english
@@ -867,12 +892,20 @@ public class NewIntroUIController extends controllers.mapScene{
         //change the current language to english
 
         //Change the Buttons
-        admin_Button.setText("Administrator");
+        //change the Buttons
+        if(permissionLevel == 2) {
+            admin_Button.setText("Sign Out");
+        }else {
+            admin_Button.setText("Administrador");
+        }
         emergency_Button.setText("EMERGENCY");
         cancel_Button.setText("Clear");
         submit_Button.setText("Submit");
         phoneSend.setText("Send");
         about_Button.setText("About");
+        MapMan_Button.setText("Map Management");
+        adminMan_Button.setText("Admin Management");
+        DirectoryMan_Button.setText("Directory Management");
 
 
         //Change the labels
@@ -899,9 +932,20 @@ public class NewIntroUIController extends controllers.mapScene{
     public void spanishButtons_Labels() {
         //change the current language to spanish
         c_language = 1;
+        FAQ_Button.setVisible(false);
+
+        MapMan_Button.setText("Control de Mapa");
+        adminMan_Button.setText("Control de Admins");
+        DirectoryMan_Button.setText("Control del Directorio");
+
+
 
         //change the Buttons
-        admin_Button.setText("Administrador");
+        if(permissionLevel == 2) {
+            admin_Button.setText("Sign Out");
+        }else {
+            admin_Button.setText("Administrador");
+        }
         emergency_Button.setText("EMERGENCIA");
         cancel_Button.setText("Borrar");
         submit_Button.setText("Listo");
@@ -913,7 +957,6 @@ public class NewIntroUIController extends controllers.mapScene{
         end_Label.setText("Destino:");
         mainTitle_Label.setText("Bienvenidos al Hospital Faulkner Brigham and Women");
         floor_Label.setText("Piso");
-        //textD_Label.setText("Descripciones Escritas");
         phoneInfo_Label.setText("Enviar direcciones a mi celular");
 
 
@@ -1160,8 +1203,8 @@ public class NewIntroUIController extends controllers.mapScene{
     public void mapScroll(ScrollEvent event) {
         zoom = MapOverlay.getZoom();
         if (currentHval != 0) {
-            System.out.println("pre zoom currenthval: " + currentHval);
-            System.out.println("pre zoom currnetVval: " + currentVval);
+            //System.out.println("pre zoom currenthval: " + currentHval);
+            //System.out.println("pre zoom currnetVval: " + currentVval);
         }
         currentHval = scrollPane.getHvalue();
         currentVval = scrollPane.getVvalue();
@@ -1195,18 +1238,22 @@ public class NewIntroUIController extends controllers.mapScene{
         }
         if (graph.getPathfinding() == 1) {
             graph.createEdgeLines(path, true, false);
-        } else if (graph.getPathfinding() == 2) {
-            graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
-        }
-
-        if (selectionState == 2) {
-
-
             //set the end goal color
             ArrayList<Circle> circleList;
             circleList = graph.getButtonList();
-            drawCircleList(circleList, startX * zoom, startY * zoom, startColor);
-            drawCircleList(circleList, endX * zoom, endY * zoom, endColor);
+            drawCircleList(circleList, startX, startY, startColor);
+            drawCircleList(circleList, endX, endY, endColor);
+            System.out.println("drawing circles at "+startX+" and "+endX);
+
+        } else if (graph.getPathfinding() == 2) {
+            graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
+            Node startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
+            Node endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText().split(", ")[1]);
+
+
+        }
+
+        if (selectionState == 2) {
 
         }
         System.out.println("currenthval: " + currentHval);
@@ -1288,6 +1335,113 @@ public class NewIntroUIController extends controllers.mapScene{
         controller.setAdmin(LogInPerson_Label.getText());
 
         controller.setPermissionLevel(getPermissionLevel());
+    }
+
+    private int round(double input) {
+        long intPart;
+        double decimalPart;
+        intPart = (long) input;
+        decimalPart = input - intPart;
+
+        if (decimalPart >= 0.5d) {
+            return (int) intPart + 1;
+        } else {
+            return (int) intPart;
+        }
+
+    }
+
+    //Sets the buttons to the admin
+    public void AdminButtons(int lang){
+        if(lang == 0){
+            MapMan_Button.setText("Map Management");
+            adminMan_Button.setText("Admin Management");
+            DirectoryMan_Button.setText("Directory Management");
+        }else{
+            MapMan_Button.setText("Control de Mapa");
+            adminMan_Button.setText("Control de Admins");
+            DirectoryMan_Button.setText("Control del Directorio");
+        }
+
+        MapMan_Button.setDisable(false);
+        adminMan_Button.setDisable(false);
+        DirectoryMan_Button.setDisable(false);
+
+        MapMan_Button.setVisible(true);
+        adminMan_Button.setVisible(true);
+        DirectoryMan_Button.setVisible(true);
+    }
+
+    //sends the user to the map management
+    public void mapMan_Clicked(){
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewMainMapManagementView.fxml");
+        NewMainMapManagement.NewMainMapManagementController controller = loader.getController();
+        //Set the correct username for the next scene
+
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        controller.setUserString(LogInPerson_Label.getText());
+        controller.setPermissionLevel(2);
+
+
+    }
+
+    //sends the user to the admin management
+    public void adminMan_Clicked(){
+//Change to patient menu
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewAdminManagementView.fxml");
+        adminSignUp.adminSignUpController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //Gets the current admin
+        controller.setUsername(LogInPerson_Label.getText());
+
+        //set up english labels
+
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+
+        controller.setUpTreeView();
+        controller.setModeChoices();
+
+    }
+
+    //sends the user to the directory management
+    public void directoryMan_Clicked(){
+
+        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/NewDirectoryManagementView.fxml");
+        mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
+
+        //sets the current language
+        controller.setC_language(c_language);
+
+        controller.setModeChoices();
+        controller.setRoomChoices();
+        controller.setUpTreeView();
+        controller.setUser(LogInPerson_Label.getText());
+
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        //Set permissions of admin
+        controller.setPermissionLevel(2);
+
+
     }
 }
 
