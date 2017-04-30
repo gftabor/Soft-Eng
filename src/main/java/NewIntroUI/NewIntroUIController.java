@@ -187,7 +187,7 @@ public class NewIntroUIController extends controllers.mapScene{
     private double origPaneWidth;
     private double origPaneHeight;
     double zoom;
-    double heightRatio = (1000.0/489.0);
+    double heightRatio = (1050.0/489.0);
     double widthRatio = (1600.0/920.0);
 
     private int permissionLevel;
@@ -228,6 +228,8 @@ public class NewIntroUIController extends controllers.mapScene{
         node_Plane.setPrefWidth(920.0*widthRatio);
         map_viewer.setFitHeight(489.0*heightRatio);
         map_viewer.setFitWidth(920.0*widthRatio);
+        //map_viewer.fitWidthProperty().bind(node_Plane.widthProperty());
+        //map_viewer.fitHeightProperty().bind(node_Plane.heightProperty());
 
         graph.setWidthRatio(widthRatio);
         graph.setHeightRatio(heightRatio);
@@ -265,7 +267,7 @@ public class NewIntroUIController extends controllers.mapScene{
             System.out.println((c.getLayoutX()/zoom)/widthRatio);
             if (c.getLayoutX() == x && c.getLayoutY() == y) {
                 c.setStrokeWidth(strokeRatio);
-                c.setRadius(graph.getLabelRadius() * sizeUpRatio);
+                c.setRadius(graph.getLabelRadius());
                 c.setStroke(color);
                 if (c.getFill().equals(kioskColor)) {
                     c.setFill(kioskColor);
@@ -608,6 +610,7 @@ public class NewIntroUIController extends controllers.mapScene{
         Node startN;
         Node endN;
 
+
         //reset visibility just in case
         continueNew_Button.setVisible(false);
         previous_Button.setVisible(false);
@@ -699,15 +702,20 @@ public class NewIntroUIController extends controllers.mapScene{
                     }
                 }
 
-                graph.createEdgeLines(path, true, false);
                 graph.setPathfinding(1);
                 textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
+                setMapToPath(startX, startY, endX, endY);
+                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false,
+                        currentFloor, permissionLevel);
+                graph.createEdgeLines(path, true, false);
+
             }
         }
 
         //}
         selectionState=0;
         System.out.println("The user has clicked the submit Button");
+
     }
 
     //Allows the user to go through several floors while using pathfinding
@@ -1193,8 +1201,8 @@ public class NewIntroUIController extends controllers.mapScene{
             //set the end goal color
             ArrayList<Circle> circleList;
             circleList = graph.getButtonList();
-            drawCircleList(circleList, startX, startY, startColor);
-            drawCircleList(circleList, endX, endY, endColor);
+            drawCircleList(circleList, round(startX*zoom*widthRatio), round(startY*zoom*heightRatio), startColor);
+            drawCircleList(circleList, round(endX*zoom*widthRatio), round(endY*zoom*heightRatio), endColor);
             System.out.println("drawing circles at "+startX+" and "+endX);
         } else if (graph.getPathfinding() == 2) {
             graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
@@ -1225,8 +1233,8 @@ public class NewIntroUIController extends controllers.mapScene{
             //set the end goal color
             ArrayList<Circle> circleList;
             circleList = graph.getButtonList();
-            drawCircleList(circleList, startX, startY, startColor);
-            drawCircleList(circleList, endX, endY, endColor);
+            drawCircleList(circleList, round(startX*zoom*widthRatio), round(startY*zoom*heightRatio), startColor);
+            drawCircleList(circleList, round(endX*zoom*widthRatio), round(endY*zoom*heightRatio), endColor);
             System.out.println("drawing circles at "+startX+" and "+endX);
         } else if (graph.getPathfinding() == 2) {
             graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
@@ -1337,24 +1345,26 @@ public class NewIntroUIController extends controllers.mapScene{
         double scrollHeight = scrollPane.getHeight();
         double scrollWidth = scrollPane.getWidth();
 
+        zoom = Math.min(Math.min((489/deltaY)*.6,2.2),Math.min((920/deltaX)*.6,2.2));
+        System.out.println(deltaY);
+        System.out.println("zoom amount: " +zoom);
+
         System.out.println("plane width: " + node_Plane.getWidth());
         System.out.println("midX: " + midX);
-        System.out.println("Hvalue: " + midX/node_Plane.getWidth());
-        System.out.println("Vvalue: " + midY/node_Plane.getHeight());
         System.out.println("previous Hvalue: " + scrollPane.getHvalue());
         System.out.println("previous Vvalue: " + scrollPane.getVvalue());
 
-        if (scrollHeight/(deltaY) < scrollWidth/(deltaX)) {
-            zoom = 2.2;
-        } else {
-            zoom = 2.2;
-        }
         changeZoom();
 
-        scrollPane.setHvalue(midX / node_Plane.getWidth());
-        scrollPane.setVvalue(midY / node_Plane.getHeight());
+        currentHval = midX / 920;
+        currentVval = midY / 489;
+
+        scrollPane.setHvalue(currentHval);
+        scrollPane.setVvalue(currentVval);
 
         System.out.println("New Hvalue: " + scrollPane.getHvalue());
+        System.out.println("New Vvalue: " + scrollPane.getVvalue());
+
     }
 
 
