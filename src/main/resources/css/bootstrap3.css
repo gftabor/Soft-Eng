@@ -728,8 +728,21 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-background-color: #333;
     -fx-border-color: #333;
 }
+
+.choiceBoxMaps{
+    -fx-background-color: #323232;
+    -fx-font-size: 0;
+    -fx-text-fill: #323232;
+}
+.choiceBoxMaps:hover{
+    -fx-background-color: #323232;
+    -fx-font-size: 0;
+    -fx-text-fill: #323232;
+}
+
+
 /*Testing tables to make it prettier*/
-.color-palette5{
+.threeD, .color-palette5{
 
     -fx-border-width: 0;
     -fx-background-insets: 0 0 0 0;
@@ -738,6 +751,9 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-border-color: #333;
     -fx-font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     -fx-text-fill: white;
+}
+.threeD{
+    -fx-background-color: #111;
 }
 .color-palette5:hover{
     -fx-background-color: #111;
@@ -778,6 +794,14 @@ VBox > .split-menu-button.last > .arrow-button {
     -fx-border-color: dimgrey;
 
 }
+
+.FAQ_SubLabel{
+    -fx-font-size: 18px;
+    -fx-font-weight: Bold;
+    -fx-font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+
 
 
 .DirectorySubMenu{
@@ -839,8 +863,6 @@ VBox > .split-menu-button.last > .arrow-button {
 /*.show-hide-columns-button2:focused{
     -fx-effect: dropshadow(gaussian, #e0dede, 0, 0, 0, 0);
 }*/
-
-
 
 
 .pagination > .pagination-control > .control-box {
@@ -1062,8 +1084,6 @@ VBox > .split-menu-button.last > .arrow-button {
 .show-hide-columns-button2:focused{
     -fx-effect: dropshadow(gaussian, #e0dede, 0, 0, 0, 0);
 }
-
-
 
 
 .column-header:hover,.show-hide-columns-button:hover {
