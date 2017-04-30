@@ -20,6 +20,7 @@ import javafx.scene.layout.*;
 import javafx.fxml.FXML;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import org.controlsfx.control.textfield.TextFields;
@@ -376,9 +377,7 @@ public class NewIntroUIController extends controllers.mapScene{
                 nameButton.setPrefWidth(250);
                 nameButton.setAlignment(Pos.CENTER_LEFT);
                 nameButton.setGraphic(text);
-
-
-
+                nameButton.setMaxWidth(250);
                 nameButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
