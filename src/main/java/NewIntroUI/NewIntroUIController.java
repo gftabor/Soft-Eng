@@ -585,7 +585,7 @@ public class NewIntroUIController extends controllers.mapScene{
             ArrayList<Circle> circleList;
             circleList = graph.getButtonList();
 
-            drawCircleList(circleList, startX, startY, startColor);
+            drawCircleList(circleList, round(startX*zoom*widthRatio), round(startY*zoom*heightRatio), startColor);
         }
     }
 
@@ -967,7 +967,7 @@ public class NewIntroUIController extends controllers.mapScene{
         ArrayList<Circle> tempCircleList;
         tempCircleList = graph.getButtonList();
 
-        drawCircleList(tempCircleList, round(startX), round(startY), startColor);
+        drawCircleList(tempCircleList, round(startX*zoom*widthRatio), round(startY*zoom*heightRatio), startColor);
         System.out.println("start coords: "+startX + "  " +startY);
 
 
@@ -996,6 +996,7 @@ public class NewIntroUIController extends controllers.mapScene{
             } else {
                 graph.createEdgeLines(fragPath.get(0), true, false);
                 graph.setPathfinding(2);
+                setMapMulti(fragPath.get(0));
             }
 
             //set the globals so you can send to the continue button
@@ -1390,6 +1391,7 @@ public class NewIntroUIController extends controllers.mapScene{
         System.out.println("creating edge lines for fp pos: " + fragPathPos);
         graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
         graph.setPathfinding(2);
+        setMapMulti(globalFragList.get(fragPathPos));
 
 
     }
@@ -1544,6 +1546,9 @@ public class NewIntroUIController extends controllers.mapScene{
             Node startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
             Node endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText().split(", ")[1]);
 
+            drawCircleList(circleList, round(startN.getPosX()*zoom*widthRatio), round(startN.getPosY()*zoom*heightRatio), startColor);
+            drawCircleList(circleList, round(endN.getPosX()*zoom*widthRatio), round(endN.getPosY()*zoom*heightRatio), endColor);
+
 
         }
 
@@ -1609,6 +1614,33 @@ public class NewIntroUIController extends controllers.mapScene{
         submitHval = midX / 920;
         submitVval = midY / 489;
 
+
+        System.out.println("past zoomed");
+        secret_Click();
+        System.out.println("after secretclick");
+    }
+
+    public void setMapMulti(ArrayList<controllers.Edge> edgeList) {
+        double midX = 0;
+        double midY = 0;
+        double counter = 0;
+        for (controllers.Edge thisEdge: edgeList) {
+            if (thisEdge.getStartNode().getFloor() == thisEdge.getEndNode().getFloor()) {
+                midX = midX + thisEdge.getStartNode().getPosX();
+                midX = midX + thisEdge.getEndNode().getPosX();
+                midY = midY + thisEdge.getStartNode().getPosY();
+                midY = midY + thisEdge.getEndNode().getPosY();
+                counter ++;
+                counter ++;
+
+            }
+        }
+        if (counter != 0) {
+            midX = midX/counter;
+            midY = midY/counter;
+        }
+        submitHval = midX / 920;
+        submitVval = midY / 489;
 
         System.out.println("past zoomed");
         secret_Click();
