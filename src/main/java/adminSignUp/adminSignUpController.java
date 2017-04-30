@@ -126,6 +126,17 @@ public class adminSignUpController extends controllers.AbsController{
     @FXML
     private Button pathFinding_Button;
 
+    @FXML
+    private Button clearID_button;
+    @FXML
+    private Button clearUser_Button;
+    @FXML
+    private Button clearFN_Button;
+    @FXML
+    private Button clearLN_Button;
+    @FXML
+    private Button clearNP_Button;
+
 
 
 
@@ -139,6 +150,7 @@ public class adminSignUpController extends controllers.AbsController{
     int givID, givPermissions;
     String givUsername, givFirstN, givLastN, givPassword;
 
+    //Clears all the inputs
    public void clearInputs(){
         id_textField.clear();
         userName_TextField.clear();
@@ -147,6 +159,25 @@ public class adminSignUpController extends controllers.AbsController{
         newPassword_TextField.clear();
        isAdmin_CheckBox.setSelected(false);
     }
+
+    //CLEARS THE INPUTS for each specific text field
+    public void clearID(){
+       id_textField.setText("");
+    }
+    public void clearUser(){
+        userName_TextField.setText("");
+    }
+    public void clearFN(){
+        firstName_TextField.setText("");
+    }
+    public void clearLN(){
+        lastName_TextField.setText("");
+    }
+    public void clearNP(){
+        newPassword_TextField.setText("");
+    }
+
+
 
 
     //Sends the user to the emergency scene

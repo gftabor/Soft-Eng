@@ -122,6 +122,24 @@ public class mmNodeInformationController extends controllers.AbsController {
     @FXML
     private Button pathFinding_Button;
 
+    @FXML
+    private Button clearTitle_Button;
+
+    @FXML
+    private Button clearRoom_Button;
+
+    @FXML
+    private Button clearID_Button;
+
+    @FXML
+    private Button clearFN_Button;
+
+    @FXML
+    private Button clearLN_Button;
+
+
+
+
 
     int ID;
 
@@ -211,8 +229,25 @@ public class mmNodeInformationController extends controllers.AbsController {
         lastName_TextField.setText("");
         title_TextField.setText("");
         mode_ChoiceBox.getSelectionModel().select(0);
-
     }
+
+    //CLEAR the text fields accordingly
+    public void clearT(){
+        title_TextField.setText("");
+    }
+    public void clearR(){
+        room_TextField.setText("");
+    }
+    public void clearID(){
+        id_TextField.setText("");
+    }
+    public void clearFN(){
+        Firstname_TextField.setText("");
+    }
+    public void clearLN(){
+        lastName_TextField.setText("");
+    }
+
 
     //Handle the submiut button clicked
     public void submitButton_Clicked(){
