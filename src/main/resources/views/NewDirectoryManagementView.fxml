@@ -129,7 +129,7 @@
                                  </HBox.margin>
                               </TextField>
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                              <Button fx:id="clearTitle_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" onMouseClicked="#clearT" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
@@ -154,7 +154,7 @@
                                  </HBox.margin>
                               </TextField>
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                              <Button fx:id="clearRoom_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" onMouseClicked="#clearR" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
@@ -173,13 +173,13 @@
                                     <Insets bottom="4.0" left="4.0" right="4.0" top="6.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="id_TextField" prefWidth="180.0" promptText="ID" styleClass="Directory_TextField">
+                              <TextField fx:id="id_TextField" editable="false" prefWidth="180.0" promptText="ID" styleClass="Directory_TextField">
                                  <HBox.margin>
                                     <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                                  </HBox.margin>
                               </TextField>
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                              <Button fx:id="clearID_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" onMouseClicked="#clearID" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
@@ -204,7 +204,7 @@
                                  </HBox.margin>
                               </TextField>
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                              <Button fx:id="clearFN_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" onMouseClicked="#clearFN" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
@@ -229,7 +229,7 @@
                                  </HBox.margin>
                               </TextField>
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                              <Button fx:id="clearLN_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" onMouseClicked="#clearLN" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
