@@ -869,7 +869,7 @@ public class DatabaseController {
                         firstName, lastName, userName));
         try {
             // sql statement with "?" to be filled later
-            String query = "INSERT INTO ADMIN (FIRSTNAME, LASTNAME, USERNAME, PASSWORD, PERMISSIONS)" +
+            String query = "INSERT INTO ADMIN (FIRSTNAME, LASTNAME, USERNAME, PASSWORD, PERMISSIONS, FACE_ID)" +
                     " values (?, ?, ?, ?, ?, ?)";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -877,7 +877,11 @@ public class DatabaseController {
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, userName);
             preparedStatement.setString(4, encrypted);
-            preparedStatement.setString(5, faceId);
+            if(isAdmin)
+                preparedStatement.setInt(5, 2);
+            else
+                preparedStatement.setInt(5, 1);
+            preparedStatement.setString(6, faceId);
             if(isAdmin) {
                 preparedStatement.setInt(5, 2);
             }else{

@@ -53,6 +53,9 @@ public class adminLoginMainController extends controllers.AbsController{
 
     public void initialize() {
         facialRecognition.getInstance().start(root);
+        facialRecognition.getInstance().scan();
+
+
     }
 
     public FXMLLoader switch_screen(AnchorPane BGCurrentanchor, String viewPath){

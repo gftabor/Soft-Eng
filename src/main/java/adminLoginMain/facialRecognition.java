@@ -32,8 +32,9 @@ import java.util.*;
 public class facialRecognition {
     JSONObject result = null;
     private static final ImageView imageView = new ImageView();
-    private static boolean isRunning = false;
+    private static boolean isRunning = true;
     private static boolean facialOn = false;
+    private static String currentID;
 
     HttpRequests httpRequests = new HttpRequests("4480afa9b8b364e30ba03819f3e9eff5", "Pz9VFT8AP3g_Pz8_dz84cRY_bz8_Pz8M ", true, true);
     Webcam webcam;
@@ -43,17 +44,43 @@ public class facialRecognition {
     public enum state{
         LOGIN, ADD, NOTHING
     }
+    public void off(){
+        this.nextState = state.NOTHING;
 
-    public void setNextState(state nextState) {
-        this.nextState = nextState;
+    }
+    public void scan(){
+        this.nextState = state.LOGIN;
+    }
+    public String getFaceID() {
+        this.nextState = state.ADD;
+        synchronized(this){
+            while(this.nextState ==state.ADD){
+                try {
+                    this.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return currentID;
+        }
+    }
+    private synchronized void finished(){
+        this.nextState = state.NOTHING;
+        this.notifyAll();
+        try {
+            httpRequests.trainIdentify(new PostParameters().setGroupName("Faukner"));
+        }catch(Exception e){}
+
+
     }
 
     private state nextState = state.NOTHING;
 
-    private void initFace(){
+    public void initFace(){
+        System.out.println("FACEEEEE");
         try {
             httpRequests.groupDelete(new PostParameters().setGroupName("Faukner"));
-        }catch(Exception e){};
+        }catch(Exception e){System.out.println("cant delete group");}
 
         try {
 
@@ -61,34 +88,29 @@ public class facialRecognition {
 
             System.out.println("\nperson/create");
             ArrayList<String> personList = new ArrayList<String>();
-
             //for admins
-            for (int i = 0; i < result.getJSONArray("face").length(); ++i) {
+            for (controllers.Admin currentAdmin: DBController.DatabaseController.getInstance().getListOfAdmins()) {
+                if(currentAdmin.getFaceId() == null)
+                    continue;
                 try {//might already exist
-                    httpRequests.personCreate(new PostParameters().setPersonName("name"));
+                    httpRequests.personCreate(new PostParameters().setPersonName(currentAdmin.getUserName()));
                 }catch(Exception e){};
                 //person/add_face
                 System.out.println("\nperson/add_face");
-                System.out.println(httpRequests.personAddFace(new PostParameters().setPersonName("name").setFaceId("NAME_FACE")));
-
+                System.out.println(httpRequests.personAddFace(new PostParameters().setPersonName(currentAdmin.getUserName()).setFaceId(currentAdmin.getFaceId())));
                 //group/add_person
                 System.out.println("\ngroup/add_person");
-
-                personList.add("name" + i);
-
+                personList.add(currentAdmin.getUserName());
             }
-            //new PostParameters().setPersonName("name").setFaceId(result.getJSONArray("face").getJSONObject(0).getString("face_id")).getMultiPart().writeTo(System.out);
             new PostParameters().setGroupName("Faukner").setPersonName(personList).getMultiPart().writeTo(System.out);
             System.out.println(httpRequests.groupAddPerson(new PostParameters().setGroupName("Faukner").setPersonName(personList)));
-
             //Train
             JSONObject syncRet = null;
             System.out.println("\ntrain/Identify");
             syncRet = httpRequests.trainIdentify(new PostParameters().setGroupName("Faukner"));
             System.out.println(syncRet);
             System.out.println(httpRequests.getSessionSync(syncRet.getString("session_id")));
-        }catch(Exception e){}
-
+        }catch(Exception e){e.printStackTrace();}
     }
 
     private static facialRecognition instance = new facialRecognition();
@@ -98,8 +120,6 @@ public class facialRecognition {
     private facialRecognition(){
         if(isRunning)
             webcam = Webcam.getDefault();
-        initFace();
-
 
         cameraThread = new Thread(() -> {
             webcam.setViewSize(new Dimension(640, 480));
@@ -130,20 +150,26 @@ public class facialRecognition {
                 for(BufferedImage img : facesList) {
                     byte[] temp = convertBufferedImage(img);
                     try {
-                        result = httpRequests.detectionDetect(new PostParameters().setImg(temp));
-                        System.out.println(result.getJSONArray("face").getJSONObject(0).getString("face_id"));
-                        System.out.println("searching");
-                        result = httpRequests.recognitionSearch(new PostParameters().setFacesetName("Admins").
-                                setKeyFaceId(result.getJSONArray("face").getJSONObject(0).getString("face_id")));
+                        if(nextState.equals(state.LOGIN)){
+                            result = httpRequests.recognitionIdentify(new PostParameters().setGroupName("Faukner").setImg(temp)).getJSONArray("face").getJSONObject(0);
+                            for(int i =0; i<result.getJSONArray("candidate").length(); i++){
+                                System.out.println(result.getJSONArray("candidate").getJSONObject(i).getString("person_name") + "  " +
+                                        result.getJSONArray("candidate").getJSONObject(i).getDouble("confidence"));
+                            }
+                            System.out.println("logging in");
+                        }
+                        if(nextState.equals(state.ADD)) {
 
-                        System.out.println("David "+result.getJSONArray("candidate").getJSONObject(0).getDouble("similarity"));
-                        System.out.println("Griffin "+result.getJSONArray("candidate").getJSONObject(1).getDouble("similarity"));
-
-
+                            result = httpRequests.detectionDetect(new PostParameters().setImg(temp));
+                            System.out.println(result);
+                            currentID = result.getJSONArray("face").getJSONObject(0).getString("face_id");
+                            System.out.println(currentID);
+                            finished();
+                        }
                     } catch(FaceppParseException e) {
                         e.printStackTrace();
                     } catch (Exception e) {
-                        System.out.println("exception");
+                        e.printStackTrace();
                     }
                 }
             }
@@ -156,9 +182,6 @@ public class facialRecognition {
         facialOn = false;
     }
     public void start(VBox root) {
-        try {
-            httpRequests.trainSearch(new PostParameters().setFacesetName("Admins"));
-        }catch(Exception e){System.out.println("bug");}
         facialOn = true;
         root.setPadding(new Insets(20));
         imageStrip.setPadding(new Insets(20));
