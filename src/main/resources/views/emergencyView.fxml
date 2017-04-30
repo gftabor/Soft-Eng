@@ -4,17 +4,18 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="emergency.emergencyController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -23,7 +24,7 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label styleClass="title" text="EMERGENCY EMERGENCIA 緊急情況" textFill="RED">
+                        <Label styleClass="title" text="EMERGENCY EMERGENCIA" textFill="RED">
                            <HBox.margin>
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                            </HBox.margin>
@@ -44,6 +45,15 @@
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                            </HBox.margin>
                         </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label prefHeight="70.0" prefWidth="482.0" text="Floor Map">
+                           <font>
+                              <Font name="System Bold Italic" size="48.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
                      </children>
                   </HBox>
                </children>
@@ -53,7 +63,7 @@
             <HBox BorderPane.alignment="CENTER">
                <children>
                   <Region HBox.hgrow="ALWAYS" />
-                  <Label text="©2017 Computer Science 3733 Team E">
+                  <Label text="2017 Computer Science 3733 Team E">
                      <HBox.margin>
                         <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                      </HBox.margin>
@@ -65,37 +75,6 @@
                </children>
             </HBox>
          </bottom>
-         <center>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-               <children>
-                  <HBox>
-                     <children>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Label text="Floor Map">
-                           <font>
-                              <Font name="System Bold Italic" size="48.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                        <Region HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="515.0" prefWidth="769.0">
-                     <children>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <ImageView fitHeight="493.0" fitWidth="808.0" pickOnBounds="true">
-                           <image>
-                              <Image url="@../images/4emergency.png" />
-                           </image>
-                        </ImageView>
-                        <Region HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </center>
          <left>
             <VBox prefHeight="555.0" prefWidth="465.0" BorderPane.alignment="CENTER">
                <children>
@@ -163,6 +142,17 @@
                </children>
             </VBox>
          </left>
+         <center>
+            <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
+               <content>
+                  <Pane fx:id="pane" prefHeight="701.0" prefWidth="1043.0">
+                     <children>
+                        <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="920.0" />
+                     </children>
+                  </Pane>
+               </content>
+            </ScrollPane>
+         </center>
       </BorderPane>
    </children>
    <stylesheets>

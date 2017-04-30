@@ -90,8 +90,8 @@ public class adminMenuStartController extends controllers.AbsController{
         System.out.println("The user has clicked the sign out button");
 
         //Change to patient menu
-        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
-        patientMain.patientMainController controller = loader.getController();
+        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
+        NewIntroUI.NewIntroUIController controller = loader.getController();
         //sends the current language to the next screen
         controller.setCurrentLanguage(c_language);
         //set up english labels
@@ -110,7 +110,7 @@ public class adminMenuStartController extends controllers.AbsController{
         FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminSignUpView.fxml");
         adminSignUp.adminSignUpController controller = loader.getController();
         //sends the current language to the next screen
-        controller.setCurrentLanguage(c_language);
+        /*controller.setCurrentLanguage(c_language);
         //Gets the current admin
         controller.setUsername(username_Label.getText());
         //set up english labels
@@ -123,7 +123,7 @@ public class adminMenuStartController extends controllers.AbsController{
         }
 
         controller.setUpTreeView();
-        controller.setModeChoices();
+        controller.setModeChoices();*/
 
 
     }
@@ -182,7 +182,6 @@ public class adminMenuStartController extends controllers.AbsController{
 
          controller.setModeChoices();
          controller.setRoomChoices();
-         //controller.setDepartmentChoices();
          controller.setUpTreeView();
          controller.setUser(username_Label.getText());
 
@@ -211,13 +210,13 @@ public class adminMenuStartController extends controllers.AbsController{
         //sets the current language
         controller.setC_language(c_language);
         //set up english labels
-        if(c_language == 0){
-            controller.englishButtons_Labels();
-
-            //set up spanish labels
-        }else if(c_language == 1){
-            controller.spanishButtons_Labels();
-        }
+//        if(c_language == 0){
+//            controller.englishButtons_Labels();
+//
+//            //set up spanish labels
+//        }else if(c_language == 1){
+//            controller.spanishButtons_Labels();
+//        }
 
     }
 
@@ -302,7 +301,7 @@ public class adminMenuStartController extends controllers.AbsController{
         mapManagement_Button.setText("Control de Mapa");
         SignOut_Button.setText("Salir");
         emergency_Button.setText("EMERGENCIA");
-        addAdmin_Button.setText("Administración admin");
+        addAdmin_Button.setText("Administracion admin");
         //change the Labels
         title_Label.setText("Bienvenidos al Hospital de Faulkner");
         default_Search.setText("Algoritmo Predeterminado");
@@ -314,5 +313,22 @@ public class adminMenuStartController extends controllers.AbsController{
         c_language = i;
     }
 
+    //TODO WHY DOES THIS NOT WORK WITH THE NEW UI????
+//    public void pathFinding_Button_Clicked(){
+//        //Change to patient menu
+//        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
+//        patientMain.patientMainController controller = loader.getController();
+//        //sends the current language to the next screen
+//        controller.setCurrentLanguage(c_language);
+//        //set up english labels
+//        if(c_language == 0){
+//            controller.englishButtons_Labels();
+//            //set up spanish labels
+//        }else if(c_language == 1){
+//            controller.spanishButtons_Labels();
+//        }
+//        controller.setPermissionLevel(2);
+//        controller.setWelcome(username_Label.getText());
+//    }
 
 }

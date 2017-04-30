@@ -11,12 +11,11 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="aboutPage.aboutPageController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1274.0" stylesheets="@../css/bootstrap3.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="aboutPage.aboutPageController">
    <children>
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="710.0" prefWidth="1274.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
@@ -29,12 +28,12 @@
                   </ImageView>
                   <VBox alignment="TOP_CENTER">
                      <children>
-                        <Label text="Developed By">
+                        <Label fx:id="developed_Label" styleClass="DirectoryLabel" text="Developed By">
                            <font>
                               <Font name="System Bold" size="27.0" />
                            </font>
                         </Label>
-                        <Label text="Team E &quot;The Gray Griffins&quot;">
+                        <Label fx:id="SubTitle_Label" styleClass="DirectorySubMenu" text="Team E &quot;The Gray Griffins&quot;">
                            <font>
                               <Font size="22.0" />
                            </font>
@@ -44,10 +43,10 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </VBox.margin>
                         </Separator>
-                        <GridPane alignment="TOP_CENTER" prefHeight="267.0" prefWidth="887.0">
+                        <GridPane alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="267.0" prefWidth="887.0" styleClass="DirectoryLabel">
                           <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="609.0" minWidth="10.0" prefWidth="454.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="394.0" minWidth="10.0" prefWidth="313.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="609.0" minWidth="10.0" prefWidth="426.66668701171875" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="424.6666259765625" minWidth="10.0" prefWidth="423.33331298828125" />
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -59,73 +58,73 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label text="Griffin Tabor" GridPane.columnIndex="1">
+                              <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="563.0" styleClass="DirectoryLabel" text="Griffin Tabor" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
                               </Label>
-                              <Label text="David Giangrave, Mario Zyla" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="523.0" styleClass="DirectoryLabel" text="David Giangrave, Mario Zyla" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
                               </Label>
                               <Label GridPane.rowIndex="4" />
-                              <Label text="Project Manager" GridPane.rowIndex="2">
+                              <Label fx:id="Description3_Label" styleClass="DirectoryLabel" text="Project Manager" GridPane.rowIndex="2">
                                  <font>
                                     <Font name="System Bold Italic" size="20.0" />
                                  </font>
                               </Label>
-                              <Label text="Jackson Baker" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="564.0" styleClass="DirectoryLabel" text="Jackson Baker" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
                               </Label>
-                              <Label text="Product Owner" GridPane.rowIndex="3">
+                              <Label fx:id="Description4_Label" styleClass="DirectoryLabel" text="Product Owner" GridPane.rowIndex="3">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
                               </Label>
-                              <Label text="Augusto Wong" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                              <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="613.0" styleClass="DirectoryLabel" text="Augusto Wong" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
                               </Label>
-                              <Label text="Test Engineer" GridPane.rowIndex="4">
+                              <Label fx:id="Description5_Label" styleClass="DirectoryLabel" text="Test Engineer" GridPane.rowIndex="4">
                                  <font>
                                     <Font name="System Bold Italic" size="20.0" />
                                  </font>
                               </Label>
-                              <Label text="Lead Software Engineer">
+                              <Label fx:id="Description1_Label" styleClass="DirectoryLabel" text="Lead Software Engineer">
                                  <font>
                                     <Font name="System Bold Italic" size="20.0" />
                                  </font>
                               </Label>
-                              <Label text="Assistant Lead Software Engineer" GridPane.rowIndex="1">
+                              <Label fx:id="Description2_Label" styleClass="DirectoryLabel" text="Assistant Lead Software Engineer" GridPane.rowIndex="1">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
                               </Label>
-                              <Label text="Jason Ashton" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                              <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="592.0" styleClass="DirectoryLabel" text="Jason Ashton" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
                               </Label>
-                              <Label text="Documentation Analyst" GridPane.rowIndex="5">
+                              <Label fx:id="Description6_Label" styleClass="DirectoryLabel" text="Documentation Analyst" GridPane.rowIndex="5">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
                               </Label>
-                              <Label text="Ryan Walsh" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                              <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="636.0" styleClass="DirectoryLabel" text="Ryan Walsh" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
                               </Label>
-                              <Label text="Software Engineers" GridPane.rowIndex="6">
+                              <Label fx:id="Description7_Label" styleClass="DirectoryLabel" text="Software Engineers" GridPane.rowIndex="6">
                                  <font>
                                     <Font name="System Bold Italic" size="20.0" />
                                  </font>
                               </Label>
-                              <Label text="Mylena Guzman, Griffin Cecil" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                              <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="591.0" styleClass="DirectoryLabel" text="Mylena Guzman, Griffin Cecil" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -135,47 +134,52 @@
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                            </VBox.margin>
                         </GridPane>
-                        <Label text="WPI CS 3733 Software Engineering">
+                        <Label fx:id="subTitle_Label" alignment="CENTER" prefHeight="28.0" prefWidth="890.0" styleClass="DirectorySubMenu" text="WPI CS 3733 Software Engineering">
                            <font>
                               <Font name="System Bold" size="22.0" />
                            </font>
                            <VBox.margin>
-                              <Insets top="20.0" />
+                              <Insets />
                            </VBox.margin>
                         </Label>
                         <HBox alignment="CENTER" prefHeight="39.0" prefWidth="887.0">
                            <children>
-                              <Label text="Professor Wilson Wong">
+                              <Label fx:id="prof_Label" styleClass="DirectoryLabel" text="Professor Wilson Wong">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
+                                 <HBox.margin>
+                                    <Insets right="40.0" />
+                                 </HBox.margin>
                               </Label>
-                              <Region prefHeight="100.0" prefWidth="112.0" />
-                              <Label text="Student Assistant Dominik Smreczak">
+                              <Label fx:id="SA_Label" styleClass="DirectoryLabel" text="Student Assistant Dominik Smreczak">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
+                                 <HBox.margin>
+                                    <Insets left="40.0" />
+                                 </HBox.margin>
                               </Label>
                            </children>
                            <VBox.margin>
                               <Insets bottom="50.0" />
                            </VBox.margin>
                         </HBox>
-                        <Label text="Special Thanks To">
+                        <Label fx:id="subTitlle2_Lable" styleClass="DirectorySubMenu" text="Special Thanks To">
                            <font>
                               <Font name="System Bold Italic" size="22.0" />
                            </font>
                         </Label>
-                        <Label text="Brigham and Women's Faulkner Hospital">
+                        <Label fx:id="hosp_Label" styleClass="DirectoryLabel" text="Brigham and Women's Faulkner Hospital">
                            <font>
-                              <Font size="20.0" />
+                              <Font size="34.0" />
                            </font>
                         </Label>
-                        <Label text="and">
+                        <Label fx:id="and_Label" styleClass="DirectoryLabel" text="and">
                            <font>
                               <Font size="18.0" />
                            </font></Label>
-                        <Label text="Andrew Shinn">
+                        <Label fx:id="hospital_Label" styleClass="DirectoryLabel" text="Andrew Shinn">
                            <font>
                               <Font size="20.0" />
                            </font>

@@ -8,14 +8,12 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import javax.print.attribute.standard.Destination;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 //import main.java.controllers.CollectionOfNodes;
 
@@ -31,7 +29,7 @@ public class MapController {
     private int endNodeX;
     private int endNodeY;
 
-    private final double surroundingRadius = 50.0;
+    private double surroundingRadius = 50.0;
 
     private int floorForNode1;
     private int floorForNode2;
@@ -85,7 +83,7 @@ public class MapController {
         System.out.println("new map copy loading...");
         try {
             //instantiate all node objects and add to collection
-            int x, y, floor;
+            int x, y, floor, permissionLevel;
             boolean hidden;
             boolean enabled;
 
@@ -100,7 +98,8 @@ public class MapController {
                 floor = nodeRset.getInt("FLOOR");
                 type = nodeRset.getString("TYPE");
                 roomnum = nodeRset.getString("ROOMNUM");
-                node = new Node(x, y, floor, hidden, enabled, type, name, roomnum);
+                permissionLevel = nodeRset.getInt("PERMISSIONS");
+                node = new Node(x, y, floor, hidden, enabled, type, name, roomnum, permissionLevel);
                 collectionOfNodes.addNode(node);
                 //System.out.println("MAPCONTROLLER: requestMapCopy(): Added a node from the rset to collection of nodes");
             }
@@ -114,7 +113,6 @@ public class MapController {
         try {
             //instantiate edges and add to corresponding nodes
             int x1, y1, x2, y2, floor1, floor2;
-            Edge myEdge;
             while (edgeRset.next()) {
                 //get info from each query tuple
                 x1 = edgeRset.getInt("XPOS1");
@@ -229,7 +227,7 @@ public class MapController {
     //used for pathfinding
     //creates a pathfinder and runs pathfinding on the startnode and the end node.
     //  returns: 0 if success, 1 if error
-    public ArrayList<Edge> requestPath() {
+    public ArrayList<Edge> requestPath(int permissionLevel, boolean useStairs) {
         Node startNode, endNode;
 
         //instantiates the collection if nothing is there yet
@@ -263,10 +261,8 @@ public class MapController {
         */
 
         pathfinder.algorithmSwitch(algorithm);
-        pathfinder.generatePath(startNode, endNode);
+        double result = pathfinder.generatePath(startNode, endNode, permissionLevel, useStairs);
 
-
-        //edgeListToText(pathfinder.getPath());
         nodeListToText(pathfinder.getNodePath());
         try {
             Runtime.getRuntime().exec(new String[] { "pathfinder3D.exe"});
@@ -278,61 +274,10 @@ public class MapController {
 
     }
 
-
-    public boolean edgeListToText(ArrayList<Edge> edges) {
-
-        try {
-            List<String> lines = new ArrayList();
-
-            for(Edge edge : edges) {
-                String line = "";
-                line += edge.getStartNode().getPosX();
-                line += ",";
-                line += edge.getStartNode().getPosY();
-                line += ",";
-                line += edge.getStartNode().getFloor();
-
-                lines.add(line);
-            }
-
-            String line = "";
-            Edge finalEdge = edges.get(edges.size()-1);
-            line += finalEdge.getEndNode().getPosX();
-            line += ",";
-            line += finalEdge.getEndNode().getPosY();
-            line += ",";
-            line += finalEdge.getEndNode().getFloor();
-
-            lines.add(line);
-
-            Path file = Paths.get("path.txt");
-            Files.write(file, lines, Charset.forName("UTF-8"));
-            //Files.write(file, lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-    }
-
     public boolean nodeListToText(ArrayList<Node> nodes) {
 
         try {
             List<String> lines = new ArrayList();
-
-            /*
-            for(Node node : nodes) {
-                String line = "";
-                line += node.getPosX();
-                line += ",";
-                line += node.getPosY();
-                line += ",";
-                line += node.getFloor();
-
-                lines.add(line);
-            }
-            */
 
             for(int i = nodes.size()-1; i >= 0; i--) {String line = "";
                 line += nodes.get(i).getPosX();
@@ -343,19 +288,6 @@ public class MapController {
 
                 lines.add(line);
             }
-            
-
-            /*
-            String line = "";
-            Node finalNode = nodes.get(nodes.size()-1);
-            line += finalNode.getPosX();
-            line += ",";
-            line += finalNode.getPosY();
-            line += ",";
-            line += finalNode.getFloor();
-
-            lines.add(line);
-             */
 
             Path file = Paths.get("path.txt");
             Files.write(file, lines, Charset.forName("UTF-8"));
@@ -375,7 +307,6 @@ public class MapController {
         //fullList is given specifically from requestPath()
         //path is in reverse order!!!
         Collections.reverse(fullList);
-
 
         //initialize fragmented list
         ArrayList<ArrayList<Edge>> fragmentedList = new ArrayList<>();
@@ -463,10 +394,13 @@ public class MapController {
     public String getTextDirections(ArrayList<Edge> path, int c_lang) {
         String destination;
         ArrayList<String> directions = new ArrayList<>();
-        if(c_lang == 0) {
+
+        if(c_lang == 0) { //ENGLISH
             if (path.isEmpty()) {
                 return null;
             }
+
+            directions.add("You are on floor " + path.get(path.size() - 1).getStartNode().getFloor());
 
             for (int i = path.size() - 1; i > 0; i--) {
                 double angle = getAngle(path.get(i), path.get(i - 1));
@@ -475,18 +409,18 @@ public class MapController {
 
                 if (goingUp() == true) {
                     if(startFloor > endFloor) {
-                        directions.add("Go up to floor " + startFloor);
+                        directions.add("\nGo up to floor " + startFloor);
                         continue;
                     } else if(endFloor > startFloor) {
-                        directions.add("Go up to floor " + endFloor);
+                        directions.add("\nGo up to floor " + endFloor);
                         continue;
                     }
                 } else if (goingUp() == false) {
                     if(startFloor < endFloor) {
-                        directions.add("Go down to floor " + startFloor);
+                        directions.add("\nGo down to floor " + startFloor);
                         continue;
                     } else if(endFloor < startFloor) {
-                        directions.add("Go down to floor " + endFloor);
+                        directions.add("\nGo down to floor " + endFloor);
                         continue;
                     }
                 }
@@ -509,21 +443,21 @@ public class MapController {
                 }
 
                 if (angle > -135.0 && angle <= -45.0) {
-                    directions.add("Turn left at " + destination);
+                    directions.add(" > Turn left at " + destination);
                 } else if (angle >= 45.0 && angle < 135.0) {
-                    directions.add("Turn right at " + destination);
+                    directions.add(" > Turn right at " + destination);
                 } else if (angle > 10.0 && angle < 45.0) {
-                    directions.add("Make a slight right at " + destination);
+                    directions.add(" > Make a slight right at " + destination);
                 } else if (angle >= -10.0 && angle <= 10.0) {
-                    directions.add("Continue straight.");
+                    directions.add(" > Continue straight.");
                 } else if (angle > -45.0 && angle < -10.0) {
-                    directions.add("Make a slight left at " + destination);
+                    directions.add(" > Make a slight left at " + destination);
                 } else if (angle > 135.0 && angle < 180.0) {
-                    directions.add("Make a hard right at " + destination);
+                    directions.add(" > Make a hard right at " + destination);
                 } else if (angle > -180.0 && angle < -135.0) {
-                    directions.add("Make a hard left at " + destination);
+                    directions.add(" > Make a hard left at " + destination);
                 } else {
-                    directions.add("nothing");
+                    directions.add(" > nothing");
                 }
 
 
@@ -533,26 +467,30 @@ public class MapController {
 
             if (goingUp() == true) {
                 if(startFloor > endFloor) {
-                    directions.add("Go up to floor " + startFloor);
+                    directions.add("\nGo up to floor " + startFloor);
                 } else if(endFloor > startFloor) {
-                    directions.add("Go up to floor " + endFloor);
+                    directions.add("\nGo up to floor " + endFloor);
                 }
             } else if (goingUp() == false) {
                 if(startFloor < endFloor) {
-                    directions.add("Go down to floor " + startFloor);
+                    directions.add("\nGo down to floor " + startFloor);
                 } else if(endFloor < startFloor) {
-                    directions.add("Go down to floor " + endFloor);
+                    directions.add("\nGo down to floor " + endFloor);
                 }
             }
 
-            directions.add("Reached Destination");
+            directions.add("\nReached Destination");
             directions = cleanFloorToFloorDirections(directions);
             directions = cleanDirections(directions);
             return concatenateDirections(directions);
-        } else {
+        } //ELSE SPANISH
+        else
+            {
             if (path.isEmpty()) {
                 return null;
             }
+
+            directions.add("Estas en el piso " + path.get(path.size() - 1).getStartNode().getFloor());
 
             for (int i = path.size() - 1; i > 0; i--) {
                 double angle = getAngle(path.get(i), path.get(i - 1));
@@ -561,18 +499,18 @@ public class MapController {
 
                 if (goingUp() == true) {
                     if(startFloor > endFloor) {
-                        directions.add("Subir al piso " + startFloor);
+                        directions.add("\nSubir al piso " + startFloor);
                         continue;
                     } else if(endFloor > startFloor) {
-                        directions.add("Subir al piso " + endFloor);
+                        directions.add("\nSubir al piso " + endFloor);
                         continue;
                     }
                 } else if (goingUp() == false) {
                     if(startFloor < endFloor) {
-                        directions.add("Bajar al piso " + startFloor);
+                        directions.add("\nBajar al piso " + startFloor);
                         continue;
                     } else if(endFloor < startFloor) {
-                        directions.add("Bajar al piso " + endFloor);
+                        directions.add("\nBajar al piso " + endFloor);
                         continue;
                     }
                 }
@@ -596,21 +534,21 @@ public class MapController {
                 }
 
                 if (angle > -135.0 && angle <= -45.0) {
-                    directions.add("Girar a la izquierda hacia " + destination);
+                    directions.add(" > Girar a la izquierda hacia " + destination);
                 } else if (angle >= 45.0 && angle < 135.0) {
-                    directions.add("Girar a la derecha hacia " + destination);
+                    directions.add(" > Girar a la derecha hacia " + destination);
                 } else if (angle > 10.0 && angle < 45.0) {
-                    directions.add("Girar un poco a la derecha hacia " + destination);
+                    directions.add(" > Girar un poco a la derecha hacia " + destination);
                 } else if (angle >= -10.0 && angle <= 10.0) {
-                    directions.add("Sigue derecho.");
+                    directions.add(" > Sigue derecho.");
                 } else if (angle > -45.0 && angle < -10.0) {
-                    directions.add("Girar un poco a la izquierda hacia " + destination);
+                    directions.add(" > Girar un poco a la izquierda hacia " + destination);
                 } else if (angle > 135.0 && angle < 180.0) {
-                    directions.add("Haz un gran giro a la derecha hacia " + destination);
+                    directions.add(" > Haz un gran giro a la derecha hacia " + destination);
                 } else if (angle > -180.0 && angle < -135.0) {
-                    directions.add("Haz un gran giro a la izquierda hacia " + destination);
+                    directions.add(" > Haz un gran giro a la izquierda hacia " + destination);
                 } else {
-                    directions.add("nada");
+                    directions.add(" > nada");
                 }
 
 
@@ -620,19 +558,19 @@ public class MapController {
 
             if (goingUp() == true) {
                 if(startFloor > endFloor) {
-                    directions.add("Subir al piso " + startFloor);
+                    directions.add("\nSubir al piso " + startFloor);
                 } else if(endFloor > startFloor) {
-                    directions.add("Subir al piso " + endFloor);
+                    directions.add("\nSubir al piso " + endFloor);
                 }
             } else if (goingUp() == false) {
                 if(startFloor < endFloor) {
-                    directions.add("Bajar al piso " + startFloor);
+                    directions.add("\nBajar al piso " + startFloor);
                 } else if(endFloor < startFloor) {
-                    directions.add("Bajar al piso " + endFloor);
+                    directions.add("\nBajar al piso " + endFloor);
                 }
             }
 
-            directions.add("Has llegado a tu destino");
+            directions.add("\nHas llegado a tu destino");
             directions = cleanDirections(directions);
             return concatenateDirections(directions);
         }
@@ -740,5 +678,13 @@ public class MapController {
             this.algorithm = algorithm;
             System.out.println("Changing default search algorithm to: "+algorithm);
         }
+    }
+
+    public double getSurroundingRadius() {
+        return surroundingRadius;
+    }
+
+    public void setSurroundingRadius(double radius) {
+        surroundingRadius = radius;
     }
 }

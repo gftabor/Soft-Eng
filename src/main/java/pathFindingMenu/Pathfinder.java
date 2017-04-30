@@ -45,7 +45,7 @@ public class Pathfinder {
     }
 
     //if process node is end node return true, otherwise process and return false
-    private boolean processNode(Node currentNode, Node goalNode){
+    private boolean processNode(Node currentNode, Node goalNode, int currentPermissionLevel, boolean useStairs){
         if(currentNode.equals(goalNode))
             return true;
 
@@ -55,6 +55,20 @@ public class Pathfinder {
             //--node must be enabled
             if (!neighbor.getEnabled()) {
                 continue;
+            }
+//
+//            System.out.println("---");
+//            System.out.println("current perms: " + currentPermissionLevel);
+//            System.out.println("neighbor perms: " + neighbor.getPermissionLevel());
+            //must be of correct permission level for the node to be used
+            if (neighbor.getPermissionLevel() > currentPermissionLevel) {
+                continue;
+            }
+
+            if (!useStairs) {
+                if (neighbor.getType().equalsIgnoreCase("Stair")) {
+                    continue;
+                }
             }
 
             //System.out.println("weight" + currentEdge.getWeight());
@@ -78,7 +92,7 @@ public class Pathfinder {
     //runs A* pathfinding algorithm
     //  input: 2 nodes - a start and an end
     //  output: the total cost of the shortest path (type=double)
-    public double generatePath(Node startNode, Node endNode) {
+    public double generatePath(Node startNode, Node endNode, int permissionLevel, boolean useStairs) {
         System.out.println("PATHFINDER: generating path from node at (" + startNode.getPosX() + ", " +
                 startNode.getPosY() + ", floor: " + startNode.getFloor() + ") to node at (" + endNode.getPosX() + ", " +
                 endNode.getPosY() + ", floor: " + endNode.getFloor() + ")");
@@ -90,7 +104,8 @@ public class Pathfinder {
         path.clear();
         nodePath.clear();
         algorithm.resetNodes();
-        if(!(startNode.getEnabled() && endNode.getEnabled())){
+        if ((!(startNode.getEnabled() && endNode.getEnabled()))
+                && permissionLevel >= startNode.getPermissionLevel() && permissionLevel >= endNode.getPermissionLevel()){
             System.out.println("selected node not enabled");
             return -2;
         }
@@ -106,7 +121,7 @@ public class Pathfinder {
                 break;
             finished = processing.equals(endNode);
             if (!alreadyProcessed.contains(processing)) {
-                processNode(processing, endNode);
+                processNode(processing, endNode, permissionLevel, useStairs);
                 alreadyProcessed.add(processing);
             }
             tries ++;

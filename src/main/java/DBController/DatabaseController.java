@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import javax.xml.transform.Result;
+
 public class DatabaseController {
 
     private static DatabaseController databaseController = new DatabaseController();
@@ -127,16 +129,16 @@ public class DatabaseController {
 
     // creates a new node in the database
     public boolean newNode(int x, int y, int floor, boolean ishidden, boolean enabled,
-                           String type, String name, String roomnum){
+                           String type, String name, String roomnum, int permissionLevel){
         System.out.println(
                 String.format(
-                        "Adding node. x: %s, y: %s, hidden: %s, name: %s, floor: %s",
-                            x, y, ishidden, name, floor));
+                        "Adding node. x: %s, y: %s, hidden: %s, name: %s, floor: %s, permissions: %s",
+                            x, y, ishidden, name, floor, permissionLevel));
 
         try {
             // sql statement with "?" to be filled later
-            String query = "INSERT INTO NODE (XPOS, YPOS, FLOOR, ISHIDDEN, ENABLED, TYPE, NAME, ROOMNUM)" +
-                    " values (?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO NODE (XPOS, YPOS, FLOOR, ISHIDDEN, ENABLED, TYPE, NAME, ROOMNUM, PERMISSIONS)" +
+                    " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setInt(1, x);
@@ -147,6 +149,7 @@ public class DatabaseController {
             preparedStatement.setString(6, type);
             preparedStatement.setString(7, name);
             preparedStatement.setString(8, roomnum);
+            preparedStatement.setInt(9, permissionLevel);
             // execute prepared statement
             
             preparedStatement.execute();
@@ -158,21 +161,21 @@ public class DatabaseController {
         return true;
     }
 
-    // finds the node with the given info and edits it
-    // first deletes the nodes, then creates another one with the given information
-    public boolean EditNode(int x, int y, int floor, boolean ishidden, boolean enabled,
-                         String type, String name, String roomnum){
-        // first we delete the node, because we don't want to change its primary keys
-        if(!deleteNode(x, y, floor)){
-            return false;
-        }
-        // then we create a new node with the old's one info
-        if(!newNode(x, y, floor, ishidden, enabled, type, name, roomnum)){
-            return false;
-        }
-
-        return true;
-    }
+//    // finds the node with the given info and edits it
+//    // first deletes the nodes, then creates another one with the given information
+//    public boolean EditNode(int x, int y, int floor, boolean ishidden, boolean enabled,
+//                         String type, String name, String roomnum){
+//        // first we delete the node, because we don't want to change its primary keys
+//        if(!deleteNode(x, y, floor)){
+//            return false;
+//        }
+//        // then we create a new node with the old's one info
+//        if(!newNode(x, y, floor, ishidden, enabled, type, name, roomnum)){
+//            return false;
+//        }
+//
+//        return true;
+//    }
 
     //queries a particular node in the database
     //  input: node key information
@@ -224,12 +227,61 @@ public class DatabaseController {
         return true;
     }
 
+    public boolean transferNodeLoc(int x, int y, int floor, int dest_x, int dest_y, int dest_floor){
+        System.out.println("UPDATE NODE DEPENDENCIES");
+        //update PROLOCATION
+        try {
+            // SQL statement with "?" to be filled later
+            String query = "UPDATE PROLOCATION SET XPOS = ? , YPOS = ? , FLOOR = ? " +
+                    "WHERE XPOS = ? AND YPOS = ? AND FLOOR = ?";
+            // prepare statement by replacing each "?" with a variable
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, dest_x);
+            preparedStatement.setInt(2, dest_y);
+            preparedStatement.setInt(3, dest_floor);
+            preparedStatement.setInt(4, x);
+            preparedStatement.setInt(5, y);
+            preparedStatement.setInt(6, floor);
+            // run statement and query
+
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        //update SERVICE
+        try {
+            // SQL statement with "?" to be filled later
+            String query = "UPDATE SERVICE SET XPOS = ? , YPOS = ? , FLOOR = ? " +
+                    "WHERE XPOS = ? AND YPOS = ? AND FLOOR = ?";
+            // prepare statement by replacing each "?" with a variable
+            PreparedStatement preparedStatement1 = conn.prepareStatement(query);
+            preparedStatement1.setInt(1, dest_x);
+            preparedStatement1.setInt(2, dest_y);
+            preparedStatement1.setInt(3, dest_floor);
+            preparedStatement1.setInt(4, x);
+            preparedStatement1.setInt(5, y);
+            preparedStatement1.setInt(6, floor);
+            // run statement and query
+
+            preparedStatement1.execute();
+            preparedStatement1.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        System.out.println("updated node location dependencies successfully");
+        return true;
+    }
+
     //update node info without FeelsBadMan issues
     public boolean updateNode(int pk_x, int pk_y, int pk_floor, boolean ishidden, boolean enabled,
-                              String type, String name, String roomnum) {
+                              String type, String name, String roomnum, int permissionLevel) {
         try {
             // sql statement with "?" to be filled later
-            String query = "UPDATE NODE SET ISHIDDEN = ? , ENABLED = ? , TYPE = ? , NAME = ? , ROOMNUM = ?" +
+            String query = "UPDATE NODE SET ISHIDDEN = ? , ENABLED = ? , TYPE = ? , NAME = ? , ROOMNUM = ? , PERMISSIONS = ?" +
                     " WHERE XPOS = ? AND YPOS = ? AND FLOOR = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setBoolean(1, ishidden);
@@ -237,10 +289,11 @@ public class DatabaseController {
             preparedStatement.setString(3, type);
             preparedStatement.setString(4, name);
             preparedStatement.setString(5, roomnum);
+            preparedStatement.setInt(6, permissionLevel);
 
-            preparedStatement.setInt(6, pk_x);
-            preparedStatement.setInt(7, pk_y);
-            preparedStatement.setInt(8, pk_floor);
+            preparedStatement.setInt(7, pk_x);
+            preparedStatement.setInt(8, pk_y);
+            preparedStatement.setInt(9, pk_floor);
             //execute prepared statement
 
             preparedStatement.execute();
@@ -270,6 +323,64 @@ public class DatabaseController {
         return resultSet;
     }
 
+    // checks if this location is actually a node in the database
+        // and maybe not just a circle
+    public boolean isActualLocation(int x, int y, int floor){
+        ResultSet rset;
+        int thisX, thisY, thisFloor;
+        try {
+            // sql statement with "?" to be filled later
+            String query = "SELECT XPOS, YPOS, FLOOR FROM NODE WHERE XPOS = ? AND YPOS = ? AND FLOOR = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, x);
+            preparedStatement.setInt(2, y);
+            preparedStatement.setInt(3, floor);
+
+            //execute prepared statement
+            rset = preparedStatement.executeQuery();
+
+            while (rset.next()) {
+                thisX = rset.getInt("XPOS");
+                thisY = rset.getInt("YPOS");
+                thisFloor = rset.getInt("FLOOR");
+                if (x == thisX && y == thisY && floor == thisFloor){
+                    return true;
+                }
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return false;
+    }
+
+    public ArrayList<String> getNodeTypes(){
+        ResultSet resultSet = null;
+        String type;
+        ArrayList<String> types = new ArrayList<>();
+        System.out.println(
+                String.format(
+                        "Getting all node types as a list"));
+        try{
+            String query = "SELECT TYPE FROM NODE";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                type = resultSet.getString("TYPE");
+                if (!types.contains(type)) {
+                    types.add(type);
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return types;
+    }
     /*******************************************************************************
      * EDGE actions
      *
@@ -280,6 +391,14 @@ public class DatabaseController {
      */
     public boolean newEdge(int x1, int y1, int floor1, int x2, int y2, int floor2){
         int firstXInsert, firstYInsert, firstFloorInsert, secondXInsert, secondYInsert, secondFloorInsert;
+
+        System.out.println("x1: " + x1);
+        System.out.println("x2: " + x2);
+        System.out.println("y1: " + y1);
+        System.out.println("y2: " + y2);
+        System.out.println("f1: " + floor1);
+        System.out.println("f2: " + floor2);
+
 
         if(x1 < x2){
             firstXInsert = x1;
@@ -310,6 +429,13 @@ public class DatabaseController {
                 secondXInsert = x1;
                 secondYInsert = y1;
                 secondFloorInsert = floor1;
+            }else if(y1 == y2 && floor1 != floor2) {
+                firstXInsert = x1;
+                firstYInsert = y1;
+                firstFloorInsert = floor1;
+                secondXInsert = x2;
+                secondYInsert = y2;
+                secondFloorInsert = floor2;
             }else{
                 System.out.println("Something went wrong with newEdge");
                 return false;
@@ -411,6 +537,7 @@ public class DatabaseController {
             e.printStackTrace();
             return false;
         }
+        System.out.println("delete from db was successfull");
         return true;
     }
 
@@ -609,7 +736,7 @@ public class DatabaseController {
                 professional = resultSet.getString("FIRSTNAME") + " " +
                         resultSet.getString("LASTNAME") + ", " +
                         resultSet.getString("ROOMNUM");
-                System.out.println("Entire professional string: " + professional);
+                //System.out.println("Entire professional string: " + professional);
                 if (!professionals.contains(professional)) {
                     professionals.add(professional);
                 }
@@ -731,7 +858,7 @@ public class DatabaseController {
      *
      ******************************************************************************/
 
-    public boolean newAdmin(String firstName, String lastName, String userName, String password){
+    public boolean newAdmin(String firstName, String lastName, String userName, String password, Boolean isAdmin){
         String encrypted = BCrypt.hashpw(password, BCrypt.gensalt());
 
         System.out.println(
@@ -740,14 +867,19 @@ public class DatabaseController {
                         firstName, lastName, userName));
         try {
             // sql statement with "?" to be filled later
-            String query = "INSERT INTO ADMIN (FIRSTNAME, LASTNAME, USERNAME, PASSWORD)" +
-                    " values (?, ?, ?, ?)";
+            String query = "INSERT INTO ADMIN (FIRSTNAME, LASTNAME, USERNAME, PASSWORD, PERMISSIONS)" +
+                    " values (?, ?, ?, ?, ?)";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, userName);
             preparedStatement.setString(4, encrypted);
+            if(isAdmin) {
+                preparedStatement.setInt(5, 2);
+            }else{
+                preparedStatement.setInt(5, 1);
+            }
             // execute prepared statement
 
             preparedStatement.execute();
@@ -777,6 +909,33 @@ public class DatabaseController {
             return null;
         }
         return resultSet;
+    }
+    public int getPermission(String username){
+        ResultSet resultSet = null;
+        int permissions;
+        try{
+            String query = "SELECT PERMISSIONS FROM ADMIN WHERE USERNAME = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, username);
+            // run statement and query
+
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return 0;
+        }
+        try {
+            if(!resultSet.next()){
+                return 0;
+            }
+            permissions = resultSet.getInt("PERMISSIONS");
+            closeResultSet(resultSet);
+            return permissions;
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     public String getPassword(String username){
@@ -811,7 +970,7 @@ public class DatabaseController {
         }
     }
 
-    public boolean editAdmin(int ID, String firstName, String lastName, String userName){
+    public boolean editAdmin(int ID, String firstName, String lastName, String userName, Boolean isAdmin){
 
 
         System.out.println(
@@ -820,13 +979,19 @@ public class DatabaseController {
                         ID, firstName, lastName, userName));
         try {
             // sql statement with "?" to be filled later
-            String query = "UPDATE ADMIN SET FIRSTNAME = ?, LASTNAME = ?, USERNAME = ? WHERE ID = ?";
+            String query = "UPDATE ADMIN SET FIRSTNAME = ?, LASTNAME = ?, USERNAME = ?, PERMISSIONS = ? WHERE ID = ?";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, userName);
-            preparedStatement.setInt(4, ID);
+
+            if(isAdmin) {
+                preparedStatement.setInt(4, 2);
+            }else{
+                preparedStatement.setInt(4, 1);
+            }
+            preparedStatement.setInt(5, ID);
             // execute prepared statement
 
             preparedStatement.execute();
@@ -1027,6 +1192,25 @@ public class DatabaseController {
         return resultSet;
     }
 
+    public ResultSet getFilteredRoomNames(int permissionLevel){
+        System.out.println("Getting room names");
+
+        ResultSet resultSet = null;
+        try{
+            String query = "SELECT NAME, ROOMNUM FROM NODE " +
+                    "WHERE ISHIDDEN = FALSE AND TYPE <> 'Stair' AND TYPE <> 'Elevator'" +
+                    "AND PERMISSIONS <= " + permissionLevel;
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            //preparedStatement.setString(1, "%"+roomName);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return resultSet;
+    }
+
     /*******************************************************************************
      * DECODELANGUAGE
      *
@@ -1189,6 +1373,23 @@ public class DatabaseController {
         return rooms;
     }
 
+    public ArrayList<String> getFilteredRooms(int permissionLevel){
+        ArrayList<String> rooms = new ArrayList<>();
+        String roomNum;
+        ResultSet rset = databaseController.getFilteredRoomNames(permissionLevel);
+        try {
+            while (rset.next()) {
+                roomNum = rset.getString("ROOMNUM");
+                if (!rooms.contains(roomNum)) {
+                    rooms.add(roomNum);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rooms;
+    }
+
     public ArrayList<String> getRoomList() {
         ArrayList<String> rooms = new ArrayList<>();
         String roomName, roomNum;
@@ -1209,4 +1410,53 @@ public class DatabaseController {
         return rooms;
     }
 
+    public ArrayList<String> getFilteredRoomList(int permissionLevel) {
+        ArrayList<String> rooms = new ArrayList<>();
+        String roomName, roomNum;
+        String room;
+        ResultSet rset = databaseController.getFilteredRoomNames(permissionLevel);
+        try {
+            while (rset.next()) {
+                roomName = rset.getString("NAME");
+                roomNum = rset.getString("ROOMNUM");
+                if (!rooms.contains(roomNum)) {
+                    room = "" + roomName + ", " + roomNum;
+                    rooms.add(room);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rooms;
+    }
+    /*******************************************************************************
+     * Misc.
+     *
+     ******************************************************************************/
+
+    public int GetKioskFloor(){
+        ResultSet resultSet;
+
+        System.out.println("Getting kiosk floor.");
+        try{
+            String query = "SELECT * FROM NODE WHERE NAME = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, "Kiosk");
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return -1;
+        }
+
+        try {
+            while(resultSet.next()){
+                System.out.println("Kiosk Floor: " + resultSet.getString("FLOOR"));
+                return resultSet.getInt("FLOOR");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

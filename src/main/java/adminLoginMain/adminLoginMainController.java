@@ -1,11 +1,11 @@
 package adminLoginMain;
 
+import NewMainMapManagement.NewMainMapManagementController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -33,6 +33,12 @@ public class adminLoginMainController extends controllers.AbsController{
     @FXML
     private Label adminTitle_Label;
 
+    @FXML
+    private Label languageTitle_Label;
+
+    @FXML
+    private ChoiceBox<String> languageChoices_ChoiceBox;
+
     int c_language;
 
     //logs the user in
@@ -46,23 +52,55 @@ public class adminLoginMainController extends controllers.AbsController{
         System.out.println(password);
 
         if(loginManage.verifyCredentials(username, password) == 1){
-            System.out.println("correct Password");
+            System.out.println("Correct Password");
 
-            FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
-            adminMenuStart.adminMenuStartController controller = loader.getController();
-            //Set the correct username for the next scene
-            controller.setUsername_Admin("Admin: "+ username_TextField.getText());
-            //sets the current language
-            controller.setCurrentLanguage(c_language);
-            //set up english labels
-            if(c_language == 0){
-                controller.englishButtons_Labels();
+            //LOG IN ADMIN
+            //*************************************************
+            if(loginManage.getPermissions(username) == 2){
+                System.out.println("Logging in Admin");
+                FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewMainMapManagementView.fxml");
+                NewMainMapManagement.NewMainMapManagementController controller = loader.getController();
+                controller.setC_language(c_language);
+                //Set the correct username for the next scene
+                //set up english labels
+                if(c_language == 0){
+                    controller.englishButtons_Labels();
 
-                //set up spanish labels
-            }else if(c_language == 1){
-                controller.spanishButtons_Labels();
+                    //set up spanish labels
+                }else if(c_language == 1){
+                    controller.spanishButtons_Labels();
+                }
+                controller.setUserString(username);
+                controller.setPermissionLevel(2);
+
+
+
+                //LOG IN EMPLOYEE
+                //*************************************************
+            }else if(loginManage.getPermissions(username) == 1){
+                System.out.println("Logging in Employee");
+                FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
+                //patientMenuStart.patientMenuStartController controller = loader.getController();
+                NewIntroUI.NewIntroUIController controller = loader.getController();
+                //sets the current language
+                controller.setCurrentLanguage(c_language);
+                //set up english labels
+                if(c_language == 0){
+                    controller.englishButtons_Labels();
+                    //set up spanish labels
+                }else if(c_language == 1){
+                    controller.spanishButtons_Labels();
+                }
+                controller.setWelcome(username);
+                controller.setPermissionLevel(1);
+                controller.setLanguage_ChoiceBox(c_language);
+                controller.loginOrOut(0,c_language);
+
+            }else{
+                System.out.println("Logging in Regular User. What??");
             }
-            controller.setLanguageChoices();
+
+
 
 
             //Check is the username/passwords inputs are empty
@@ -83,8 +121,9 @@ public class adminLoginMainController extends controllers.AbsController{
     //Switches screen to the patient menu
     public void mainMenuButton_Clicked(){
         System.out.println("The user has clicked the main menu Button");
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
-        patientMenuStart.patientMenuStartController controller = loader.getController();
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
+        //patientMenuStart.patientMenuStartController controller = loader.getController();
+        NewIntroUI.NewIntroUIController controller = loader.getController();
         //sets the current language
         controller.setCurrentLanguage(c_language);
         //set up english labels
@@ -96,6 +135,39 @@ public class adminLoginMainController extends controllers.AbsController{
             controller.spanishButtons_Labels();
         }
 
+        controller.setLanguage_ChoiceBox(c_language);
+        //Set the permissions
+        controller.setPermissionLevel(0);
+
+    }
+
+    //Sets the choiceBox from the given language
+    public void setLanguageChoiceBox(int l){
+        //Check if english
+          languageChoices_ChoiceBox.getItems().addAll("English", "Espanol");
+          languageChoices_ChoiceBox.getSelectionModel().select(l);
+
+
+        //Checks if the user has decided to change languages
+        languageChoices_ChoiceBox.getSelectionModel().selectedIndexProperty()
+                .addListener(new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                        //Checks if the user wants english language
+                        if (newValue.intValue() == 0) {
+                            //Load English View
+                            englishButtons_Labels();
+
+                        } else if (newValue.intValue() == 1) {
+                            //Load Spanish View
+                            spanishButtons_Labels();
+                            System.out.println("");
+                        }
+                    }
+
+                });
+
+
     }
 
     //sets the current language to the given language
@@ -105,33 +177,34 @@ public class adminLoginMainController extends controllers.AbsController{
 
     //Changes the buttons and labels to english
     public void englishButtons_Labels(){
+        setC_language(0);
         //Buttons
         logIn_Button.setText("Login");
+        mainMenu_Button.setText("Main Menu");
 
         //Labels
-        mainMenu_Button.setText("Main Menu");
         adminTitle_Label.setText("Admin Login");
+        languageTitle_Label.setText("Choose your language");
 
         //text fields
         username_TextField.setPromptText("username");
         password_PasswordField.setPromptText("password");
-
     }
 
     //Changes the buttons and labels to spanish
     public void spanishButtons_Labels(){
-
+        setC_language(1);
         //Buttons
-        logIn_Button.setText("Iniciar Sesión");
+        logIn_Button.setText("Iniciar Sesion");
+        mainMenu_Button.setText("Menu Principal");
 
         //Labels
-        mainMenu_Button.setText("Menu Principal");
         adminTitle_Label.setText("Administrador");
+        languageTitle_Label.setText("Escoge tu lenguaje");
 
         //text fields
         username_TextField.setPromptText("usuario");
-        password_PasswordField.setPromptText("contraseña");
-
+        password_PasswordField.setPromptText("contrasena");
     }
 
 

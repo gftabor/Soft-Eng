@@ -4,7 +4,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 
 import java.net.URISyntaxException;
 
@@ -16,7 +20,7 @@ public class emergencyController extends controllers.AbsController{
     private AnchorPane backgroundAnchorPane;
 
     @FXML
-    private Label username_Label;
+    private Label title_Label;
 
     @FXML
     private Button mainMenu_Button;
@@ -28,20 +32,30 @@ public class emergencyController extends controllers.AbsController{
     private Label call_status;
 
     @FXML
-    private Label start_Label;
+    private ScrollPane scrollPane;
 
     @FXML
-    private Label exit_Label;
+    private Pane pane;
+
+    @FXML
+    private ImageView map_viewer;
 
     //English by default
     int c_language = 0;
 
+    @FXML
+    public void initialize() {
+        map_viewer.setImage(new Image("/images/4emergency.png"));
+        //map_viewer.setFitWidth(pane.getWidth());
+        //map_viewer.setFitHeight(pane.getHeight());
+    }
+
     //Return the the patient main menu
     public void mainMenuButton_Clicked() {
-        System.out.println("The user clicked the main menu Button");
         //Switch screen
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/patientMainView.fxml");
-        patientMain.patientMainController controller = loader.getController();
+        //Change to patient menu
+        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
+        NewIntroUI.NewIntroUIController controller = loader.getController();
         //sets the current language
         controller.setCurrentLanguage(c_language);
         //set up english labels
@@ -54,8 +68,6 @@ public class emergencyController extends controllers.AbsController{
         }
 
     }
-
-
 
     public void callAuthorities(){
         SmsSender mySMS = new SmsSender();
@@ -78,25 +90,20 @@ public class emergencyController extends controllers.AbsController{
         mainMenu_Button.setText("Main Menu");
         call_authorities.setText("Call Authorities");
 
-        //Change the labels
-        start_Label.setText("You are here");
-        exit_Label.setText("Exits");
+
 
 
     }
 
-    //switches all teh labels to spanish
+    //switches all the labels to spanish
     public void spanishButtons_Labels() {
         //change the current language to spanish
         c_language = 1;
 
         //change the Buttons
-        mainMenu_Button.setText("Menú Principal");
+        mainMenu_Button.setText("Menu Principal");
         call_authorities.setText("Llamar Autoridades");
-
-        //change the Labels
-        start_Label.setText("Tú estás aquí");
-        exit_Label.setText("Salidas");
+        
 
 
     }

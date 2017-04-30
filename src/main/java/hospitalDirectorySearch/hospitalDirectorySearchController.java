@@ -192,7 +192,7 @@ public class hospitalDirectorySearchController extends controllers.AbsController
                 controller.multiFloorPathfind();
             } else {
                 //no multifloor pathfinding (simple)
-                pathfinder.generatePath(start, end);
+                pathfinder.generatePath(start, end, 0, false);
                 controller.setUserString("");
                 controller.createEdgeLines(pathfinder.getPath());
             }
@@ -354,9 +354,9 @@ public class hospitalDirectorySearchController extends controllers.AbsController
         //Table columns
         firstName_TableColumn.setText("Nombre");
         lastName_TableColumn.setText("Apellido");
-        title_TableColumn.setText("Título");
+        title_TableColumn.setText("Titulo");
         department_TableColumn.setText("Departamento");
-        room_TableColumn.setText("Habitación");
+        room_TableColumn.setText("Habitacion");
 
     }
 
