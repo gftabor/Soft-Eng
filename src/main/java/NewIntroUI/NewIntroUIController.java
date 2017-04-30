@@ -366,50 +366,42 @@ public class NewIntroUIController extends controllers.mapScene{
             empHBox.setPadding(new Insets(2, 2, 2, 2));
             empHBox.setSpacing(2);
             Button nameButton = new Button();
+            Text text;
 
             if (thisLocation.getAssociatedProFirst().equals("")) {
-                Text text = new Text(thisLocation.getName() + ",\n" + thisLocation.getType()+
-                ", " + thisLocation.getRoomNum());
-
-                text.setWrappingWidth(245);
-
-                nameButton.setContentDisplay(ContentDisplay.LEFT);
-                nameButton.setPrefWidth(250);
-                nameButton.setAlignment(Pos.CENTER_LEFT);
-                nameButton.setGraphic(text);
-                nameButton.setMaxWidth(250);
+                text = new Text(thisLocation.getName() + ",\n" + thisLocation.getType() +
+                        ", " + thisLocation.getRoomNum());
+            }else {
+                text = new Text(thisLocation.getAssociatedProFirst() + " " +
+                        thisLocation.getAssociatedProLast() + ", " + thisLocation.getAssociatedProTitle()
+                        + "\n" + thisLocation.getRoomNum());
                 nameButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        end_TextField.setText(thisLocation.getRoomNum());
+                        start_textField.setText(thisLocation.getRoomNum());
                     }
                 });
-                empHBox.getChildren().addAll(nameButton);
-                root.getChildren().addAll(empHBox);
-                locationsPane.setContent(root);
-
-            } else {
-                nameButton.setText(thisLocation.getAssociatedProFirst() + " " +
-                        thisLocation.getAssociatedProLast() + ", " + thisLocation.getAssociatedProTitle());
-                Button roomButton = new Button(thisLocation.getRoomNum());
-                nameButton.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        start_textField.setText(roomButton.getText());
-                    }
-                });
-                roomButton.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        start_textField.setText(roomButton.getText());
-                    }
-                });
-                empHBox.getChildren().addAll(nameButton, roomButton);
-                root.getChildren().addAll(empHBox);
-                locationsPane.setContent(root);
             }
-        }
 
+            text.setWrappingWidth(240);
+            nameButton.setPadding(new Insets(4, 4, 4, 4));
+
+            nameButton.setContentDisplay(ContentDisplay.LEFT);
+            nameButton.setPrefWidth(250);
+            nameButton.setAlignment(Pos.CENTER_LEFT);
+            nameButton.setGraphic(text);
+            nameButton.setMaxWidth(250);
+            nameButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    end_TextField.setText(thisLocation.getRoomNum());
+                }
+            });
+            empHBox.getChildren().addAll(nameButton);
+            root.getChildren().addAll(empHBox);
+            locationsPane.setContent(root);
+
+        }
     }
     boolean inUseFlag = false;
 
