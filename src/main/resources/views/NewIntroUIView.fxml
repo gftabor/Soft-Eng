@@ -65,12 +65,12 @@
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" styleClass="danger" text="EMERGENCY">
+                        <Button fx:id="FAQ_Button" mnemonicParsing="false" onMouseClicked="#FAQ_button_clicked" styleClass="color-palette5" text="?">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="FAQ_Button" mnemonicParsing="false" onMouseClicked="#FAQ_button_clicked" styleClass="color-palette5" text="?">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" styleClass="danger" text="EMERGENCY">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>

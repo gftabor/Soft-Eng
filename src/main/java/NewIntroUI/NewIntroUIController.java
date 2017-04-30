@@ -899,6 +899,9 @@ public class NewIntroUIController extends controllers.mapScene{
         submit_Button.setText("Submit");
         phoneSend.setText("Send");
         about_Button.setText("About");
+        MapMan_Button.setText("Map Management");
+        adminMan_Button.setText("Admin Management");
+        DirectoryMan_Button.setText("Directory Management");
 
 
         //Change the labels
@@ -926,6 +929,11 @@ public class NewIntroUIController extends controllers.mapScene{
         //change the current language to spanish
         c_language = 1;
         FAQ_Button.setVisible(false);
+
+        MapMan_Button.setText("Control de Mapa");
+        adminMan_Button.setText("Control de Admins");
+        DirectoryMan_Button.setText("Control del Directorio");
+
 
 
         //change the Buttons
