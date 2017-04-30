@@ -858,9 +858,9 @@ public class DatabaseController {
      *
      ******************************************************************************/
 
-    public boolean newAdmin(String firstName, String lastName, String userName, String password, Boolean isAdmin){
+    public boolean newAdmin(String firstName, String lastName, String userName,
+                            String password, Boolean isAdmin, String faceId){
         String encrypted = BCrypt.hashpw(password, BCrypt.gensalt());
-
         System.out.println(
                 String.format(
                         "Adding Admin. firstName: %s, lastName: %s, userName: %s, password: REDACTED",
@@ -868,13 +868,14 @@ public class DatabaseController {
         try {
             // sql statement with "?" to be filled later
             String query = "INSERT INTO ADMIN (FIRSTNAME, LASTNAME, USERNAME, PASSWORD, PERMISSIONS)" +
-                    " values (?, ?, ?, ?, ?)";
+                    " values (?, ?, ?, ?, ?, ?)";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, userName);
             preparedStatement.setString(4, encrypted);
+            preparedStatement.setString(5, faceId);
             if(isAdmin) {
                 preparedStatement.setInt(5, 2);
             }else{
