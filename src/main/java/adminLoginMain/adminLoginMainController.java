@@ -1,45 +1,17 @@
 package adminLoginMain;
 
-import NewMainMapManagement.NewMainMapManagementController;
-import com.facepp.error.FaceppParseException;
-import com.github.sarxos.webcam.Webcam;
-import com.github.sarxos.webcam.util.ImageUtils;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.image.*;
+
 import javafx.scene.layout.AnchorPane;
 
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import org.openimaj.image.ImageUtilities;
-import org.openimaj.*;
-import org.openimaj.image.objectdetection.*;
-import org.openimaj.image.processing.face.detection.DetectedFace;
-import org.openimaj.image.processing.face.detection.HaarCascadeDetector;
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import com.facepp.http.HttpRequests;
-import com.facepp.http.PostParameters;
-import org.json.JSONObject;
 
 /**
  * Created by AugustoR on 4/1/17.
@@ -78,92 +50,16 @@ public class adminLoginMainController extends controllers.AbsController{
     private ChoiceBox<String> languageChoices_ChoiceBox;
 
     int c_language;
-    HttpRequests httpRequests = new HttpRequests("4480afa9b8b364e30ba03819f3e9eff5", "Pz9VFT8AP3g_Pz8_dz84cRY_bz8_Pz8M ", true, true);
-    JSONObject result = null;
-
-    private static final ImageView imageView = new ImageView();
-    private static boolean isRunning = true;
 
     public void initialize() {
-        try {
-            httpRequests.trainSearch(new PostParameters().setFacesetName("Admins"));
-        }catch(Exception e){System.out.println("bug");}
-        root.setPadding(new Insets(20));
-
-        HBox imageStrip = new HBox();
-        imageStrip.setPadding(new Insets(20));
-        imageStrip.setAlignment(Pos.CENTER);
-
-        Thread cameraThread = new Thread(() -> {
-            Webcam webcam = Webcam.getDefault();
-            webcam.setViewSize(new Dimension(640, 480));
-            webcam.open();
-
-            BufferedImage capture = null;
-            List<BufferedImage> facesList = new ArrayList<>();
-
-            while(isRunning) {
-                capture = webcam.getImage();
-
-               HaarCascadeDetector detector = new HaarCascadeDetector();
-                List<DetectedFace> faces = detector.detectFaces(ImageUtilities.createFImage(capture));
-                facesList.clear();
-                for(DetectedFace face : faces) {
-                    facesList.add(ImageUtilities.createBufferedImage(face.getFacePatch()));
-                }
-
-                System.out.println("Detected " + faces.size() + " faces");
-                final BufferedImage finalCapture = capture;
-                Platform.runLater(() -> {
-                    imageView.setImage(new javafx.scene.image.Image(new ByteArrayInputStream(convertBufferedImage(finalCapture))));
-                    imageStrip.getChildren().clear();
-                    for(BufferedImage img : facesList) {
-                        byte[] temp = convertBufferedImage(img);
-                        ImageView imgView = new ImageView(new javafx.scene.image.Image(new ByteArrayInputStream(temp)));
-                        imageStrip.getChildren().add(imgView);
-                    }
-                });
-                for(BufferedImage img : facesList) {
-                    byte[] temp = convertBufferedImage(img);
-                    try {
-                        result = httpRequests.detectionDetect(new PostParameters().setImg(temp));
-                        System.out.println(result.getJSONArray("face").getJSONObject(0).getString("face_id"));
-                        System.out.println("searching");
-                        result = httpRequests.recognitionSearch(new PostParameters().setFacesetName("Admins").
-                                setKeyFaceId(result.getJSONArray("face").getJSONObject(0).getString("face_id")));
-
-                        System.out.println("David "+result.getJSONArray("candidate").getJSONObject(0).getDouble("similarity"));
-                        System.out.println("Griffin "+result.getJSONArray("candidate").getJSONObject(1).getDouble("similarity"));
-
-
-                    } catch(FaceppParseException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        System.out.println("exception");
-                    }
-                }
-            }
-            webcam.close();
-        });
-        cameraThread.start();
-
-        HBox hbox = new HBox(imageView);
-        hbox.setAlignment(Pos.CENTER);
-
-        root.getChildren().addAll(hbox, imageStrip);
+        facialRecognition.getInstance().start(root);
     }
 
-    private byte[] convertBufferedImage(BufferedImage bufImage) {
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        try {
-            ImageIO.write(bufImage, "PNG", os);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return os.toByteArray();
+    public FXMLLoader switch_screen(AnchorPane BGCurrentanchor, String viewPath){
+        facialRecognition.getInstance().stop();
+        return super.switch_screen(BGCurrentanchor,viewPath);
     }
-
-    //logs the user in
+        //logs the user in
     public void logInButton_Clicked(){
         AdminLoginManager loginManage = new AdminLoginManager();
         String username = username_TextField.getText();
