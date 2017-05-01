@@ -1003,7 +1003,7 @@ public class NewIntroUIController extends controllers.mapScene{
                     String os = System.getProperty("os.name");
 
                     if (os != null && os.equals("Mac OS X")) {
-                        Runtime.getRuntime().exec(new String[]{"pathfinder3D.app"});
+                        System.out.println("Mac OS X not supported in 3D");
                     }
                     else {
                         Runtime.getRuntime().exec(new String[]{"pathfinder3D.exe"});
