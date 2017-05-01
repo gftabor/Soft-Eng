@@ -865,8 +865,8 @@ public class DatabaseController {
         String encrypted = BCrypt.hashpw(password, BCrypt.gensalt());
         System.out.println(
                 String.format(
-                        "Adding Admin. firstName: %s, lastName: %s, userName: %s, password: REDACTED",
-                        firstName, lastName, userName));
+                        "Adding Admin. firstName: %s, lastName: %s, userName: %s, password: REDACTED, isAdmin %b",
+                        firstName, lastName, userName,isAdmin));
         try {
             // sql statement with "?" to be filled later
             String query = "INSERT INTO ADMIN (FIRSTNAME, LASTNAME, USERNAME, PASSWORD, PERMISSIONS, FACE_ID)" +

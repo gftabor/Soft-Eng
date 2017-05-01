@@ -292,6 +292,8 @@ public class adminSignUpController extends controllers.AbsController{
         if(mode_ChoiceBox.getValue().equals("Add") || mode_ChoiceBox.getValue().equals("Agregar")){
             addAdmin();
             setUpTreeView();
+            facialRecognition.getInstance().initFace();
+
         }else if (mode_ChoiceBox.getValue().equals("Remove") || mode_ChoiceBox.getValue().equals("Borrar")){
                 deleteAdmin();
                 setUpTreeView();
@@ -301,7 +303,6 @@ public class adminSignUpController extends controllers.AbsController{
         }else{
             System.out.println("Error with choicebox on admin page");
         }
-        facialRecognition.getInstance().initFace();
         clearInputs();
 
     }
