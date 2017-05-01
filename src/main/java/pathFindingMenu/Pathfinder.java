@@ -14,9 +14,13 @@ public class Pathfinder {
 
     private ArrayList<Edge> path = new ArrayList<Edge>();
     public Search algorithm = new AStar();
+    private ArrayList<Node> nodePath = new ArrayList<Node>();
 
     public ArrayList<Edge> getPath() {
         return path;
+    }
+    public ArrayList<Node> getNodePath() {
+        return nodePath;
     }
 
     //double heuristic function for A* pathfinding
@@ -98,6 +102,7 @@ public class Pathfinder {
         }
         alreadyProcessed.clear();
         path.clear();
+        nodePath.clear();
         algorithm.resetNodes();
         if ((!(startNode.getEnabled() && endNode.getEnabled()))
                 && permissionLevel >= startNode.getPermissionLevel() && permissionLevel >= endNode.getPermissionLevel()){
@@ -124,8 +129,10 @@ public class Pathfinder {
         Node viewingNode = endNode;
         while(!viewingNode.equals(startNode) && finished){
             path.add(viewingNode.getParentEdge());
+            nodePath.add(viewingNode);
             viewingNode = viewingNode.getParentEdge().getNeighbor(viewingNode);
         }
+        nodePath.add(startNode);
         System.out.println(algorithm + " had to search  " + tries +  " and path contains " + path.size() + " edges");
 
         if (finished)
