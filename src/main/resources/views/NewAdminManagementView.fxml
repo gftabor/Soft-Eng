@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -18,7 +25,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adminSignUp.adminSignUpController">
+<AnchorPane fx:id="backgroundAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="768.0" minWidth="1366.0" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adminSignUp.adminSignUpController">
    <children>
       <BorderPane layoutX="-1.0" layoutY="-1.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="-1.0">
          <top>
@@ -47,12 +54,17 @@
                               <Insets bottom="4.0" top="4.0" />
                            </HBox.margin>
                         </Button>
+                        <Button fx:id="pathFinding_Button" mnemonicParsing="false" onMouseClicked="#pathFindingButton_Clicked" styleClass="color-palette5" text="PathFinding">
+                           <HBox.margin>
+                              <Insets bottom="4.0" top="4.0" />
+                           </HBox.margin>
+                        </Button>
                         <Button fx:id="signOut_Button" mnemonicParsing="false" onMouseClicked="#signOutButton_Clicked" styleClass="color-palette5" text="Sign Out">
                            <HBox.margin>
                               <Insets bottom="4.0" right="8.0" top="4.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" prefWidth="150.0" styleClass="danger" text="EMERGENCY">
+                        <Button fx:id="emergency_Button" mnemonicParsing="false" onMouseClicked="#emergencyButton_Clicked" styleClass="danger" text="EMERGENCY">
                            <HBox.margin>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </HBox.margin>
@@ -96,7 +108,7 @@
                   <HBox>
                      <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label fx:id="error_LabelText" text="Error (Empty)" textFill="#8d2c2c" />
+                        <Label fx:id="error_LabelText" textFill="#8d2c2c" />
                         <Region HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
@@ -134,7 +146,7 @@
                                  </HBox.margin>
                               </TextField>
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                              <Button fx:id="clearID_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" onMouseClicked="#clearID" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
@@ -159,7 +171,7 @@
                                  </HBox.margin>
                               </TextField>
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                              <Button fx:id="clearUser_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" onMouseClicked="#clearUser" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
@@ -184,7 +196,7 @@
                                  </HBox.margin>
                               </TextField>
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                              <Button fx:id="clearFN_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" onMouseClicked="#clearFN" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
@@ -209,7 +221,7 @@
                                  </HBox.margin>
                               </TextField>
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                              <Button fx:id="clearLN_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" onMouseClicked="#clearLN" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
@@ -234,7 +246,7 @@
                                  </HBox.margin>
                               </PasswordField>
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
+                              <Button fx:id="clearNP_Button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="28.0" mnemonicParsing="false" onMouseClicked="#clearNP" prefWidth="28.0" styleClass="DirectoryButton" text="x" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </HBox.margin>
