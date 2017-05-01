@@ -105,3 +105,6 @@ src/main/resources/config/config.json
 
 testDB/
 FaulknerDB/
+path\.txt
+
+pathfinder3D_Data/output_log\.txt
