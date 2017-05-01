@@ -20,6 +20,7 @@ public class Main extends Application {
         DatabaseController databaseController = DatabaseController.getInstance();
         databaseController.setDbName("./FaulknerDB");
         databaseController.startDB();
+        adminLoginMain.facialRecognition.getInstance().initFace();
 
         //Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("/views/patientMenuStartView.fxml"));
 
@@ -48,7 +49,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) throws SQLException{
-
         launch(args);
+        adminLoginMain.facialRecognition.getInstance().cameraThread.stop();
     }
 }

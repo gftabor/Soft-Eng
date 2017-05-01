@@ -2,27 +2,40 @@ package NewIntroUI;
 
 import DBController.DatabaseController;
 import controllers.*;
+import controllers.Node;
 import emergency.SmsSender;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.*;
 import javafx.fxml.FXML;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import org.controlsfx.control.textfield.TextFields;
 
+import java.io.IOException;
+import pathFindingMenu.Pathfinder;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Map;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by AugustoR on 4/21/17.
@@ -36,6 +49,9 @@ public class NewIntroUIController extends controllers.mapScene{
 
     @FXML
     private Label mainTitle_Label;
+
+    @FXML
+    private ScrollPane locationsPane;
 
     @FXML
     private ChoiceBox<String> language_ChoiceBox;
@@ -60,6 +76,9 @@ public class NewIntroUIController extends controllers.mapScene{
 
     @FXML
     private TextField end_TextField;
+
+    @FXML
+    private TextField filter_textField;
 
     @FXML
     private Button cancel_Button;
@@ -90,9 +109,6 @@ public class NewIntroUIController extends controllers.mapScene{
 
     @FXML
     private Label c_Floor_Label;
-
-    @FXML
-    private ChoiceBox<String> filter_ChoiceBox;
 
     @FXML
     private Pane node_Plane;
@@ -136,6 +152,36 @@ public class NewIntroUIController extends controllers.mapScene{
     @FXML
     private Button FAQ_Button;
 
+    @FXML
+    private Button DirectoryMan_Button;
+
+    @FXML
+    private Button adminMan_Button;
+
+    @FXML
+    private Button MapMan_Button;
+
+    @FXML
+    private CheckBox ThreeDPATH_CheckBox;
+
+    @FXML
+    private CheckBox stairs_CheckBox;
+
+    @FXML
+    private Button reverse_Button;
+
+    @FXML
+    private Tab location_Tab;
+
+    @FXML
+    private Label threeD_Label;
+
+    @FXML
+    private Label stairs_Label;
+
+    @FXML
+    private Label searchError;
+
 
 
 
@@ -174,11 +220,13 @@ public class NewIntroUIController extends controllers.mapScene{
     private final Color startColor = Color.CRIMSON;
     private final Color endColor = Color.GREEN;
     private final Color kioskColor = Color.ORANGE;
+    private final Color interStart = Color.DARKRED;
+    private final Color interEnd = Color.DARKGREEN;
 
     private double origPaneWidth;
     private double origPaneHeight;
     double zoom;
-    double heightRatio = (1000.0/489.0);
+    double heightRatio = (1050.0/489.0);
     double widthRatio = (1600.0/920.0);
 
     private int permissionLevel;
@@ -188,19 +236,40 @@ public class NewIntroUIController extends controllers.mapScene{
 
     private boolean useStairs;
 
+    private double submitHval;
+    private double submitVval;
+
+
     //ArrayList<Edge> zoomPath;
+
+    // list of all locations, not sorted at first
+    ArrayList<Location> locations = new ArrayList<>();
+    // list of added room numbers to prevent duplication (MAYBE DELETE LATER)
+    ArrayList<String> roomNums = new ArrayList<>();
+    
+    String type, name, roomNum, firstName, lastName, title;
+    boolean isHidden, enabled;
+    int permissions;
+
+    boolean changeStart = false;
 
 
     @FXML
     public void initialize() {
+        reverse_Button.setStyle("-fx-background-image: url('images/reverse.png')");
         permissionLevel = 0;
         graph = new controllers.MapOverlay(node_Plane, (mapScene) this);
         MapController.getInstance().requestMapCopy();
+        filter_textField.setPromptText("search");
+
+        graph.setZoom(1.0);
 
         //setLanguageChoices(c_language);
         setFloorChoices();
-        setStartEndChoices();
+        setStartEndChoices(); // text auto fill function
         setLanguage_ChoiceBox(c_language);
+        setTypeChoices();
+        //setLocationsForFloor("Floor 1");
         //setComboBox();
         //setFilterChoices();
         //set current floor
@@ -217,6 +286,8 @@ public class NewIntroUIController extends controllers.mapScene{
         node_Plane.setPrefWidth(920.0*widthRatio);
         map_viewer.setFitHeight(489.0*heightRatio);
         map_viewer.setFitWidth(920.0*widthRatio);
+        //map_viewer.fitWidthProperty().bind(node_Plane.widthProperty());
+        //map_viewer.fitHeightProperty().bind(node_Plane.heightProperty());
 
         graph.setWidthRatio(widthRatio);
         graph.setHeightRatio(heightRatio);
@@ -244,6 +315,30 @@ public class NewIntroUIController extends controllers.mapScene{
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
         scrollPane.setPannable(true);
+
+        ArrayList<Location> passLocations = grabData("");
+        // sorts locations based on distance from the Kiosk
+        final ArrayList<Location> sortedPassLocations = sortCloseToKiosk(passLocations, "Kiosk");
+        // makes a list of all locations as clickable buttons
+        setLocationsListView(sortedPassLocations);
+
+
+        filter_textField.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode().equals(KeyCode.ENTER)){
+                    setLocationsListView(sortCloseToKiosk(grabData(filter_textField.getText()), start_textField.getText()));
+                }
+            }
+        });
+        start_textField.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(final KeyEvent event) {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    setLocationsListView(sortCloseToKiosk(passLocations, start_textField.getText()));
+                }
+            }
+        });
     }
 
     //get an instance of database controller
@@ -251,20 +346,214 @@ public class NewIntroUIController extends controllers.mapScene{
 
     public void drawCircleList(ArrayList<Circle> circleList, double x, double y, Color color) {
         for (Circle c : circleList) {
-            System.out.println((c.getLayoutX()/zoom)/widthRatio);
-            if (round((c.getLayoutX()/zoom)/widthRatio) == x && round((c.getLayoutY()/zoom)/heightRatio) == y) {
+            //System.out.println((c.getLayoutX()/zoom)/widthRatio);
+            System.out.println("layoutX/givenX " + c.getLayoutX()+"/"+x);
+            if (round(c.getLayoutX()) == x && round(c.getLayoutY()) == y) {
+                System.out.println("Found circle");
                 c.setStrokeWidth(strokeRatio);
-                c.setRadius(graph.getLabelRadius() * sizeUpRatio);
+                c.setRadius(graph.getLabelRadius()*sizeUpRatio);
                 c.setStroke(color);
                 if (c.getFill().equals(kioskColor)) {
                     c.setFill(kioskColor);
-                } else {
+                } else if (c.getFill() == Color.BLACK) {
                     c.setFill(color);
                 }
                 break;
             }
         }
     }
+
+    // grabs data from database to later create the location buttons
+    private ArrayList<Location> grabData(String filterType){
+        ArrayList<Location> locs = new ArrayList<>();
+        ResultSet rset2 = databaseController.getFilteredRoomNames2();
+        try {
+            while (rset2.next()){
+                name = rset2.getString("NAME");
+                roomNum = rset2.getString("ROOMNUM");
+                type = rset2.getString("TYPE");
+                permissions = rset2.getInt("PERMISSIONS");
+                if (permissions == 0){
+                    ResultSet rsetNode;
+                    int nodeFloor = 0;
+                    rsetNode = databaseController.getNodeWithName(roomNum);
+                    while (rsetNode.next()){
+                        nodeFloor = rsetNode.getInt("FLOOR");
+                    }
+                    if (filterType.equals("")){
+                        locs.add(new Location(type, name, roomNum, "", "",
+                                "", permissions, nodeFloor));
+                    } else {
+                        if (type.equals(filterType)){
+                            locs.add(new Location(type, name, roomNum, "", "",
+                                    "", permissions, nodeFloor));
+                        }
+                    }
+
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        ResultSet rset = databaseController.getProRoomNums();
+        try{
+            while (rset.next()){
+                title = rset.getString("TYPE");
+                roomNum = rset.getString("ROOMNUM");
+                firstName = rset.getString("FIRSTNAME");
+                lastName = rset.getString("LASTNAME");
+                permissions = rset.getInt("PERMISSIONS");
+                if (permissions == 0){
+                    ResultSet rsetNode;
+                    int nodeX = 0, nodeY = 0, nodeFloor = 0, nodePermissions = 0;
+                    String nodeName = null, nodeType = null, nodeRoom = null;
+                    boolean nodeIsHidden = false, nodeEnabled = false;
+                    rsetNode = databaseController.getNodeWithName(roomNum);
+                    while (rsetNode.next()){
+                        nodeFloor = rsetNode.getInt("FLOOR");
+                    }
+                    if (filterType.equals("")){
+                        locs.add(new Location("Doctor's Office", "", roomNum, firstName, lastName,
+                                title, permissions, nodeFloor));
+                    } else {
+                        if (filterType.equals("Doctor's Office") || filterType.equalsIgnoreCase("doctor")){
+                            locs.add(new Location("Doctor's Office", "", roomNum, firstName, lastName,
+                                    title, permissions, nodeFloor));
+                        }
+                    }
+
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return locs;
+    }
+
+    private void setLocationsListView(ArrayList<Location> locs){
+
+        locationsPane.setPadding(new Insets(10, 10, 5, 10));
+
+        VBox root = new VBox();
+
+        Iterator<Location> iter = locs.iterator();
+
+        while (iter.hasNext()) {
+            Location thisLocation = iter.next();
+            HBox empHBox = new HBox();
+            empHBox.setPadding(new Insets(2, 2, 2, 2));
+            empHBox.setSpacing(2);
+            Button nameButton = new Button();
+            Text text;
+
+            if (thisLocation.getAssociatedProFirst().equals("")) {
+                text = new Text(thisLocation.getName() + ",\n" + thisLocation.getType() +
+                        ", " + thisLocation.getRoomNum());
+            }else {
+                text = new Text(thisLocation.getAssociatedProFirst() + " " +
+                        thisLocation.getAssociatedProLast() + ", " + thisLocation.getAssociatedProTitle()
+                        + "\n" + thisLocation.getRoomNum());
+                nameButton.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        if (start_textField.equals("")){
+                            start_textField.setText(thisLocation.getRoomNum());
+                        } else {
+                            end_TextField.setText(thisLocation.getRoomNum());
+                        }
+
+                    }
+                });
+            }
+
+            text.setWrappingWidth(240);
+            nameButton.setPadding(new Insets(4, 4, 4, 4));
+
+            nameButton.setContentDisplay(ContentDisplay.LEFT);
+            nameButton.setPrefWidth(250);
+            nameButton.setAlignment(Pos.CENTER_LEFT);
+            nameButton.setGraphic(text);
+            nameButton.setMaxWidth(250);
+            nameButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    if (start_textField.getText().equalsIgnoreCase("")) {
+                        start_textField.setText(thisLocation.getName() + ", " + thisLocation.getRoomNum());
+                    } else {
+                        end_TextField.setText(thisLocation.getName() + ", " + thisLocation.getRoomNum());
+                    }
+                }
+            });
+            empHBox.getChildren().addAll(nameButton);
+            root.getChildren().addAll(empHBox);
+            locationsPane.setContent(root);
+
+        }
+    }
+
+    Pathfinder pathFind = new Pathfinder();
+    public ArrayList<Location> sortCloseToKiosk(ArrayList<Location> locs, String roomNumToFind){
+            System.out.println("Here zero");
+            ResultSet rset = databaseController.getNodeWithName(roomNumToFind);
+            int xpos = 0, ypos = 0, floor = 0, permissions = 0;
+            String type = "", name = "", roomNum = "";
+            boolean isHidden = false, enabled = false;
+            try {
+                while (rset.next()) {
+                    System.out.println("Here 0.1");
+                    xpos = rset.getInt("XPOS");
+                    ypos = rset.getInt("YPOS");
+                    floor = rset.getInt("FLOOR");
+                    isHidden = rset.getBoolean("ISHIDDEN");
+                    enabled = rset.getBoolean("ENABLED");
+                    type = rset.getString("TYPE");
+                    name = rset.getString("NAME");
+                    roomNum = rset.getString("ROOMNUM");
+                    permissions = rset.getInt("PERMISSIONS");
+                }
+                databaseController.closeResultSet(rset);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            Node startNode = new Node(xpos, ypos, floor, isHidden, enabled, type, name, roomNum, permissions);
+            Iterator<Location> iter = locs.iterator();
+            while (iter.hasNext()) {
+                Location thisLocation = iter.next();
+                System.out.println("Here once");
+                ResultSet rset1 = databaseController.getNodeWithName(thisLocation.getRoomNum());
+                try {
+                    while (rset1.next()) {
+                        xpos = rset1.getInt("XPOS");
+                        ypos = rset1.getInt("YPOS");
+                        floor = rset1.getInt("FLOOR");
+                        isHidden = rset1.getBoolean("ISHIDDEN");
+                        enabled = rset1.getBoolean("ENABLED");
+                        type = rset1.getString("TYPE");
+                        name = rset1.getString("NAME");
+                        roomNum = rset1.getString("ROOMNUM");
+                        permissions = rset1.getInt("PERMISSIONS");
+                    }
+                    databaseController.closeResultSet(rset1);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                Node secondNode = new Node(xpos, ypos, floor, isHidden, enabled, type, name, roomNum, permissions);
+                thisLocation.weight = pathFind.getHueristic(startNode, secondNode);
+                System.out.println("Here twice");
+            }
+            locs.sort(new Comparator<Location>() {
+                @Override
+                public int compare(Location o1, Location o2) {
+                    //Add null check
+                    return o1.weight < o2.weight ? -1
+                            : o1.weight > o2.weight ? 1
+                            : 0;
+                }
+            });
+        return locs;
+    }
+
 
     //Manage the clearing of the from text field
     public void cancelFromButton_Clicked(){
@@ -305,17 +594,45 @@ public class NewIntroUIController extends controllers.mapScene{
             System.out.println("current floor displayed: " + currentFloor);
             System.out.println("frag path pos updated to: " + fragPathPos);
             multifloorUpdate();
+            //set the end goal color
+            ArrayList<Circle> circleList;
+            circleList = graph.getButtonList();
 
             //disable the continue button if you reach the end
             //also update the color
             if (fragPathPos == globalFragList.size() - 1) {
                 continueNew_Button.setVisible(false);
 
-                //set the end goal color
-                ArrayList<Circle> circleList;
-                circleList = graph.getButtonList();
+                drawCircleList(circleList, round(endX*zoom*widthRatio), round(endY*zoom*heightRatio), endColor);
+            } else {
+                Circle targetStart = null;
+                Circle targetEnd = null;
+                ObservableList<javafx.scene.Node> sceneObjects = node_Plane.getChildren();
+                Node n = findStartFromEdgeList(globalFragList.get(fragPathPos));
+                for (javafx.scene.Node obj: sceneObjects) {
+                    if (obj instanceof Circle) {
+                        if (round((obj.getLayoutX()/zoom)/widthRatio) == n.getPosX() &&
+                                round((obj.getLayoutY()/zoom)/heightRatio) == n.getPosY()) {
+                            System.out.println("FOUND MY CIRCLE!!");
+                            targetStart = (Circle) obj;
+                        }
+                    }
+                }
 
-                drawCircleList(circleList, endX, endY, endColor);
+                Node m = findEndFromEdgeList(globalFragList.get(fragPathPos));
+                for (javafx.scene.Node obj: sceneObjects) {
+                    if (obj instanceof Circle) {
+                        if (round((obj.getLayoutX()/zoom)/widthRatio) == m.getPosX() &&
+                                round((obj.getLayoutY()/zoom)/heightRatio) == m.getPosY()) {
+                            System.out.println("FOUND MY CIRCLE!!");
+                            targetEnd = (Circle) obj;
+                        }
+                    }
+                }
+                if (targetStart != null && targetEnd != null) {
+                    drawCircleList(circleList, targetStart.getLayoutX(), targetStart.getLayoutY(), interStart);
+                    drawCircleList(circleList, targetEnd.getLayoutX(), targetEnd.getLayoutY(), interEnd);
+                }
             }
         }
     }
@@ -334,26 +651,61 @@ public class NewIntroUIController extends controllers.mapScene{
         currentFloor = globalFloorSequence.get(fragPathPos);
 
         multifloorUpdate();
-
+        ArrayList<Circle> circleList;
+        circleList = graph.getButtonList();
         //disable the previous button if you reach the beginning
         //also update the color
         if (fragPathPos == 0) {
             previous_Button.setVisible(false);
 
             //set the end goal color
-            ArrayList<Circle> circleList;
-            circleList = graph.getButtonList();
 
-            drawCircleList(circleList, startX, startY, startColor);
+            drawCircleList(circleList, round(startX*zoom*widthRatio), round(startY*zoom*heightRatio), startColor);
+        } else {
+            Circle targetStart = null;
+            Circle targetEnd = null;
+            ObservableList<javafx.scene.Node> sceneObjects = node_Plane.getChildren();
+            Node n = findStartFromEdgeList(globalFragList.get(fragPathPos));
+            for (javafx.scene.Node obj: sceneObjects) {
+                if (obj instanceof Circle) {
+                    if (round((obj.getLayoutX()/zoom)/widthRatio) == n.getPosX() &&
+                            round((obj.getLayoutY()/zoom)/heightRatio) == n.getPosY()) {
+                        System.out.println("FOUND MY CIRCLE!!");
+                        targetStart = (Circle) obj;
+                    }
+                }
+            }
+            Node m = findEndFromEdgeList(globalFragList.get(fragPathPos));
+            for (javafx.scene.Node obj: sceneObjects) {
+                if (obj instanceof Circle) {
+                    if (round((obj.getLayoutX()/zoom)/widthRatio) == m.getPosX() &&
+                            round((obj.getLayoutY()/zoom)/heightRatio) == m.getPosY()) {
+                        System.out.println("FOUND MY CIRCLE!!");
+                        targetEnd = (Circle) obj;
+                    }
+                }
+            }
+            if (targetStart != null && targetEnd != null) {
+                drawCircleList(circleList, targetStart.getLayoutX(), targetStart.getLayoutY(), interStart);
+                drawCircleList(circleList, targetEnd.getLayoutX(), targetEnd.getLayoutY(), interEnd);
+            }
         }
+
     }
 
     //Sets the choices for the language
     public void setLanguage_ChoiceBox(int lang) {
         //Makes sure you only set the choices once
         //sets the choices and sets the current language as the top choice
-        language_ChoiceBox.getItems().addAll("English", "Espanol");
-        language_ChoiceBox.getSelectionModel().select(lang);
+        if(second) {
+            language_ChoiceBox.getItems().remove(0, 2);
+            language_ChoiceBox.getItems().addAll("English", "Espanol");
+            language_ChoiceBox.getSelectionModel().select(lang);
+        }else{
+            language_ChoiceBox.getItems().addAll("English", "Espanol");
+            language_ChoiceBox.getSelectionModel().select(lang);
+
+        }
         language_ChoiceBox.setTooltip(new Tooltip("Select the language"));
 
         //Checks if the user has decided to change languages
@@ -379,58 +731,6 @@ public class NewIntroUIController extends controllers.mapScene{
                 });
 
     }
-
-    //Set the choices for Filter
-    /*public void setFilterChoices() {
-        //Makes sure you only set the choices once
-        //sets the choices and sets the current language as the top choice
-        if (c_language == 0) {
-            if (second) {
-                filter_ChoiceBox.getItems().remove(0, 3);
-                filter_ChoiceBox.getItems().addAll("All", "Employees", "Services");
-                filter_ChoiceBox.getSelectionModel().select(0);
-            } else {
-                filter_ChoiceBox.getItems().addAll("All", "Employees", "Services");
-                filter_ChoiceBox.getSelectionModel().select(0);
-            }
-        } else if (c_language == 1) {
-            if (second) {
-                filter_ChoiceBox.getItems().remove(0, 3);
-                filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios");
-                filter_ChoiceBox.getSelectionModel().select(0);
-            } else {
-                filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios");
-                filter_ChoiceBox.getSelectionModel().select(0);
-            }
-        }
-
-        //Checks if the user has decided to change languages
-        filter_ChoiceBox.getSelectionModel().selectedIndexProperty()
-                .addListener(new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                        //System.out.println(newValue);
-
-                        //Checks if the user wants english language
-                        if (newValue.intValue() == 0) {
-                            //Load everything
-
-                        } else if (newValue.intValue() == 1) {
-                            //Load only employees
-
-                        } else if (newValue.intValue() == 2) {
-                            //Load services
-
-                        } else if (newValue.intValue() == 3) {
-                            //load frequently searched
-
-                        } else if (newValue.intValue() == 4) {
-                            //Miscellaneous
-                        }
-                    }
-
-                });
-    }*/
 
     //Changes the floors on the map
     public void changeFloor(Number newValue) {
@@ -548,16 +848,32 @@ public class NewIntroUIController extends controllers.mapScene{
 
     }
 
+    public void setTypeChoices(){
+        ArrayList<String> services = new ArrayList<>();
+        ArrayList<String> all = new ArrayList<>();
+
+        services = databaseController.getNodeTypes();
+        all.addAll(services);
+        all.add("Doctor");
+
+        TextFields.bindAutoCompletion(filter_textField, all);
+    }
+
     public void setStartEndChoices(){
 
         ArrayList<String> roomNums = new ArrayList<>();
         ArrayList<String> professionals = new ArrayList<>();
+        ArrayList<String> services = new ArrayList<>();
         ArrayList<String> all = new ArrayList<>();
 
         roomNums = databaseController.getFilteredRoomList(permissionLevel);
         professionals = databaseController.getProfessionalList();
+
+        services = databaseController.getNodeTypes();
         all.addAll(roomNums);
         all.addAll(databaseController.getFilteredRooms(permissionLevel));
+        //all.addAll(services);
+
         all.addAll(professionals);
 
 
@@ -589,43 +905,16 @@ public class NewIntroUIController extends controllers.mapScene{
     public void submitButton_Clicked() {
         Node startN;
         Node endN;
+        System.out.println("submit button clicked");
+        System.out.println("click - pane-Hval = " + scrollPane.getHvalue());
+        System.out.println("click - pane-Vval = " + scrollPane.getVvalue());
+        zoom = graph.getZoom();
+
+        useStairs = stairs_CheckBox.isSelected();
 
         //reset visibility just in case
         continueNew_Button.setVisible(false);
         previous_Button.setVisible(false);
-
-//        if (selectionState == 2) {
-//            //submit stuff
-//            //createEdgeLines
-//
-//            //set the node if the 1st kiosk location is set
-//            if (!(start_textField.getText().equals(""))) {
-//                if (start_textField.getText().equals("Kiosk")){
-//                    startN = mapController.getCollectionOfNodes().getNodeWithName("Kiosk");
-//                } else {
-//                    startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
-//                }
-//                MapController.getInstance().markNode(startN.getPosX(), startN.getPosY(), 1, startN.getFloor());
-//            }
-//
-//            //check for multifloor
-//            if (mapController.areDifferentFloors()) {
-//                System.out.println("Multi-floor pathfinding detected!");
-//
-//                //use the multifloor pathfinding function
-//                multiFloorPathfind();
-//            } else {
-//                MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
-//                path = mapController.requestPath(permissionLevel);
-//                graph.createEdgeLines(path, true, false);
-//                //zoomPath = path;
-//                graph.setPathfinding(1);
-//                textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
-//
-//            }
-//
-//        } else {
-//
 
         //check that the txt fields are filled
         if(!(start_textField.getText().equals("")) && !(end_TextField.getText().equals(""))) {
@@ -660,11 +949,23 @@ public class NewIntroUIController extends controllers.mapScene{
 
 
                 multiFloorPathfind();
+//                setMapToPath();
+//                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false,
+//                        currentFloor, permissionLevel);
+//                graph.createEdgeLines(path, true, false);
+
             } else {
                 //no multifloor pathfinding (simple)
 
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
                 path = mapController.requestPath(permissionLevel, useStairs);
+
+                if(path.size() == 0){
+                    System.out.println("Cannot find path in simple pathfinding");
+                    searchError.setText("Cannot find path. Please select a different location.");
+                }else{
+                    searchError.setText("");
+                }
 
                 int startfloor = mapController.returnOriginalFloor();
                 if(startfloor != currentFloor) {
@@ -681,15 +982,44 @@ public class NewIntroUIController extends controllers.mapScene{
                     }
                 }
 
-                graph.createEdgeLines(path, true, false);
                 graph.setPathfinding(1);
                 textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
+                setMapToPath(startX, startY, endX, endY);
+                graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false,
+                        currentFloor, permissionLevel);
+                graph.createEdgeLines(path, true, false);
+                ArrayList<Circle> circleList;
+                circleList = graph.getButtonList();
+
+
+                drawCircleList(circleList, round(startX*zoom*widthRatio), round(startY*zoom*heightRatio), startColor);
+                drawCircleList(circleList, round(endX*zoom*widthRatio), round(endY*zoom*heightRatio), endColor);
+
+            }
+
+            if(ThreeDPATH_CheckBox.isSelected()){
+                //mapController.nodeListToText(pathfinder.getNodePath());
+                try {
+                    String os = System.getProperty("os.name");
+
+                    if (os != null && os.equals("Mac OS X")) {
+                        System.out.println("Mac OS X not supported in 3D");
+                    }
+                    else {
+                        Runtime.getRuntime().exec(new String[]{"pathfinder3D.exe"});
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
-        //}
-        selectionState=0;
-        System.out.println("The user has clicked the submit Button");
+
+
+
+        System.out.println("finished - pane-Hval = " + scrollPane.getHvalue());
+        System.out.println("finished - pane-Vval = " + scrollPane.getVvalue());
     }
 
     //Allows the user to go through several floors while using pathfinding
@@ -720,10 +1050,10 @@ public class NewIntroUIController extends controllers.mapScene{
         ArrayList<Circle> tempCircleList;
         tempCircleList = graph.getButtonList();
 
-        drawCircleList(tempCircleList, startX, startY, startColor);
+        drawCircleList(tempCircleList, round(startX*zoom*widthRatio), round(startY*zoom*heightRatio), startColor);
+        System.out.println("start coords: "+startX + "  " +startY);
 
 
-        //reset for next pathfinding session
         MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
         ArrayList<Edge> reqPath = mapController.requestPath(permissionLevel, useStairs);
         if (reqPath == null || reqPath.size() == 0) { //can't find path, reset
@@ -749,6 +1079,7 @@ public class NewIntroUIController extends controllers.mapScene{
             } else {
                 graph.createEdgeLines(fragPath.get(0), true, false);
                 graph.setPathfinding(2);
+                setMapMulti(fragPath.get(0));
             }
 
             //set the globals so you can send to the continue button
@@ -771,8 +1102,7 @@ public class NewIntroUIController extends controllers.mapScene{
         graph.setHeightRatio(1.0);
         graph.setWidthRatio(1.0);
 
-        if(admin_Button.getText().equals("Administrator") || admin_Button.getText().equals("Administrador")
-                || getPermissionLevel() == 0 ) {
+        if(getPermissionLevel() == 0 ) {
             FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminLoginMainView.fxml");
             adminLoginMain.adminLoginMainController controller = loader.getController();
             //sends the current language the next screen
@@ -795,6 +1125,8 @@ public class NewIntroUIController extends controllers.mapScene{
             NewIntroUI.NewIntroUIController controller = loader.getController();
             //sets the current language
             controller.setCurrentLanguage(c_language);
+            //set permissions back
+            controller.setPermissionLevel(0);
             //set up english labels
             if(c_language == 0){
                 controller.englishButtons_Labels();
@@ -802,11 +1134,9 @@ public class NewIntroUIController extends controllers.mapScene{
             }else if(c_language == 1){
                 controller.spanishButtons_Labels();
             }
-            //set permissions back
-            controller.setPermissionLevel(0);
             //set label to empty
             controller.setWelcome("");
-
+            controller.setLanguage_ChoiceBox(c_language);
             //Sets the label of the button back to administrator
             //0 In 1 out
             controller.loginOrOut(1, c_language);
@@ -818,7 +1148,6 @@ public class NewIntroUIController extends controllers.mapScene{
     public void loginOrOut(int inOrOut, int lang){
         //The user is signing in
         if(inOrOut == 0){
-            FAQ_Button.setVisible(false);
             if(lang == 0){
                 admin_Button.setText("Sign Out");
             }else{
@@ -874,6 +1203,7 @@ public class NewIntroUIController extends controllers.mapScene{
         //reset the textfields
         start_textField.setText("");
         end_TextField.setText("");
+        searchError.setText("");
 
         //reset any colors
 
@@ -885,20 +1215,32 @@ public class NewIntroUIController extends controllers.mapScene{
         //change the current language to english
 
         //Change the Buttons
-        admin_Button.setText("Administrator");
+        //change the Buttons
+        if(permissionLevel == 2 || permissionLevel == 1) {
+            admin_Button.setText("Sign Out");
+        }else {
+            admin_Button.setText("Administrator");
+        }
+        FAQ_Button.setVisible(true);
+
         emergency_Button.setText("EMERGENCY");
         cancel_Button.setText("Clear");
         submit_Button.setText("Submit");
         phoneSend.setText("Send");
         about_Button.setText("About");
+        MapMan_Button.setText("Map Manag.");
+        adminMan_Button.setText("Admin Manag.");
+        DirectoryMan_Button.setText("Directory Manag.");
 
 
         //Change the labels
         start_Label.setText("From:");
         end_Label.setText("To:");
-        mainTitle_Label.setText("Welcome to Brigham and Women's Faulkner Hospital");
+        mainTitle_Label.setText("Welcome to Brigham and Women's Faulkner");
         floor_Label.setText("Floor");
         phoneInfo_Label.setText("Send Directions to my phone");
+        threeD_Label.setText("3D Path");
+        stairs_Label.setText("Allow Stairs");
 
         //Change the textFields
         start_textField.setPromptText("Starting position");
@@ -906,20 +1248,31 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //Change Tabs
         textDirections_Tab.setText("Directions");
+        location_Tab.setText("Locations");
 
         //Change choiceBox
         setFloorChoices();
 
 
     }
-
     //switches all teh labels to spanish
     public void spanishButtons_Labels() {
         //change the current language to spanish
         c_language = 1;
+        FAQ_Button.setVisible(false);
+
+        MapMan_Button.setText("Control de Mapa");
+        adminMan_Button.setText("Control de Admins");
+        DirectoryMan_Button.setText("Directorio");
+
+
 
         //change the Buttons
-        admin_Button.setText("Administrador");
+        if(permissionLevel == 2 || permissionLevel == 1) {
+            admin_Button.setText("Salir");
+        }else {
+            admin_Button.setText("Administrador");
+        }
         emergency_Button.setText("EMERGENCIA");
         cancel_Button.setText("Borrar");
         submit_Button.setText("Listo");
@@ -929,10 +1282,11 @@ public class NewIntroUIController extends controllers.mapScene{
         //change the Labels
         start_Label.setText("Inicio:");
         end_Label.setText("Destino:");
-        mainTitle_Label.setText("Bienvenidos al Hospital Faulkner Brigham and Women");
+        mainTitle_Label.setText("Bienvenidos a Faulkner Brigham and Women");
         floor_Label.setText("Piso");
-        //textD_Label.setText("Descripciones Escritas");
         phoneInfo_Label.setText("Enviar direcciones a mi celular");
+        threeD_Label.setText("Camino 3D");
+        stairs_Label.setText("Escaleras");
 
 
         //Change the textFields
@@ -941,6 +1295,7 @@ public class NewIntroUIController extends controllers.mapScene{
 
         //Change Tabs
         textDirections_Tab.setText("Direcciones");
+        location_Tab.setText("Lugares");
 
         //Change choiceBox
         //setFilterChoices();
@@ -992,13 +1347,13 @@ public class NewIntroUIController extends controllers.mapScene{
             graph.wipeEdgeLines();
             graph.setPathfinding(0);
 
-            start =c;
+            start = c;
             //color
             c.setStrokeWidth(strokeRatio);
             c.setStroke(startColor);
-            if(c.getFill().equals(kioskColor)){
+            if (c.getFill().equals(kioskColor)) {
                 c.setFill(kioskColor);
-            }else {
+            } else if (c.getFill() == Color.BLACK) {
                 c.setFill(startColor);
             }
 
@@ -1032,7 +1387,7 @@ public class NewIntroUIController extends controllers.mapScene{
             c.setStroke(endColor);
             if(c.getFill().equals(kioskColor)){
                 c.setFill(kioskColor);
-            }else {
+            } else if (c.getFill() == Color.BLACK) {
                 c.setFill(endColor);
             }
 
@@ -1056,22 +1411,34 @@ public class NewIntroUIController extends controllers.mapScene{
             if (start != null) {
                 System.out.println("start....");
                 start.setStroke(Color.BLACK);
-                if (!(start.getFill().equals(kioskColor))) {
+                if ((!(start.getFill().equals(kioskColor))) && (start.getFill() == startColor)) {
                     start.setFill(Color.BLACK);
                 }
                 start.setStrokeWidth(1);
-                start.setRadius(graph.getLabelRadius());
+
+                //reset radius
+                if (start.getFill() != Color.BLACK) {
+                    start.setRadius(graph.getLabelTypeRadius());
+                } else {
+                    start.setRadius(graph.getLabelRadius());
+                }
             }
         }
         if (mode == 2 || mode == 3) {
             if (end != null) {
                 System.out.println("end....");
                 end.setStroke(Color.BLACK);
-                if (!(end.getFill().equals(kioskColor))) {
+                if ((!(end.getFill().equals(kioskColor))) && (end.getFill() == endColor)) {
                     end.setFill(Color.BLACK);
                 }
                 end.setStrokeWidth(1);
-                end.setRadius(graph.getLabelRadius());
+
+                //reset radius
+                if (end.getFill() != Color.BLACK) {
+                    end.setRadius(graph.getLabelTypeRadius());
+                } else {
+                    end.setRadius(graph.getLabelRadius());
+                }
             }
         }
     }
@@ -1115,6 +1482,9 @@ public class NewIntroUIController extends controllers.mapScene{
         System.out.println("creating edge lines for fp pos: " + fragPathPos);
         graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
         graph.setPathfinding(2);
+        setMapMulti(globalFragList.get(fragPathPos));
+
+
     }
 
     public void changeZoom(){
@@ -1143,6 +1513,12 @@ public class NewIntroUIController extends controllers.mapScene{
         scrollPane.setFitToWidth(false);
         if (graph.getPathfinding() == 1) {
             graph.createEdgeLines(path, true, false);
+            //set the end goal color
+            ArrayList<Circle> circleList;
+            circleList = graph.getButtonList();
+            drawCircleList(circleList, round(startX*zoom*widthRatio), round(startY*zoom*heightRatio), startColor);
+            drawCircleList(circleList, round(endX*zoom*widthRatio), round(endY*zoom*heightRatio), endColor);
+            System.out.println("drawing circles at "+startX+" and "+endX);
         } else if (graph.getPathfinding() == 2) {
             graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
         }
@@ -1169,6 +1545,12 @@ public class NewIntroUIController extends controllers.mapScene{
                 false, currentFloor, permissionLevel);
         if (graph.getPathfinding() == 1) {
             graph.createEdgeLines(path, true, false);
+            //set the end goal color
+            ArrayList<Circle> circleList;
+            circleList = graph.getButtonList();
+            drawCircleList(circleList, round(startX*zoom*widthRatio), round(startY*zoom*heightRatio), startColor);
+            drawCircleList(circleList, round(endX*zoom*widthRatio), round(endY*zoom*heightRatio), endColor);
+            System.out.println("drawing circles at "+startX+" and "+endX);
         } else if (graph.getPathfinding() == 2) {
             graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
         }
@@ -1176,7 +1558,23 @@ public class NewIntroUIController extends controllers.mapScene{
 
     //Let the user scroll through the map
     public void mapScroll(ScrollEvent event) {
+
+        double scrollStartX = 0,scrollStartY = 0,scrollEndX = 0,scrollEndY = 0;
+
+//        if (!(start_textField.getText().equals(""))) {
+//            Node startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
+//            scrollStartX = startN.getPosX();
+//            scrollStartY = startN.getPosY();
+//        }
+//        if (!end_TextField.getText().split(", ")[1].equals("")) {
+//            Node endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText().split(", ")[1]);
+//            scrollEndX = endN.getPosX();
+//            scrollEndY = endN.getPosY();
+//        }
+
         zoom = MapOverlay.getZoom();
+        ArrayList<Circle> circleList;
+        circleList = graph.getButtonList();
         if (currentHval != 0) {
             //System.out.println("pre zoom currenthval: " + currentHval);
             //System.out.println("pre zoom currnetVval: " + currentVval);
@@ -1194,6 +1592,15 @@ public class NewIntroUIController extends controllers.mapScene{
                 changeZoom();
                 graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
                         false, currentFloor, permissionLevel);
+                if (scrollStartX != 0) {
+                    drawCircleList(circleList, round(scrollStartX * zoom * widthRatio),
+                            round(scrollStartY * zoom * heightRatio), startColor);
+                    System.out.println("this happened i guess");
+                }
+                if (scrollEndX != 0) {
+                    drawCircleList(circleList, round(scrollEndX * zoom * widthRatio),
+                            round(scrollEndY * zoom * heightRatio), endColor);
+                }
             }
         } else if (event.getDeltaY() < 0) {
             if (zoom > 1.0) {
@@ -1206,6 +1613,14 @@ public class NewIntroUIController extends controllers.mapScene{
                 changeZoom();
                 graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),
                         false, currentFloor, permissionLevel);
+                if (scrollStartX != 0) {
+                    drawCircleList(circleList, round(scrollStartX * zoom * widthRatio),
+                            round(scrollStartY * zoom * heightRatio), startColor);
+                }
+                if (scrollEndX != 0) {
+                    drawCircleList(circleList, round(scrollEndX * zoom * widthRatio),
+                            round(scrollEndY * zoom * heightRatio), endColor);
+                }
             } else {
                 scrollPane.setFitToHeight(true);
                 scrollPane.setFitToWidth(true);
@@ -1214,20 +1629,29 @@ public class NewIntroUIController extends controllers.mapScene{
         if (graph.getPathfinding() == 1) {
             graph.createEdgeLines(path, true, false);
             //set the end goal color
-            ArrayList<Circle> circleList;
-            circleList = graph.getButtonList();
-            drawCircleList(circleList, startX, startY, startColor);
-            drawCircleList(circleList, endX, endY, endColor);
-            System.out.println("drawing circles at "+startX+" and "+endX);
+
+            drawCircleList(circleList, round(startX*zoom*widthRatio), round(startY*zoom*heightRatio), startColor);
+            drawCircleList(circleList, round(endX*zoom*widthRatio), round(endY*zoom*heightRatio), endColor);
+
         } else if (graph.getPathfinding() == 2) {
             graph.createEdgeLines(globalFragList.get(fragPathPos), true, false);
+            Node startN = mapController.getCollectionOfNodes().getNodeWithName(start_textField.getText().split(", ")[1]);
+            Node endN = mapController.getCollectionOfNodes().getNodeWithName(end_TextField.getText().split(", ")[1]);
+
+            drawCircleList(circleList, round(startN.getPosX()*zoom*widthRatio), round(startN.getPosY()*zoom*heightRatio), startColor);
+            drawCircleList(circleList, round(endN.getPosX()*zoom*widthRatio), round(endN.getPosY()*zoom*heightRatio), endColor);
+
+
         }
 
+        if (selectionState == 1) {
+            drawCircleList(circleList, startX, startY, startColor);
+        }
         if (selectionState == 2) {
+            drawCircleList(circleList, round(startX*zoom*widthRatio), round(startY*zoom*heightRatio), startColor);
+            drawCircleList(circleList, round(endX*zoom*widthRatio), round(endY*zoom*heightRatio), endColor);
 
         }
-        System.out.println("currenthval: " + currentHval);
-        System.out.println("currnetVval: " + currentVval);
         scrollPane.setHvalue(currentHval);
         scrollPane.setVvalue(currentVval);
     }
@@ -1256,6 +1680,8 @@ public class NewIntroUIController extends controllers.mapScene{
 
     public void setMapToPath(double startNX, double startNY, double endNX, double endNY) {
 
+
+        System.out.println("setting map to path");
         double deltaX = startNX - endNX;
         double deltaY = startNY - endNY;
 
@@ -1273,24 +1699,92 @@ public class NewIntroUIController extends controllers.mapScene{
         double scrollHeight = scrollPane.getHeight();
         double scrollWidth = scrollPane.getWidth();
 
+        System.out.println(deltaY);
+        System.out.println("zoom amount: " +zoom);
+
         System.out.println("plane width: " + node_Plane.getWidth());
         System.out.println("midX: " + midX);
-        System.out.println("Hvalue: " + midX/node_Plane.getWidth());
-        System.out.println("Vvalue: " + midY/node_Plane.getHeight());
         System.out.println("previous Hvalue: " + scrollPane.getHvalue());
         System.out.println("previous Vvalue: " + scrollPane.getVvalue());
 
-        if (scrollHeight/(deltaY) < scrollWidth/(deltaX)) {
-            zoom = 2.2;
-        } else {
-            zoom = 2.2;
+        submitHval = midX / 920;
+        submitVval = midY / 489;
+
+
+        System.out.println("past zoomed");
+        secret_Click();
+        System.out.println("after secretclick");
+    }
+
+    public void setMapMulti(ArrayList<controllers.Edge> edgeList) {
+        double midX = 0;
+        double midY = 0;
+        double counter = 0;
+        for (controllers.Edge thisEdge: edgeList) {
+            if (thisEdge.getStartNode().getFloor() == thisEdge.getEndNode().getFloor()) {
+                midX = midX + thisEdge.getStartNode().getPosX();
+                midX = midX + thisEdge.getEndNode().getPosX();
+                midY = midY + thisEdge.getStartNode().getPosY();
+                midY = midY + thisEdge.getEndNode().getPosY();
+                counter ++;
+                counter ++;
+
+            }
         }
-        changeZoom();
+        if (counter != 0) {
+            midX = midX/counter;
+            midY = midY/counter;
+        }
+        submitHval = midX / 920;
+        submitVval = midY / 489;
 
-        scrollPane.setHvalue(midX / node_Plane.getWidth());
-        scrollPane.setVvalue(midY / node_Plane.getHeight());
+        System.out.println("past zoomed");
+        secret_Click();
+        System.out.println("after secretclick");
+    }
 
-        System.out.println("New Hvalue: " + scrollPane.getHvalue());
+    //note: edge list must be ordered
+    private Node findStartFromEdgeList(ArrayList<controllers.Edge> edgeList) {
+        //if list is empty
+        if (edgeList.size() == 0) {
+            return null;
+        }
+
+        Node n;
+
+        if (edgeList.size() == 1) {
+            n = edgeList.get(0).getStartNode();
+        } else {
+            if (edgeList.get(0).getEndNode() == edgeList.get(1).getStartNode() ||
+                    edgeList.get(0).getEndNode() == edgeList.get(1).getEndNode()) {
+                n = edgeList.get(0).getStartNode();
+            } else {
+                n = edgeList.get(0).getEndNode();
+            }
+        }
+        return n;
+    }
+
+    //note: edge list must be ordered
+    private Node findEndFromEdgeList(ArrayList<controllers.Edge> edgeList) {
+        //if list is empty
+        if (edgeList.size() == 0) {
+            return null;
+        }
+
+        Node n;
+
+        if (edgeList.size() == 1) {
+            n = edgeList.get(0).getEndNode();
+        } else {
+            if (edgeList.get(edgeList.size() - 1).getEndNode() == edgeList.get(edgeList.size() - 2).getStartNode() ||
+                    edgeList.get(edgeList.size() - 1).getEndNode() == edgeList.get(edgeList.size() - 2).getEndNode()) {
+                n = edgeList.get(edgeList.size() - 1).getStartNode();
+            } else {
+                n = edgeList.get(edgeList.size() - 1).getEndNode();
+            }
+        }
+        return n;
     }
 
 
@@ -1319,6 +1813,116 @@ public class NewIntroUIController extends controllers.mapScene{
             return (int) intPart;
         }
 
+    }
+
+    //Sets the buttons to the admin
+    public void AdminButtons(int lang){
+        if(lang == 0){
+            MapMan_Button.setText("Map Manag.");
+            adminMan_Button.setText("Admin Manag.");
+            DirectoryMan_Button.setText("Directory Manag.");
+        }else{
+            MapMan_Button.setText("Control de Mapa");
+            adminMan_Button.setText("Control de Admins");
+            DirectoryMan_Button.setText("Directorio");
+        }
+
+        MapMan_Button.setDisable(false);
+        adminMan_Button.setDisable(false);
+        DirectoryMan_Button.setDisable(false);
+
+        MapMan_Button.setVisible(true);
+        adminMan_Button.setVisible(true);
+        DirectoryMan_Button.setVisible(true);
+    }
+
+    //sends the user to the map management
+    public void mapMan_Clicked(){
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewMainMapManagementView.fxml");
+        NewMainMapManagement.NewMainMapManagementController controller = loader.getController();
+        //Set the correct username for the next scene
+
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        controller.setUserString(LogInPerson_Label.getText());
+        controller.setPermissionLevel(2);
+
+
+    }
+
+    //sends the user to the admin management
+    public void adminMan_Clicked(){
+//Change to patient menu
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewAdminManagementView.fxml");
+        adminSignUp.adminSignUpController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //Gets the current admin
+        controller.setUsername(LogInPerson_Label.getText());
+
+        //set up english labels
+
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+
+        controller.setUpTreeView();
+        controller.setModeChoices();
+
+    }
+
+    //sends the user to the directory management
+    public void directoryMan_Clicked(){
+
+        FXMLLoader loader= switch_screen(backgroundAnchorPane, "/views/NewDirectoryManagementView.fxml");
+        mapManagementNodeInformation.mmNodeInformationController controller = loader.getController();
+
+        //sets the current language
+        controller.setC_language(c_language);
+
+        controller.setModeChoices();
+        controller.setRoomChoices();
+        controller.setUpTreeView();
+        controller.setUser(LogInPerson_Label.getText());
+
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
+        //Set permissions of admin
+        controller.setPermissionLevel(2);
+
+
+    }
+
+    public void secret_Click() {
+
+        System.out.println("in secretclick");
+        System.out.println("current-Hval = " + currentHval);
+        System.out.println("current-Vval = " + currentVval);
+        System.out.println("pane-Hval = " + scrollPane.getHvalue());
+        System.out.println("pane-Vval = " + scrollPane.getVvalue());
+
+        if (submitHval != 0) {
+            scrollPane.setHvalue(submitHval);
+            scrollPane.setVvalue(submitVval);
+        }
+        System.out.println(submitHval + "   " +submitVval);
+        System.out.println("New Hvalue: " + scrollPane.getHvalue());
+        System.out.println("New Vvalue: " + scrollPane.getVvalue());
     }
 }
 

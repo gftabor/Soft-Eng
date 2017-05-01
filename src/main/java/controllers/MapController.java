@@ -3,11 +3,17 @@ package controllers;
 import DBController.DatabaseController;
 import pathFindingMenu.Pathfinder;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 //import main.java.controllers.CollectionOfNodes;
 
@@ -256,7 +262,44 @@ public class MapController {
 
         pathfinder.algorithmSwitch(algorithm);
         double result = pathfinder.generatePath(startNode, endNode, permissionLevel, useStairs);
+
+
+        nodeListToText(pathfinder.getNodePath());
+        /*
+        try {
+            Runtime.getRuntime().exec(new String[] { "pathfinder3D.exe"});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        */
+
         return pathfinder.getPath();
+
+    }
+
+    public boolean nodeListToText(ArrayList<Node> nodes) {
+
+        try {
+            List<String> lines = new ArrayList();
+
+            for(int i = nodes.size()-1; i >= 0; i--) {String line = "";
+                line += nodes.get(i).getPosX();
+                line += ",";
+                line += nodes.get(i).getPosY();
+                line += ",";
+                line += nodes.get(i).getFloor();
+
+                lines.add(line);
+            }
+
+            Path file = Paths.get("path.txt");
+            Files.write(file, lines, Charset.forName("UTF-8"));
+            //Files.write(file, lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
 
     }
 

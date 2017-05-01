@@ -3,11 +3,13 @@ package NewMainMapManagement;
 import DBController.DatabaseController;
 import controllers.*;
 import controllers.Node;
+import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +28,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.textfield.TextFields;
 //import sun.misc.resources.Messages_pt_BR;
@@ -87,6 +90,17 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     @FXML
     private Button save_Button;
+
+    @FXML
+    private Button pathFinding_Button;
+
+    @FXML
+    private Label floor_Label;
+
+    @FXML
+    private Label c_Floor_Label;
+
+    boolean second = false;
 
 
     private int nodeEdgeX1;
@@ -168,8 +182,6 @@ public class NewMainMapManagementController extends controllers.mapScene {
         graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
                 currentFloor, permissionLevel);
 
-        setFloorChoices();
-
         //Zooming code
         /*NOTES: Basic zooming works
             need to do:
@@ -179,6 +191,19 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 Don't pan when selecting a node (somehow detect you're clicking a node and setPanable(false)
 
          */
+
+        PauseTransition idle = new PauseTransition(Duration.seconds(100));
+        idle.setOnFinished(e -> {
+            signOutButton_Clicked();
+            if (temporaryButton[0] != null && !databaseController.isActualLocation(round((temporaryButton[0].getLayoutX()/zoom)/widthRatio),
+                    round((temporaryButton[0].getLayoutY()/zoom)/heightRatio), currentFloor)) {
+                admin_FloorPane.getChildren().remove(temporaryButton[0]);
+            }
+        });
+        backgroundAnchorPane.addEventHandler(Event.ANY, e -> {
+            idle.playFromStart();
+        });
+
         admin_FloorPane.setMaxWidth(5000);
         admin_FloorPane.setMaxHeight(5000);
         scrollPane.setFitToWidth(true);
@@ -521,6 +546,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 databaseController.transferNodeLoc(dragNode.getPosX(), dragNode.getPosY(), dragNode.getFloor(),
                         round((dragCircle.getLayoutX()/zoom)/widthRatio),
                         round((dragCircle.getLayoutY()/zoom)/heightRatio), currentFloor);
+                System.out.println("transferred");
 
                 databaseController.deleteNode(dragNode.getPosX(), dragNode.getPosY(), currentFloor);
 
@@ -600,6 +626,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         AnchorPane.setRightAnchor(vb, 5.0);
         AnchorPane.setTopAnchor(grid, 10.0);
 
+
         if (mode.equals("Edit")){
             ResultSet rset = databaseController.getNode(
                     round((btK.getLayoutX()/zoom)/widthRatio), round((btK.getLayoutY()/zoom)/heightRatio), currentFloor);
@@ -627,6 +654,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
             }
         }
 
+        String oldRN = nodeRoom.getText();
 
         pop.setDetachable(true);
         pop.setDetached(false);
@@ -654,23 +682,69 @@ public class NewMainMapManagementController extends controllers.mapScene {
                     }
                     if (mode.equals("Edit")) {
                         pop.setTitle("Edit Location");
-                        DBController.DatabaseController.getInstance().updateNode(
-                                round((btK.getLayoutX()/graph.getZoom())/graph.getWidthRatio()),
-                                round((btK.getLayoutY()/graph.getZoom())/graph.getHeightRatio()),
-                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType,
-                                thisNodeName, thisNodeRoom, permission);
-                        pop.hide();
-                        admin_FloorPane.getChildren().remove(btK);
-                        resetScreen();
+
+                        ResultSet temp = databaseController.getNodeWithName(thisNodeRoom);
+                        boolean nodeAlreadyThere = false;
+                        try {
+                            if (!temp.next()) {
+                                System.out.println("all clear");
+                                nodeAlreadyThere = false;
+                            } else {
+                                if (thisNodeRoom.equalsIgnoreCase(oldRN)) {
+                                    nodeAlreadyThere = false;
+                                    System.out.println("unchanged");
+                                } else {
+                                    System.out.println("changed");
+                                    nodeAlreadyThere = true;
+                                }
+                            }
+
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                        }
+
+                        if (!nodeAlreadyThere) {
+                            DBController.DatabaseController.getInstance().updateNode(
+                                    round((btK.getLayoutX() / graph.getZoom()) / graph.getWidthRatio()),
+                                    round((btK.getLayoutY() / graph.getZoom()) / graph.getHeightRatio()),
+                                    currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType,
+                                    thisNodeName, thisNodeRoom, permission);
+                            pop.hide();
+                            admin_FloorPane.getChildren().remove(btK);
+                            resetScreen();
+                        } else {
+                            nodeRoom.setBackground(new Background(
+                                    new BackgroundFill(Color.YELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
+                        }
                     } else if (mode.equals("Create")){
-                        DBController.DatabaseController.getInstance().newNode(
-                                round((btK.getLayoutX()/graph.getZoom())/graph.getWidthRatio()),
-                                round((btK.getLayoutY()/graph.getZoom())/graph.getHeightRatio()),
-                                currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType,
-                                thisNodeName, thisNodeRoom, permission);
-                        pop.hide();
-                        admin_FloorPane.getChildren().remove(btK);
-                        resetScreen();
+                        System.out.println("name: " + thisNodeRoom);
+                        ResultSet temp = databaseController.getNodeWithName(thisNodeRoom);
+                        boolean nodeAlreadyThere = false;
+                        try {
+                            if (!temp.next()) {
+                                System.out.println("all clear");
+                                nodeAlreadyThere = false;
+                            } else {
+                                System.out.println("Node already there");
+                                nodeAlreadyThere = true;
+                            }
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                        }
+                        if (!nodeAlreadyThere) {
+                            DBController.DatabaseController.getInstance().newNode(
+                                    round((btK.getLayoutX() / graph.getZoom()) / graph.getWidthRatio()),
+                                    round((btK.getLayoutY() / graph.getZoom()) / graph.getHeightRatio()),
+                                    currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType,
+                                    thisNodeName, thisNodeRoom, permission);
+                            pop.hide();
+                            admin_FloorPane.getChildren().remove(btK);
+                            resetScreen();
+                        } else {
+                            nodeRoom.setText("");
+                            nodeRoom.setBackground(new Background(
+                                    new BackgroundFill(Color.YELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
+                        }
                     }
                 }
             }
@@ -926,27 +1000,27 @@ public class NewMainMapManagementController extends controllers.mapScene {
         }
     }
 
-    //Change to main Menu
-    public void mainMenuButton_Clicked() {
-
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
-        adminMenuStart.adminMenuStartController controller = loader.getController();
-        //Set the correct username for the next scene
-        controller.setUsername(LogInPerson_Label.getText());
-        System.out.println(LogInPerson_Label.getText());
-
-        //sets the current language
-        controller.setCurrentLanguage(c_language);
-        //set up english labels
-        if(c_language == 0){
-            controller.englishButtons_Labels();
-
-            //set up spanish labels
-        }else if(c_language == 1){
-            controller.spanishButtons_Labels();
-        }
-        controller.setLanguageChoices();
-    }
+//    //Change to main Menu
+//    public void mainMenuButton_Clicked() {
+//
+//        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/adminMenuStartView.fxml");
+//        adminMenuStart.adminMenuStartController controller = loader.getController();
+//        //Set the correct username for the next scene
+//        controller.setUsername(LogInPerson_Label.getText());
+//        System.out.println(LogInPerson_Label.getText());
+//
+//        //sets the current language
+//        controller.setCurrentLanguage(c_language);
+//        //set up english labels
+//        if(c_language == 0){
+//            controller.englishButtons_Labels();
+//
+//            //set up spanish labels
+//        }else if(c_language == 1){
+//            controller.spanishButtons_Labels();
+//        }
+//        controller.setLanguageChoices();
+//    }
 
     public void setUserString(String user) {
 
@@ -954,15 +1028,21 @@ public class NewMainMapManagementController extends controllers.mapScene {
     }
 
 
+
+
     //Sets the map of the desired floor
     public void setFloorChoices(){
+
         if(c_language == 0) {
+
             floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Outside",
                     "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4", "Belkin Basement");
         }else{
             floor_ChoiceBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "Afuera",
                     "Belkin 1", "Belkin 2", "Belkin 3", "Belkin 4", "Sotano de Belkin");
         }
+
+
 
         //reset ui interaction
         dragMode = false;
@@ -978,7 +1058,8 @@ public class NewMainMapManagementController extends controllers.mapScene {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 boolean outside = false;
                 String currentF = "";
-
+                //Print the floors accordingly
+                //CODE HERE!!!!!!!
 
                 if (newValue.intValue() == 7) {
                     //outside
@@ -989,15 +1070,61 @@ public class NewMainMapManagementController extends controllers.mapScene {
                     currentFloor = newValue.intValue() + 1;
                 }
 
+                if (currentFloor == 0) {
+                    System.out.println("outside");
+                    outside = true;
+                    if (c_language == 0) {
+                        currentF = "Outside";
+                    } else {
+                        currentF = "Afuera";
+                    }
+                }
+
+                if (currentFloor == 8) {
+                    //outside
+                    outside = true;
+                    currentF = "Belkin 1";
+
+                } else if (currentFloor == 9) {
+                    //belkin
+                    outside = true;
+                    currentF = "Belkin 2";
+
+                } else if (currentFloor == 10) {
+                    outside = true;
+                    currentF = "Belkin 3";
+
+                } else if (currentFloor == 11) {
+                    outside = true;
+                    currentF = "Belkin 4";
+
+                } else if (currentFloor == 12) {
+                    outside = true;
+                    if (c_language == 0) {
+                        currentF = "Belkin Basement";
+                    } else {
+                        currentF = "Sotano de Belkin";
+                    }
+                }
+
+                if (!outside) {
+                    c_Floor_Label.setText(Integer.toString(currentFloor));
+                    if (c_language == 0) {
+                        floor_Label.setText("Floor");
+                    } else {
+                        floor_Label.setText("Piso");
+                    }
+                } else {
+                    c_Floor_Label.setText("");
+                    floor_Label.setText(currentF);
+                }
+
+
+
+
                 mapImage newMapImage = new proxyMap(currentFloor);
                 newMapImage.display(map_viewer);
 
-                if(!outside) {
-                    //c_Floor_Label.setText(Integer.toString(currentFloor));
-                }else{
-                    //c_Floor_Label.setText("");
-                    //floor_Label.setText(currentF);
-                }
                 //true ot see nodes false otherwise
                 graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),true,
                         currentFloor, permissionLevel);
@@ -1109,7 +1236,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         graph.setHeightRatio(1.0);
         graph.setWidthRatio(1.0);
 
-        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/emergencyView.fxml");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewEmergencyView.fxml");
         emergency.emergencyController controller = loader.getController();
         //sends the current language to the next screen
         controller.setCurrentLanguage(c_language);
@@ -1120,6 +1247,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         }else if(c_language == 1){
             controller.spanishButtons_Labels();
         }
+
     }
 
     //Manages when the user clicks the save button
@@ -1186,6 +1314,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
         emergency_Button.setText("EMERGENCY");
         clear_Button.setText("Clear");
         save_Button.setText("Save");
+        pathFinding_Button.setText("PathFinding");
+
+        floor_Label.setText("Floor");
 
         //Choice Box
         setFloorChoices();
@@ -1206,7 +1337,9 @@ public class NewMainMapManagementController extends controllers.mapScene {
         emergency_Button.setText("EMERGENCIA");
         clear_Button.setText("Borrar");
         save_Button.setText("Guardar");
+        pathFinding_Button.setText("Mapa de Busqueda");
 
+        floor_Label.setText("Piso");
         //Choice Box
         setFloorChoices();
 
@@ -1285,66 +1418,28 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
 
     public void zoomInButton_Clicked() {
-        zoom = graph.getZoom();
-        System.out.println(zoom);
-        if (zoom < 2.2) {
-            zoom += 0.03;
-            if (zoom > 2.2) {
-                zoom = 2.2;
-            }
-            changeZoom();
-
-            graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
-                    currentFloor, permissionLevel);
-        }
-        scrollPane.setFitToHeight(false);
-        scrollPane.setFitToWidth(false);
-
-    }
-
-    public void zoomOutButton_Clicked() {
-        zoom = graph.getZoom();
-        System.out.println(zoom);
-        if (zoom > 1.0) {
-            zoom = zoom - 0.03;
-            if (zoom < 1.0) {
-                zoom = 1.0;
-                scrollPane.setFitToHeight(true);
-                scrollPane.setFitToWidth(true);
-            }
-            changeZoom();
-        } else {
-            scrollPane.setFitToHeight(true);
-            scrollPane.setFitToWidth(true);
-        }
-
-        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
-                currentFloor, permissionLevel);
-
-    }
-
-    //Let the user scroll through the map
-    public void mapScroll(ScrollEvent event) {
-        zoom = MapOverlay.getZoom();
-        if (currentHval != 0) {
-            System.out.println("pre zoom currenthval: " + currentHval);
-            System.out.println("pre zoom currnetVval: " + currentVval);
-        }
-        currentHval = scrollPane.getHvalue();
-        currentVval = scrollPane.getVvalue();
-        if (event.getDeltaY() > 0) {
+        if (multiDragMode == false && dragMode == false) {
+            zoom = graph.getZoom();
+            System.out.println(zoom);
             if (zoom < 2.2) {
-                scrollPane.setFitToHeight(false);
-                scrollPane.setFitToWidth(false);
                 zoom += 0.03;
                 if (zoom > 2.2) {
                     zoom = 2.2;
                 }
                 changeZoom();
+
                 graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
                         currentFloor, permissionLevel);
             }
-        } else if (event.getDeltaY() < 0) {
+            scrollPane.setFitToHeight(false);
+            scrollPane.setFitToWidth(false);
+        }
+    }
+
+    public void zoomOutButton_Clicked() {
+        if (multiDragMode == false && dragMode == false) {
+            zoom = graph.getZoom();
+            System.out.println(zoom);
             if (zoom > 1.0) {
                 zoom = zoom - 0.03;
                 if (zoom < 1.0) {
@@ -1353,23 +1448,67 @@ public class NewMainMapManagementController extends controllers.mapScene {
                     scrollPane.setFitToWidth(true);
                 }
                 changeZoom();
-                graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
-                        currentFloor, permissionLevel);
             } else {
                 scrollPane.setFitToHeight(true);
                 scrollPane.setFitToWidth(true);
             }
-        }
 
-        System.out.println("currenthval: " + currentHval);
-        System.out.println("currnetVval: " + currentVval);
-        scrollPane.setHvalue(currentHval);
-        scrollPane.setVvalue(currentVval);
+            graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
+                    currentFloor, permissionLevel);
+        }
+    }
+
+    //Let the user scroll through the map
+    public void mapScroll(ScrollEvent event) {
+        if (multiDragMode == false && dragMode == false) {
+            zoom = MapOverlay.getZoom();
+            if (currentHval != 0) {
+                System.out.println("pre zoom currenthval: " + currentHval);
+                System.out.println("pre zoom currnetVval: " + currentVval);
+            }
+            currentHval = scrollPane.getHvalue();
+            currentVval = scrollPane.getVvalue();
+            if (event.getDeltaY() > 0) {
+                if (zoom < 2.2) {
+                    scrollPane.setFitToHeight(false);
+                    scrollPane.setFitToWidth(false);
+                    zoom += 0.03;
+                    if (zoom > 2.2) {
+                        zoom = 2.2;
+                    }
+                    changeZoom();
+                    graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
+                            currentFloor, permissionLevel);
+                }
+            } else if (event.getDeltaY() < 0) {
+                if (zoom > 1.0) {
+                    zoom = zoom - 0.03;
+                    if (zoom < 1.0) {
+                        zoom = 1.0;
+                        scrollPane.setFitToHeight(true);
+                        scrollPane.setFitToWidth(true);
+                    }
+                    changeZoom();
+                    graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
+                            currentFloor, permissionLevel);
+                } else {
+                    scrollPane.setFitToHeight(true);
+                    scrollPane.setFitToWidth(true);
+                }
+            }
+
+            System.out.println("currenthval: " + currentHval);
+            System.out.println("currnetVval: " + currentVval);
+            scrollPane.setHvalue(currentHval);
+            scrollPane.setVvalue(currentVval);
+        }
     }
 
     //when the mouse is clicked and dragged on the map
     public void dragDetected() {
-        //isDragged = true;
+        if (!dragMode && !multiDragMode) {
+            isDragged = true;
+        }
         //System.out.println("detected");
     }
 
@@ -1386,4 +1525,31 @@ public class NewMainMapManagementController extends controllers.mapScene {
         }
 
     }
+
+
+    //Sends the person to pathfinding with admin permission
+    public void pathFindingButton_Clicked(){
+        System.out.println("Logging in Employee");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
+        //patientMenuStart.patientMenuStartController controller = loader.getController();
+        NewIntroUI.NewIntroUIController controller = loader.getController();
+        //sets the current language
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            controller.setWelcome(LogInPerson_Label.getText());
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+            controller.setWelcome(LogInPerson_Label.getText());
+        }
+        controller.setPermissionLevel(2);
+        controller.loginOrOut(0,c_language);
+        controller.setLanguage_ChoiceBox(c_language);
+        controller.AdminButtons(c_language);
+    }
+
+
+
 }

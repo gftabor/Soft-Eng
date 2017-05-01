@@ -1,5 +1,6 @@
 package adminSignUp;
 import DBController.DatabaseController;
+import adminLoginMain.facialRecognition;
 import adminSignUp.adminTable;
 import hospitalDirectorySearch.Table;
 import javafx.beans.value.ChangeListener;
@@ -17,6 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -123,11 +125,36 @@ public class adminSignUpController extends controllers.AbsController{
     @FXML
     private Button emergency_Button;
 
+    @FXML
+    private Button pathFinding_Button;
+
+    @FXML
+    private Button clearID_button;
+    @FXML
+    private Button clearUser_Button;
+    @FXML
+    private Button clearFN_Button;
+    @FXML
+    private Button clearLN_Button;
+    @FXML
+    private Button clearNP_Button;
+
+    @FXML
+    private VBox root;
+
+    public void initialize() {
+
+        facialRecognition.getInstance().start(root);
+        facialRecognition.getInstance().off();
+
+    }
 
 
 
-
-
+    public FXMLLoader switch_screen(AnchorPane BGCurrentanchor, String viewPath){
+        facialRecognition.getInstance().stop();
+        return super.switch_screen(BGCurrentanchor,viewPath);
+    }
 
     private boolean selfSelected = false;
 
@@ -139,6 +166,9 @@ public class adminSignUpController extends controllers.AbsController{
     int givID, givPermissions;
     String givUsername, givFirstN, givLastN, givPassword;
 
+    String faceId = "";
+
+    //Clears all the inputs
    public void clearInputs(){
         id_textField.clear();
         userName_TextField.clear();
@@ -148,9 +178,39 @@ public class adminSignUpController extends controllers.AbsController{
        isAdmin_CheckBox.setSelected(false);
     }
 
+    //CLEARS THE INPUTS for each specific text field
+    public void clearID(){
+       id_textField.setText("");
+    }
+    public void clearUser(){
+        userName_TextField.setText("");
+    }
+    public void clearFN(){
+        firstName_TextField.setText("");
+    }
+    public void clearLN(){
+        lastName_TextField.setText("");
+    }
+    public void clearNP(){
+        newPassword_TextField.setText("");
+    }
+
+
+
 
     //Sends the user to the emergency scene
     public void emergencyButton_Clicked(){
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewEmergencyView.fxml");
+        emergency.emergencyController controller = loader.getController();
+        //sends the current language to the next screen
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+        }
 
     }
 
@@ -241,19 +301,23 @@ public class adminSignUpController extends controllers.AbsController{
         }else{
             System.out.println("Error with choicebox on admin page");
         }
+        facialRecognition.getInstance().initFace();
         clearInputs();
 
     }
 
     //adds the admin into the database
     public void addAdmin(){
+        // make sure you set the faceId before calling this
         try {
             if (databaseController.newAdmin(firstName_TextField.getText(), lastName_TextField.getText(),
-                    userName_TextField.getText(), newPassword_TextField.getText(), isAdmin_CheckBox.isSelected())) {
+                    userName_TextField.getText(), newPassword_TextField.getText(), isAdmin_CheckBox.isSelected(),
+                    facialRecognition.getInstance().getFaceID())) {
                 queryStatus.setText("Admin Added");
             } else {
                 queryStatus.setText("Error Adding Admin");
             }
+
         }
         catch(Exception e){
             queryStatus.setText("ERROR: Exception");
@@ -456,6 +520,7 @@ public class adminSignUpController extends controllers.AbsController{
         directoryManagement_Button.setText("Directory Management");
         signOut_Button.setText("Sign Out");
         emergency_Button.setText("EMERGENCY");
+        pathFinding_Button.setText("PathFinding");
 
 
         //TextField
@@ -497,6 +562,7 @@ public class adminSignUpController extends controllers.AbsController{
         directoryManagement_Button.setText("Control de Directorio");
         signOut_Button.setText("Salir");
         emergency_Button.setText("EMERGENCIA");
+        pathFinding_Button.setText("Mapa de Busqueda");
 
 
         //TextField
@@ -531,6 +597,29 @@ public class adminSignUpController extends controllers.AbsController{
     //sets the current language given information form other screens
     public void setCurrentLanguage(int i){
         c_language = i;
+    }
+
+    //Sends the person to pathfinding with admin permission
+    public void pathFindingButton_Clicked(){
+        System.out.println("Logging in Employee");
+        FXMLLoader loader = switch_screen(backgroundAnchorPane, "/views/NewIntroUIView.fxml");
+        //patientMenuStart.patientMenuStartController controller = loader.getController();
+        NewIntroUI.NewIntroUIController controller = loader.getController();
+        //sets the current language
+        controller.setCurrentLanguage(c_language);
+        //set up english labels
+        if(c_language == 0){
+            controller.englishButtons_Labels();
+            controller.setWelcome(currentAdmin_Label.getText());
+            //set up spanish labels
+        }else if(c_language == 1){
+            controller.spanishButtons_Labels();
+            controller.setWelcome(currentAdmin_Label.getText());
+        }
+        controller.setPermissionLevel(2);
+        controller.setLanguage_ChoiceBox(c_language);
+        controller.loginOrOut(0,c_language);
+        controller.AdminButtons(c_language);
     }
 
 
