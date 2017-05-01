@@ -196,6 +196,14 @@
                     </tabs>
                   </TabPane>
                   <Label fx:id="searchError" minHeight="-Infinity" prefHeight="37.0" prefWidth="288.0" textAlignment="CENTER" textFill="RED" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="42.0" layoutY="13.0" minHeight="-Infinity" prefHeight="37.0" prefWidth="41.0" text="Key:" textAlignment="CENTER" />
+                        <Label minHeight="-Infinity" prefHeight="37.0" prefWidth="68.0" text="Red: Start" textAlignment="CENTER" textFill="RED" />
+                        <Label layoutX="10.0" layoutY="10.0" minHeight="-Infinity" prefHeight="37.0" prefWidth="79.0" text="Green: End" textAlignment="CENTER" textFill="#00ff04" />
+                        <Label layoutX="72.0" layoutY="10.0" minHeight="-Infinity" prefHeight="37.0" prefWidth="83.0" text="Orange: Kiosk" textAlignment="CENTER" textFill="#ff8700" />
+                     </children>
+                  </HBox>
                </children>
                <BorderPane.margin>
                   <Insets bottom="5.0" left="5.0" right="2.0" top="2.0" />
