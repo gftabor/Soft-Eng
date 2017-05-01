@@ -82,7 +82,7 @@ public class facialRecognition {
         System.out.println("FACEEEEE");
         try {
             httpRequests.groupDelete(new PostParameters().setGroupName("Faukner"));
-        }catch(Exception e){System.out.println("cant delete group");}
+        }catch(Exception e){System.out.println("cant delete group"); e.printStackTrace();}
 
         try {
 
@@ -92,7 +92,7 @@ public class facialRecognition {
             ArrayList<String> personList = new ArrayList<String>();
             //for admins
             for (controllers.Admin currentAdmin: DBController.DatabaseController.getInstance().getListOfAdmins()) {
-                if(currentAdmin.getFaceId() == null)
+                if(currentAdmin.getFaceId() == null || currentAdmin.getFaceId().equals(""))
                     continue;
                 try {//might already exist
                     httpRequests.personCreate(new PostParameters().setPersonName(currentAdmin.getUserName()));
@@ -166,7 +166,7 @@ public class facialRecognition {
                                     String username = result.getJSONArray("candidate").getJSONObject(i).getString("person_name");
                                     Double confidence = result.getJSONArray("candidate").getJSONObject(i).getDouble("confidence");
                                     if (confidence > 25.0) {
-                                        System.out.println("logging in");
+                                        System.out.println("about to log in  " + username);
                                         mainScene.alternateLogIn(username);
                                         nextState = state.NOTHING;
                                         break;
