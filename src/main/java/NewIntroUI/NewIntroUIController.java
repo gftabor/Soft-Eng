@@ -2,14 +2,17 @@ package NewIntroUI;
 
 import DBController.DatabaseController;
 import controllers.*;
+import controllers.Node;
 import emergency.SmsSender;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,7 +26,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import org.controlsfx.control.textfield.TextFields;
+
+import java.io.IOException;
 import pathFindingMenu.Pathfinder;
 import java.net.URISyntaxException;
 import java.sql.ResultSet;
@@ -173,6 +179,9 @@ public class NewIntroUIController extends controllers.mapScene{
     @FXML
     private Label stairs_Label;
 
+    @FXML
+    private Label searchError;
+
 
 
 
@@ -211,6 +220,8 @@ public class NewIntroUIController extends controllers.mapScene{
     private final Color startColor = Color.CRIMSON;
     private final Color endColor = Color.GREEN;
     private final Color kioskColor = Color.ORANGE;
+    private final Color interStart = Color.DARKBLUE;
+    private final Color interEnd = Color.AQUAMARINE;
 
     private double origPaneWidth;
     private double origPaneHeight;
@@ -904,6 +915,13 @@ public class NewIntroUIController extends controllers.mapScene{
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
                 path = mapController.requestPath(permissionLevel, useStairs);
 
+                if(path.size() == 0){
+                    System.out.println("Cannot find path in simple pathfinding");
+                    searchError.setText("Cannot find path. Please select a different location.");
+                }else{
+                    searchError.setText("");
+                }
+
                 int startfloor = mapController.returnOriginalFloor();
                 if(startfloor != currentFloor) {
                     c_Floor_Label.setText(Integer.toString(startfloor));
@@ -936,7 +954,12 @@ public class NewIntroUIController extends controllers.mapScene{
             }
 
             if(ThreeDPATH_CheckBox.isSelected()){
-                mainTitle_Label.setText("3D BS");
+                //mapController.nodeListToText(pathfinder.getNodePath());
+                try {
+                    Runtime.getRuntime().exec(new String[] { "pathfinder3D.exe"});
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -1128,6 +1151,7 @@ public class NewIntroUIController extends controllers.mapScene{
         //reset the textfields
         start_textField.setText("");
         end_TextField.setText("");
+        searchError.setText("");
 
         //reset any colors
 
@@ -1660,6 +1684,72 @@ public class NewIntroUIController extends controllers.mapScene{
         System.out.println("past zoomed");
         secret_Click();
         System.out.println("after secretclick");
+    }
+
+    //note: edge list must be ordered
+    private Circle findStartFromEdgeList(ArrayList<controllers.Edge> edgeList) {
+        //if list is empty
+        if (edgeList.size() == 0) {
+            return null;
+        }
+
+        Node n;
+
+        if (edgeList.size() == 1) {
+            n = edgeList.get(0).getStartNode();
+        } else {
+            if (edgeList.get(0).getEndNode() == edgeList.get(1).getStartNode() ||
+                    edgeList.get(0).getEndNode() == edgeList.get(1).getEndNode()) {
+                n = edgeList.get(0).getStartNode();
+            } else {
+                n = edgeList.get(0).getEndNode();
+            }
+        }
+        ObservableList<javafx.scene.Node> sceneObjects = node_Plane.getChildren();
+
+        for (javafx.scene.Node obj: sceneObjects) {
+            if (obj instanceof Circle) {
+                if (round((obj.getLayoutX()/zoom)/widthRatio) == n.getPosX() &&
+                        round((obj.getLayoutY()/zoom)/heightRatio) == n.getPosY()) {
+                    System.out.println("FOUND MY CIRCLE!!");
+                    return (Circle) obj;
+                }
+            }
+        }
+        return null;
+    }
+
+    //note: edge list must be ordered
+    private Circle findEndFromEdgeList(ArrayList<controllers.Edge> edgeList) {
+        //if list is empty
+        if (edgeList.size() == 0) {
+            return null;
+        }
+
+        Node n;
+
+        if (edgeList.size() == 1) {
+            n = edgeList.get(0).getEndNode();
+        } else {
+            if (edgeList.get(edgeList.size() - 1).getEndNode() == edgeList.get(edgeList.size() - 2).getStartNode() ||
+                    edgeList.get(edgeList.size() - 1).getEndNode() == edgeList.get(edgeList.size() - 2).getEndNode()) {
+                n = edgeList.get(edgeList.size() - 1).getStartNode();
+            } else {
+                n = edgeList.get(edgeList.size() - 1).getEndNode();
+            }
+        }
+        ObservableList<javafx.scene.Node> sceneObjects = node_Plane.getChildren();
+
+        for (javafx.scene.Node obj: sceneObjects) {
+            if (obj instanceof Circle) {
+                if (round((obj.getLayoutX()/zoom)/widthRatio) == n.getPosX() &&
+                        round((obj.getLayoutY()/zoom)/heightRatio) == n.getPosY()) {
+                    System.out.println("FOUND MY CIRCLE!!");
+                    return (Circle) obj;
+                }
+            }
+        }
+        return null;
     }
 
 
