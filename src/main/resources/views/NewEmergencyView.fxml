@@ -207,13 +207,13 @@
             </VBox>
          </left>
          <center>
-            <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
+            <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <content>
-                  <Pane fx:id="pane" prefHeight="701.0" prefWidth="1043.0">
+                  <AnchorPane fx:id="pane" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <ImageView fx:id="map_viewer" fitHeight="709.0" fitWidth="975.0" />
+                        <ImageView fx:id="map_viewer" fitHeight="489.0" fitWidth="920.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
-                  </Pane>
+                  </AnchorPane>
                </content>
             </ScrollPane>
          </center>

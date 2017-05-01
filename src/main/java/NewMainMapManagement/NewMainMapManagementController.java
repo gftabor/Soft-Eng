@@ -192,22 +192,11 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
          */
 
-
-
-
-
         PauseTransition idle = new PauseTransition(Duration.seconds(10));
         idle.setOnFinished(e -> signOutButton_Clicked());
         backgroundAnchorPane.addEventHandler(Event.ANY, e -> {
             idle.playFromStart();
         });
-
-
-
-
-
-
-
 
         admin_FloorPane.setMaxWidth(5000);
         admin_FloorPane.setMaxHeight(5000);
