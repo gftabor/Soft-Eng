@@ -53,9 +53,11 @@ public class Edge {
             //  -elevator
             //  -other (default catch-all)
             //Want to favor elevators over stairs, anything else just pick a default value
-            if(startNode.getType().equals("Elevator") && endNode.getType().equals("Elevator")) {
+            if(startNode.getType().equalsIgnoreCase("Elevator")
+                    && endNode.getType().equalsIgnoreCase("Elevator")) {
                 return 10;
-            } else if(startNode.getType().equals("Stairwell") && endNode.getType().equals("Stair")) {
+            } else if(startNode.getType().equalsIgnoreCase("Stair")
+                    && endNode.getType().equalsIgnoreCase("Stair")) {
                 return 20000 * (Math.abs(floorEnd - floorStart)); //get worse by floor
             } else {
                 return 400; //idk just pick something, perhaps revisit later
