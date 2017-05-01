@@ -30,15 +30,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../libs/object-detection-1.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/../../libs/image-processing-1.1.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -54,11 +45,29 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../libs/object-detection-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../libs/slf4j-jdk14-1.7.25.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="library" name="Gradle: com.google.guava:guava:20.0" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.derby:derby:10.13.1.1" level="project" />
     <orderEntry type="library" name="Gradle: org.controlsfx:controlsfx:8.40.12" level="project" />
     <orderEntry type="library" name="Gradle: com.twilio.sdk:twilio:7.8.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.sarxos:webcam-capture:0.3.9" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.sarxos:webcam-capture:0.3.11" level="project" />
     <orderEntry type="library" name="Gradle: org.openimaj:clustering:1.1" level="project" />
     <orderEntry type="library" name="Gradle: org.openimaj:core-feature:1.1" level="project" />
     <orderEntry type="library" name="Gradle: org.openimaj:core-image:1.1" level="project" />
@@ -78,8 +87,7 @@
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.7" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.8.7" level="project" />
     <orderEntry type="library" name="Gradle: javax.xml.bind:jaxb-api:2.2" level="project" />
-    <orderEntry type="library" name="Gradle: com.jhlabs:filters:2.0.235-1" level="project" />
-    <orderEntry type="library" name="Gradle: com.nativelibs4java:bridj:0.6.2" level="project" />
+    <orderEntry type="library" name="Gradle: com.nativelibs4java:bridj:0.7.0" level="project" />
     <orderEntry type="library" name="Gradle: org.openimaj:nearest-neighbour:1.1" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.sanselan:sanselan:0.97-incubator" level="project" />
     <orderEntry type="library" name="Gradle: com.caffeineowl.graphics:BezierUtils:1.0.0" level="project" />
@@ -110,7 +118,6 @@
     <orderEntry type="library" name="Gradle: org.openimaj:core-experiment:1.1" level="project" />
     <orderEntry type="library" name="Gradle: javax.xml.stream:stax-api:1.0-2" level="project" />
     <orderEntry type="library" name="Gradle: javax.activation:activation:1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.tools:dx:1.7" level="project" />
     <orderEntry type="library" name="Gradle: vigna.dsi.unimi.it:jal:20031117" level="project" />
     <orderEntry type="library" name="Gradle: com.twelvemonkeys.imageio:imageio-core:3.0-20130211" level="project" />
     <orderEntry type="library" name="Gradle: com.twelvemonkeys.imageio:imageio-metadata:3.0-20130211" level="project" />
