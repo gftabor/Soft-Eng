@@ -118,8 +118,11 @@ public class facialRecognition {
         }catch(Exception e){e.printStackTrace();}
     }
 
-    private static facialRecognition instance = new facialRecognition();
+    private static facialRecognition instance;
     public static facialRecognition getInstance(){
+        if(instance == null)
+             instance = new facialRecognition();
+
       return instance;
     }
     private facialRecognition(){
