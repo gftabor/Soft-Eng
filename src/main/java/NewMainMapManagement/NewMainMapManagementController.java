@@ -663,6 +663,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
         buttonSave.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
+                pop.setDetached(true);
                 System.out.println("Adding");
                 String thisNodeName = nodeName.getText();
                 String thisNodeType = nodeType.getText();
