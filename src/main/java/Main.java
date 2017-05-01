@@ -49,7 +49,6 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) throws SQLException{
-        adminLoginMain.facialRecognition.getInstance();
         launch(args);
         adminLoginMain.facialRecognition.getInstance().cameraThread.stop();
     }

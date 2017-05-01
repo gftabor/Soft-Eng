@@ -128,7 +128,6 @@ public class facialRecognition {
     private facialRecognition(){
 
         cameraThread = new Thread(() -> {
-           // webcam.setViewSize(new Dimension(640, 480));
             webcam = Webcam.getDefault();
             webcam.open();
             BufferedImage capture = null;
