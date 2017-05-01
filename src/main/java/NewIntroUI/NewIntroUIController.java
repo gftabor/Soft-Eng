@@ -27,6 +27,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import org.controlsfx.control.textfield.TextFields;
+
+import java.io.IOException;
 import pathFindingMenu.Pathfinder;
 import java.net.URISyntaxException;
 import java.sql.ResultSet;
@@ -939,7 +941,12 @@ public class NewIntroUIController extends controllers.mapScene{
             }
 
             if(ThreeDPATH_CheckBox.isSelected()){
-                mainTitle_Label.setText("3D BS");
+                //mapController.nodeListToText(pathfinder.getNodePath());
+                try {
+                    Runtime.getRuntime().exec(new String[] { "pathfinder3D.exe"});
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
