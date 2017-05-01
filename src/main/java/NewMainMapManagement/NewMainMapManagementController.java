@@ -663,6 +663,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
         buttonSave.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
+                System.out.println("Adding");
                 String thisNodeName = nodeName.getText();
                 String thisNodeType = nodeType.getText();
                 String thisNodeRoom = nodeRoom.getText();
@@ -680,6 +681,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                             permission = 0;
                         }
                     }
+                    System.out.println("Adding with permission: " + permission);
                     if (mode.equals("Edit")) {
                         pop.setTitle("Edit Location");
 
@@ -704,7 +706,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                         }
 
                         if (!nodeAlreadyThere) {
-                            DBController.DatabaseController.getInstance().updateNode(
+                            databaseController.updateNode(
                                     round((btK.getLayoutX() / graph.getZoom()) / graph.getWidthRatio()),
                                     round((btK.getLayoutY() / graph.getZoom()) / graph.getHeightRatio()),
                                     currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType,
@@ -732,14 +734,21 @@ public class NewMainMapManagementController extends controllers.mapScene {
                             ex.printStackTrace();
                         }
                         if (!nodeAlreadyThere) {
-                            DBController.DatabaseController.getInstance().newNode(
+                            System.out.println("zooom " + zoom);
+                            System.out.println(widthRatio);
+                            System.out.println(heightRatio);
+                            databaseController.newNode(
                                     round((btK.getLayoutX() / graph.getZoom()) / graph.getWidthRatio()),
                                     round((btK.getLayoutY() / graph.getZoom()) / graph.getHeightRatio()),
                                     currentFloor, isHidden.isSelected(), isEnabled.isSelected(), thisNodeType,
                                     thisNodeName, thisNodeRoom, permission);
+                            System.out.println("Hiding now");
                             pop.hide();
+                            System.out.println("Hiding now");
                             admin_FloorPane.getChildren().remove(btK);
+                            System.out.println("Removed the button");
                             resetScreen();
+                            System.out.println("After reset screen");
                         } else {
                             nodeRoom.setText("");
                             nodeRoom.setBackground(new Background(
@@ -785,7 +794,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 }
                 for (controllers.Edge thisEdge : selectedNode.getEdgeList()) {
                     thisEdge.getNeighbor(selectedNode).getEdgeList().remove(thisEdge);
-                    DBController.DatabaseController.getInstance().deleteEdge(thisEdge.getStartNode().getPosX(),
+                    databaseController.deleteEdge(thisEdge.getStartNode().getPosX(),
                             thisEdge.getStartNode().getPosY(), thisEdge.getStartNode().getFloor(), thisEdge.getEndNode().getPosX(),
                             thisEdge.getEndNode().getPosY(), thisEdge.getEndNode().getFloor());
                 }
@@ -843,7 +852,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 }
                 for (controllers.Edge thisEdge : thisNode.getEdgeList()) {
                     thisEdge.getNeighbor(thisNode).getEdgeList().remove(thisEdge);
-                    DBController.DatabaseController.getInstance().deleteEdge(thisEdge.getStartNode().getPosX(),
+                    databaseController.deleteEdge(thisEdge.getStartNode().getPosX(),
                             thisEdge.getStartNode().getPosY(), thisEdge.getStartNode().getFloor(), thisEdge.getEndNode().getPosX(),
                             thisEdge.getEndNode().getPosY(), thisEdge.getEndNode().getFloor());
                 }
@@ -920,7 +929,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
     //handle a click on an edge.
     public void edgeClickRemove(int x1, int y1, int x2, int y2){
-        DBController.DatabaseController.getInstance().deleteEdge(round((x1/zoom)/widthRatio),
+        databaseController.deleteEdge(round((x1/zoom)/widthRatio),
                 round((y1/zoom)/heightRatio), currentFloor,
                 round((x2/zoom)/widthRatio), round((y2/zoom)/heightRatio), currentFloor);
         System.out.println("removed edge on click");
@@ -942,7 +951,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
                 System.out.println("adding edge...");
                 nodeEdgeX2 = (int) x;
                 nodeEdgeY2 = (int) y;
-                DBController.DatabaseController.getInstance().newEdge(firstNode.getPosX(),
+                databaseController.newEdge(firstNode.getPosX(),
                         firstNode.getPosY(), firstNode.getFloor(), nodeEdgeX2, nodeEdgeY2, currentFloor);
                 resetScreen();
                 addSingleEdgeMode = false;
@@ -1156,6 +1165,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         NewIntroUI.NewIntroUIController controller = loader.getController();
         //sets the current language
         controller.setCurrentLanguage(c_language);
+        controller.setLanguage_ChoiceBox(c_language);
         //set up english labels
         if(c_language == 0){
         controller.englishButtons_Labels();
@@ -1545,6 +1555,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
             controller.setWelcome(LogInPerson_Label.getText());
         }
         controller.setPermissionLevel(2);
+        controller.setStartEndChoices();
         controller.loginOrOut(0,c_language);
         controller.setLanguage_ChoiceBox(c_language);
         controller.AdminButtons(c_language);

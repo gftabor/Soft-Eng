@@ -154,7 +154,7 @@ public class MapOverlay {
                     location.setRadius(25);
                     break;
             }
-            System.out.println("Name of the current kiosk: " + current.getName());
+            //System.out.println("Name of the current kiosk: " + current.getName());
             if (current.getName().equals("Kiosk")){
                 location.setFill(new ImagePattern(kioskImage));
                 location.setRadius(25);

@@ -229,7 +229,7 @@ public class NewIntroUIController extends controllers.mapScene{
     double heightRatio = (1050.0/489.0);
     double widthRatio = (1600.0/920.0);
 
-    private int permissionLevel;
+    private int permissionLevel = 0;
 
     double currentHval = 0;
     double currentVval = 0;
@@ -257,7 +257,6 @@ public class NewIntroUIController extends controllers.mapScene{
     @FXML
     public void initialize() {
         reverse_Button.setStyle("-fx-background-image: url('images/reverse.png')");
-        permissionLevel = 0;
         graph = new controllers.MapOverlay(node_Plane, (mapScene) this);
         MapController.getInstance().requestMapCopy();
         filter_textField.setPromptText("search");
@@ -865,7 +864,7 @@ public class NewIntroUIController extends controllers.mapScene{
         ArrayList<String> professionals = new ArrayList<>();
         ArrayList<String> services = new ArrayList<>();
         ArrayList<String> all = new ArrayList<>();
-
+        System.out.println("Permission in autobind: " + permissionLevel);
         roomNums = databaseController.getFilteredRoomList(permissionLevel);
         professionals = databaseController.getProfessionalList();
 
