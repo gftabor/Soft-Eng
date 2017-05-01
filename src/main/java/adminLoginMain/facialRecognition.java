@@ -123,12 +123,10 @@ public class facialRecognition {
       return instance;
     }
     private facialRecognition(){
-        if(isRunning)
-            webcam = Webcam.getDefault();
 
         cameraThread = new Thread(() -> {
            // webcam.setViewSize(new Dimension(640, 480));
-
+            webcam = Webcam.getDefault();
             webcam.open();
             BufferedImage capture = null;
             java.util.List<BufferedImage> facesList = new ArrayList<>();
