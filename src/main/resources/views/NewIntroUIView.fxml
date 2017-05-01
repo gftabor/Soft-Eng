@@ -144,9 +144,10 @@
                            <children>
                               <ChoiceBox fx:id="language_ChoiceBox" styleClass="menu" />
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button fx:id="reverse_Button" mnemonicParsing="false" onMouseClicked="#reverseButton_Clicked" styleClass="menu" text="Reverse">
+                              <HBox />
+                              <Button fx:id="reverse_Button" mnemonicParsing="false" onMouseClicked="#reverseButton_Clicked" styleClass="menu" text=" ">
                                  <HBox.margin>
-                                    <Insets right="4.0" top="1.0" />
+                                    <Insets right="8.0" top="2.0" />
                                  </HBox.margin></Button>
                            </children>
                         </HBox>
