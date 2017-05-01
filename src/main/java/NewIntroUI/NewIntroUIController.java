@@ -2,14 +2,17 @@ package NewIntroUI;
 
 import DBController.DatabaseController;
 import controllers.*;
+import controllers.Node;
 import emergency.SmsSender;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -1663,6 +1666,72 @@ public class NewIntroUIController extends controllers.mapScene{
         System.out.println("past zoomed");
         secret_Click();
         System.out.println("after secretclick");
+    }
+
+    //note: edge list must be ordered
+    private Circle findStartFromEdgeList(ArrayList<controllers.Edge> edgeList) {
+        //if list is empty
+        if (edgeList.size() == 0) {
+            return null;
+        }
+
+        Node n;
+
+        if (edgeList.size() == 1) {
+            n = edgeList.get(0).getStartNode();
+        } else {
+            if (edgeList.get(0).getEndNode() == edgeList.get(1).getStartNode() ||
+                    edgeList.get(0).getEndNode() == edgeList.get(1).getEndNode()) {
+                n = edgeList.get(0).getStartNode();
+            } else {
+                n = edgeList.get(0).getEndNode();
+            }
+        }
+        ObservableList<javafx.scene.Node> sceneObjects = node_Plane.getChildren();
+
+        for (javafx.scene.Node obj: sceneObjects) {
+            if (obj instanceof Circle) {
+                if (round((obj.getLayoutX()/zoom)/widthRatio) == n.getPosX() &&
+                        round((obj.getLayoutY()/zoom)/heightRatio) == n.getPosY()) {
+                    System.out.println("FOUND MY CIRCLE!!");
+                    return (Circle) obj;
+                }
+            }
+        }
+        return null;
+    }
+
+    //note: edge list must be ordered
+    private Circle findEndFromEdgeList(ArrayList<controllers.Edge> edgeList) {
+        //if list is empty
+        if (edgeList.size() == 0) {
+            return null;
+        }
+
+        Node n;
+
+        if (edgeList.size() == 1) {
+            n = edgeList.get(0).getEndNode();
+        } else {
+            if (edgeList.get(edgeList.size() - 1).getEndNode() == edgeList.get(edgeList.size() - 2).getStartNode() ||
+                    edgeList.get(edgeList.size() - 1).getEndNode() == edgeList.get(edgeList.size() - 2).getEndNode()) {
+                n = edgeList.get(edgeList.size() - 1).getStartNode();
+            } else {
+                n = edgeList.get(edgeList.size() - 1).getEndNode();
+            }
+        }
+        ObservableList<javafx.scene.Node> sceneObjects = node_Plane.getChildren();
+
+        for (javafx.scene.Node obj: sceneObjects) {
+            if (obj instanceof Circle) {
+                if (round((obj.getLayoutX()/zoom)/widthRatio) == n.getPosX() &&
+                        round((obj.getLayoutY()/zoom)/heightRatio) == n.getPosY()) {
+                    System.out.println("FOUND MY CIRCLE!!");
+                    return (Circle) obj;
+                }
+            }
+        }
+        return null;
     }
 
 
