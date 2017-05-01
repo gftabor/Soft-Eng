@@ -156,16 +156,19 @@ public class facialRecognition {
                     byte[] temp = convertBufferedImage(img);
                     try {
                         if(nextState.equals(state.LOGIN)){
-                            result = httpRequests.recognitionIdentify(new PostParameters().setGroupName("Faukner").setImg(temp)).getJSONArray("face").getJSONObject(0);
-                            for(int i =0; i<result.getJSONArray("candidate").length(); i++){
-                                String username = result.getJSONArray("candidate").getJSONObject(i).getString("person_name");
-                                Double confidence = result.getJSONArray("candidate").getJSONObject(i).getDouble("confidence");
-                                if(confidence> 25.0){
-                                    System.out.println("logging in");
-                                    mainScene.alternateLogIn(username);
-                                    nextState = state.NOTHING;
-                                    break;
+                            result = httpRequests.recognitionIdentify(new PostParameters().setGroupName("Faukner").setImg(temp));
+                            if(result.getJSONArray("face").length() !=0) {
+                                result = result.getJSONArray("face").getJSONObject(0);
+                                for (int i = 0; i < result.getJSONArray("candidate").length(); i++) {
+                                    String username = result.getJSONArray("candidate").getJSONObject(i).getString("person_name");
+                                    Double confidence = result.getJSONArray("candidate").getJSONObject(i).getDouble("confidence");
+                                    if (confidence > 25.0) {
+                                        System.out.println("logging in");
+                                        mainScene.alternateLogIn(username);
+                                        nextState = state.NOTHING;
+                                        break;
 
+                                    }
                                 }
                             }
                         }
