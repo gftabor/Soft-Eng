@@ -4,6 +4,8 @@ import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 
+import com.sun.org.apache.regexp.internal.RE;
+import controllers.Admin;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.xml.transform.Result;
@@ -858,23 +860,28 @@ public class DatabaseController {
      *
      ******************************************************************************/
 
-    public boolean newAdmin(String firstName, String lastName, String userName, String password, Boolean isAdmin){
+    public boolean newAdmin(String firstName, String lastName, String userName,
+                            String password, Boolean isAdmin, String faceId){
         String encrypted = BCrypt.hashpw(password, BCrypt.gensalt());
-
         System.out.println(
                 String.format(
                         "Adding Admin. firstName: %s, lastName: %s, userName: %s, password: REDACTED",
                         firstName, lastName, userName));
         try {
             // sql statement with "?" to be filled later
-            String query = "INSERT INTO ADMIN (FIRSTNAME, LASTNAME, USERNAME, PASSWORD, PERMISSIONS)" +
-                    " values (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO ADMIN (FIRSTNAME, LASTNAME, USERNAME, PASSWORD, PERMISSIONS, FACE_ID)" +
+                    " values (?, ?, ?, ?, ?, ?)";
             // prepare statement by replacing "?" with corresponding variable
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
             preparedStatement.setString(3, userName);
             preparedStatement.setString(4, encrypted);
+            if(isAdmin)
+                preparedStatement.setInt(5, 2);
+            else
+                preparedStatement.setInt(5, 1);
+            preparedStatement.setString(6, faceId);
             if(isAdmin) {
                 preparedStatement.setInt(5, 2);
             }else{
@@ -1043,6 +1050,38 @@ public class DatabaseController {
             return false;
         }
         return true;
+    }
+
+    public ArrayList<Admin> getListOfAdmins(){
+        ArrayList<Admin> admins = new ArrayList<>();
+        int id = 99999, permissions = 0;
+        String firstName = "", lastName = "", userName = "", password = "", faceId = "";
+
+        ResultSet resultSet = null;
+        System.out.println(
+                String.format(
+                        "Getting all admins"));
+        try{
+            String query = "SELECT * FROM ADMIN";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            // run statement and query
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                id = resultSet.getInt("ID");
+                firstName = resultSet.getString("FIRSTNAME");
+                lastName = resultSet.getString("LASTNAME");
+                userName = resultSet.getString("USERNAME");
+                password = resultSet.getString("PASSWORD");
+                permissions = resultSet.getInt("PERMISSIONS");
+                faceId = resultSet.getString("FACE_ID");
+
+                admins.add(new Admin(id, firstName, lastName, userName, password, faceId, permissions));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return admins;
     }
 
     /*******************************************************************************
