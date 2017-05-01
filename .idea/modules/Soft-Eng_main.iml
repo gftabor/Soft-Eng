@@ -21,7 +21,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../libs/jtransforms-2.3.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../libs/faces-1.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -39,7 +39,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../libs/faces-1.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../libs/jtransforms-2.3.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
