@@ -78,6 +78,9 @@ public class NewIntroUIController extends controllers.mapScene{
     private TextField end_TextField;
 
     @FXML
+    private TextField filter_textField;
+
+    @FXML
     private Button cancel_Button;
 
     @FXML
@@ -106,9 +109,6 @@ public class NewIntroUIController extends controllers.mapScene{
 
     @FXML
     private Label c_Floor_Label;
-
-    @FXML
-    private ChoiceBox<String> filter_ChoiceBox;
 
     @FXML
     private Pane node_Plane;
@@ -220,8 +220,8 @@ public class NewIntroUIController extends controllers.mapScene{
     private final Color startColor = Color.CRIMSON;
     private final Color endColor = Color.GREEN;
     private final Color kioskColor = Color.ORANGE;
-    private final Color interStart = Color.DARKBLUE;
-    private final Color interEnd = Color.AQUAMARINE;
+    private final Color interStart = Color.DARKRED;
+    private final Color interEnd = Color.DARKGREEN;
 
     private double origPaneWidth;
     private double origPaneHeight;
@@ -251,6 +251,8 @@ public class NewIntroUIController extends controllers.mapScene{
     boolean isHidden, enabled;
     int permissions;
 
+    boolean changeStart = false;
+
 
     @FXML
     public void initialize() {
@@ -258,6 +260,7 @@ public class NewIntroUIController extends controllers.mapScene{
         permissionLevel = 0;
         graph = new controllers.MapOverlay(node_Plane, (mapScene) this);
         MapController.getInstance().requestMapCopy();
+        filter_textField.setPromptText("search");
 
         graph.setZoom(1.0);
 
@@ -265,6 +268,7 @@ public class NewIntroUIController extends controllers.mapScene{
         setFloorChoices();
         setStartEndChoices(); // text auto fill function
         setLanguage_ChoiceBox(c_language);
+        setTypeChoices();
         //setLocationsForFloor("Floor 1");
         //setComboBox();
         //setFilterChoices();
@@ -312,19 +316,26 @@ public class NewIntroUIController extends controllers.mapScene{
         scrollPane.setFitToWidth(true);
         scrollPane.setPannable(true);
 
-        ArrayList<Location> passLocations = grabData();
+        ArrayList<Location> passLocations = grabData("");
         // sorts locations based on distance from the Kiosk
         final ArrayList<Location> sortedPassLocations = sortCloseToKiosk(passLocations, "Kiosk");
         // makes a list of all locations as clickable buttons
         setLocationsListView(sortedPassLocations);
 
 
+        filter_textField.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode().equals(KeyCode.ENTER)){
+                    setLocationsListView(sortCloseToKiosk(grabData(filter_textField.getText()), start_textField.getText()));
+                }
+            }
+        });
         start_textField.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(final KeyEvent event) {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     setLocationsListView(sortCloseToKiosk(passLocations, start_textField.getText()));
-
                 }
             }
         });
@@ -336,13 +347,15 @@ public class NewIntroUIController extends controllers.mapScene{
     public void drawCircleList(ArrayList<Circle> circleList, double x, double y, Color color) {
         for (Circle c : circleList) {
             //System.out.println((c.getLayoutX()/zoom)/widthRatio);
-            if (c.getLayoutX() == x && c.getLayoutY() == y) {
+            System.out.println("layoutX/givenX " + c.getLayoutX()+"/"+x);
+            if (round(c.getLayoutX()) == x && round(c.getLayoutY()) == y) {
+                System.out.println("Found circle");
                 c.setStrokeWidth(strokeRatio);
-                c.setRadius(graph.getLabelRadius());
+                c.setRadius(graph.getLabelRadius()*sizeUpRatio);
                 c.setStroke(color);
                 if (c.getFill().equals(kioskColor)) {
                     c.setFill(kioskColor);
-                } else if (c.getFill() != Color.BLACK) {
+                } else if (c.getFill() == Color.BLACK) {
                     c.setFill(color);
                 }
                 break;
@@ -351,7 +364,7 @@ public class NewIntroUIController extends controllers.mapScene{
     }
 
     // grabs data from database to later create the location buttons
-    private ArrayList<Location> grabData(){
+    private ArrayList<Location> grabData(String filterType){
         ArrayList<Location> locs = new ArrayList<>();
         ResultSet rset2 = databaseController.getFilteredRoomNames2();
         try {
@@ -367,8 +380,16 @@ public class NewIntroUIController extends controllers.mapScene{
                     while (rsetNode.next()){
                         nodeFloor = rsetNode.getInt("FLOOR");
                     }
-                    locs.add(new Location(type, name, roomNum, "", "",
-                            "", permissions, nodeFloor));
+                    if (filterType.equals("")){
+                        locs.add(new Location(type, name, roomNum, "", "",
+                                "", permissions, nodeFloor));
+                    } else {
+                        if (type.equals(filterType)){
+                            locs.add(new Location(type, name, roomNum, "", "",
+                                    "", permissions, nodeFloor));
+                        }
+                    }
+
                 }
             }
         } catch (SQLException e){
@@ -391,8 +412,16 @@ public class NewIntroUIController extends controllers.mapScene{
                     while (rsetNode.next()){
                         nodeFloor = rsetNode.getInt("FLOOR");
                     }
-                    locs.add(new Location("Doctor's Office", "", roomNum, firstName, lastName,
-                            title, permissions, nodeFloor));
+                    if (filterType.equals("")){
+                        locs.add(new Location("Doctor's Office", "", roomNum, firstName, lastName,
+                                title, permissions, nodeFloor));
+                    } else {
+                        if (filterType.equals("Doctor's Office") || filterType.equalsIgnoreCase("doctor")){
+                            locs.add(new Location("Doctor's Office", "", roomNum, firstName, lastName,
+                                    title, permissions, nodeFloor));
+                        }
+                    }
+
                 }
             }
         } catch (SQLException e){
@@ -428,7 +457,12 @@ public class NewIntroUIController extends controllers.mapScene{
                 nameButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        start_textField.setText(thisLocation.getRoomNum());
+                        if (start_textField.equals("")){
+                            start_textField.setText(thisLocation.getRoomNum());
+                        } else {
+                            end_TextField.setText(thisLocation.getRoomNum());
+                        }
+
                     }
                 });
             }
@@ -457,12 +491,9 @@ public class NewIntroUIController extends controllers.mapScene{
 
         }
     }
-    boolean inUseFlag = false;
 
     Pathfinder pathFind = new Pathfinder();
     public ArrayList<Location> sortCloseToKiosk(ArrayList<Location> locs, String roomNumToFind){
-        if (!inUseFlag) {
-            inUseFlag = true;
             System.out.println("Here zero");
             ResultSet rset = databaseController.getNodeWithName(roomNumToFind);
             int xpos = 0, ypos = 0, floor = 0, permissions = 0;
@@ -520,8 +551,6 @@ public class NewIntroUIController extends controllers.mapScene{
                             : 0;
                 }
             });
-            inUseFlag = false;
-        }
         return locs;
     }
 
@@ -565,17 +594,45 @@ public class NewIntroUIController extends controllers.mapScene{
             System.out.println("current floor displayed: " + currentFloor);
             System.out.println("frag path pos updated to: " + fragPathPos);
             multifloorUpdate();
+            //set the end goal color
+            ArrayList<Circle> circleList;
+            circleList = graph.getButtonList();
 
             //disable the continue button if you reach the end
             //also update the color
             if (fragPathPos == globalFragList.size() - 1) {
                 continueNew_Button.setVisible(false);
 
-                //set the end goal color
-                ArrayList<Circle> circleList;
-                circleList = graph.getButtonList();
-
                 drawCircleList(circleList, round(endX*zoom*widthRatio), round(endY*zoom*heightRatio), endColor);
+            } else {
+                Circle targetStart = null;
+                Circle targetEnd = null;
+                ObservableList<javafx.scene.Node> sceneObjects = node_Plane.getChildren();
+                Node n = findStartFromEdgeList(globalFragList.get(fragPathPos));
+                for (javafx.scene.Node obj: sceneObjects) {
+                    if (obj instanceof Circle) {
+                        if (round((obj.getLayoutX()/zoom)/widthRatio) == n.getPosX() &&
+                                round((obj.getLayoutY()/zoom)/heightRatio) == n.getPosY()) {
+                            System.out.println("FOUND MY CIRCLE!!");
+                            targetStart = (Circle) obj;
+                        }
+                    }
+                }
+
+                Node m = findEndFromEdgeList(globalFragList.get(fragPathPos));
+                for (javafx.scene.Node obj: sceneObjects) {
+                    if (obj instanceof Circle) {
+                        if (round((obj.getLayoutX()/zoom)/widthRatio) == m.getPosX() &&
+                                round((obj.getLayoutY()/zoom)/heightRatio) == m.getPosY()) {
+                            System.out.println("FOUND MY CIRCLE!!");
+                            targetEnd = (Circle) obj;
+                        }
+                    }
+                }
+                if (targetStart != null && targetEnd != null) {
+                    drawCircleList(circleList, targetStart.getLayoutX(), targetStart.getLayoutY(), interStart);
+                    drawCircleList(circleList, targetEnd.getLayoutX(), targetEnd.getLayoutY(), interEnd);
+                }
             }
         }
     }
@@ -594,18 +651,46 @@ public class NewIntroUIController extends controllers.mapScene{
         currentFloor = globalFloorSequence.get(fragPathPos);
 
         multifloorUpdate();
-
+        ArrayList<Circle> circleList;
+        circleList = graph.getButtonList();
         //disable the previous button if you reach the beginning
         //also update the color
         if (fragPathPos == 0) {
             previous_Button.setVisible(false);
 
             //set the end goal color
-            ArrayList<Circle> circleList;
-            circleList = graph.getButtonList();
 
             drawCircleList(circleList, round(startX*zoom*widthRatio), round(startY*zoom*heightRatio), startColor);
+        } else {
+            Circle targetStart = null;
+            Circle targetEnd = null;
+            ObservableList<javafx.scene.Node> sceneObjects = node_Plane.getChildren();
+            Node n = findStartFromEdgeList(globalFragList.get(fragPathPos));
+            for (javafx.scene.Node obj: sceneObjects) {
+                if (obj instanceof Circle) {
+                    if (round((obj.getLayoutX()/zoom)/widthRatio) == n.getPosX() &&
+                            round((obj.getLayoutY()/zoom)/heightRatio) == n.getPosY()) {
+                        System.out.println("FOUND MY CIRCLE!!");
+                        targetStart = (Circle) obj;
+                    }
+                }
+            }
+            Node m = findEndFromEdgeList(globalFragList.get(fragPathPos));
+            for (javafx.scene.Node obj: sceneObjects) {
+                if (obj instanceof Circle) {
+                    if (round((obj.getLayoutX()/zoom)/widthRatio) == m.getPosX() &&
+                            round((obj.getLayoutY()/zoom)/heightRatio) == m.getPosY()) {
+                        System.out.println("FOUND MY CIRCLE!!");
+                        targetEnd = (Circle) obj;
+                    }
+                }
+            }
+            if (targetStart != null && targetEnd != null) {
+                drawCircleList(circleList, targetStart.getLayoutX(), targetStart.getLayoutY(), interStart);
+                drawCircleList(circleList, targetEnd.getLayoutX(), targetEnd.getLayoutY(), interEnd);
+            }
         }
+
     }
 
     //Sets the choices for the language
@@ -646,58 +731,6 @@ public class NewIntroUIController extends controllers.mapScene{
                 });
 
     }
-
-    //Set the choices for Filter
-    /*public void setFilterChoices() {
-        //Makes sure you only set the choices once
-        //sets the choices and sets the current language as the top choice
-        if (c_language == 0) {
-            if (second) {
-                filter_ChoiceBox.getItems().remove(0, 3);
-                filter_ChoiceBox.getItems().addAll("All", "Employees", "Services");
-                filter_ChoiceBox.getSelectionModel().select(0);
-            } else {
-                filter_ChoiceBox.getItems().addAll("All", "Employees", "Services");
-                filter_ChoiceBox.getSelectionModel().select(0);
-            }
-        } else if (c_language == 1) {
-            if (second) {
-                filter_ChoiceBox.getItems().remove(0, 3);
-                filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios");
-                filter_ChoiceBox.getSelectionModel().select(0);
-            } else {
-                filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios");
-                filter_ChoiceBox.getSelectionModel().select(0);
-            }
-        }
-
-        //Checks if the user has decided to change languages
-        filter_ChoiceBox.getSelectionModel().selectedIndexProperty()
-                .addListener(new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                        //System.out.println(newValue);
-
-                        //Checks if the user wants english language
-                        if (newValue.intValue() == 0) {
-                            //Load everything
-
-                        } else if (newValue.intValue() == 1) {
-                            //Load only employees
-
-                        } else if (newValue.intValue() == 2) {
-                            //Load services
-
-                        } else if (newValue.intValue() == 3) {
-                            //load frequently searched
-
-                        } else if (newValue.intValue() == 4) {
-                            //Miscellaneous
-                        }
-                    }
-
-                });
-    }*/
 
     //Changes the floors on the map
     public void changeFloor(Number newValue) {
@@ -815,6 +848,17 @@ public class NewIntroUIController extends controllers.mapScene{
 
     }
 
+    public void setTypeChoices(){
+        ArrayList<String> services = new ArrayList<>();
+        ArrayList<String> all = new ArrayList<>();
+
+        services = databaseController.getNodeTypes();
+        all.addAll(services);
+        all.add("Doctor");
+
+        TextFields.bindAutoCompletion(filter_textField, all);
+    }
+
     public void setStartEndChoices(){
 
         ArrayList<String> roomNums = new ArrayList<>();
@@ -826,7 +870,7 @@ public class NewIntroUIController extends controllers.mapScene{
         professionals = databaseController.getProfessionalList();
 
         services = databaseController.getNodeTypes();
-        //all.addAll(roomNums);
+        all.addAll(roomNums);
         all.addAll(databaseController.getFilteredRooms(permissionLevel));
         //all.addAll(services);
 
@@ -864,6 +908,7 @@ public class NewIntroUIController extends controllers.mapScene{
         System.out.println("submit button clicked");
         System.out.println("click - pane-Hval = " + scrollPane.getHvalue());
         System.out.println("click - pane-Vval = " + scrollPane.getVvalue());
+        zoom = graph.getZoom();
 
         useStairs = stairs_CheckBox.isSelected();
 
@@ -939,15 +984,14 @@ public class NewIntroUIController extends controllers.mapScene{
 
                 graph.setPathfinding(1);
                 textDescription_TextFArea.setText(mapController.getTextDirections(path, c_language));
-                scrollPane.setFitToWidth(false);
-                scrollPane.setFitToHeight(false);
                 setMapToPath(startX, startY, endX, endY);
                 graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor),false,
                         currentFloor, permissionLevel);
                 graph.createEdgeLines(path, true, false);
                 ArrayList<Circle> circleList;
                 circleList = graph.getButtonList();
-                System.out.println(startX + "   " + startY);
+
+
                 drawCircleList(circleList, round(startX*zoom*widthRatio), round(startY*zoom*heightRatio), startColor);
                 drawCircleList(circleList, round(endX*zoom*widthRatio), round(endY*zoom*heightRatio), endColor);
 
@@ -956,7 +1000,15 @@ public class NewIntroUIController extends controllers.mapScene{
             if(ThreeDPATH_CheckBox.isSelected()){
                 //mapController.nodeListToText(pathfinder.getNodePath());
                 try {
-                    Runtime.getRuntime().exec(new String[] { "pathfinder3D.exe"});
+                    String os = System.getProperty("os.name");
+
+                    if (os != null && os.equals("Mac OS X")) {
+                        Runtime.getRuntime().exec(new String[]{"pathfinder3D.app"});
+                    }
+                    else {
+                        Runtime.getRuntime().exec(new String[]{"pathfinder3D.exe"});
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -1543,6 +1595,7 @@ public class NewIntroUIController extends controllers.mapScene{
                 if (scrollStartX != 0) {
                     drawCircleList(circleList, round(scrollStartX * zoom * widthRatio),
                             round(scrollStartY * zoom * heightRatio), startColor);
+                    System.out.println("this happened i guess");
                 }
                 if (scrollEndX != 0) {
                     drawCircleList(circleList, round(scrollEndX * zoom * widthRatio),
@@ -1591,7 +1644,12 @@ public class NewIntroUIController extends controllers.mapScene{
 
         }
 
+        if (selectionState == 1) {
+            drawCircleList(circleList, startX, startY, startColor);
+        }
         if (selectionState == 2) {
+            drawCircleList(circleList, round(startX*zoom*widthRatio), round(startY*zoom*heightRatio), startColor);
+            drawCircleList(circleList, round(endX*zoom*widthRatio), round(endY*zoom*heightRatio), endColor);
 
         }
         scrollPane.setHvalue(currentHval);
@@ -1641,7 +1699,6 @@ public class NewIntroUIController extends controllers.mapScene{
         double scrollHeight = scrollPane.getHeight();
         double scrollWidth = scrollPane.getWidth();
 
-        zoom = Math.min(Math.min((489/deltaY)*.6,2.2),Math.min((920/deltaX)*.6,2.2));
         System.out.println(deltaY);
         System.out.println("zoom amount: " +zoom);
 
@@ -1687,7 +1744,7 @@ public class NewIntroUIController extends controllers.mapScene{
     }
 
     //note: edge list must be ordered
-    private Circle findStartFromEdgeList(ArrayList<controllers.Edge> edgeList) {
+    private Node findStartFromEdgeList(ArrayList<controllers.Edge> edgeList) {
         //if list is empty
         if (edgeList.size() == 0) {
             return null;
@@ -1705,22 +1762,11 @@ public class NewIntroUIController extends controllers.mapScene{
                 n = edgeList.get(0).getEndNode();
             }
         }
-        ObservableList<javafx.scene.Node> sceneObjects = node_Plane.getChildren();
-
-        for (javafx.scene.Node obj: sceneObjects) {
-            if (obj instanceof Circle) {
-                if (round((obj.getLayoutX()/zoom)/widthRatio) == n.getPosX() &&
-                        round((obj.getLayoutY()/zoom)/heightRatio) == n.getPosY()) {
-                    System.out.println("FOUND MY CIRCLE!!");
-                    return (Circle) obj;
-                }
-            }
-        }
-        return null;
+        return n;
     }
 
     //note: edge list must be ordered
-    private Circle findEndFromEdgeList(ArrayList<controllers.Edge> edgeList) {
+    private Node findEndFromEdgeList(ArrayList<controllers.Edge> edgeList) {
         //if list is empty
         if (edgeList.size() == 0) {
             return null;
@@ -1738,18 +1784,7 @@ public class NewIntroUIController extends controllers.mapScene{
                 n = edgeList.get(edgeList.size() - 1).getEndNode();
             }
         }
-        ObservableList<javafx.scene.Node> sceneObjects = node_Plane.getChildren();
-
-        for (javafx.scene.Node obj: sceneObjects) {
-            if (obj instanceof Circle) {
-                if (round((obj.getLayoutX()/zoom)/widthRatio) == n.getPosX() &&
-                        round((obj.getLayoutY()/zoom)/heightRatio) == n.getPosY()) {
-                    System.out.println("FOUND MY CIRCLE!!");
-                    return (Circle) obj;
-                }
-            }
-        }
-        return null;
+        return n;
     }
 
 
