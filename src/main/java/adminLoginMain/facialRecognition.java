@@ -127,7 +127,8 @@ public class facialRecognition {
             webcam = Webcam.getDefault();
 
         cameraThread = new Thread(() -> {
-            webcam.setViewSize(new Dimension(640, 480));
+           // webcam.setViewSize(new Dimension(640, 480));
+
             webcam.open();
             BufferedImage capture = null;
             java.util.List<BufferedImage> facesList = new ArrayList<>();
@@ -204,7 +205,7 @@ public class facialRecognition {
         HBox hbox = new HBox(imageView);
         hbox.setAlignment(Pos.CENTER);
 
-        root.getChildren().addAll(imageStrip);
+        root.getChildren().addAll(hbox,imageStrip);
     }
 
     private byte[] convertBufferedImage(BufferedImage bufImage) {
