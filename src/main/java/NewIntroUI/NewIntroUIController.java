@@ -942,7 +942,15 @@ public class NewIntroUIController extends controllers.mapScene{
             if(ThreeDPATH_CheckBox.isSelected()){
                 //mapController.nodeListToText(pathfinder.getNodePath());
                 try {
-                    Runtime.getRuntime().exec(new String[] { "pathfinder3D.exe"});
+                    String os = System.getProperty("os.name");
+
+                    if (os != null && os.equals("Mac OS X")) {
+                        Runtime.getRuntime().exec(new String[]{"pathfinder3D.app"});
+                    }
+                    else {
+                        Runtime.getRuntime().exec(new String[]{"pathfinder3D.exe"});
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
