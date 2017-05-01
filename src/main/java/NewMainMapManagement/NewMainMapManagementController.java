@@ -1418,66 +1418,28 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
 
     public void zoomInButton_Clicked() {
-        zoom = graph.getZoom();
-        System.out.println(zoom);
-        if (zoom < 2.2) {
-            zoom += 0.03;
-            if (zoom > 2.2) {
-                zoom = 2.2;
-            }
-            changeZoom();
-
-            graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
-                    currentFloor, permissionLevel);
-        }
-        scrollPane.setFitToHeight(false);
-        scrollPane.setFitToWidth(false);
-
-    }
-
-    public void zoomOutButton_Clicked() {
-        zoom = graph.getZoom();
-        System.out.println(zoom);
-        if (zoom > 1.0) {
-            zoom = zoom - 0.03;
-            if (zoom < 1.0) {
-                zoom = 1.0;
-                scrollPane.setFitToHeight(true);
-                scrollPane.setFitToWidth(true);
-            }
-            changeZoom();
-        } else {
-            scrollPane.setFitToHeight(true);
-            scrollPane.setFitToWidth(true);
-        }
-
-        graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
-                currentFloor, permissionLevel);
-
-    }
-
-    //Let the user scroll through the map
-    public void mapScroll(ScrollEvent event) {
-        zoom = MapOverlay.getZoom();
-        if (currentHval != 0) {
-            System.out.println("pre zoom currenthval: " + currentHval);
-            System.out.println("pre zoom currnetVval: " + currentVval);
-        }
-        currentHval = scrollPane.getHvalue();
-        currentVval = scrollPane.getVvalue();
-        if (event.getDeltaY() > 0) {
+        if (multiDragMode == false && dragMode == false) {
+            zoom = graph.getZoom();
+            System.out.println(zoom);
             if (zoom < 2.2) {
-                scrollPane.setFitToHeight(false);
-                scrollPane.setFitToWidth(false);
                 zoom += 0.03;
                 if (zoom > 2.2) {
                     zoom = 2.2;
                 }
                 changeZoom();
+
                 graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
                         currentFloor, permissionLevel);
             }
-        } else if (event.getDeltaY() < 0) {
+            scrollPane.setFitToHeight(false);
+            scrollPane.setFitToWidth(false);
+        }
+    }
+
+    public void zoomOutButton_Clicked() {
+        if (multiDragMode == false && dragMode == false) {
+            zoom = graph.getZoom();
+            System.out.println(zoom);
             if (zoom > 1.0) {
                 zoom = zoom - 0.03;
                 if (zoom < 1.0) {
@@ -1486,18 +1448,60 @@ public class NewMainMapManagementController extends controllers.mapScene {
                     scrollPane.setFitToWidth(true);
                 }
                 changeZoom();
-                graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
-                        currentFloor, permissionLevel);
             } else {
                 scrollPane.setFitToHeight(true);
                 scrollPane.setFitToWidth(true);
             }
-        }
 
-        System.out.println("currenthval: " + currentHval);
-        System.out.println("currnetVval: " + currentVval);
-        scrollPane.setHvalue(currentHval);
-        scrollPane.setVvalue(currentVval);
+            graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
+                    currentFloor, permissionLevel);
+        }
+    }
+
+    //Let the user scroll through the map
+    public void mapScroll(ScrollEvent event) {
+        if (multiDragMode == false && dragMode == false) {
+            zoom = MapOverlay.getZoom();
+            if (currentHval != 0) {
+                System.out.println("pre zoom currenthval: " + currentHval);
+                System.out.println("pre zoom currnetVval: " + currentVval);
+            }
+            currentHval = scrollPane.getHvalue();
+            currentVval = scrollPane.getVvalue();
+            if (event.getDeltaY() > 0) {
+                if (zoom < 2.2) {
+                    scrollPane.setFitToHeight(false);
+                    scrollPane.setFitToWidth(false);
+                    zoom += 0.03;
+                    if (zoom > 2.2) {
+                        zoom = 2.2;
+                    }
+                    changeZoom();
+                    graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
+                            currentFloor, permissionLevel);
+                }
+            } else if (event.getDeltaY() < 0) {
+                if (zoom > 1.0) {
+                    zoom = zoom - 0.03;
+                    if (zoom < 1.0) {
+                        zoom = 1.0;
+                        scrollPane.setFitToHeight(true);
+                        scrollPane.setFitToWidth(true);
+                    }
+                    changeZoom();
+                    graph.setMapAndNodes(controllers.MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), true,
+                            currentFloor, permissionLevel);
+                } else {
+                    scrollPane.setFitToHeight(true);
+                    scrollPane.setFitToWidth(true);
+                }
+            }
+
+            System.out.println("currenthval: " + currentHval);
+            System.out.println("currnetVval: " + currentVval);
+            scrollPane.setHvalue(currentHval);
+            scrollPane.setVvalue(currentVval);
+        }
     }
 
     //when the mouse is clicked and dragged on the map
