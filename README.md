@@ -14,9 +14,11 @@ Built by:
  - [Rolando Wong](https://github.com/ARWongQ)
  - [Mario Zyla](https://github.com/mazyla)
  
-##Project Objectives
+## Project Objectives
 Complete a 7 week agile/scrum focused software engineering project. 
 In teams of 9, build a project using agile/scrum from beginning to end.
+
+[Documentation](https://rawgit.com/gftabor/Soft-Eng/master/src/main/resources/docs/index.html)
 
 ### The Program
 The program is a pathfinding application for computer-based map kiosks. 
