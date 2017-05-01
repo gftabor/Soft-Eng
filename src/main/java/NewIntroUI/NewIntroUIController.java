@@ -1155,7 +1155,6 @@ public class NewIntroUIController extends controllers.mapScene{
         MapMan_Button.setText("Map Manag.");
         adminMan_Button.setText("Admin Manag.");
         DirectoryMan_Button.setText("Directory Manag.");
-        reverse_Button.setText("Reverse");
 
 
         //Change the labels
@@ -1203,7 +1202,6 @@ public class NewIntroUIController extends controllers.mapScene{
         submit_Button.setText("Listo");
         phoneSend.setText("Enviar");
         about_Button.setText("Acerca");
-        reverse_Button.setText("Revertir");
 
         //change the Labels
         start_Label.setText("Inicio:");
