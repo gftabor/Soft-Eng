@@ -128,7 +128,9 @@ public class facialRecognition {
     private facialRecognition(){
 
         cameraThread = new Thread(() -> {
+            System.out.println("starting web");
             webcam = Webcam.getDefault();
+            System.out.println("opening");
             webcam.open();
             BufferedImage capture = null;
             java.util.List<BufferedImage> facesList = new ArrayList<>();
