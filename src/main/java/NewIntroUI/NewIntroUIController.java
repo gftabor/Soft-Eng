@@ -1179,7 +1179,6 @@ public class NewIntroUIController extends controllers.mapScene{
 
 
     }
-
     //switches all teh labels to spanish
     public void spanishButtons_Labels() {
         //change the current language to spanish
