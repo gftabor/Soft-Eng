@@ -23,6 +23,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import org.controlsfx.control.textfield.TextFields;
 import pathFindingMenu.Pathfinder;
 import java.net.URISyntaxException;
@@ -172,6 +173,9 @@ public class NewIntroUIController extends controllers.mapScene{
 
     @FXML
     private Label stairs_Label;
+
+    @FXML
+    private Label searchError;
 
 
 
@@ -904,6 +908,13 @@ public class NewIntroUIController extends controllers.mapScene{
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
                 path = mapController.requestPath(permissionLevel, useStairs);
 
+                if(path.size() == 0){
+                    System.out.println("Cannot find path in simple pathfinding");
+                    searchError.setText("Cannot find path. Please select a different location.");
+                }else{
+                    searchError.setText("");
+                }
+
                 int startfloor = mapController.returnOriginalFloor();
                 if(startfloor != currentFloor) {
                     c_Floor_Label.setText(Integer.toString(startfloor));
@@ -1128,6 +1139,7 @@ public class NewIntroUIController extends controllers.mapScene{
         //reset the textfields
         start_textField.setText("");
         end_TextField.setText("");
+        searchError.setText("");
 
         //reset any colors
 
