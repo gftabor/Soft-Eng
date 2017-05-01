@@ -347,7 +347,6 @@ public class NewIntroUIController extends controllers.mapScene{
     public void drawCircleList(ArrayList<Circle> circleList, double x, double y, Color color) {
         for (Circle c : circleList) {
             //System.out.println((c.getLayoutX()/zoom)/widthRatio);
-            System.out.println("layoutX/givenX " + c.getLayoutX()+"/"+x);
             if (round(c.getLayoutX()) == x && round(c.getLayoutY()) == y) {
                 System.out.println("Found circle");
                 c.setStrokeWidth(strokeRatio);
@@ -739,6 +738,7 @@ public class NewIntroUIController extends controllers.mapScene{
         //Print the floors accordingly
         //CODE HERE!!!!!!!
 
+
         if (newValue.intValue() == 7) {
             //outside
             currentFloor = 0;
@@ -803,6 +803,18 @@ public class NewIntroUIController extends controllers.mapScene{
         }
         graph.setMapAndNodes(MapController.getInstance().getCollectionOfNodes().getMap(currentFloor), false,
                 currentFloor, permissionLevel);
+
+        ArrayList<Circle> circleList;
+        circleList = graph.getButtonList();
+
+//        if (selectionState == 1) {
+//            drawCircleList(circleList, startX, startY, startColor);
+//        }
+//        if (selectionState == 2) {
+//            drawCircleList(circleList, round(startX*zoom*widthRatio), round(startY*zoom*heightRatio), startColor);
+//            drawCircleList(circleList, round(endX*zoom*widthRatio), round(endY*zoom*heightRatio), endColor);
+//
+//        }
 
     }
 
