@@ -214,6 +214,8 @@ public class NewIntroUIController extends controllers.mapScene{
     private final Color startColor = Color.CRIMSON;
     private final Color endColor = Color.GREEN;
     private final Color kioskColor = Color.ORANGE;
+    private final Color interStart = Color.DARKBLUE;
+    private final Color interEnd = Color.AQUAMARINE;
 
     private double origPaneWidth;
     private double origPaneHeight;
