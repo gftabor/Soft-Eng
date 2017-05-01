@@ -152,12 +152,13 @@ public class MapOverlay {
                     break;
                 case "Kiosk":
                     location.setFill(new ImagePattern(kioskImage));
-                    location.setRadius(labelTypeRadius);
+                    location.setRadius(25);
                     break;
             }
+            System.out.println("Name of the current kiosk: " + current.getName());
             if (current.getName().equals("Kiosk")){
                 location.setFill(new ImagePattern(kioskImage));
-                location.setRadius(labelTypeRadius);
+                location.setRadius(25);
             }
             location.setOnMouseClicked(e -> {
                 Object o = e.getSource();
@@ -196,6 +197,12 @@ public class MapOverlay {
                 case "Entrance":
                     c.setRadius(labelTypeRadius*1.4);
                     break;
+                case "Kiosk":
+                    c.setRadius(25*1.4);
+                    break;
+            }
+            if (current.getName().equals("Kiosk")){
+                c.setRadius(30);
             }
             Tooltip.install(
                     c,
@@ -229,6 +236,12 @@ public class MapOverlay {
                 case "Entrance":
                     c.setRadius(labelTypeRadius);
                     break;
+                case "Kiosk":
+                    c.setRadius(25);
+                    break;
+            }
+            if (current.getName().equals("Kiosk")){
+                c.setRadius(25);
             }
         });
 
@@ -242,9 +255,6 @@ public class MapOverlay {
             location.setFill(Color.RED);
         } else if(hidden) {
             location.setFill(Color.GRAY);
-        }else if (current.getName().equals("Kiosk")){
-            //System.out.println("Found Kiosk");
-            location.setFill(Color.ORANGE);
         }
 
         if (devmode) {
@@ -333,19 +343,6 @@ public class MapOverlay {
                 }
             });
         }
-        //get node type
-//        String type = current.getType();
-//        if (devmode && (type.equalsIgnoreCase("Elevator") || type.equalsIgnoreCase("Stair"))) {
-//            location.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-//                @Override
-//                public void handle(MouseEvent event) {
-//                    Object o = event.getSource();
-//                    Circle c = (Circle) o;
-//                    sceneController.showMultifloorMenu(nodeX, nodeY, c);
-//                }
-//            });
-//        }
-
         ButtonList.add(location);
     }
 
