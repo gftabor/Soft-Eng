@@ -78,6 +78,9 @@ public class NewIntroUIController extends controllers.mapScene{
     private TextField end_TextField;
 
     @FXML
+    private TextField filter_textField;
+
+    @FXML
     private Button cancel_Button;
 
     @FXML
@@ -106,9 +109,6 @@ public class NewIntroUIController extends controllers.mapScene{
 
     @FXML
     private Label c_Floor_Label;
-
-    @FXML
-    private ChoiceBox<String> filter_ChoiceBox;
 
     @FXML
     private Pane node_Plane;
@@ -251,6 +251,8 @@ public class NewIntroUIController extends controllers.mapScene{
     boolean isHidden, enabled;
     int permissions;
 
+    boolean changeStart = false;
+
 
     @FXML
     public void initialize() {
@@ -258,6 +260,7 @@ public class NewIntroUIController extends controllers.mapScene{
         permissionLevel = 0;
         graph = new controllers.MapOverlay(node_Plane, (mapScene) this);
         MapController.getInstance().requestMapCopy();
+        filter_textField.setPromptText("search");
 
         graph.setZoom(1.0);
 
@@ -265,6 +268,7 @@ public class NewIntroUIController extends controllers.mapScene{
         setFloorChoices();
         setStartEndChoices(); // text auto fill function
         setLanguage_ChoiceBox(c_language);
+        setTypeChoices();
         //setLocationsForFloor("Floor 1");
         //setComboBox();
         //setFilterChoices();
@@ -312,19 +316,26 @@ public class NewIntroUIController extends controllers.mapScene{
         scrollPane.setFitToWidth(true);
         scrollPane.setPannable(true);
 
-        ArrayList<Location> passLocations = grabData();
+        ArrayList<Location> passLocations = grabData("");
         // sorts locations based on distance from the Kiosk
         final ArrayList<Location> sortedPassLocations = sortCloseToKiosk(passLocations, "Kiosk");
         // makes a list of all locations as clickable buttons
         setLocationsListView(sortedPassLocations);
 
 
+        filter_textField.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode().equals(KeyCode.ENTER)){
+                    setLocationsListView(sortCloseToKiosk(grabData(filter_textField.getText()), start_textField.getText()));
+                }
+            }
+        });
         start_textField.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(final KeyEvent event) {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     setLocationsListView(sortCloseToKiosk(passLocations, start_textField.getText()));
-
                 }
             }
         });
@@ -353,7 +364,7 @@ public class NewIntroUIController extends controllers.mapScene{
     }
 
     // grabs data from database to later create the location buttons
-    private ArrayList<Location> grabData(){
+    private ArrayList<Location> grabData(String filterType){
         ArrayList<Location> locs = new ArrayList<>();
         ResultSet rset2 = databaseController.getFilteredRoomNames2();
         try {
@@ -369,8 +380,16 @@ public class NewIntroUIController extends controllers.mapScene{
                     while (rsetNode.next()){
                         nodeFloor = rsetNode.getInt("FLOOR");
                     }
-                    locs.add(new Location(type, name, roomNum, "", "",
-                            "", permissions, nodeFloor));
+                    if (filterType.equals("")){
+                        locs.add(new Location(type, name, roomNum, "", "",
+                                "", permissions, nodeFloor));
+                    } else {
+                        if (type.equals(filterType)){
+                            locs.add(new Location(type, name, roomNum, "", "",
+                                    "", permissions, nodeFloor));
+                        }
+                    }
+
                 }
             }
         } catch (SQLException e){
@@ -393,8 +412,16 @@ public class NewIntroUIController extends controllers.mapScene{
                     while (rsetNode.next()){
                         nodeFloor = rsetNode.getInt("FLOOR");
                     }
-                    locs.add(new Location("Doctor's Office", "", roomNum, firstName, lastName,
-                            title, permissions, nodeFloor));
+                    if (filterType.equals("")){
+                        locs.add(new Location("Doctor's Office", "", roomNum, firstName, lastName,
+                                title, permissions, nodeFloor));
+                    } else {
+                        if (filterType.equals("Doctor's Office") || filterType.equalsIgnoreCase("doctor")){
+                            locs.add(new Location("Doctor's Office", "", roomNum, firstName, lastName,
+                                    title, permissions, nodeFloor));
+                        }
+                    }
+
                 }
             }
         } catch (SQLException e){
@@ -430,7 +457,12 @@ public class NewIntroUIController extends controllers.mapScene{
                 nameButton.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        start_textField.setText(thisLocation.getRoomNum());
+                        if (start_textField.equals("")){
+                            start_textField.setText(thisLocation.getRoomNum());
+                        } else {
+                            end_TextField.setText(thisLocation.getRoomNum());
+                        }
+
                     }
                 });
             }
@@ -459,12 +491,9 @@ public class NewIntroUIController extends controllers.mapScene{
 
         }
     }
-    boolean inUseFlag = false;
 
     Pathfinder pathFind = new Pathfinder();
     public ArrayList<Location> sortCloseToKiosk(ArrayList<Location> locs, String roomNumToFind){
-        if (!inUseFlag) {
-            inUseFlag = true;
             System.out.println("Here zero");
             ResultSet rset = databaseController.getNodeWithName(roomNumToFind);
             int xpos = 0, ypos = 0, floor = 0, permissions = 0;
@@ -522,8 +551,6 @@ public class NewIntroUIController extends controllers.mapScene{
                             : 0;
                 }
             });
-            inUseFlag = false;
-        }
         return locs;
     }
 
@@ -705,58 +732,6 @@ public class NewIntroUIController extends controllers.mapScene{
 
     }
 
-    //Set the choices for Filter
-    /*public void setFilterChoices() {
-        //Makes sure you only set the choices once
-        //sets the choices and sets the current language as the top choice
-        if (c_language == 0) {
-            if (second) {
-                filter_ChoiceBox.getItems().remove(0, 3);
-                filter_ChoiceBox.getItems().addAll("All", "Employees", "Services");
-                filter_ChoiceBox.getSelectionModel().select(0);
-            } else {
-                filter_ChoiceBox.getItems().addAll("All", "Employees", "Services");
-                filter_ChoiceBox.getSelectionModel().select(0);
-            }
-        } else if (c_language == 1) {
-            if (second) {
-                filter_ChoiceBox.getItems().remove(0, 3);
-                filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios");
-                filter_ChoiceBox.getSelectionModel().select(0);
-            } else {
-                filter_ChoiceBox.getItems().addAll("Todo", "Empleados", "Servicios");
-                filter_ChoiceBox.getSelectionModel().select(0);
-            }
-        }
-
-        //Checks if the user has decided to change languages
-        filter_ChoiceBox.getSelectionModel().selectedIndexProperty()
-                .addListener(new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                        //System.out.println(newValue);
-
-                        //Checks if the user wants english language
-                        if (newValue.intValue() == 0) {
-                            //Load everything
-
-                        } else if (newValue.intValue() == 1) {
-                            //Load only employees
-
-                        } else if (newValue.intValue() == 2) {
-                            //Load services
-
-                        } else if (newValue.intValue() == 3) {
-                            //load frequently searched
-
-                        } else if (newValue.intValue() == 4) {
-                            //Miscellaneous
-                        }
-                    }
-
-                });
-    }*/
-
     //Changes the floors on the map
     public void changeFloor(Number newValue) {
         boolean outside = false;
@@ -873,6 +848,17 @@ public class NewIntroUIController extends controllers.mapScene{
 
     }
 
+    public void setTypeChoices(){
+        ArrayList<String> services = new ArrayList<>();
+        ArrayList<String> all = new ArrayList<>();
+
+        services = databaseController.getNodeTypes();
+        all.addAll(services);
+        all.add("Doctor");
+
+        TextFields.bindAutoCompletion(filter_textField, all);
+    }
+
     public void setStartEndChoices(){
 
         ArrayList<String> roomNums = new ArrayList<>();
@@ -884,7 +870,7 @@ public class NewIntroUIController extends controllers.mapScene{
         professionals = databaseController.getProfessionalList();
 
         services = databaseController.getNodeTypes();
-        //all.addAll(roomNums);
+        all.addAll(roomNums);
         all.addAll(databaseController.getFilteredRooms(permissionLevel));
         //all.addAll(services);
 
@@ -1237,7 +1223,6 @@ public class NewIntroUIController extends controllers.mapScene{
         MapMan_Button.setText("Map Manag.");
         adminMan_Button.setText("Admin Manag.");
         DirectoryMan_Button.setText("Directory Manag.");
-        reverse_Button.setText("Reverse");
 
 
         //Change the labels
@@ -1285,7 +1270,6 @@ public class NewIntroUIController extends controllers.mapScene{
         submit_Button.setText("Listo");
         phoneSend.setText("Enviar");
         about_Button.setText("Acerca");
-        reverse_Button.setText("Revertir");
 
         //change the Labels
         start_Label.setText("Inicio:");
