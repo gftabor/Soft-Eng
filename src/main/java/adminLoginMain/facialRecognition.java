@@ -56,15 +56,15 @@ public class facialRecognition {
     public String getFaceID() {
         this.nextState = state.ADD;
         synchronized(this){
-            while(this.nextState ==state.ADD){
                 try {
                     this.wait(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                System.out.println("timeout");
             }
             return currentID;
-        }
+
     }
     private synchronized void finished(){
         this.nextState = state.NOTHING;
