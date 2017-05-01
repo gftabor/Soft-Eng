@@ -192,8 +192,14 @@ public class NewMainMapManagementController extends controllers.mapScene {
 
          */
 
-        PauseTransition idle = new PauseTransition(Duration.seconds(10));
-        idle.setOnFinished(e -> signOutButton_Clicked());
+        PauseTransition idle = new PauseTransition(Duration.seconds(100));
+        idle.setOnFinished(e -> {
+            signOutButton_Clicked();
+            if (temporaryButton[0] != null && !databaseController.isActualLocation(round((temporaryButton[0].getLayoutX()/zoom)/widthRatio),
+                    round((temporaryButton[0].getLayoutY()/zoom)/heightRatio), currentFloor)) {
+                admin_FloorPane.getChildren().remove(temporaryButton[0]);
+            }
+        });
         backgroundAnchorPane.addEventHandler(Event.ANY, e -> {
             idle.playFromStart();
         });
@@ -620,6 +626,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
         AnchorPane.setRightAnchor(vb, 5.0);
         AnchorPane.setTopAnchor(grid, 10.0);
 
+
         if (mode.equals("Edit")){
             ResultSet rset = databaseController.getNode(
                     round((btK.getLayoutX()/zoom)/widthRatio), round((btK.getLayoutY()/zoom)/heightRatio), currentFloor);
@@ -647,6 +654,7 @@ public class NewMainMapManagementController extends controllers.mapScene {
             }
         }
 
+        String oldRN = nodeRoom.getText();
 
         pop.setDetachable(true);
         pop.setDetached(false);
@@ -682,9 +690,15 @@ public class NewMainMapManagementController extends controllers.mapScene {
                                 System.out.println("all clear");
                                 nodeAlreadyThere = false;
                             } else {
-                                System.out.println("Node already there");
-                                nodeAlreadyThere = true;
+                                if (thisNodeRoom.equalsIgnoreCase(oldRN)) {
+                                    nodeAlreadyThere = false;
+                                    System.out.println("unchanged");
+                                } else {
+                                    System.out.println("changed");
+                                    nodeAlreadyThere = true;
+                                }
                             }
+
                         } catch (SQLException ex) {
                             ex.printStackTrace();
                         }
