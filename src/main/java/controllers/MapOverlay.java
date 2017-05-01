@@ -94,6 +94,7 @@ public class MapOverlay {
     final Image exitImage = new Image("images/exit.jpg");
     final Image officeImage = new Image("images/office.png");
     final Image restroomImage = new Image("images/restroom.png");
+    final Image kioskImage = new Image("images/kiosk.png");
 
 
 
@@ -149,6 +150,14 @@ public class MapOverlay {
                     location.setFill(new ImagePattern(entranceImage));
                     location.setRadius(labelTypeRadius);
                     break;
+                case "Kiosk":
+                    location.setFill(new ImagePattern(kioskImage));
+                    location.setRadius(labelTypeRadius);
+                    break;
+            }
+            if (current.getName().equals("Kiosk")){
+                location.setFill(new ImagePattern(kioskImage));
+                location.setRadius(labelTypeRadius);
             }
             location.setOnMouseClicked(e -> {
                 Object o = e.getSource();

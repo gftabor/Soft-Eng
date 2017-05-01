@@ -26,6 +26,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.io.IOException;
@@ -178,6 +179,9 @@ public class NewIntroUIController extends controllers.mapScene{
     @FXML
     private Label stairs_Label;
 
+    @FXML
+    private Label searchError;
+
 
 
 
@@ -216,6 +220,8 @@ public class NewIntroUIController extends controllers.mapScene{
     private final Color startColor = Color.CRIMSON;
     private final Color endColor = Color.GREEN;
     private final Color kioskColor = Color.ORANGE;
+    private final Color interStart = Color.DARKBLUE;
+    private final Color interEnd = Color.AQUAMARINE;
 
     private double origPaneWidth;
     private double origPaneHeight;
@@ -909,6 +915,13 @@ public class NewIntroUIController extends controllers.mapScene{
                 MapController.getInstance().getCollectionOfNodes().resetForPathfinding();
                 path = mapController.requestPath(permissionLevel, useStairs);
 
+                if(path.size() == 0){
+                    System.out.println("Cannot find path in simple pathfinding");
+                    searchError.setText("Cannot find path. Please select a different location.");
+                }else{
+                    searchError.setText("");
+                }
+
                 int startfloor = mapController.returnOriginalFloor();
                 if(startfloor != currentFloor) {
                     c_Floor_Label.setText(Integer.toString(startfloor));
@@ -1138,6 +1151,7 @@ public class NewIntroUIController extends controllers.mapScene{
         //reset the textfields
         start_textField.setText("");
         end_TextField.setText("");
+        searchError.setText("");
 
         //reset any colors
 
@@ -1165,7 +1179,6 @@ public class NewIntroUIController extends controllers.mapScene{
         MapMan_Button.setText("Map Manag.");
         adminMan_Button.setText("Admin Manag.");
         DirectoryMan_Button.setText("Directory Manag.");
-        reverse_Button.setText("Reverse");
 
 
         //Change the labels
@@ -1213,7 +1226,6 @@ public class NewIntroUIController extends controllers.mapScene{
         submit_Button.setText("Listo");
         phoneSend.setText("Enviar");
         about_Button.setText("Acerca");
-        reverse_Button.setText("Revertir");
 
         //change the Labels
         start_Label.setText("Inicio:");
