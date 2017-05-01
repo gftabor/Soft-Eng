@@ -58,21 +58,21 @@ public class FAQcontroller extends controllers.AbsController{
         NewIntroUI.NewIntroUIController controller = loader.getController();
         //sets the current language
         controller.setCurrentLanguage(c_language);
+        controller.setPermissionLevel(permissionLevel);
         //set up english labels
         if(c_language == 0){
             controller.englishButtons_Labels();
             controller.setWelcome(loggedIn);
             //set up spanish labels
         }
-        controller.setPermissionLevel(permissionLevel);
         controller.setLanguage_ChoiceBox(c_language);
 
         if(permissionLevel == 2){
             controller.loginOrOut(0,c_language);
             controller.AdminButtons(c_language);
         }else if(permissionLevel == 1){
+            System.out.println("Exiting as an employee ");
             controller.loginOrOut(0,c_language);
-
         }else{
             controller.loginOrOut(1,c_language);
         }
